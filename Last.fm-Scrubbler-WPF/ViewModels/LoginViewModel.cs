@@ -34,22 +34,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
 		#endregion Properties
 
-		#region Private Member
-
-		/// <summary>
-		/// The Last.fm client.
-		/// </summary>
-		private LastfmClient _client;
-
-		#endregion Private Member
-
 		/// <summary>
 		/// Constructor.
 		/// </summary>
 		/// <param name="client">Client on which to perform the login.</param>
-		public LoginViewModel(LastfmClient client)
+		public LoginViewModel()
 		{
-			_client = client;
 			EnableControls = true;
 		}
 
@@ -64,9 +54,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		{
 			EnableControls = false;
 
-			var response = await _client.Auth.GetSessionTokenAsync(username, password.Password);
+			var response = await MainViewModel.Client.Auth.GetSessionTokenAsync(username, password.Password);
 
-			if(_client.Auth.Authenticated)
+			if(MainViewModel.Client.Auth.Authenticated)
 			{
 				MessageBox.Show("Successfully logged in and authenticated!");
 
@@ -94,9 +84,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		/// </summary>
 		private void SaveSession()
 		{
-			Settings.Default.Token = _client.Auth.UserSession.Token;
-			Settings.Default.Username = _client.Auth.UserSession.Username;
-			Settings.Default.IsSubscriber = _client.Auth.UserSession.IsSubscriber;
+			Settings.Default.Token = MainViewModel.Client.Auth.UserSession.Token;
+			Settings.Default.Username = MainViewModel.Client.Auth.UserSession.Username;
+			Settings.Default.IsSubscriber = MainViewModel.Client.Auth.UserSession.IsSubscriber;
 			Settings.Default.Save();
 		}
 	}

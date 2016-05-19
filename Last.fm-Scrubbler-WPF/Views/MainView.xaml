@@ -17,7 +17,7 @@
 
     <TabControl Grid.Row="0">
       <TabItem Header="Manual Scrobble">
-        <views:ManualScrobbleView/>
+        <views:ManualScrobbleView DataContext="{Binding ManualScrobbleViewModel}"/>
       </TabItem>
     </TabControl>
 

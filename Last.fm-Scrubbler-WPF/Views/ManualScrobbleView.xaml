@@ -5,13 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
@@ -41,17 +40,12 @@
     <Label Grid.Row="4" Grid.Column="0" Content="Album:"/>
     <TextBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Album}"/>
 
-    <Label Grid.Row="6" Grid.Column="0" Content="Date:"/>
-    <DatePicker Grid.Row="6" Grid.Column="2" SelectedDate="{Binding Date}"/>
-    <CheckBox Grid.Row="6" Grid.Column="4" Content="Current" IsChecked="{Binding CurrentDate}"
+    <Label Grid.Row="6" Grid.Column="0" Content="Time Played:"/>
+    <xctk:DateTimePicker Grid.Row="6" Grid.Column="2" Value="{Binding TimePlayed}"/>
+    <CheckBox Grid.Row="6" Grid.Column="4" Content="Current" IsChecked="{Binding CurrentDateTime}"
                     VerticalAlignment="Center"/>
 
-    <Label Grid.Row="8" Grid.Column="0" Content="Time:"/>
-    <DatePicker Grid.Row="8" Grid.Column="2" SelectedDate="{Binding Time}"/>
-    <CheckBox Grid.Row="8" Grid.Column="4" Content="Current" IsChecked="{Binding CurrentTime}"
-                    VerticalAlignment="Center"/>
-
-    <Button Grid.Row="10" Grid.Column="0" Content="Scrobble">
+    <Button Grid.Row="8" Grid.Column="0" Content="Scrobble">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="Scrobble"/>

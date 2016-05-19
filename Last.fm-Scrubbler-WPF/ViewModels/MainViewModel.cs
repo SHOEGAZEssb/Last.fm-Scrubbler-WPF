@@ -15,16 +15,26 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		/// <summary>
 		/// The client used for all last.fm actions.
 		/// </summary>
-		public LastfmClient Client
+		public static LastfmClient Client
 		{
 			get { return _client; }
 			private set
 			{
 				_client = value;
-				NotifyOfPropertyChange(() => Client);
 			}
 		}
-		private LastfmClient _client;
+		private static LastfmClient _client;
+
+		public ManualScrobbleViewModel ManualScrobbleViewModel
+		{
+			get { return _manualScrobbleViewModel; }
+			private set
+			{
+				_manualScrobbleViewModel = value;
+				NotifyOfPropertyChange(() => ManualScrobbleViewModel);
+			}
+		}
+		private ManualScrobbleViewModel _manualScrobbleViewModel;
 
 		#region StatusBar Properties
 
@@ -74,6 +84,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		public MainViewModel()
 		{
 			Client = new LastfmClient(APIKEY, APISECRET);
+			ManualScrobbleViewModel = new ManualScrobbleViewModel();
 			LoadLastSession();
 		}
 
@@ -83,7 +94,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		public void HyperlinkClicked()
 		{
 			LoginView lv = new LoginView();
-			lv.DataContext = new LoginViewModel(Client);
+			lv.DataContext = new LoginViewModel();
 			lv.ShowDialog();
 			NotifyOfPropertyChange(() => StatusBarUsername);
 		}
