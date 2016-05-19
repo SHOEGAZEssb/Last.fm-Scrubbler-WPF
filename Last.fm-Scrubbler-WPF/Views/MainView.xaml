@@ -1,0 +1,47 @@
+﻿<Window x:Class="Last.fm_Scrubbler_WPF.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF"
+        mc:Ignorable="d"
+        Title="MainView" Height="350" Width="525">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <StatusBar Grid.Row="2">
+      <StatusBarItem>
+        <StackPanel Orientation="Horizontal">
+          <Label Content="Logged in as:"/>
+          <TextBlock Margin="0,5,0,0">
+            <Hyperlink>
+              <TextBlock Text="{Binding StatusBarUsername, Mode=OneWay}">
+                <i:Interaction.Triggers>
+                  <i:EventTrigger EventName="MouseDown">
+                    <cal:ActionMessage MethodName="HyperlinkClicked"/>
+                  </i:EventTrigger>
+                </i:Interaction.Triggers>
+              </TextBlock>
+            </Hyperlink>
+          </TextBlock>
+        </StackPanel>
+      </StatusBarItem>
+
+      <Separator />
+
+      <StatusBarItem>
+        <StackPanel Orientation="Horizontal">
+          <Label Content="Current Status:"/>
+          <Label Content="{Binding CurrentStatus}"/>
+        </StackPanel>
+      </StatusBarItem>
+    </StatusBar>
+
+  </Grid>
+</Window>
