@@ -2,14 +2,12 @@
 using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
+	/// <summary>
+	/// ViewModel for the <see cref="MainView"/>.
+	/// </summary>
 	class MainViewModel : PropertyChangedBase
 	{
 		#region Properties
@@ -37,6 +35,20 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		{
 			get { return Client.Auth.Authenticated ? Client.Auth.UserSession.Username : "Not logged in."; }
 		}
+
+		/// <summary>
+		/// Gets the current status displayed in the status bar.
+		/// </summary>
+		public string CurrentStatus
+		{
+			get { return _currentStatus; }
+			private set
+			{
+				_currentStatus = value;
+				NotifyOfPropertyChange(() => CurrentStatus);
+			}
+		}
+		private string _currentStatus;
 
 		#endregion StatusBar Properties
 
@@ -88,7 +100,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 				Client.Auth.UserSession.Username = Properties.Settings.Default.Username;
 				Client.Auth.UserSession.IsSubscriber = Properties.Settings.Default.IsSubscriber;
 				NotifyOfPropertyChange(() => StatusBarUsername);
+				CurrentStatus = "Waiting to scrobble.";
 			}
+			else
+				CurrentStatus = "Waiting for user login.";
 		}
 	}
 }

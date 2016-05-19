@@ -6,16 +6,22 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF"
+        xmlns:views="clr-namespace:Last.fm_Scrubbler_WPF.Views"
         mc:Ignorable="d"
         Title="MainView" Height="350" Width="525">
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="5"/>
       <RowDefinition Height="*"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
-    <StatusBar Grid.Row="2">
+    <TabControl Grid.Row="0">
+      <TabItem Header="Manual Scrobble">
+        <views:ManualScrobbleView/>
+      </TabItem>
+    </TabControl>
+
+    <StatusBar Grid.Row="1">
       <StatusBarItem>
         <StackPanel Orientation="Horizontal">
           <Label Content="Logged in as:"/>
