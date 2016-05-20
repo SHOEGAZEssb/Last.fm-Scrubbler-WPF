@@ -70,6 +70,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 					Settings.Default.Save();
 				}
 
+				win.DialogResult = true;
 				win.Close();
 			}
 			else

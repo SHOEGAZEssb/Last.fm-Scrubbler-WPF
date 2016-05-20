@@ -1,7 +1,9 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Objects;
+using IF.Lastfm.Core.Scrobblers;
 using Last.fm_Scrubbler_WPF.Views;
+using System;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
@@ -24,6 +26,19 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 			}
 		}
 		private static LastfmClient _client;
+
+		public static Scrobbler Scrobbler
+		{
+			get { return _scrobbler; }
+			private set
+			{
+				_scrobbler = value;
+				ClientAuthChanged?.Invoke(null, EventArgs.Empty);
+			}
+		}
+		private static Scrobbler _scrobbler;
+
+		public static EventHandler<EventArgs> ClientAuthChanged;
 
 		public ManualScrobbleViewModel ManualScrobbleViewModel
 		{
@@ -85,7 +100,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		{
 			Client = new LastfmClient(APIKEY, APISECRET);
 			ManualScrobbleViewModel = new ManualScrobbleViewModel();
+			ManualScrobbleViewModel.StatusUpdated += ManualScrobbleViewModel_StatusUpdated;
 			LoadLastSession();
+		}
+
+		private void ManualScrobbleViewModel_StatusUpdated(object sender, UpdateStatusEventArgs e)
+		{
+			CurrentStatus = e.NewStatus;
 		}
 
 		/// <summary>
@@ -95,7 +116,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		{
 			LoginView lv = new LoginView();
 			lv.DataContext = new LoginViewModel();
-			lv.ShowDialog();
+			if ((bool)lv.ShowDialog())
+				Scrobbler = new Scrobbler(Client.Auth);
+
 			NotifyOfPropertyChange(() => StatusBarUsername);
 		}
 
@@ -110,6 +133,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 				Client.Auth.UserSession.Token = Properties.Settings.Default.Token;
 				Client.Auth.UserSession.Username = Properties.Settings.Default.Username;
 				Client.Auth.UserSession.IsSubscriber = Properties.Settings.Default.IsSubscriber;
+				Scrobbler = new Scrobbler(Client.Auth);
 				NotifyOfPropertyChange(() => StatusBarUsername);
 				CurrentStatus = "Waiting to scrobble.";
 			}

@@ -45,7 +45,7 @@
     <CheckBox Grid.Row="6" Grid.Column="4" Content="Current" IsChecked="{Binding CurrentDateTime}"
                     VerticalAlignment="Center"/>
 
-    <Button Grid.Row="8" Grid.Column="0" Content="Scrobble">
+    <Button Grid.Row="8" Grid.Column="0" Content="Scrobble" IsEnabled="{Binding CanScrobble}">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="Scrobble"/>
