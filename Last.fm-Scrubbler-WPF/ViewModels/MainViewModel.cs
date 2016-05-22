@@ -51,6 +51,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		}
 		private ManualScrobbleViewModel _manualScrobbleViewModel;
 
+		public FriendScrobbleViewModel FriendScrobbleViewModel
+		{
+			get { return _friendScrobbleViewModel; }
+			private set
+			{
+				_friendScrobbleViewModel = value;
+				NotifyOfPropertyChange(() => FriendScrobbleViewModel);
+			}
+		}
+		private FriendScrobbleViewModel _friendScrobbleViewModel;
+
 		#region StatusBar Properties
 
 		/// <summary>
@@ -100,11 +111,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		{
 			Client = new LastfmClient(APIKEY, APISECRET);
 			ManualScrobbleViewModel = new ManualScrobbleViewModel();
-			ManualScrobbleViewModel.StatusUpdated += ManualScrobbleViewModel_StatusUpdated;
+			ManualScrobbleViewModel.StatusUpdated += StatusUpdated;
+			FriendScrobbleViewModel = new FriendScrobbleViewModel();
+			FriendScrobbleViewModel.StatusUpdated += StatusUpdated;
 			LoadLastSession();
 		}
 
-		private void ManualScrobbleViewModel_StatusUpdated(object sender, UpdateStatusEventArgs e)
+		private void StatusUpdated(object sender, UpdateStatusEventArgs e)
 		{
 			CurrentStatus = e.NewStatus;
 		}

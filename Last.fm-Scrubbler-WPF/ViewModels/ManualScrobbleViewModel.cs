@@ -4,7 +4,7 @@ using System;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
-	class ManualScrobbleViewModel : PropertyChangedBase, IScrobbleStrategy
+	class ManualScrobbleViewModel : PropertyChangedBase
 	{
 		#region Properties
 
@@ -112,7 +112,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
 			Scrobble s = new Scrobble(Artist, Album, Track, TimePlayed);
 			var response = await MainViewModel.Scrobbler.ScrobbleAsync(s);
-			if(response.Success)
+			if (response.Success)
 				StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Successfully scrobbled!"));
 			else
 				StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Error while scrobbling!"));

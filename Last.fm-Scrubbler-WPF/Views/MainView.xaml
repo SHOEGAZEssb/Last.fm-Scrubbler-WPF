@@ -19,6 +19,9 @@
       <TabItem Header="Manual Scrobble">
         <views:ManualScrobbleView DataContext="{Binding ManualScrobbleViewModel}"/>
       </TabItem>
+      <TabItem Header="Friend Scrobble">
+        <views:FriendScrobbleView DataContext="{Binding FriendScrobbleViewModel}"/>
+      </TabItem>
     </TabControl>
 
     <StatusBar Grid.Row="1">
