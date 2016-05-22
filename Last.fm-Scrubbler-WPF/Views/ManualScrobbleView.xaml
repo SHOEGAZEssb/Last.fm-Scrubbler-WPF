@@ -32,13 +32,13 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="Artist:"/>
-    <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Artist}"/>
+    <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Artist, UpdateSourceTrigger=PropertyChanged}"/>
 
     <Label Grid.Row="2" Grid.Column="0" Content="Track:"/>
-    <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Track}"/>
+    <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Track, UpdateSourceTrigger=PropertyChanged}"/>
 
     <Label Grid.Row="4" Grid.Column="0" Content="Album:"/>
-    <TextBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Album}"/>
+    <TextBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Album, UpdateSourceTrigger=PropertyChanged}"/>
 
     <Label Grid.Row="6" Grid.Column="0" Content="Time Played:"/>
     <xctk:DateTimePicker Grid.Row="6" Grid.Column="2" Value="{Binding TimePlayed}"/>

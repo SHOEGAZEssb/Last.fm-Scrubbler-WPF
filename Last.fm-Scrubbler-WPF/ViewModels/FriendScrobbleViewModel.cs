@@ -23,6 +23,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 			{
 				_username = value;
 				NotifyOfPropertyChange(() => Username);
+				NotifyOfPropertyChange(() => CanFetch);
 			}
 		}
 		private string _username;
@@ -49,15 +50,34 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		}
 		private ObservableCollection<FetchedScrobbleViewModel> _fetchedScrobbles;
 
+		public bool EnableControls
+		{
+			get { return _enableControls; }
+			private set
+			{
+				_enableControls = value;
+				NotifyOfPropertyChange(() => EnableControls);
+				NotifyOfPropertyChange(() => CanScrobble);
+				NotifyOfPropertyChange(() => CanFetch);
+			}
+		}
+		private bool _enableControls;
+
 		public bool CanScrobble
 		{
-			get { return MainViewModel.Client.Auth.Authenticated && FetchedScrobbles.Any(i => i.ToScrobble); }
+			get { return MainViewModel.Client.Auth.Authenticated && FetchedScrobbles.Any(i => i.ToScrobble) && EnableControls; }
+		}
+
+		public bool CanFetch
+		{
+			get { return Username.Length > 0 && EnableControls; }
 		}
 
 		#endregion Properties
 
 		public FriendScrobbleViewModel()
 		{
+			EnableControls = true;
 			Username = "";
 			FetchedScrobbles = new ObservableCollection<FetchedScrobbleViewModel>();
 			Amount = 20;
@@ -68,6 +88,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		/// </summary>
 		public async void FetchScrobbles()
 		{
+			EnableControls = false;
 			StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Trying to fetch scrobbles of user " + Username));
 			FetchedScrobbles.Clear();
 			var response = await MainViewModel.Client.User.GetRecentScrobbles(Username, null, 1, Amount);
@@ -83,6 +104,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 			}
 			else
 				StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Failed to fetch scrobbles of user " + Username));
+
+			EnableControls = true;
 		}
 
 		private void ToScrobbleChanged(object sender, EventArgs e)
@@ -95,6 +118,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		/// </summary>
 		public async void Scrobble()
 		{
+			EnableControls = false;
 			StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Trying to scrobble selected tracks"));
 			List<Scrobble> scrobbles = new List<Scrobble>();
 			foreach(var vm in FetchedScrobbles.Where(i => i.ToScrobble))
@@ -107,6 +131,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 				StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Successfully scrobbled!"));
 			else
 				StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Error while scrobbling!"));
+
+			EnableControls = true;
 		}
 	}
 }
