@@ -1,11 +1,5 @@
 ﻿using Caliburn.Micro;
-using IF.Lastfm.Core.Api;
 using Last.fm_Scrubbler_WPF.Properties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 

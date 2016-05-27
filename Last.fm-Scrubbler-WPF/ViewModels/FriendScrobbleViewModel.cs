@@ -4,9 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
@@ -14,8 +11,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 	{
 		#region Properties
 
+		/// <summary>
+		/// Event that triggers when the status should be changed.
+		/// </summary>
 		public event EventHandler<UpdateStatusEventArgs> StatusUpdated;
 
+		/// <summary>
+		/// The username of the user to fetch scrobbles from.
+		/// </summary>
 		public string Username
 		{
 			get { return _username; }
@@ -28,6 +31,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		}
 		private string _username;
 
+		/// <summary>
+		/// The amount of scrobbles to be fetched.
+		/// </summary>
 		public int Amount
 		{
 			get { return _amount; }
@@ -39,6 +45,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		}
 		private int _amount;
 
+		/// <summary>
+		/// List of fetched scrobbles.
+		/// </summary>
 		public ObservableCollection<FetchedScrobbleViewModel> FetchedScrobbles
 		{
 			get { return _fetchedScrobbles; }
@@ -50,6 +59,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		}
 		private ObservableCollection<FetchedScrobbleViewModel> _fetchedScrobbles;
 
+		/// <summary>
+		/// Gets/sets if certain controls on the UI should be enabled.
+		/// </summary>
 		public bool EnableControls
 		{
 			get { return _enableControls; }
@@ -63,11 +75,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		}
 		private bool _enableControls;
 
+		/// <summary>
+		/// Gets if the scrobble button is enabled.
+		/// </summary>
 		public bool CanScrobble
 		{
 			get { return MainViewModel.Client.Auth.Authenticated && FetchedScrobbles.Any(i => i.ToScrobble) && EnableControls; }
 		}
 
+		/// <summary>
+		/// Gets if the fetch button is enabled.
+		/// </summary>
 		public bool CanFetch
 		{
 			get { return Username.Length > 0 && EnableControls; }
@@ -75,6 +93,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
 		#endregion Properties
 
+		/// <summary>
+		/// Constructor.
+		/// </summary>
 		public FriendScrobbleViewModel()
 		{
 			EnableControls = true;

@@ -4,10 +4,17 @@ using System;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
+	/// <summary>
+	/// ViewModel for a single fetched scrobble.
+	/// Used in the <see cref="FriendScrobbleViewModel"/>.
+	/// </summary>
 	class FetchedScrobbleViewModel : PropertyChangedBase
 	{
 		#region Properties
 
+		/// <summary>
+		/// Event that triggers when <see cref="ToScrobble"/> changes.
+		/// </summary>
 		public event EventHandler ToScrobbleChanged;
 
 		/// <summary>

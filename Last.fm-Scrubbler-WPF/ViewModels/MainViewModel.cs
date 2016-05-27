@@ -27,6 +27,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		}
 		private static LastfmClient _client;
 
+		/// <summary>
+		/// Scrobbler used to scrobble tracks.
+		/// </summary>
 		public static Scrobbler Scrobbler
 		{
 			get { return _scrobbler; }
@@ -38,8 +41,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		}
 		private static Scrobbler _scrobbler;
 
+		/// <summary>
+		/// Event that triggers when the client authentication changes.
+		/// </summary>
 		public static EventHandler<EventArgs> ClientAuthChanged;
 
+		/// <summary>
+		/// The ViewModel for the <see cref="ManualScrobbleView"/>.
+		/// </summary>
 		public ManualScrobbleViewModel ManualScrobbleViewModel
 		{
 			get { return _manualScrobbleViewModel; }
@@ -51,6 +60,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		}
 		private ManualScrobbleViewModel _manualScrobbleViewModel;
 
+		/// <summary>
+		/// The ViewModel for the <see cref="FriendScrobbleView"/>.
+		/// </summary>
 		public FriendScrobbleViewModel FriendScrobbleViewModel
 		{
 			get { return _friendScrobbleViewModel; }
@@ -117,6 +129,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 			LoadLastSession();
 		}
 
+		/// <summary>
+		/// Updates the status.
+		/// </summary>
+		/// <param name="sender">Ignored.</param>
+		/// <param name="e">Contains the new status.</param>
 		private void StatusUpdated(object sender, UpdateStatusEventArgs e)
 		{
 			CurrentStatus = e.NewStatus;
