@@ -9,6 +9,10 @@
              xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
+  <UserControl.Resources>
+    <BitmapImage x:Key="noalbumimage_small" UriSource="/Resources/noalbumimage_small.png"/>
+  </UserControl.Resources>
+
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
@@ -56,7 +60,18 @@
           <GridViewColumn Header="Cover" Width="34">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Image Grid.Column="2" VerticalAlignment="Center" Source="{Binding Scrobble.Images.Small}"/>
+                <Image Grid.Column="2" VerticalAlignment="Center">
+                  <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                      <Setter Property="Source" Value="{Binding Scrobble.Images.Small}"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding Scrobble.Images.Small}" Value="{x:Null}">
+                          <Setter Property="Source" Value="{StaticResource noalbumimage_small}"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Image.Style>
+                </Image>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
