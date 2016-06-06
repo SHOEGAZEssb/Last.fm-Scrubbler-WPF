@@ -5,10 +5,10 @@ using System.Windows.Controls;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
-	/// <summary>
-	/// ViewModel for the <see cref="Views.LoginView"/>
-	/// </summary>
-	class LoginViewModel : PropertyChangedBase
+  /// <summary>
+  /// ViewModel for the <see cref="Views.LoginView"/>
+  /// </summary>
+  class LoginViewModel : PropertyChangedBase
 	{
 		#region Properties
 

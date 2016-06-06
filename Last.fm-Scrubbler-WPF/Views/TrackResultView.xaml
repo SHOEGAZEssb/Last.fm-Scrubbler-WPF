@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="Last.fm_Scrubbler_WPF.Views.TrackResultView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+  <UserControl.Resources>
+    <BitmapImage x:Key="noalbumimage_small" UriSource="/Resources/noalbumimage_small.png"/>
+  </UserControl.Resources>
+
+  <Grid>
+    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9" VerticalAlignment="Stretch" ItemsSource="{Binding FetchedTracks}">
+      <ListView.View>
+        <GridView>
+          <GridViewColumn Header="Scrobble?">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <CheckBox IsChecked="{Binding ToScrobble}" HorizontalAlignment="Center"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Cover" Width="34">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Image Grid.Column="2" VerticalAlignment="Center">
+                  <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                      <Setter Property="Source" Value="{Binding FetchedTrack.Images.Small}"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding FetchedTrack.Images.Small}" Value="{x:Null}">
+                          <Setter Property="Source" Value="{StaticResource noalbumimage_small}"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Image.Style>
+                </Image>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Artist">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding FetchedTrack.ArtistName}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Track Title">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding FetchedTrack.Name}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+        </GridView>
+      </ListView.View>
+    </ListView>
+  </Grid>
+</UserControl>

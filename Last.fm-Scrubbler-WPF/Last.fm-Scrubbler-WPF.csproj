@@ -53,6 +53,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\System.Windows.Interactivity.dll</HintPath>
@@ -78,12 +79,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppBootstrapper.cs" />
+    <Compile Include="ViewModels\DatabaseScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\FetchedArtistViewModel.cs" />
+    <Compile Include="ViewModels\FetchedReleaseViewModel.cs" />
     <Compile Include="ViewModels\FetchedScrobbleViewModel.cs" />
     <Compile Include="UpdateStatusEventArgs.cs" />
+    <Compile Include="ViewModels\FetchedTrackViewModel.cs" />
     <Compile Include="ViewModels\FriendScrobbleViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ManualScrobbleViewModel.cs" />
+    <Compile Include="Views\ArtistResultView.xaml.cs">
+      <DependentUpon>ArtistResultView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DatabaseScrobbleView.xaml.cs">
+      <DependentUpon>DatabaseScrobbleView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FriendScrobbleView.xaml.cs">
       <DependentUpon>FriendScrobbleView.xaml</DependentUpon>
     </Compile>
@@ -93,6 +105,20 @@
     <Compile Include="Views\ManualScrobbleView.xaml.cs">
       <DependentUpon>ManualScrobbleView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ReleaseResultView.xaml.cs">
+      <DependentUpon>ReleaseResultView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TrackResultView.xaml.cs">
+      <DependentUpon>TrackResultView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\ArtistResultView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DatabaseScrobbleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\FriendScrobbleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -114,6 +140,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ManualScrobbleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReleaseResultView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TrackResultView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -150,6 +184,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="scrubbler_64.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\noartistimage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\noalbumimage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\noalbumimage_small.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

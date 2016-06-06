@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
-	class FriendScrobbleViewModel : PropertyChangedBase
+  class FriendScrobbleViewModel : PropertyChangedBase
 	{
 		#region Properties
 

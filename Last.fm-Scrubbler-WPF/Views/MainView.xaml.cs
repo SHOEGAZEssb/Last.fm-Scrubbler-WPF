@@ -1,5 +1,4 @@
-﻿using Last.fm_Scrubbler_WPF.ViewModels;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Last.fm_Scrubbler_WPF.Views
 {
@@ -11,7 +10,6 @@ namespace Last.fm_Scrubbler_WPF.Views
 		public MainView()
 		{
 			InitializeComponent();
-			DataContext = new MainViewModel();
 		}
 	}
 }

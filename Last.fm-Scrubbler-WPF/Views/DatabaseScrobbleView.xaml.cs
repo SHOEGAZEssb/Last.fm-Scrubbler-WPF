@@ -3,11 +3,11 @@
 namespace Last.fm_Scrubbler_WPF.Views
 {
   /// <summary>
-  /// Interaction logic for FriendScrobbleView.xaml
+  /// Interaction logic for DatabaseScrobbleView.xaml
   /// </summary>
-  public partial class FriendScrobbleView : UserControl
+  public partial class DatabaseScrobbleView : UserControl
 	{
-		public FriendScrobbleView()
+		public DatabaseScrobbleView()
 		{
 			InitializeComponent();
 		}
