@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
              xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -11,7 +13,21 @@
   </UserControl.Resources>
 
   <Grid>
-    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9" VerticalAlignment="Stretch" ItemsSource="{Binding FetchedTracks}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Button Grid.Row="0" Content="Back To Releases" HorizontalAlignment="Left">
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Click">
+          <cal:ActionMessage MethodName="BackToReleases"/>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
+    </Button>
+
+    <ListView Grid.Row="2" VerticalAlignment="Stretch" ItemsSource="{Binding FetchedTracks}">
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Scrobble?">

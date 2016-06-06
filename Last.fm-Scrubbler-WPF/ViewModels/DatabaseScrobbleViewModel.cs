@@ -195,6 +195,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		}
 		private bool _enableControls;
 
+		public bool FetchedReleaseThroughArtist
+		{
+			get { return _fetchedReleaseThroughArtist; }
+			private set
+			{
+				_fetchedReleaseThroughArtist = value;
+				NotifyOfPropertyChange(() => FetchedReleaseThroughArtist);
+			}
+		}
+		private bool _fetchedReleaseThroughArtist;
+
 		/// <summary>
 		/// Gets if the scrobble button is enabled on the UI.
 		/// </summary>
@@ -302,6 +313,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
 					if (FetchedReleases.Count != 0)
 					{
+						FetchedReleaseThroughArtist = false;
 						CurrentView = _releaseResultView;
 						StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Found " + FetchedArtists.Count + " releases"));
 					}
@@ -343,6 +355,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
 					if (FetchedReleases.Count != 0)
 					{
+						FetchedReleaseThroughArtist = true;
 						CurrentView = _releaseResultView;
 						StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Successfully fetched releases from '" + artist.Name + "'"));
 					}
@@ -450,6 +463,22 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 				StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Error while scrobbling!"));
 
 			EnableControls = true;
+		}
+
+		/// <summary>
+		/// Switches the <see cref="CurrentView"/> to the <see cref="_artistResultView"/>.
+		/// </summary>
+		public void BackToArtist()
+		{
+			CurrentView = _artistResultView;
+		}
+
+		/// <summary>
+		/// Switches the <see cref="CurrentView"/> to the <see cref="_releaseResultView"/>.
+		/// </summary>
+		public void BackToReleases()
+		{
+			CurrentView = _releaseResultView;
 		}
 	}
 }

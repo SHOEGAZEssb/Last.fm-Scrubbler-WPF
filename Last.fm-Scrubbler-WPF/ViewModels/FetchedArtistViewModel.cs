@@ -7,8 +7,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 	/// <summary>
 	/// ViewModel for the <see cref="Views.ArtistResultView"/>.
 	/// </summary>
-  class FetchedArtistViewModel : PropertyChangedBase
-  {
+	class FetchedArtistViewModel : PropertyChangedBase
+	{
 		#region Properties
 
 		/// <summary>
@@ -19,34 +19,34 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		/// <summary>
 		/// The fetched artist.
 		/// </summary>
-    public LastArtist FetchedArtist
-    {
-      get { return _fetchedArtist; }
-      private set
-      {
-        _fetchedArtist = value;
-        NotifyOfPropertyChange(() => FetchedArtist);
-      }
-    }
-    private LastArtist _fetchedArtist;
+		public LastArtist FetchedArtist
+		{
+			get { return _fetchedArtist; }
+			private set
+			{
+				_fetchedArtist = value;
+				NotifyOfPropertyChange(() => FetchedArtist);
+			}
+		}
+		private LastArtist _fetchedArtist;
 
-    #endregion
+		#endregion
 
 		/// <summary>
 		/// Constructor.
 		/// </summary>
 		/// <param name="fetchedArtist">The fetched artist.</param>
-    public FetchedArtistViewModel(LastArtist fetchedArtist)
-    {
-      FetchedArtist = fetchedArtist;
-    }
+		public FetchedArtistViewModel(LastArtist fetchedArtist)
+		{
+			FetchedArtist = fetchedArtist;
+		}
 
 		/// <summary>
 		/// Triggers the <see cref="ArtistClicked"/> event.
 		/// </summary>
-    public void Clicked()
-    {
-      ArtistClicked?.Invoke(FetchedArtist, EventArgs.Empty);
-    }
-  }
+		public void Clicked()
+		{
+			ArtistClicked?.Invoke(FetchedArtist, EventArgs.Empty);
+		}
+	}
 }

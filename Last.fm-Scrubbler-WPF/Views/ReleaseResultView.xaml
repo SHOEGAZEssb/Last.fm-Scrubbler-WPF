@@ -10,10 +10,26 @@
              d:DesignHeight="300" d:DesignWidth="300">
   <UserControl.Resources>
     <BitmapImage x:Key="noalbumimage" UriSource="/Resources/noalbumimage.png"/>
+    <BooleanToVisibilityConverter x:Key="boolToVis"/>
   </UserControl.Resources>
 
   <Grid>
-    <ScrollViewer>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Button Grid.Row="0" Content="Back To Artist" HorizontalAlignment="Left"
+            Visibility="{Binding FetchedReleaseThroughArtist, Converter={StaticResource boolToVis}}">
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Click">
+          <cal:ActionMessage MethodName="BackToArtist"/>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
+    </Button>
+    
+    <ScrollViewer Grid.Row="2">
       <ItemsControl  ItemsSource="{Binding FetchedReleases}">
         <ItemsControl.ItemContainerStyle>
           <Style>
