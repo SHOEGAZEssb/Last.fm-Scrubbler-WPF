@@ -211,7 +211,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		/// </summary>
 		public bool CanScrobble
 		{
-			get { return FetchedTracks.Any(i => i.ToScrobble); }
+			get { return MainViewModel.Client.Auth.Authenticated && FetchedTracks.Any(i => i.ToScrobble); }
 		}
 
 		/// <summary>
@@ -259,6 +259,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 			_trackResultView = new TrackResultView() { DataContext = this };
 			CurrentDateTime = true;
 			EnableControls = true;
+			MainViewModel.ClientAuthChanged += MainViewModel_AuthChanged;
+		}
+
+		/// <summary>
+		/// Triggers when the client auth changed.
+		/// </summary>
+		/// <param name="sender">Ignored.</param>
+		/// <param name="e">Ignored.</param>
+		private void MainViewModel_AuthChanged(object sender, EventArgs e)
+		{
+			NotifyOfPropertyChange(() => CanScrobble);
 		}
 
 		/// <summary>
