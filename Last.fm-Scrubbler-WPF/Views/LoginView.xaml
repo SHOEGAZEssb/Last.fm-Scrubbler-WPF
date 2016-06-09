@@ -37,7 +37,7 @@
     <PasswordBox Grid.Row="7" Grid.Column="1" x:Name="passwordBox"/>
 
     <CheckBox Grid.Row="9" Grid.Column="1" HorizontalAlignment="Center" Content="Save login information"
-              IsChecked="{Binding SaveLoginInformation}" IsEnabled="{Binding EnableControls}" x:Name="rememberCheckBox"/>
+              IsEnabled="{Binding EnableControls}" x:Name="rememberCheckBox"/>
 
     <Button Grid.Row="11" Grid.Column="1" HorizontalAlignment="Center" Content="Login" IsEnabled="{Binding EnableControls}">
       <i:Interaction.Triggers>
