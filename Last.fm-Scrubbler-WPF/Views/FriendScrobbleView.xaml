@@ -17,6 +17,8 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
       <RowDefinition Height="*"/>
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
@@ -47,7 +49,30 @@
       </i:Interaction.Triggers>
     </Button>
 
-    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9" VerticalAlignment="Stretch" ItemsSource="{Binding FetchedScrobbles}">
+    <Grid Grid.Row="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+
+      <Button Grid.Column="0" Content="Select ALL">
+        <i:Interaction.Triggers>
+          <i:EventTrigger EventName="Click">
+            <cal:ActionMessage MethodName="SelectAll"/>
+          </i:EventTrigger>
+        </i:Interaction.Triggers>
+      </Button>
+      <Button Grid.Column="2" Content="Select NONE">
+        <i:Interaction.Triggers>
+          <i:EventTrigger EventName="Click">
+            <cal:ActionMessage MethodName="SelectNone"/>
+          </i:EventTrigger>
+        </i:Interaction.Triggers>
+      </Button>
+    </Grid>
+
+    <ListView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="9" VerticalAlignment="Stretch" ItemsSource="{Binding FetchedScrobbles}">
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Scrobble?">
@@ -99,7 +124,8 @@
         </GridView>
       </ListView.View>
     </ListView>
-    <Button Grid.Row="4" Grid.Column="0" Content="Scrobble" IsEnabled="{Binding CanScrobble}">
+
+    <Button Grid.Row="6" Grid.Column="0" Content="Scrobble" IsEnabled="{Binding CanScrobble}">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="Scrobble"/>

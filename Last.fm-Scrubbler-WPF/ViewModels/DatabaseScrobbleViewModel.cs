@@ -191,10 +191,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 			{
 				_enableControls = value;
 				NotifyOfPropertyChange(() => EnableControls);
+				NotifyOfPropertyChange(() => CanScrobble);
+				NotifyOfPropertyChange(() => CanSelectAllTracks);
+				NotifyOfPropertyChange(() => CanSelectNoneTracks);
 			}
 		}
 		private bool _enableControls;
 
+		/// <summary>
+		/// Gets if the currently fetched releases has been fetched
+		/// through the click on an artist.
+		/// </summary>
 		public bool FetchedReleaseThroughArtist
 		{
 			get { return _fetchedReleaseThroughArtist; }
@@ -211,7 +218,23 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		/// </summary>
 		public bool CanScrobble
 		{
-			get { return MainViewModel.Client.Auth.Authenticated && FetchedTracks.Any(i => i.ToScrobble); }
+			get { return MainViewModel.Client.Auth.Authenticated && FetchedTracks.Any(i => i.ToScrobble) && EnableControls; }
+		}
+
+		/// <summary>
+		/// Gets if the "Select All" button is enabled.
+		/// </summary>
+		public bool CanSelectAllTracks
+		{
+			get { return !FetchedTracks.All(i => i.ToScrobble) && EnableControls; }
+		}
+
+		/// <summary>
+		/// Gets if the "Select None" button is enabled.
+		/// </summary>
+		public bool CanSelectNoneTracks
+		{
+			get { return FetchedTracks.Any(i => i.ToScrobble) && EnableControls; }
 		}
 
 		/// <summary>
@@ -435,6 +458,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		private void ToScrobbleChanged(object sender, EventArgs e)
 		{
 			NotifyOfPropertyChange(() => CanScrobble);
+			NotifyOfPropertyChange(() => CanSelectAllTracks);
+			NotifyOfPropertyChange(() => CanSelectNoneTracks);
 		}
 
 		/// <summary>
@@ -490,6 +515,28 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		public void BackToReleases()
 		{
 			CurrentView = _releaseResultView;
+		}
+
+		/// <summary>
+		/// Marks all tracks as "ToScrobble".
+		/// </summary>
+		public void SelectAllTracks()
+		{
+			foreach(var vm in FetchedTracks)
+			{
+				vm.ToScrobble = true;
+			}
+		}
+
+		/// <summary>
+		/// Marks all tracks as not "ToScrobble";
+		/// </summary>
+		public void SelectNoneTracks()
+		{
+			foreach (var vm in FetchedTracks)
+			{
+				vm.ToScrobble = false;
+			}
 		}
 	}
 }
