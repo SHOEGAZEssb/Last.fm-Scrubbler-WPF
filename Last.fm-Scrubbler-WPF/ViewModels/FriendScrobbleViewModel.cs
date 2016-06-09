@@ -136,9 +136,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 				StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Successfully fetched scrobbles of user " + Username));
 				foreach (var s in response)
 				{
-					FetchedScrobbleViewModel vm = new FetchedScrobbleViewModel(s);
-					vm.ToScrobbleChanged += ToScrobbleChanged;
-					FetchedScrobbles.Add(vm);
+					if (!s.IsNowPlaying.HasValue || !s.IsNowPlaying.Value)
+					{
+						FetchedScrobbleViewModel vm = new FetchedScrobbleViewModel(s);
+						vm.ToScrobbleChanged += ToScrobbleChanged;
+						FetchedScrobbles.Add(vm);
+					}
 				}
 			}
 			else
