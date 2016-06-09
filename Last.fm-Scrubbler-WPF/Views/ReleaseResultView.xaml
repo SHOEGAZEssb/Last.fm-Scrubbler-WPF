@@ -28,7 +28,7 @@
         </i:EventTrigger>
       </i:Interaction.Triggers>
     </Button>
-    
+
     <ScrollViewer Grid.Row="2">
       <ItemsControl  ItemsSource="{Binding FetchedReleases}">
         <ItemsControl.ItemContainerStyle>
@@ -68,7 +68,13 @@
                     </i:EventTrigger>
                   </i:Interaction.Triggers>
                 </Image>
-                <Label Grid.Row="2" Content="{Binding FetchedRelease.Name}" HorizontalAlignment="Center"/>
+                <Label Grid.Row="2" Content="{Binding FetchedRelease.Name}" HorizontalAlignment="Center">
+                  <Label.ToolTip>
+                    <ToolTip>
+                      <TextBlock Text="{Binding FetchedRelease.Name}"/>
+                    </ToolTip>
+                  </Label.ToolTip>
+                </Label>
               </Grid>
             </Border>
           </DataTemplate>

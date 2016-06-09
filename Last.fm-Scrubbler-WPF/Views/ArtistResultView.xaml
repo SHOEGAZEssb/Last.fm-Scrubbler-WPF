@@ -52,7 +52,13 @@
                     </i:EventTrigger>
                   </i:Interaction.Triggers>
                 </Image>
-                <Label Grid.Row="2" Content="{Binding FetchedArtist.Name}" HorizontalAlignment="Center"/>
+                <Label Grid.Row="2" Content="{Binding FetchedArtist.Name}" HorizontalAlignment="Center">
+                  <Label.ToolTip>
+                    <ToolTip>
+                      <TextBlock Text="{Binding FetchedArtist.Name}"/>
+                    </ToolTip>
+                  </Label.ToolTip>
+                </Label>
               </Grid>
             </Border>
           </DataTemplate>
