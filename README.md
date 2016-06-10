@@ -21,4 +21,10 @@ Search Last.fm for artists and albums and scrobble one or more tracks from it.
 
 ![ManualScrobble Tracklist](https://ibin.co/2jj6BpRDoGFl.png)
 
+### CSV Scrobbling
+Allows you to load a .csv file and scrobble the info contained in it.
+Currently only supports the following structure:
+"Artist, Album, Track, Timestamp"
+Needs to be excactly in this structure to work.
 
+![CSV Scrobbling](https://ibin.co/2kAkY5hpYtEi.png)
