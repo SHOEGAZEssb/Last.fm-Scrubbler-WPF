@@ -47,13 +47,14 @@
     <Reference Include="IF.Lastfm.Core">
       <HintPath>Libs\IF.Lastfm.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libs\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\System.Windows.Interactivity.dll</HintPath>
@@ -80,6 +81,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppBootstrapper.cs" />
+    <Compile Include="Models\CSVScrobble.cs" />
+    <Compile Include="ViewModels\CSVScrobbleViewModel.cs" />
     <Compile Include="ViewModels\DatabaseScrobbleViewModel.cs" />
     <Compile Include="ViewModels\FetchedArtistViewModel.cs" />
     <Compile Include="ViewModels\FetchedReleaseViewModel.cs" />
@@ -90,8 +93,12 @@
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ManualScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\ParsedCSVScrobbleViewModel.cs" />
     <Compile Include="Views\ArtistResultView.xaml.cs">
       <DependentUpon>ArtistResultView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CSVScrobbleView.xaml.cs">
+      <DependentUpon>CSVScrobbleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DatabaseScrobbleView.xaml.cs">
       <DependentUpon>DatabaseScrobbleView.xaml</DependentUpon>
@@ -112,6 +119,10 @@
       <DependentUpon>TrackResultView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ArtistResultView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CSVScrobbleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -170,6 +181,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -177,11 +189,11 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="scrubbler_64.ico" />
   </ItemGroup>

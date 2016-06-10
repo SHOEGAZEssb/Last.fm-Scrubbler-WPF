@@ -85,6 +85,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		}
 		private DatabaseScrobbleViewModel _databaseScrobbleViewModel;
 
+		public CSVScrobbleViewModel CSVScrobbleViewModel
+		{
+			get { return _csvScrobbleViewModel; }
+			private set
+			{
+				_csvScrobbleViewModel = value;
+				NotifyOfPropertyChange(() => CSVScrobbleViewModel);
+			}
+		}
+		private CSVScrobbleViewModel _csvScrobbleViewModel;
+
 		#region StatusBar Properties
 
 		/// <summary>
@@ -139,6 +150,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 			FriendScrobbleViewModel.StatusUpdated += StatusUpdated;
 			DatabaseScrobbleViewModel = new DatabaseScrobbleViewModel();
 			DatabaseScrobbleViewModel.StatusUpdated += StatusUpdated;
+			CSVScrobbleViewModel = new CSVScrobbleViewModel();
+			CSVScrobbleViewModel.StatusUpdated += StatusUpdated;
 			LoadLastSession();
 		}
 

@@ -1,0 +1,56 @@
+﻿using Caliburn.Micro;
+using Last.fm_Scrubbler_WPF.Models;
+using System;
+
+namespace Last.fm_Scrubbler_WPF.ViewModels
+{
+	class ParsedCSVScrobbleViewModel : PropertyChangedBase
+	{
+		#region Properties
+
+		/// <summary>
+		/// Event that triggers when <see cref="ToScrobble"/> changed.
+		/// </summary>
+		public event EventHandler ToScrobbleChanged;
+
+		/// <summary>
+		/// The scrobble parsed from the csv file.
+		/// </summary>
+		public CSVScrobble ParsedScrobble
+		{
+			get { return _parsedScrobble; }
+			private set
+			{
+				_parsedScrobble = value;
+				NotifyOfPropertyChange(() => ParsedScrobble);
+			}
+		}
+		private CSVScrobble _parsedScrobble;
+
+		/// <summary>
+		/// Indicates if this scrobble should be scrobbled.
+		/// </summary>
+		public bool ToScrobble
+		{
+			get { return _toScrobble; }
+			set
+			{
+				_toScrobble = value;
+				NotifyOfPropertyChange(() => ToScrobble);
+				ToScrobbleChanged?.Invoke(this, EventArgs.Empty);
+			}
+		}
+		private bool _toScrobble;
+
+		#endregion Properties
+
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="parsedScrobble">The scrobble parsed from the csv file.</param>
+		public ParsedCSVScrobbleViewModel(CSVScrobble parsedScrobble)
+		{
+			ParsedScrobble = parsedScrobble;
+		}
+	}
+}
