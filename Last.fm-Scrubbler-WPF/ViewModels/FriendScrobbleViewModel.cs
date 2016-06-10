@@ -119,7 +119,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 			EnableControls = true;
 			Username = "";
 			FetchedScrobbles = new ObservableCollection<FetchedScrobbleViewModel>();
+			MainViewModel.ClientAuthChanged += MainViewModel_ClientAuthChanged;
 			Amount = 20;
+		}
+
+		private void MainViewModel_ClientAuthChanged(object sender, EventArgs e)
+		{
+			NotifyOfPropertyChange(() => CanScrobble);
 		}
 
 		/// <summary>
