@@ -132,7 +132,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 						if (scrobble[3] == "")
 							continue;
 
-						CSVScrobble parsedScrobble = new CSVScrobble(scrobble[0], scrobble[1], scrobble[2], DateTime.Parse(scrobble[3]).ToLocalTime());
+						CSVScrobble parsedScrobble = new CSVScrobble(scrobble[0], scrobble[1], scrobble[2], DateTime.Parse(scrobble[3]).ToLocalTime().AddSeconds(1));
 						ParsedCSVScrobbleViewModel vm = new ParsedCSVScrobbleViewModel(parsedScrobble);
 						vm.ToScrobbleChanged += ToScrobbleChanged;
 						Scrobbles.Add(vm);
