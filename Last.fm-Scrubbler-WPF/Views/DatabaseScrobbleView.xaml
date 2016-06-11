@@ -89,7 +89,7 @@
       </Button>
 
       <Label Grid.Column="2" Content="Finishing Time:"/>
-      <xctk:DateTimePicker Grid.Column="4" Value="{Binding FinishingTime}"/>
+      <xctk:DateTimePicker Grid.Column="4" Value="{Binding FinishingTime}" Minimum="{Binding Source={x:Static viewModels:MainViewModel.MinimumDateTime}}"/>
       <CheckBox Grid.Row="6" Grid.Column="6" Content="Current" IsChecked="{Binding CurrentDateTime}"
                     VerticalAlignment="Center"/>
 

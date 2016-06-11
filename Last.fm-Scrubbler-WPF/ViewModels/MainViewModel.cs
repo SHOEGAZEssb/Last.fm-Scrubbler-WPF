@@ -47,6 +47,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		public static EventHandler<EventArgs> ClientAuthChanged;
 
 		/// <summary>
+		/// The minimum DateTime for all DateTimePickers.
+		/// </summary>
+		public static DateTime MinimumDateTime = DateTime.Now.Subtract(TimeSpan.FromDays(14));
+
+		/// <summary>
 		/// The ViewModel for the <see cref="ManualScrobbleView"/>.
 		/// </summary>
 		public ManualScrobbleViewModel ManualScrobbleViewModel

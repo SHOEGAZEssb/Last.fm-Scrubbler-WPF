@@ -27,6 +27,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 			{
 				_scrobble = value;
 				NotifyOfPropertyChange(() => Scrobble);
+				NotifyOfPropertyChange(() => IsEnabled);
 			}
 		}
 		private LastTrack _scrobble;
@@ -45,6 +46,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 			}
 		}
 		private bool _toScrobble;
+
+		/// <summary>
+		/// Gets if the "Scrobble?" CheckBox is enabled.
+		/// </summary>
+		public bool IsEnabled
+		{
+			get { return Scrobble.TimePlayed.Value.LocalDateTime > DateTime.Now.Subtract(TimeSpan.FromDays(14)); }
+		}
 
 		#endregion Properties
 

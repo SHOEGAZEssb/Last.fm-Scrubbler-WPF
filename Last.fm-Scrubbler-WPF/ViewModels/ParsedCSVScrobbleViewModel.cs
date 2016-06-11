@@ -23,6 +23,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 			{
 				_parsedScrobble = value;
 				NotifyOfPropertyChange(() => ParsedScrobble);
+				NotifyOfPropertyChange(() => IsEnabled);
 			}
 		}
 		private CSVScrobble _parsedScrobble;
@@ -41,6 +42,16 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 			}
 		}
 		private bool _toScrobble;
+
+		/// <summary>
+		/// Gets if the "Scrobble?" CheckBox is enabled.
+		/// </summary>
+		public bool IsEnabled
+		{
+			get { return ParsedScrobble.DateTime > DateTime.Now.Subtract(TimeSpan.FromDays(14)); }
+		}
+
+
 
 		#endregion Properties
 
