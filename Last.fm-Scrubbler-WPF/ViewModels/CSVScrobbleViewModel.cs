@@ -4,6 +4,7 @@ using Last.fm_Scrubbler_WPF.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +18,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 	class CSVScrobbleViewModel : PropertyChangedBase
 	{
 		#region Properties
+
+		public static string[] Formats = new string[] { "M/dd/yyyy h:mm" };
 
 		/// <summary>
 		/// Event that triggers when the status should be changed.
@@ -132,7 +135,26 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 						if (scrobble[3] == "")
 							continue;
 
-						CSVScrobble parsedScrobble = new CSVScrobble(scrobble[0], scrobble[1], scrobble[2], DateTime.Parse(scrobble[3]).ToLocalTime().AddSeconds(1));
+						string dateString = scrobble[3];
+						DateTime date;
+						if(DateTime.TryParse(dateString, out date))
+						{
+
+						}
+						else
+						{
+							// try different formats until succeeded
+							foreach (string format in Formats)
+							{
+								if (DateTime.TryParseExact(dateString, format, CultureInfo.CurrentCulture, DateTimeStyles.None, out date))
+									break;
+							}
+
+							if (date == null)
+								throw new Exception("Timestamp could not be parsed!");
+						}
+
+						CSVScrobble parsedScrobble = new CSVScrobble(scrobble[0], scrobble[1], scrobble[2], date.AddSeconds(1));
 						ParsedCSVScrobbleViewModel vm = new ParsedCSVScrobbleViewModel(parsedScrobble);
 						vm.ToScrobbleChanged += ToScrobbleChanged;
 						Scrobbles.Add(vm);
