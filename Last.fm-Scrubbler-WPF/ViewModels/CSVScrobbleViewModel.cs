@@ -1,11 +1,11 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Models;
+using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -124,43 +124,68 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
 					CSVFilePath = ofd.FileName;
 					Scrobbles.Clear();
-					string[] fileContents = File.ReadAllLines(CSVFilePath);
 
-					foreach (string row in fileContents)
+					TextFieldParser parser = new TextFieldParser(CSVFilePath);
+					parser.HasFieldsEnclosedInQuotes = true;
+					parser.SetDelimiters(",");
+
+					string[] fields = new string[0];
+					List<string[]> errors = new List<string[]>();
+
+					while (!parser.EndOfData)
 					{
-						// csv should be "Artist, Album, Track, Date"
-						string[] scrobble = row.Split(',');
-
-						// check for 'now playing'
-						if (scrobble[3] == "")
-							continue;
-
-						string dateString = scrobble[3];
-						DateTime date;
-						if(DateTime.TryParse(dateString, out date))
+						try
 						{
+							// csv should be "Artist, Album, Track, Date"
+							fields = parser.ReadFields();
 
-						}
-						else
-						{
-							// try different formats until succeeded
-							foreach (string format in Formats)
+							// check for 'now playing'
+							if (fields[3] == "")
+								continue;
+
+							string dateString = fields[3];
+							DateTime date;
+							if (DateTime.TryParse(dateString, out date))
 							{
-								if (DateTime.TryParseExact(dateString, format, CultureInfo.CurrentCulture, DateTimeStyles.None, out date))
-									break;
+
+							}
+							else
+							{
+								bool parsed = false;
+								// try different formats until succeeded
+								foreach (string format in Formats)
+								{
+									parsed = DateTime.TryParseExact(dateString, format, CultureInfo.CurrentCulture, DateTimeStyles.None, out date);
+									if (parsed)
+										break;
+								}
+
+								if (!parsed)
+									throw new Exception("Timestamp could not be parsed!");
 							}
 
-							if (date == null)
-								throw new Exception("Timestamp could not be parsed!");
+							CSVScrobble parsedScrobble = new CSVScrobble(fields[0], fields[1], fields[2], date.AddSeconds(1));
+							ParsedCSVScrobbleViewModel vm = new ParsedCSVScrobbleViewModel(parsedScrobble);
+							vm.ToScrobbleChanged += ToScrobbleChanged;
+							Scrobbles.Add(vm);
 						}
+						catch(Exception ex)
+						{
+							string[] errorArray = new string[fields.Length + 1];
+							for(int i = 0; i < fields.Length; i++)
+							{
+								errorArray[i] = fields[i];
+							}
 
-						CSVScrobble parsedScrobble = new CSVScrobble(scrobble[0], scrobble[1], scrobble[2], date.AddSeconds(1));
-						ParsedCSVScrobbleViewModel vm = new ParsedCSVScrobbleViewModel(parsedScrobble);
-						vm.ToScrobbleChanged += ToScrobbleChanged;
-						Scrobbles.Add(vm);
+							errorArray[errorArray.Length - 1] = ex.Message;
+							errors.Add(errorArray);
+						}
 					}
 
-					StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Successfully parsed CSV file"));
+					if(errors.Count == 0)
+						StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Successfully parsed CSV file"));
+					else
+						StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Partially parsed CSV file. " + errors.Count + " rows could not be parsed"));
 				}
 			}
 			catch (Exception ex)
