@@ -27,5 +27,24 @@ Currently only supports the following structure:
 
 "Artist, Album, Track, Timestamp"
 Needs to be excactly in this structure to work.
+Individual fields can be enclosed by quotes and NEED to be enclosed by quotes if the field contains a comma.
+For example:
+
+"ArtistWith, CommaInTheName", Album, Track, 06/13/2016 19:54 
+
+CSV scrobbling has two modes. They can be changed with the "Scrobbling Mode" ComboBox.
+
+Normal Mode:
+
+In this mode the tracks will be scrobbled with the timestamp from the csv field. Only scrobbles newer than 14 days can be scrobbled.
+
+
+Import Mode:
+
+In this mode the tracks will be scrobbled with the timestamp calculated from the "Finish Time" and the selected duration between each track. This allows the scrobbling of the tracks even if the timestamp in the csv is older than 14 days. Therefore the first (upmost) track in the csv file will be scrobbled with the "Finish Time".
 
 ![CSV Scrobbling](https://ibin.co/2kAkY5hpYtEi.png)
+Normal Mode
+
+![CSV Scrobbling Import Mode](https://ibin.co/2kXudUqJloTY.png)
+Import Mode
