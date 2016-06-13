@@ -6,9 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Threading;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
@@ -65,7 +67,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 			get { return _scrobbleMode; }
 			set
 			{
-				_scrobbleMode = value;
+				if (Scrobbles.Count > 0)
+				{
+					if (MessageBox.Show("Do you want to switch the Scrobble Mode? The CSV file will be parsed again!", "Change Scrobble Mode", MessageBoxButtons.YesNo) == DialogResult.Yes)
+					{
+						_scrobbleMode = value;
+						LoadCSVFile(CSVFilePath);
+					}
+				}
+				else
+					_scrobbleMode = value;
+
 				NotifyOfPropertyChange(() => ScrobbleMode);
 				NotifyOfPropertyChange(() => ShowImportModeSettings);
 			}
@@ -139,6 +151,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
 		#endregion Properties
 
+		private Dispatcher _dispatcher;
+
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -146,6 +160,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		{
 			Scrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>();
 			MainViewModel.ClientAuthChanged += MainViewModel_ClientAuthChanged;
+			Duration = 1;
+			FinishingTime = DateTime.Now;
+			EnableControls = true;
+			_dispatcher = Dispatcher.CurrentDispatcher;
 		}
 
 		private void MainViewModel_ClientAuthChanged(object sender, EventArgs e)
@@ -156,27 +174,35 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		/// <summary>
 		/// Loads a csv file and parses it to scrobbles.
 		/// </summary>
-		public void LoadCSVFile()
+		public void LoadCSVFileDialog()
 		{
+
+			OpenFileDialog ofd = new OpenFileDialog();
+			ofd.Filter = "CSV Files|*.csv";
+			if (ofd.ShowDialog() == DialogResult.OK)
+				LoadCSVFile(ofd.FileName);
+		}
+
+		private async void LoadCSVFile(string path)
+		{
+
 			try
 			{
-				OpenFileDialog ofd = new OpenFileDialog();
-				ofd.Filter = "CSV Files|*.csv";
-				if (ofd.ShowDialog() == DialogResult.OK)
+				EnableControls = false;
+				StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Reading CSV file..."));
+
+				CSVFilePath = path;
+				Scrobbles.Clear();
+
+				TextFieldParser parser = new TextFieldParser(CSVFilePath);
+				parser.HasFieldsEnclosedInQuotes = true;
+				parser.SetDelimiters(",");
+
+				string[] fields = new string[0];
+				List<string> errors = new List<string>();
+
+				await Task.Run(() =>
 				{
-					EnableControls = false;
-					StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Reading CSV file..."));
-
-					CSVFilePath = ofd.FileName;
-					Scrobbles.Clear();
-
-					TextFieldParser parser = new TextFieldParser(CSVFilePath);
-					parser.HasFieldsEnclosedInQuotes = true;
-					parser.SetDelimiters(",");
-
-					string[] fields = new string[0];
-					List<string[]> errors = new List<string[]>();
-
 					while (!parser.EndOfData)
 					{
 						try
@@ -187,12 +213,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 							if (fields.Length != 4)
 								throw new Exception("Parsed row has wrong number of fields!");
 
+							DateTime date = DateTime.Now;
+							string dateString = fields[3];
+
 							// check for 'now playing'
-							if (fields[3] == "")
+							if (fields[3] == "" && ScrobbleMode == CSVScrobbleMode.Normal)
 								continue;
 
-							string dateString = fields[3];
-							DateTime date;
 							if (DateTime.TryParse(dateString, out date))
 							{
 
@@ -208,32 +235,41 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 										break;
 								}
 
-								if (!parsed)
+								if (!parsed && ScrobbleMode == CSVScrobbleMode.Normal)
 									throw new Exception("Timestamp could not be parsed!");
 							}
 
 							CSVScrobble parsedScrobble = new CSVScrobble(fields[0], fields[1], fields[2], date.AddSeconds(1));
-							ParsedCSVScrobbleViewModel vm = new ParsedCSVScrobbleViewModel(parsedScrobble);
+							ParsedCSVScrobbleViewModel vm = new ParsedCSVScrobbleViewModel(parsedScrobble, ScrobbleMode);
 							vm.ToScrobbleChanged += ToScrobbleChanged;
-							Scrobbles.Add(vm);
+							_dispatcher.Invoke(() => Scrobbles.Add(vm));
 						}
-						catch(Exception ex)
+						catch (Exception ex)
 						{
-							string[] errorArray = new string[fields.Length + 1];
-							for(int i = 0; i < fields.Length; i++)
+							string errorString = "CSV line number: " + parser.LineNumber + ",";
+							foreach(string s in fields)
 							{
-								errorArray[i] = fields[i];
+								errorString += s + ",";
 							}
 
-							errorArray[errorArray.Length - 1] = ex.Message;
-							errors.Add(errorArray);
+							errorString += ex.Message;
+							errors.Add(errorString);
 						}
 					}
+				});
 
-					if(errors.Count == 0)
-						StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Successfully parsed CSV file"));
-					else
-						StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Partially parsed CSV file. " + errors.Count + " rows could not be parsed"));
+				if (errors.Count == 0)
+					StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Successfully parsed CSV file. Parsed " + Scrobbles.Count + " rows"));
+				else
+				{
+					StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Partially parsed CSV file. " + errors.Count + " rows could not be parsed"));
+					if(MessageBox.Show("Some rows could not be parsed. Do you want to save a text file with the rows that could not be parsed?", "Error parsing rows", MessageBoxButtons.YesNo) == DialogResult.Yes)
+					{
+						SaveFileDialog sfd = new SaveFileDialog();
+						sfd.Filter = "Text Files|*.txt";
+						if(sfd.ShowDialog() == DialogResult.OK)
+							File.WriteAllLines(sfd.FileName, errors.ToArray());
+					}
 				}
 			}
 			catch (Exception ex)
@@ -245,6 +281,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 			{
 				EnableControls = true;
 			}
+
 		}
 
 		private void ToScrobbleChanged(object sender, EventArgs e)
@@ -271,7 +308,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 					scrobbles.Add(new Scrobble(vm.ParsedScrobble.Artist, vm.ParsedScrobble.Album, vm.ParsedScrobble.Track, vm.ParsedScrobble.DateTime));
 				}
 			}
-			else if(ScrobbleMode == CSVScrobbleMode.ImportMode)
+			else if (ScrobbleMode == CSVScrobbleMode.ImportMode)
 			{
 				DateTime time = FinishingTime;
 				foreach (var vm in Scrobbles.Where(i => i.ToScrobble))

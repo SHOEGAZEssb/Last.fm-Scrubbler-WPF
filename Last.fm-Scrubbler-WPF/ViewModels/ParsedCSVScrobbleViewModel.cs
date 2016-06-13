@@ -48,20 +48,25 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		/// </summary>
 		public bool IsEnabled
 		{
-			get { return ParsedScrobble.DateTime > DateTime.Now.Subtract(TimeSpan.FromDays(14)); }
+			get { return ParsedScrobble.DateTime > DateTime.Now.Subtract(TimeSpan.FromDays(14)) || _scrobbleMode == CSVScrobbleMode.ImportMode; }
 		}
 
-
-
 		#endregion Properties
+
+		#region Private Member
+
+		private CSVScrobbleMode _scrobbleMode;
+
+		#endregion Private Member
 
 		/// <summary>
 		/// Constructor.
 		/// </summary>
 		/// <param name="parsedScrobble">The scrobble parsed from the csv file.</param>
-		public ParsedCSVScrobbleViewModel(CSVScrobble parsedScrobble)
+		public ParsedCSVScrobbleViewModel(CSVScrobble parsedScrobble, CSVScrobbleMode scrobbleMode)
 		{
 			ParsedScrobble = parsedScrobble;
+			_scrobbleMode = scrobbleMode;
 		}
 	}
 }
