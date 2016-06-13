@@ -3,11 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
+             xmlns:viewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
+
+  <UserControl.Resources>
+    <ObjectDataProvider MethodName="GetValues"
+                    ObjectType="{x:Type sys:Enum}"
+                    x:Key="ScrobbleModeKeyDataProvider">
+      <ObjectDataProvider.MethodParameters>
+        <x:Type TypeName="viewModels:CSVScrobbleMode"/>
+      </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+    <BooleanToVisibilityConverter x:Key="boolToVis"/>
+  </UserControl.Resources>
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
@@ -101,12 +116,39 @@
       </ListView.View>
     </ListView>
 
-    <Button Grid.Row="6" Grid.Column="0" Content="Scrobble" IsEnabled="{Binding CanScrobble}">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="Scrobble"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
+    <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="9">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="5"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="5"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="5"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <Button Grid.Column="0" Grid.Row="6" Content="Scrobble" IsEnabled="{Binding CanScrobble}">
+        <i:Interaction.Triggers>
+          <i:EventTrigger EventName="Click">
+            <cal:ActionMessage MethodName="Scrobble"/>
+          </i:EventTrigger>
+        </i:Interaction.Triggers>
+      </Button>
+
+      <Label Grid.Column="0" Grid.Row="0" Content="Scrobble Mode:"/>
+      <ComboBox Grid.Column="2" Grid.Row="0" SelectedValue="{Binding ScrobbleMode}" ItemsSource="{Binding Source={StaticResource ScrobbleModeKeyDataProvider}}"/>
+      
+      <Label Grid.Column="0" Grid.Row="2" Content="Finishing time:" Visibility="{Binding ShowImportModeSettings, Converter={StaticResource boolToVis}}"/>
+      <xctk:DateTimePicker Grid.Column="2" Grid.Row="2" Visibility="{Binding ShowImportModeSettings, Converter={StaticResource boolToVis}}" Value="{Binding FinishingTime}"/>
+
+      <Label Grid.Column="0" Grid.Row="4" Content="Duration per Song:"/>
+      <xctk:IntegerUpDown Grid.Column="2" Grid.Row="4" Minimum="1" Value="{Binding Duration}"/>
+    </Grid>
+
   </Grid>
 </UserControl>

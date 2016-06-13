@@ -12,6 +12,12 @@ using System.Windows.Forms;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
+	public enum CSVScrobbleMode
+	{
+		Normal,
+		ImportMode
+	}
+
 	/// <summary>
 	/// ViewModel for the <see cref="Views.CSVScrobbleView"/>.
 	/// </summary>
@@ -54,6 +60,40 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		}
 		private ObservableCollection<ParsedCSVScrobbleViewModel> _scrobbles;
 
+		public CSVScrobbleMode ScrobbleMode
+		{
+			get { return _scrobbleMode; }
+			set
+			{
+				_scrobbleMode = value;
+				NotifyOfPropertyChange(() => ScrobbleMode);
+				NotifyOfPropertyChange(() => ShowImportModeSettings);
+			}
+		}
+		private CSVScrobbleMode _scrobbleMode;
+
+		public DateTime FinishingTime
+		{
+			get { return _finishingTime; }
+			set
+			{
+				_finishingTime = value;
+				NotifyOfPropertyChange(() => FinishingTime);
+			}
+		}
+		private DateTime _finishingTime;
+
+		public int Duration
+		{
+			get { return _duration; }
+			set
+			{
+				_duration = value;
+				NotifyOfPropertyChange(() => Duration);
+			}
+		}
+		private int _duration;
+
 		public bool CanScrobble
 		{
 			get { return MainViewModel.Client.Auth.Authenticated && Scrobbles.Any(i => i.ToScrobble) && EnableControls; }
@@ -73,6 +113,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		public bool CanSelectNone
 		{
 			get { return Scrobbles.Any(i => i.ToScrobble) && EnableControls; }
+		}
+
+		public bool ShowImportModeSettings
+		{
+			get { return ScrobbleMode == CSVScrobbleMode.ImportMode; }
 		}
 
 		/// <summary>
@@ -138,6 +183,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 						{
 							// csv should be "Artist, Album, Track, Date"
 							fields = parser.ReadFields();
+
+							if (fields.Length != 4)
+								throw new Exception("Parsed row has wrong number of fields!");
 
 							// check for 'now playing'
 							if (fields[3] == "")
@@ -215,9 +263,22 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 			EnableControls = false;
 			StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Trying to scrobble selected tracks"));
 			List<Scrobble> scrobbles = new List<Scrobble>();
-			foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
+
+			if (ScrobbleMode == CSVScrobbleMode.Normal)
 			{
-				scrobbles.Add(new Scrobble(vm.ParsedScrobble.Artist, vm.ParsedScrobble.Album, vm.ParsedScrobble.Track, vm.ParsedScrobble.DateTime));
+				foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
+				{
+					scrobbles.Add(new Scrobble(vm.ParsedScrobble.Artist, vm.ParsedScrobble.Album, vm.ParsedScrobble.Track, vm.ParsedScrobble.DateTime));
+				}
+			}
+			else if(ScrobbleMode == CSVScrobbleMode.ImportMode)
+			{
+				DateTime time = FinishingTime;
+				foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
+				{
+					scrobbles.Add(new Scrobble(vm.ParsedScrobble.Artist, vm.ParsedScrobble.Album, vm.ParsedScrobble.Track, time));
+					time = time.Subtract(TimeSpan.FromSeconds(Duration));
+				}
 			}
 
 			var response = await MainViewModel.Scrobbler.ScrobbleAsync(scrobbles);
