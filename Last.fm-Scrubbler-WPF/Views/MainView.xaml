@@ -33,7 +33,7 @@
     <StatusBar Grid.Row="1">
       <StatusBarItem>
         <StackPanel Orientation="Horizontal">
-          <Label Content="Logged in as:"/>
+          <Label Content="Logged in as:" FontWeight="Bold"/>
           <TextBlock Margin="0,5,0,0">
             <Hyperlink>
               <TextBlock Text="{Binding StatusBarUsername, Mode=OneWay}">
@@ -52,7 +52,7 @@
 
       <StatusBarItem>
         <StackPanel Orientation="Horizontal">
-          <Label Content="Current Status:"/>
+          <Label Content="Current Status:" FontWeight="Bold"/>
           <Label Content="{Binding CurrentStatus}"/>
         </StackPanel>
       </StatusBarItem>
