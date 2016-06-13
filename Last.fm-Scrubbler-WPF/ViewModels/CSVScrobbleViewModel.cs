@@ -209,7 +209,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		/// </summary>
 		public void SelectAll()
 		{
-			foreach (var vm in Scrobbles)
+			foreach (var vm in Scrobbles.Where(i => i.IsEnabled))
 			{
 				vm.ToScrobble = true;
 			}
@@ -220,7 +220,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		/// </summary>
 		public void SelectNone()
 		{
-			foreach (var vm in Scrobbles)
+			foreach (var vm in Scrobbles.Where(i => i.IsEnabled))
 			{
 				vm.ToScrobble = false;
 			}
