@@ -79,6 +79,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		}
 		private FriendScrobbleViewModel _friendScrobbleViewModel;
 
+    /// <summary>
+    /// The ViewModel for the <see cref="DatabaseScrobbleView"/>.
+    /// </summary>
 		public DatabaseScrobbleViewModel DatabaseScrobbleViewModel
 		{
 			get { return _databaseScrobbleViewModel; }
@@ -90,6 +93,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		}
 		private DatabaseScrobbleViewModel _databaseScrobbleViewModel;
 
+    /// <summary>
+    /// The ViewModel for the <see cref="CSVScrobbleView"/>.
+    /// </summary>
 		public CSVScrobbleViewModel CSVScrobbleViewModel
 		{
 			get { return _csvScrobbleViewModel; }

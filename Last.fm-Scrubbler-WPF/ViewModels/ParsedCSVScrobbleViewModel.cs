@@ -63,6 +63,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		/// Constructor.
 		/// </summary>
 		/// <param name="parsedScrobble">The scrobble parsed from the csv file.</param>
+    /// <param name="scrobbleMode">The current scrobble mode.</param>
 		public ParsedCSVScrobbleViewModel(CSVScrobble parsedScrobble, CSVScrobbleMode scrobbleMode)
 		{
 			ParsedScrobble = parsedScrobble;

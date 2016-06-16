@@ -31,7 +31,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		/// <summary>
 		/// Constructor.
 		/// </summary>
-		/// <param name="client">Client on which to perform the login.</param>
 		public LoginViewModel()
 		{
 			EnableControls = true;

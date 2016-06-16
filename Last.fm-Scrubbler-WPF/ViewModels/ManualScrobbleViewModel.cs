@@ -90,8 +90,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		}
 
 		/// <summary>
-		/// Notifies the <see cref="ManualScrobbleView"/> that the <see cref="MainViewModel.Client.Auth"/>
-		/// has changed.
+		/// Notifies the <see cref="Views.ManualScrobbleView"/> that the
+    /// <see cref="MainViewModel.Client"/> authentication has changed.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
