@@ -28,29 +28,39 @@
       <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
 
-    <Button Grid.Row="0" Grid.Column="0" Content="Add Files..." HorizontalAlignment="Left">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="AddFiles"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
+    <Grid Grid.Row="0" Grid.Column="0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
 
-    <Button Grid.Row="0" Grid.Column="2" Content="Select ALL" IsEnabled="{Binding CanSelectAll}" HorizontalAlignment="Left">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="SelectAll"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
+      <Button Grid.Row="0" Grid.Column="0" Content="Add Files..." HorizontalAlignment="Left">
+        <i:Interaction.Triggers>
+          <i:EventTrigger EventName="Click">
+            <cal:ActionMessage MethodName="AddFiles"/>
+          </i:EventTrigger>
+        </i:Interaction.Triggers>
+      </Button>
 
-    <Button Grid.Row="0" Grid.Column="4" Content="Select None..." IsEnabled="{Binding CanSelectNone}" HorizontalAlignment="Left">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="SelectNone"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
+      <Button Grid.Row="0" Grid.Column="2" Content="Select ALL" IsEnabled="{Binding CanSelectAll}" HorizontalAlignment="Left">
+        <i:Interaction.Triggers>
+          <i:EventTrigger EventName="Click">
+            <cal:ActionMessage MethodName="SelectAll"/>
+          </i:EventTrigger>
+        </i:Interaction.Triggers>
+      </Button>
+
+      <Button Grid.Row="0" Grid.Column="4" Content="Select None..." IsEnabled="{Binding CanSelectNone}" HorizontalAlignment="Left">
+        <i:Interaction.Triggers>
+          <i:EventTrigger EventName="Click">
+            <cal:ActionMessage MethodName="SelectNone"/>
+          </i:EventTrigger>
+        </i:Interaction.Triggers>
+      </Button>
+    </Grid>
 
     <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7"  VerticalAlignment="Stretch" ItemsSource="{Binding LoadedFiles}">
       <ListView.View>
