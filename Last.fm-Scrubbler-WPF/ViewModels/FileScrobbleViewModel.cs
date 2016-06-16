@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Threading;
@@ -35,6 +34,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private ObservableCollection<LoadedFileViewModel> _loadedFiles;
 
+    /// <summary>
+    /// Time to reverse when scrobbling.
+    /// </summary>
     public DateTime FinishingTime
     {
       get { return _finishingTime; }
@@ -46,6 +48,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private DateTime _finishingTime;
 
+    /// <summary>
+    /// Gets if the current date time should be used for the <see cref="FinishingTime"/>
+    /// </summary>
     public bool CurrentDateTime
     {
       get { return _currentDateTime; }
@@ -73,6 +78,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         NotifyOfPropertyChange(() => CanScrobble);
         NotifyOfPropertyChange(() => CanSelectAll);
         NotifyOfPropertyChange(() => CanSelectNone);
+        NotifyOfPropertyChange(() => CanRemoveFiles);
       }
     }
     private bool _enableControls;
@@ -85,14 +91,28 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       get { return MainViewModel.Client.Auth.Authenticated && LoadedFiles.Any(i => i.ToScrobble) && EnableControls; }
     }
 
+    /// <summary>
+    /// Gets if the "Select All" button is enabled in the UI.
+    /// </summary>
     public bool CanSelectAll
     {
       get { return !LoadedFiles.All(i => i.ToScrobble); }
     }
 
+    /// <summary>
+    /// Gets if the "Select None" button is enabled in the UI.
+    /// </summary>
     public bool CanSelectNone
     {
       get { return LoadedFiles.Any(i => i.ToScrobble); }
+    }
+
+    /// <summary>
+    /// Gets if the "Remove Selected Files" button is enabled in the UI.
+    /// </summary>
+    public bool CanRemoveFiles
+    {
+      get { return LoadedFiles.Any(i => i.IsSelected) && EnableControls; }
     }
 
     #endregion
@@ -107,6 +127,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       LoadedFiles = new ObservableCollection<LoadedFileViewModel>();
       MainViewModel.ClientAuthChanged += MainViewModel_ClientAuthChanged;
       _dispatcher = Dispatcher.CurrentDispatcher;
+      CurrentDateTime = true;
     }
 
     /// <summary>
@@ -119,6 +140,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       NotifyOfPropertyChange(() => CanScrobble);
     }
 
+    /// <summary>
+    /// Shows a dialog to select music files.
+    /// Parses the selected files.
+    /// </summary>
     public async void AddFiles()
     {
       EnableControls = false;
@@ -139,8 +164,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
             try
             {
               File audioFile = File.Create(file);
+
+              if (audioFile.Tag.FirstPerformer == null || audioFile.Tag.Title == null)
+                throw new Exception("No artist name or track title found!");
+
               LoadedFileViewModel vm = new LoadedFileViewModel(audioFile);
               vm.ToScrobbleChanged += ToScrobbleChanged;
+              vm.IsSelectedChanged += IsSelectedChanged;
               _dispatcher.Invoke(() => LoadedFiles.Add(vm));
             }
             catch (Exception ex)
@@ -152,8 +182,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
         if (errors.Count > 0)
         {
-          StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Partially parsed selected files. " + errors.Count + " files could not be parsed"));
-          if (MessageBox.Show("Some rows could not be parsed. Do you want to save a text file with the rows that could not be parsed?", "Error parsing rows", MessageBoxButtons.YesNo) == DialogResult.Yes)
+          StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Finished parsing selected files. " + errors.Count + " files could not be parsed"));
+          if (MessageBox.Show("Some files could not be parsed. Do you want to save a text file with the files that could not be parsed?", "Error parsing files", MessageBoxButtons.YesNo) == DialogResult.Yes)
           {
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "Text Files|*.txt";
@@ -168,6 +198,37 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       EnableControls = true;
     }
 
+    /// <summary>
+    /// Notifies the UI that the IsSelected property of a
+    /// <see cref="LoadedFileViewModel"/> has changed.
+    /// </summary>
+    /// <param name="sender">Ignored.</param>
+    /// <param name="e">Ignored.</param>
+    private void IsSelectedChanged(object sender, EventArgs e)
+    {
+      NotifyOfPropertyChange(() => CanRemoveFiles);
+    }
+
+    /// <summary>
+    /// Removes the selected files.
+    /// </summary>
+    public void RemoveFiles()
+    {
+      List<LoadedFileViewModel> toRemove = LoadedFiles.Where(i => i.IsSelected).ToList();
+      for(int i = 0; i < toRemove.Count; i++)
+      {
+        LoadedFiles.RemoveAt(LoadedFiles.IndexOf(toRemove[i]));
+      }
+
+      NotifyOfPropertyChange(() => CanRemoveFiles);
+      NotifyOfPropertyChange(() => CanScrobble);
+      NotifyOfPropertyChange(() => CanSelectAll);
+      NotifyOfPropertyChange(() => CanSelectNone);
+    }
+
+    /// <summary>
+    /// Scrobbles the selected tracks.
+    /// </summary>
     public async void Scrobble()
     {
       EnableControls = false;
@@ -190,6 +251,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Error while scrobbling!"));
     }
 
+    /// <summary>
+    /// Notifies the UI that the ToScrobble property of a
+    /// <see cref="LoadedFileViewModel"/> has changed.
+    /// </summary>
+    /// <param name="sender">Ignored.</param>
+    /// <param name="e">Ignored.</param>
     private void ToScrobbleChanged(object sender, EventArgs e)
     {
       NotifyOfPropertyChange(() => CanScrobble);
@@ -197,6 +264,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       NotifyOfPropertyChange(() => CanSelectNone);
     }
 
+    /// <summary>
+    /// Marks all tracks as "ToScrobble".
+    /// </summary>
     public void SelectAll()
     {
       foreach (var vm in LoadedFiles)
@@ -205,6 +275,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       }
     }
 
+    /// <summary>
+    /// Marks all tracks as not "ToScrobble".
+    /// </summary>
     public void SelectNone()
     {
       foreach (var vm in LoadedFiles)

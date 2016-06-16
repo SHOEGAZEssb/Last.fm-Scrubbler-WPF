@@ -1,9 +1,5 @@
 ﻿using Caliburn.Micro;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TagLib;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
@@ -16,6 +12,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Event that triggers when <see cref="ToScrobble"/> changed.
     /// </summary>
     public event EventHandler ToScrobbleChanged;
+
+    /// <summary>
+    /// Event that triggers when <see cref="IsSelected"/> changes.
+    /// </summary>
+    public event EventHandler IsSelectedChanged;
 
     /// <summary>
     /// The loaded file.
@@ -45,6 +46,21 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       }
     }
     private bool _toScrobble;
+
+    /// <summary>
+    /// Gets if this item is selected in the UI.
+    /// </summary>
+    public bool IsSelected
+    {
+      get { return _isSelected; }
+      set
+      {
+        _isSelected = value;
+        NotifyOfPropertyChange(() => IsSelected);
+        IsSelectedChanged?.Invoke(this, EventArgs.Empty);
+      }
+    }
+    private bool _isSelected;
 
     #endregion Properties
 

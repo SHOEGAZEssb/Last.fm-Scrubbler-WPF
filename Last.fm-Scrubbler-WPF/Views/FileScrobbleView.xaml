@@ -35,6 +35,8 @@
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="5"/>
         <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
       </Grid.ColumnDefinitions>
 
       <Button Grid.Row="0" Grid.Column="0" Content="Add Files..." HorizontalAlignment="Left">
@@ -45,7 +47,15 @@
         </i:Interaction.Triggers>
       </Button>
 
-      <Button Grid.Row="0" Grid.Column="2" Content="Select ALL" IsEnabled="{Binding CanSelectAll}" HorizontalAlignment="Left">
+      <Button Grid.Row="0" Grid.Column="2" Content="Remove Selected Files" HorizontalAlignment="Left" IsEnabled="{Binding CanRemoveFiles}">
+        <i:Interaction.Triggers>
+          <i:EventTrigger EventName="Click">
+            <cal:ActionMessage MethodName="RemoveFiles"/>
+          </i:EventTrigger>
+        </i:Interaction.Triggers>
+      </Button>
+
+      <Button Grid.Row="0" Grid.Column="4" Content="Select ALL" IsEnabled="{Binding CanSelectAll}" HorizontalAlignment="Left">
         <i:Interaction.Triggers>
           <i:EventTrigger EventName="Click">
             <cal:ActionMessage MethodName="SelectAll"/>
@@ -53,7 +63,7 @@
         </i:Interaction.Triggers>
       </Button>
 
-      <Button Grid.Row="0" Grid.Column="4" Content="Select None..." IsEnabled="{Binding CanSelectNone}" HorizontalAlignment="Left">
+      <Button Grid.Row="0" Grid.Column="6" Content="Select None..." IsEnabled="{Binding CanSelectNone}" HorizontalAlignment="Left">
         <i:Interaction.Triggers>
           <i:EventTrigger EventName="Click">
             <cal:ActionMessage MethodName="SelectNone"/>
@@ -62,7 +72,7 @@
       </Button>
     </Grid>
 
-    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7"  VerticalAlignment="Stretch" ItemsSource="{Binding LoadedFiles}">
+    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7"  VerticalAlignment="Stretch" ItemsSource="{Binding LoadedFiles}" SelectionMode="Extended">
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Scrobble?">
@@ -109,6 +119,12 @@
           </GridViewColumn>
         </GridView>
       </ListView.View>
+
+      <ListView.ItemContainerStyle>
+        <Style TargetType="{x:Type ListViewItem}">
+          <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+        </Style>
+      </ListView.ItemContainerStyle>
     </ListView>
 
     <Button Grid.Row="4" Grid.Column="0" Content="Scrobble" IsEnabled="{Binding CanScrobble}">
