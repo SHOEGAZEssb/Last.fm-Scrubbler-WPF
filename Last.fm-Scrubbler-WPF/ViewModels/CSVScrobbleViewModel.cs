@@ -17,17 +17,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// Scrobble mode.
   /// </summary>
-	public enum CSVScrobbleMode
+  public enum CSVScrobbleMode
   {
     /// <summary>
     /// Scrobble the tracks based on the parsed timestamp.
     /// </summary>
-		Normal,
+    Normal,
 
     /// <summary>
     /// Set the timestamp by setting <see cref="CSVScrobbleViewModel.FinishingTime"/>.
     /// </summary>
-		ImportMode
+    ImportMode
   }
 
   /// <summary>
@@ -78,7 +78,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// The selected <see cref="CSVScrobbleMode"/>.
     /// </summary>
-		public CSVScrobbleMode ScrobbleMode
+    public CSVScrobbleMode ScrobbleMode
     {
       get { return _scrobbleMode; }
       set
@@ -103,7 +103,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// The time the last track played.
     /// </summary>
-		public DateTime FinishingTime
+    public DateTime FinishingTime
     {
       get { return _finishingTime; }
       set
@@ -117,7 +117,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Duration between scrobbles in seconds.
     /// </summary>
-		public int Duration
+    public int Duration
     {
       get { return _duration; }
       set
@@ -131,7 +131,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Gets if the Scrobble button is enabled on the UI.
     /// </summary>
-		public bool CanScrobble
+    public bool CanScrobble
     {
       get { return MainViewModel.Client.Auth.Authenticated && Scrobbles.Any(i => i.ToScrobble) && EnableControls; }
     }
@@ -155,7 +155,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Gets if the import mode settings should be visible on the UI.
     /// </summary>
-		public bool ShowImportModeSettings
+    public bool ShowImportModeSettings
     {
       get { return ScrobbleMode == CSVScrobbleMode.ImportMode; }
     }
@@ -223,7 +223,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Loads and parses a csv file.
     /// </summary>
     /// <param name="path">Path of the csv file to load.</param>
-		private async void LoadCSVFile(string path)
+    private async void LoadCSVFile(string path)
     {
 
       try
@@ -328,7 +328,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     /// <param name="sender">Ignored.</param>
     /// <param name="e">Ignored.</param>
-		private void ToScrobbleChanged(object sender, EventArgs e)
+    private void ToScrobbleChanged(object sender, EventArgs e)
     {
       NotifyOfPropertyChange(() => CanScrobble);
       NotifyOfPropertyChange(() => CanSelectAll);

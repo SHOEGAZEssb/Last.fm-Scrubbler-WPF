@@ -53,6 +53,10 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="policy.2.0.taglib-sharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
+      <HintPath>..\packages\taglib.2.1.0.0\lib\policy.2.0.taglib-sharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -69,6 +73,10 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="taglib-sharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
+      <HintPath>..\packages\taglib.2.1.0.0\lib\taglib-sharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -91,7 +99,9 @@
     <Compile Include="ViewModels\FetchedScrobbleViewModel.cs" />
     <Compile Include="UpdateStatusEventArgs.cs" />
     <Compile Include="ViewModels\FetchedTrackViewModel.cs" />
+    <Compile Include="ViewModels\FileScrobbleViewModel.cs" />
     <Compile Include="ViewModels\FriendScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\LoadedFileViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ManualScrobbleViewModel.cs" />
@@ -104,6 +114,9 @@
     </Compile>
     <Compile Include="Views\DatabaseScrobbleView.xaml.cs">
       <DependentUpon>DatabaseScrobbleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FileScrobbleView.xaml.cs">
+      <DependentUpon>FileScrobbleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FriendScrobbleView.xaml.cs">
       <DependentUpon>FriendScrobbleView.xaml</DependentUpon>
@@ -129,6 +142,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DatabaseScrobbleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FileScrobbleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

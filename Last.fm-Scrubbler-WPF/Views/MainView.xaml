@@ -28,6 +28,9 @@
       <TabItem Header="CSV Scrobble">
         <views:CSVScrobbleView DataContext="{Binding CSVScrobbleViewModel}"/>
       </TabItem>
+      <TabItem Header="File Scrobble">
+        <views:FileScrobbleView DataContext="{Binding FileScrobbleViewModel}"/>
+      </TabItem>
     </TabControl>
 
     <StatusBar Grid.Row="1">

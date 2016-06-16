@@ -1,0 +1,117 @@
+﻿<UserControl x:Class="Last.fm_Scrubbler_WPF.Views.FileScrobbleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:viewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels"
+             xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
+
+    <Button Grid.Row="0" Grid.Column="0" Content="Add Files..." HorizontalAlignment="Left">
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Click">
+          <cal:ActionMessage MethodName="AddFiles"/>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
+    </Button>
+
+    <Button Grid.Row="0" Grid.Column="2" Content="Select ALL" IsEnabled="{Binding CanSelectAll}" HorizontalAlignment="Left">
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Click">
+          <cal:ActionMessage MethodName="SelectAll"/>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
+    </Button>
+
+    <Button Grid.Row="0" Grid.Column="4" Content="Select None..." IsEnabled="{Binding CanSelectNone}" HorizontalAlignment="Left">
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Click">
+          <cal:ActionMessage MethodName="SelectNone"/>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
+    </Button>
+
+    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7"  VerticalAlignment="Stretch" ItemsSource="{Binding LoadedFiles}">
+      <ListView.View>
+        <GridView>
+          <GridViewColumn Header="Scrobble?">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <CheckBox IsChecked="{Binding ToScrobble}" HorizontalAlignment="Center"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="#">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding LoadedFile.Tag.Track}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Artist">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding LoadedFile.Tag.FirstPerformer}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Album">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding LoadedFile.Tag.Album}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Track">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding LoadedFile.Tag.Title}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Duration">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding LoadedFile.Properties.Duration}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+        </GridView>
+      </ListView.View>
+    </ListView>
+
+    <Button Grid.Row="4" Grid.Column="0" Content="Scrobble" IsEnabled="{Binding CanScrobble}">
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Click">
+          <cal:ActionMessage MethodName="Scrobble"/>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
+    </Button>
+
+    <Label Grid.Row="4" Grid.Column="2" Content="Finishing Time:"/>
+    <xctk:DateTimePicker Grid.Row="4" Grid.Column="4" Value="{Binding FinishingTime}" Minimum="{Binding Source={x:Static viewModels:MainViewModel.MinimumDateTime}}"/>
+    <CheckBox Grid.Row="4" Grid.Column="6" Content="Current" IsChecked="{Binding CurrentDateTime}"
+                    VerticalAlignment="Center"/>
+  </Grid>
+</UserControl>
