@@ -48,3 +48,9 @@ Normal Mode
 
 ![CSV Scrobbling Import Mode](https://ibin.co/2kXudUqJloTY.png)
 Import Mode
+
+### File Scrobbling
+Allows you to select music files (currently only .mp3) from your computer and scrobble them.
+Timestamps will be reversed finishing with the "Finishing Time". So the last track in the list will be scrobbled with the "Finishing Time"
+
+![File Scrobbler](https://ibin.co/2kz1FH1Htpm8.png)
