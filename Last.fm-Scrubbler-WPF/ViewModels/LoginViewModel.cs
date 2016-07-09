@@ -1,7 +1,9 @@
 ﻿using Caliburn.Micro;
 using Last.fm_Scrubbler_WPF.Properties;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
@@ -43,7 +45,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <param name="username">The username.</param>
     /// <param name="password">The <see cref="PasswordBox"/> containing the password.</param>
     /// <param name="rememberLoginInformation">Bool determining if the login should be saved.</param>
-    public async void Login(Window win, string username, PasswordBox password, bool rememberLoginInformation)
+    public async Task Login(Window win, string username, PasswordBox password, bool rememberLoginInformation)
     {
       EnableControls = false;
 
@@ -71,6 +73,20 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         MessageBox.Show("Failed to log in or authenticate!");
         EnableControls = true;
       }
+    }
+
+    /// <summary>
+    /// Logs the user in if the enter key is pressed.
+    /// </summary>
+    /// <param name="e">EventArgs containing the pressed key.</param>
+    /// <param name="win">The calling <see cref="Views.LoginView"/>.</param>
+    /// <param name="username">The username.</param>
+    /// <param name="password">The <see cref="PasswordBox"/> containing the password.</param>
+    /// <param name="rememberLoginInformation">Bool determining if the login should be saved.</param>
+    public async void ButtonPressed(KeyEventArgs e, Window win, string username, PasswordBox password, bool rememberLoginInformation)
+    {
+      if(e.Key == Key.Enter)
+        await Login(win, username, password, rememberLoginInformation);
     }
 
     /// <summary>

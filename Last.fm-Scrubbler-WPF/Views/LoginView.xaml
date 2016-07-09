@@ -51,5 +51,17 @@
         </i:EventTrigger>
       </i:Interaction.Triggers>
     </Button>
+
+    <i:Interaction.Triggers>
+      <i:EventTrigger EventName="KeyDown">
+        <cal:ActionMessage MethodName="ButtonPressed">
+          <cal:Parameter Value="$eventArgs"/>
+          <cal:Parameter Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+          <cal:Parameter Value="{Binding Path=Text, ElementName=usernameTextBox}"/>
+          <cal:Parameter Value="{Binding ElementName=passwordBox}"/>
+          <cal:Parameter Value="{Binding Path=IsChecked, ElementName=rememberCheckBox}"/>
+        </cal:ActionMessage>
+      </i:EventTrigger>
+    </i:Interaction.Triggers>
   </Grid>
 </Window>
