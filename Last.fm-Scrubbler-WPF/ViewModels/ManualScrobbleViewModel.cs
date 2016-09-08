@@ -8,8 +8,15 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   {
     #region Properties
 
+    /// <summary>
+    /// Event that is triggered when the <see cref="MainViewModel.CurrentStatus"/> should
+    /// be updated.
+    /// </summary>
     public event EventHandler<UpdateStatusEventArgs> StatusUpdated;
 
+    /// <summary>
+    /// Name of the artist to be scrobbled.
+    /// </summary>
     public string Artist
     {
       get { return _artist; }
@@ -22,6 +29,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private string _artist;
 
+    /// <summary>
+    /// Name of the track to be scrobbled.
+    /// </summary>
     public string Track
     {
       get { return _track; }
@@ -34,6 +44,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private string _track;
 
+    /// <summary>
+    /// Name of the album to be scrobbled.
+    /// </summary>
     public string Album
     {
       get { return _album; }
@@ -45,6 +58,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private string _album;
 
+    /// <summary>
+    /// Time of the scrobble to scrobbled.
+    /// </summary>
     public DateTime TimePlayed
     {
       get { return _timePlayed; }
@@ -56,6 +72,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private DateTime _timePlayed;
 
+    /// <summary>
+    /// Gets/sets if the <see cref="TimePlayed"/> is the current time.
+    /// </summary>
     public bool CurrentDateTime
     {
       get { return _currentDateTime; }
@@ -70,6 +89,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private bool _currentDateTime;
 
+    /// <summary>
+    /// Gets if the scrobble button is enabled.
+    /// </summary>
     public bool CanScrobble
     {
       get { return MainViewModel.Client.Auth.Authenticated && Artist.Length > 0 && Track.Length > 0; }
