@@ -14,5 +14,5 @@ namespace Last.fm_Scrubbler_WPF.Views
 		{
 			InitializeComponent();
 		}
-	}
+  }
 }

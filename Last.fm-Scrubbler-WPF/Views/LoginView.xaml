@@ -7,7 +7,7 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
         mc:Ignorable="d"
-        Title="LoginView" Height="200" Width="180">
+        Title="Login" Height="200" Width="180" Icon="..\scrubbler_64.ico" ResizeMode="NoResize">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="5"/>
