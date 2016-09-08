@@ -429,7 +429,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           FetchedTracks.Clear();
           foreach (var t in detailedRelease.Content.Tracks)
           {
-            FetchedTrackViewModel vm = new FetchedTrackViewModel(t);
+            FetchedTrackViewModel vm = new FetchedTrackViewModel(t, release.Images.Small);
             vm.ToScrobbleChanged += ToScrobbleChanged;
             FetchedTracks.Add(vm);
           }

@@ -45,15 +45,31 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private bool _toScrobble;
 
+    /// <summary>
+    /// The Uri of the small image of the parent album.
+    /// </summary>
+    public Uri SmallAlbumImage
+    {
+      get { return _smallAlbumImage; }
+      private set
+      {
+        _smallAlbumImage = value;
+        NotifyOfPropertyChange(() => SmallAlbumImage);
+      }
+    }
+    private Uri _smallAlbumImage;
+
     #endregion Properties
 
     /// <summary>
     /// Constructor.
     /// </summary>
     /// <param name="fetchedTrack">The fetched track.</param>
-    public FetchedTrackViewModel(LastTrack fetchedTrack)
+    /// <param name="smallAlbumImage">The small image of the parent album.</param>
+    public FetchedTrackViewModel(LastTrack fetchedTrack, Uri smallAlbumImage)
     {
       FetchedTrack = fetchedTrack;
+      SmallAlbumImage = smallAlbumImage;
     }
   }
 }

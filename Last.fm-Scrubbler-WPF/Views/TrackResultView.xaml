@@ -70,9 +70,9 @@
                 <Image Grid.Column="2" VerticalAlignment="Center">
                   <Image.Style>
                     <Style TargetType="{x:Type Image}">
-                      <Setter Property="Source" Value="{Binding FetchedTrack.Images.Small}"/>
+                      <Setter Property="Source" Value="{Binding SmallAlbumImage}"/>
                       <Style.Triggers>
-                        <DataTrigger Binding="{Binding FetchedTrack.Images.Small}" Value="{x:Null}">
+                        <DataTrigger Binding="{Binding SmallAlbumImage}" Value="{x:Null}">
                           <Setter Property="Source" Value="{StaticResource noalbumimage_small}"/>
                         </DataTrigger>
                       </Style.Triggers>
