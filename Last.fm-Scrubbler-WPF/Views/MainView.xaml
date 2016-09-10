@@ -8,7 +8,8 @@
         xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF"
         xmlns:views="clr-namespace:Last.fm_Scrubbler_WPF.Views"
         mc:Ignorable="d"
-        Title="Last.fm Scrubbler" Height="350" Width="525" Icon="..\scrubbler_64.ico">
+        Title="Last.fm Scrubbler" Height="400" Width="650" Icon="..\scrubbler_64.ico">
+
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="*"/>
@@ -30,6 +31,9 @@
       </TabItem>
       <TabItem Header="File Scrobble">
         <views:FileScrobbleView DataContext="{Binding FileScrobbleViewModel}"/>
+      </TabItem>
+      <TabItem Header="Media Player DB Scrobble">
+        <views:MediaPlayerDatabaseScrobbleView DataContext="{Binding MediaPlayerDatabaseScrobbleViewModel}"/>
       </TabItem>
     </TabControl>
 

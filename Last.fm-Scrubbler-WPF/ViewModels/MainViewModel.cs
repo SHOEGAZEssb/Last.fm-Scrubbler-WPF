@@ -118,6 +118,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private FileScrobbleViewModel _fileScrobbleViewModel;
 
+    public MediaPlayerDatabaseScrobbleViewModel MediaPlayerDatabaseScrobbleViewModel
+    {
+      get { return _mediaPlayerDatabaseScrobbleViewModel; }
+      private set
+      {
+        _mediaPlayerDatabaseScrobbleViewModel = value;
+        NotifyOfPropertyChange(() => MediaPlayerDatabaseScrobbleViewModel);
+      }
+    }
+    private MediaPlayerDatabaseScrobbleViewModel _mediaPlayerDatabaseScrobbleViewModel;
+
     #region StatusBar Properties
 
     /// <summary>
@@ -176,6 +187,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       CSVScrobbleViewModel.StatusUpdated += StatusUpdated;
       FileScrobbleViewModel = new FileScrobbleViewModel();
       FileScrobbleViewModel.StatusUpdated += StatusUpdated;
+      MediaPlayerDatabaseScrobbleViewModel = new MediaPlayerDatabaseScrobbleViewModel();
+      MediaPlayerDatabaseScrobbleViewModel.StatusUpdated += StatusUpdated;
       LoadLastSession();
     }
 

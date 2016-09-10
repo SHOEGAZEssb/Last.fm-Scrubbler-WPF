@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="Last.fm_Scrubbler_WPF.Views.SelectScrobblesControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="30" d:DesignWidth="300">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
+
+    <Button Grid.Column="0" Content="Select ALL" IsEnabled="{Binding CanSelectAll}">
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Click">
+          <cal:ActionMessage MethodName="SelectAll"/>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
+    </Button>
+    <Button Grid.Column="2" Content="Select NONE" IsEnabled="{Binding CanSelectNone}">
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Click">
+          <cal:ActionMessage MethodName="SelectNone"/>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
+    </Button>
+  </Grid>
+</UserControl>

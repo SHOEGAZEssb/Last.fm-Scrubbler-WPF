@@ -91,7 +91,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppBootstrapper.cs" />
+    <Compile Include="GridViewSort.cs" />
     <Compile Include="Models\CSVScrobble.cs" />
+    <Compile Include="Models\MediaDBScrobble.cs" />
     <Compile Include="ViewModels\CSVScrobbleViewModel.cs" />
     <Compile Include="ViewModels\DatabaseScrobbleViewModel.cs" />
     <Compile Include="ViewModels\FetchedArtistViewModel.cs" />
@@ -105,6 +107,8 @@
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ManualScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\MediaDBScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\MediaPlayerDatabaseScrobbleViewModel.cs" />
     <Compile Include="ViewModels\ParsedCSVScrobbleViewModel.cs" />
     <Compile Include="Views\ArtistResultView.xaml.cs">
       <DependentUpon>ArtistResultView.xaml</DependentUpon>
@@ -126,6 +130,9 @@
     </Compile>
     <Compile Include="Views\ManualScrobbleView.xaml.cs">
       <DependentUpon>ManualScrobbleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MediaPlayerDatabaseScrobbleView.xaml.cs">
+      <DependentUpon>MediaPlayerDatabaseScrobbleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ReleaseResultView.xaml.cs">
       <DependentUpon>ReleaseResultView.xaml</DependentUpon>
@@ -173,7 +180,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\MediaPlayerDatabaseScrobbleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ReleaseResultView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScrobbleDateTimeUpDown.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SelectScrobblesControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

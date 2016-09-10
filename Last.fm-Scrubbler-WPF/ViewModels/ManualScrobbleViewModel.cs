@@ -109,6 +109,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       Album = "";
       MainViewModel.ClientAuthChanged += MainViewModel_ClientAuthChanged;
       CurrentDateTime = true;
+      TimePlayed = DateTime.Now;
     }
 
     /// <summary>
