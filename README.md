@@ -38,6 +38,9 @@ Currently only supports the following structure:
 
 "Artist, Album, Track, Timestamp"
 Needs to be excactly in this structure to work.
+
+I recommend downloading your last.fm csv with [this tool](http://benjaminbenben.com/lastfm-to-csv/)
+
 Individual fields can be enclosed by quotes and NEED to be enclosed by quotes if the field contains a comma.
 For example:
 
