@@ -54,3 +54,12 @@ Allows you to select music files (currently only .mp3) from your computer and sc
 Timestamps will be reversed finishing with the "Finishing Time". So the last track in the list will be scrobbled with the "Finishing Time"
 
 ![File Scrobbler](https://ibin.co/2kz1FH1Htpm8.png)
+
+### Media Player Database Scrobbling
+A lot of media players store their song library in a specific file. Often times, the amount of times a specific song has been played is in there too. This can be used to import your complete listening history of your media player into last.fm. Although without correct timestamps, it is still useful to have all your artists and songs back in your last.fm account.
+
+Currently only works with iTunes xml. You can read how to export your iTunes database as xml [here](http://ccm.net/faq/42531-enable-the-sharing-of-itunes-library-xml-with-other-applications).
+
+![Media Player Database Scrobbling](https://ibin.co/2ueEB36aAC75.png)
+
+Once you click "Scrobble", all selected songs will be scrobbled to your last.fm account, starting with the last track in the list and finishing with the first in the list. Timestamp will be current date time - 1 second.
