@@ -1,5 +1,4 @@
-﻿using Caliburn.Micro;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,14 +10,9 @@ using IF.Lastfm.Core.Objects;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
-  class FileScrobbleViewModel : PropertyChangedBase
+  class FileScrobbleViewModel : ScrobbleViewModelBase
   {
     #region Properties
-
-    /// <summary>
-    /// Event that triggers an update of the status text.
-    /// </summary>
-    public event EventHandler<UpdateStatusEventArgs> StatusUpdated;
 
     /// <summary>
     /// List of loaded files.
@@ -68,10 +62,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Gets if certain controls should be enabled on the UI.
     /// </summary>
-    public bool EnableControls
+    public override bool EnableControls
     {
       get { return _enableControls; }
-      private set
+      protected set
       {
         _enableControls = value;
         NotifyOfPropertyChange(() => EnableControls);
@@ -81,12 +75,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         NotifyOfPropertyChange(() => CanRemoveFiles);
       }
     }
-    private bool _enableControls;
 
     /// <summary>
     /// Gets if the scrobble button on the ui is enabled.
     /// </summary>
-    public bool CanScrobble
+    public override bool CanScrobble
     {
       get { return MainViewModel.Client.Auth.Authenticated && LoadedFiles.Any(i => i.ToScrobble) && EnableControls; }
     }
@@ -115,9 +108,16 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       get { return LoadedFiles.Any(i => i.IsSelected) && EnableControls; }
     }
 
-    #endregion
+    #endregion Properties
 
+    #region Private Member
+
+    /// <summary>
+    /// Current dispatcher.
+    /// </summary>
     private Dispatcher _dispatcher;
+
+    #endregion Private Member
 
     /// <summary>
     /// Constructor.
@@ -125,19 +125,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public FileScrobbleViewModel()
     {
       LoadedFiles = new ObservableCollection<LoadedFileViewModel>();
-      MainViewModel.ClientAuthChanged += MainViewModel_ClientAuthChanged;
       _dispatcher = Dispatcher.CurrentDispatcher;
       CurrentDateTime = true;
-    }
-
-    /// <summary>
-    /// Triggers when the client auth of the MainViewModel changes.
-    /// </summary>
-    /// <param name="sender">Ignored.</param>
-    /// <param name="e">Ignored.</param>
-    private void MainViewModel_ClientAuthChanged(object sender, EventArgs e)
-    {
-      NotifyOfPropertyChange(() => CanScrobble);
     }
 
     /// <summary>
@@ -154,7 +143,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
       if (ofd.ShowDialog() == DialogResult.OK)
       {
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Trying to parse selected files..."));
+        OnStatusUpdated(new UpdateStatusEventArgs("Trying to parse selected files..."));
         List<string> errors = new List<string>();
 
         await Task.Run(() =>
@@ -182,7 +171,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
         if (errors.Count > 0)
         {
-          StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Finished parsing selected files. " + errors.Count + " files could not be parsed"));
+          OnStatusUpdated(new UpdateStatusEventArgs("Finished parsing selected files. " + errors.Count + " files could not be parsed"));
           if (MessageBox.Show("Some files could not be parsed. Do you want to save a text file with the files that could not be parsed?", "Error parsing files", MessageBoxButtons.YesNo) == DialogResult.Yes)
           {
             SaveFileDialog sfd = new SaveFileDialog();
@@ -192,7 +181,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           }
         }
         else
-          StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Successfully parsed selected files. Parsed " + LoadedFiles.Count + " files"));
+          OnStatusUpdated(new UpdateStatusEventArgs("Successfully parsed selected files. Parsed " + LoadedFiles.Count + " files"));
       }
 
       EnableControls = true;
@@ -229,10 +218,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Scrobbles the selected tracks.
     /// </summary>
-    public async void Scrobble()
+    public override async Task Scrobble()
     {
       EnableControls = false;
-      StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Trying to scrobble selected tracks"));
+      OnStatusUpdated(new UpdateStatusEventArgs("Trying to scrobble selected tracks"));
 
       CurrentDateTime = CurrentDateTime;
 
@@ -246,9 +235,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
       var response = await MainViewModel.Scrobbler.ScrobbleAsync(scrobbles);
       if (response.Success)
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Successfully scrobbled!"));
+        OnStatusUpdated(new UpdateStatusEventArgs("Successfully scrobbled!"));
       else
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Error while scrobbling!"));
+        OnStatusUpdated(new UpdateStatusEventArgs("Error while scrobbling!"));
     }
 
     /// <summary>

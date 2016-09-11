@@ -1,5 +1,4 @@
-﻿using Caliburn.Micro;
-using IF.Lastfm.Core.Objects;
+﻿using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Models;
 using System;
 using System.Collections.Generic;
@@ -25,14 +24,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.MediaPlayerDatabaseScrobbleView"/>.
   /// </summary>
-  class MediaPlayerDatabaseScrobbleViewModel : PropertyChangedBase
+  class MediaPlayerDatabaseScrobbleViewModel : ScrobbleViewModelBase
   {
     #region Properties
-
-    /// <summary>
-    /// Event that triggers when the status should be changed.
-    /// </summary>
-    public event EventHandler<UpdateStatusEventArgs> StatusUpdated;
 
     /// <summary>
     /// Path to the database file.
@@ -79,10 +73,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Gets if certain controls are enabled on the UI:
     /// </summary>
-    public bool EnableControls
+    public override bool EnableControls
     {
       get { return _enableControls; }
-      private set
+      protected set
       {
         _enableControls = value;
         NotifyOfPropertyChange(() => EnableControls);
@@ -91,14 +85,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         NotifyOfPropertyChange(() => CanSelectNone);
       }
     }
-    private bool _enableControls;
 
     /// <summary>
     /// Gets if the "Scrobble" button is enabled on the UI.
     /// </summary>
-    public bool CanScrobble
+    public override bool CanScrobble
     {
-      get { return ParsedScrobbles.Any(i => i.ToScrobble) && EnableControls; }
+      get { return MainViewModel.Client.Auth.Authenticated && ParsedScrobbles.Any(i => i.ToScrobble) && EnableControls; }
     }
 
     /// <summary>
@@ -125,7 +118,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public MediaPlayerDatabaseScrobbleViewModel()
     {
       ParsedScrobbles = new ObservableCollection<MediaDBScrobbleViewModel>();
-      EnableControls = true;
     }
 
     /// <summary>
@@ -190,7 +182,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       catch (Exception ex)
       {
         EnableControls = true;
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Could not load database file: " + ex.Message));
+        OnStatusUpdated(new UpdateStatusEventArgs("Could not load database file: " + ex.Message));
         return;
       }
 
@@ -203,7 +195,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       catch (Exception)
       {
         EnableControls = true;
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Could not find 'Tracks' node in xml file"));
+        OnStatusUpdated(new UpdateStatusEventArgs("Could not find 'Tracks' node in xml file"));
         return;
       }
 
@@ -235,21 +227,25 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           }
           finally
           {
-            StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Parsing iTunes library... " + count + " / " + dictNodes.Count()));
+            OnStatusUpdated(new UpdateStatusEventArgs("Parsing iTunes library... " + count + " / " + dictNodes.Count()));
             count++;
           }
         });
       }
 
-      StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Successfully parsed iTunes library"));
+      OnStatusUpdated(new UpdateStatusEventArgs("Successfully parsed iTunes library"));
       ParsedScrobbles = new ObservableCollection<MediaDBScrobbleViewModel>(scrobbles);
       EnableControls = true;
     }
 
-    public async Task Scrobble()
+    /// <summary>
+    /// Scrobbles the selected tracks.
+    /// </summary>
+    /// <returns></returns>
+    public override async Task Scrobble()
     {
       EnableControls = false;
-      StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Trying to scrobble selected tracks"));
+      OnStatusUpdated(new UpdateStatusEventArgs("Trying to scrobble selected tracks"));
       List<Scrobble> scrobbles = new List<Scrobble>();
 
       DateTime time = DateTime.Now; ;
@@ -264,9 +260,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
       var response = await MainViewModel.Scrobbler.ScrobbleAsync(scrobbles);
       if (response.Success)
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Successfully scrobbled!"));
+        OnStatusUpdated(new UpdateStatusEventArgs("Successfully scrobbled!"));
       else
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Error while scrobbling!"));
+        OnStatusUpdated(new UpdateStatusEventArgs("Error while scrobbling!"));
 
       EnableControls = true;
     }

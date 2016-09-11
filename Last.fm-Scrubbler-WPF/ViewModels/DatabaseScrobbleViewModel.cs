@@ -1,5 +1,4 @@
-﻿using Caliburn.Micro;
-using IF.Lastfm.Core.Api.Helpers;
+﻿using IF.Lastfm.Core.Api.Helpers;
 using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Views;
 using System;
@@ -41,14 +40,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="DatabaseScrobbleView"/>.
   /// </summary>
-  class DatabaseScrobbleViewModel : PropertyChangedBase
+  class DatabaseScrobbleViewModel : ScrobbleViewModelBase
   {
     #region Properties
-
-    /// <summary>
-    /// Event that triggers an update of the status text.
-    /// </summary>
-    public event EventHandler<UpdateStatusEventArgs> StatusUpdated;
 
     /// <summary>
     /// String to search.
@@ -184,10 +178,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Gets if certain controls should be enabled on the UI.
     /// </summary>
-    public bool EnableControls
+    public override bool EnableControls
     {
       get { return _enableControls; }
-      private set
+      protected set
       {
         _enableControls = value;
         NotifyOfPropertyChange(() => EnableControls);
@@ -196,7 +190,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         NotifyOfPropertyChange(() => CanSelectNoneTracks);
       }
     }
-    private bool _enableControls;
 
     /// <summary>
     /// Gets if the currently fetched releases has been fetched
@@ -216,7 +209,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Gets if the scrobble button is enabled on the UI.
     /// </summary>
-    public bool CanScrobble
+    public override bool CanScrobble
     {
       get { return MainViewModel.Client.Auth.Authenticated && FetchedTracks.Any(i => i.ToScrobble) && EnableControls; }
     }
@@ -281,18 +274,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       _releaseResultView = new ReleaseResultView() { DataContext = this };
       _trackResultView = new TrackResultView() { DataContext = this };
       CurrentDateTime = true;
-      EnableControls = true;
-      MainViewModel.ClientAuthChanged += MainViewModel_AuthChanged;
-    }
-
-    /// <summary>
-    /// Triggers when the client auth changed.
-    /// </summary>
-    /// <param name="sender">Ignored.</param>
-    /// <param name="e">Ignored.</param>
-    private void MainViewModel_AuthChanged(object sender, EventArgs e)
-    {
-      NotifyOfPropertyChange(() => CanScrobble);
     }
 
     /// <summary>
@@ -306,7 +287,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
       if (SearchType == SearchType.Artist)
       {
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Trying to search for artist '" + SearchText + "'"));
+        OnStatusUpdated(new UpdateStatusEventArgs("Trying to search for artist '" + SearchText + "'"));
 
         var response = await MainViewModel.Client.Artist.SearchAsync(SearchText);
         if (response.Success)
@@ -322,17 +303,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           if (FetchedArtists.Count != 0)
           {
             CurrentView = _artistResultView;
-            StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Found " + FetchedArtists.Count + " artists"));
+            OnStatusUpdated(new UpdateStatusEventArgs("Found " + FetchedArtists.Count + " artists"));
           }
           else
-            StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Found no artists"));
+            OnStatusUpdated(new UpdateStatusEventArgs("Found no artists"));
         }
         else
-          StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Error while searching for artist '" + SearchText + "'"));
+          OnStatusUpdated(new UpdateStatusEventArgs("Error while searching for artist '" + SearchText + "'"));
       }
       else if (SearchType == SearchType.Release)
       {
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Trying to search for release '" + SearchText + "'"));
+        OnStatusUpdated(new UpdateStatusEventArgs("Trying to search for release '" + SearchText + "'"));
 
         var response = await MainViewModel.Client.Album.SearchAsync(SearchText);
         if (response.Success)
@@ -349,13 +330,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           {
             FetchedReleaseThroughArtist = false;
             CurrentView = _releaseResultView;
-            StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Found " + FetchedArtists.Count + " releases"));
+            OnStatusUpdated(new UpdateStatusEventArgs("Found " + FetchedArtists.Count + " releases"));
           }
           else
-            StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Found no releases"));
+            OnStatusUpdated(new UpdateStatusEventArgs("Found no releases"));
         }
         else
-          StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Error while searching for release '" + SearchText + "'"));
+          OnStatusUpdated(new UpdateStatusEventArgs("Error while searching for release '" + SearchText + "'"));
       }
 
       EnableControls = true;
@@ -374,7 +355,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
         var artist = sender as LastArtist;
 
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Trying to fetch releases from '" + artist.Name + "'"));
+        OnStatusUpdated(new UpdateStatusEventArgs("Trying to fetch releases from '" + artist.Name + "'"));
 
         var response = await MainViewModel.Client.Artist.GetTopAlbumsAsync(artist.Name);
         if (response.Success)
@@ -391,13 +372,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           {
             FetchedReleaseThroughArtist = true;
             CurrentView = _releaseResultView;
-            StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Successfully fetched releases from '" + artist.Name + "'"));
+            OnStatusUpdated(new UpdateStatusEventArgs("Successfully fetched releases from '" + artist.Name + "'"));
           }
           else
-            StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("'" + artist.Name + "'" + " has no releases"));
+            OnStatusUpdated(new UpdateStatusEventArgs("'" + artist.Name + "'" + " has no releases"));
         }
         else
-          StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Error while fetching releases from '" + artist.Name + "'"));
+          OnStatusUpdated(new UpdateStatusEventArgs("Error while fetching releases from '" + artist.Name + "'"));
 
         EnableControls = true;
       }
@@ -416,7 +397,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
         var release = sender as LastAlbum;
 
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Trying to fetch tracklist from '" + release.Name + "'"));
+        OnStatusUpdated(new UpdateStatusEventArgs("Trying to fetch tracklist from '" + release.Name + "'"));
 
         LastResponse<LastAlbum> detailedRelease = null;
         if (release.Mbid != null && release.Mbid != "")
@@ -437,13 +418,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           if (FetchedTracks.Count != 0)
           {
             CurrentView = _trackResultView;
-            StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Successfully fetched tracklist from '" + release.Name + "'"));
+            OnStatusUpdated(new UpdateStatusEventArgs("Successfully fetched tracklist from '" + release.Name + "'"));
           }
           else
-            StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("'" + release.Name + "' has no tracks"));
+            OnStatusUpdated(new UpdateStatusEventArgs("'" + release.Name + "' has no tracks"));
         }
         else
-          StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Error while fetching tracklist from '" + release.Name + "'"));
+          OnStatusUpdated(new UpdateStatusEventArgs("Error while fetching tracklist from '" + release.Name + "'"));
 
         EnableControls = true;
       }
@@ -472,11 +453,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// as timestamp. The last track (track 1) will have the <see cref="FinishingTime"/>
     /// minus all the durations of the scrobbles before. 3 minute default duration.
     /// </remarks>
-    public async void Scrobble()
+    public override async Task Scrobble()
     {
       EnableControls = false;
 
-      StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Trying to scrobble selected tracks"));
+      OnStatusUpdated(new UpdateStatusEventArgs("Trying to scrobble selected tracks"));
 
       // trigger time change if needed
       CurrentDateTime = CurrentDateTime;
@@ -494,9 +475,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
       var response = await MainViewModel.Scrobbler.ScrobbleAsync(scrobbles);
       if (response.Success)
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Successfully scrobbled!"));
+        OnStatusUpdated(new UpdateStatusEventArgs("Successfully scrobbled!"));
       else
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Error while scrobbling!"));
+        OnStatusUpdated(new UpdateStatusEventArgs("Error while scrobbling!"));
 
       EnableControls = true;
     }

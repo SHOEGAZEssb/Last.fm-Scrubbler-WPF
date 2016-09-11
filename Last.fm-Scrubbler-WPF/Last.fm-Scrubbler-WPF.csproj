@@ -96,20 +96,21 @@
     <Compile Include="Models\MediaDBScrobble.cs" />
     <Compile Include="ViewModels\CSVScrobbleViewModel.cs" />
     <Compile Include="ViewModels\DatabaseScrobbleViewModel.cs" />
-    <Compile Include="ViewModels\FetchedArtistViewModel.cs" />
-    <Compile Include="ViewModels\FetchedReleaseViewModel.cs" />
-    <Compile Include="ViewModels\FetchedScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\SubViewModels\FetchedArtistViewModel.cs" />
+    <Compile Include="ViewModels\SubViewModels\FetchedReleaseViewModel.cs" />
+    <Compile Include="ViewModels\SubViewModels\FetchedScrobbleViewModel.cs" />
     <Compile Include="UpdateStatusEventArgs.cs" />
-    <Compile Include="ViewModels\FetchedTrackViewModel.cs" />
+    <Compile Include="ViewModels\SubViewModels\FetchedTrackViewModel.cs" />
     <Compile Include="ViewModels\FileScrobbleViewModel.cs" />
     <Compile Include="ViewModels\FriendScrobbleViewModel.cs" />
-    <Compile Include="ViewModels\LoadedFileViewModel.cs" />
+    <Compile Include="ViewModels\SubViewModels\LoadedFileViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ManualScrobbleViewModel.cs" />
-    <Compile Include="ViewModels\MediaDBScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\SubViewModels\MediaDBScrobbleViewModel.cs" />
     <Compile Include="ViewModels\MediaPlayerDatabaseScrobbleViewModel.cs" />
-    <Compile Include="ViewModels\ParsedCSVScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\SubViewModels\ParsedCSVScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModelBase.cs" />
     <Compile Include="Views\ArtistResultView.xaml.cs">
       <DependentUpon>ArtistResultView.xaml</DependentUpon>
     </Compile>
@@ -136,6 +137,9 @@
     </Compile>
     <Compile Include="Views\ReleaseResultView.xaml.cs">
       <DependentUpon>ReleaseResultView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SelectScrobblesControl.xaml.cs">
+      <DependentUpon>SelectScrobblesControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TrackResultView.xaml.cs">
       <DependentUpon>TrackResultView.xaml</DependentUpon>

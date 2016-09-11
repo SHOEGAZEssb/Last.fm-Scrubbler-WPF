@@ -1,5 +1,4 @@
-﻿using Caliburn.Micro;
-using IF.Lastfm.Core.Objects;
+﻿using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Models;
 using Microsoft.VisualBasic.FileIO;
 using System;
@@ -33,7 +32,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.CSVScrobbleView"/>.
   /// </summary>
-  class CSVScrobbleViewModel : PropertyChangedBase
+  class CSVScrobbleViewModel : ScrobbleViewModelBase
   {
     #region Properties
 
@@ -41,11 +40,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Different formats to try in case TryParse fails.
     /// </summary>
     public static string[] Formats = new string[] { "M/dd/yyyy h:mm" };
-
-    /// <summary>
-    /// Event that triggers when the status should be changed.
-    /// </summary>
-    public event EventHandler<UpdateStatusEventArgs> StatusUpdated;
 
     /// <summary>
     /// The path to the csv file.
@@ -131,7 +125,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Gets if the Scrobble button is enabled on the UI.
     /// </summary>
-    public bool CanScrobble
+    public override bool CanScrobble
     {
       get { return MainViewModel.Client.Auth.Authenticated && Scrobbles.Any(i => i.ToScrobble) && EnableControls; }
     }
@@ -163,10 +157,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Gets/sets if certain controls on the UI should be enabled.
     /// </summary>
-    public bool EnableControls
+    public override bool EnableControls
     {
       get { return _enableControls; }
-      private set
+      protected set
       {
         _enableControls = value;
         NotifyOfPropertyChange(() => EnableControls);
@@ -175,7 +169,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         NotifyOfPropertyChange(() => CanSelectNone);
       }
     }
-    private bool _enableControls;
 
     #endregion Properties
 
@@ -190,21 +183,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public CSVScrobbleViewModel()
     {
       Scrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>();
-      MainViewModel.ClientAuthChanged += MainViewModel_ClientAuthChanged;
       Duration = 1;
       FinishingTime = DateTime.Now;
-      EnableControls = true;
       _dispatcher = Dispatcher.CurrentDispatcher;
-    }
-
-    /// <summary>
-    /// Triggers when the client auth changed.
-    /// </summary>
-    /// <param name="sender">Ignored.</param>
-    /// <param name="e">Ignored.</param>
-    private void MainViewModel_ClientAuthChanged(object sender, EventArgs e)
-    {
-      NotifyOfPropertyChange(() => CanScrobble);
     }
 
     /// <summary>
@@ -225,11 +206,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <param name="path">Path of the csv file to load.</param>
     private async void LoadCSVFile(string path)
     {
-
       try
       {
         EnableControls = false;
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Reading CSV file..."));
+        OnStatusUpdated(new UpdateStatusEventArgs("Reading CSV file..."));
 
         CSVFilePath = path;
         Scrobbles.Clear();
@@ -299,10 +279,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         });
 
         if (errors.Count == 0)
-          StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Successfully parsed CSV file. Parsed " + Scrobbles.Count + " rows"));
+          OnStatusUpdated(new UpdateStatusEventArgs("Successfully parsed CSV file. Parsed " + Scrobbles.Count + " rows"));
         else
         {
-          StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Partially parsed CSV file. " + errors.Count + " rows could not be parsed"));
+          OnStatusUpdated(new UpdateStatusEventArgs("Partially parsed CSV file. " + errors.Count + " rows could not be parsed"));
           if (MessageBox.Show("Some rows could not be parsed. Do you want to save a text file with the rows that could not be parsed?", "Error parsing rows", MessageBoxButtons.YesNo) == DialogResult.Yes)
           {
             SaveFileDialog sfd = new SaveFileDialog();
@@ -315,7 +295,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       catch (Exception ex)
       {
         Scrobbles.Clear();
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Error parsing CSV file: " + ex.Message));
+        OnStatusUpdated(new UpdateStatusEventArgs("Error parsing CSV file: " + ex.Message));
       }
       finally
       {
@@ -339,10 +319,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Scrobbles the selected scrobbles.
     /// </summary>
     /// <returns>Task.</returns>
-    public async Task Scrobble()
+    public override async Task Scrobble()
     {
       EnableControls = false;
-      StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Trying to scrobble selected tracks"));
+      OnStatusUpdated(new UpdateStatusEventArgs("Trying to scrobble selected tracks"));
       List<Scrobble> scrobbles = new List<Scrobble>();
 
       if (ScrobbleMode == CSVScrobbleMode.Normal)
@@ -364,9 +344,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
       var response = await MainViewModel.Scrobbler.ScrobbleAsync(scrobbles);
       if (response.Success)
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Successfully scrobbled!"));
+        OnStatusUpdated(new UpdateStatusEventArgs("Successfully scrobbled!"));
       else
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Error while scrobbling!"));
+        OnStatusUpdated(new UpdateStatusEventArgs("Error while scrobbling!"));
 
       EnableControls = true;
     }
