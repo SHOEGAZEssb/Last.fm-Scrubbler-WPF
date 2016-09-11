@@ -3,7 +3,6 @@ using Last.fm_Scrubbler_WPF.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,6 +19,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Scrobble from iTunes database (.xml).
     /// </summary>
     iTunes_Or_Winamp,
+
+    /// <summary>
+    /// Scrobble from Windows Media Player.
+    /// </summary>
+    WMP
   }
 
   /// <summary>
@@ -53,6 +57,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         _mediaPlayerDatabaseType = value;
         NotifyOfPropertyChange(() => MediaPlayerDatabaseType);
+        NotifyOfPropertyChange(() => CanSelectFile);
       }
     }
     private MediaPlayerDatabaseType _mediaPlayerDatabaseType;
@@ -84,7 +89,16 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         NotifyOfPropertyChange(() => CanScrobble);
         NotifyOfPropertyChange(() => CanSelectAll);
         NotifyOfPropertyChange(() => CanSelectNone);
+        NotifyOfPropertyChange(() => CanSelectFile);
       }
+    }
+
+    /// <summary>
+    /// Gets if the "..." button is enabled on the ui.
+    /// </summary>
+    public bool CanSelectFile
+    {
+      get { return MediaPlayerDatabaseType != MediaPlayerDatabaseType.WMP && EnableControls; }
     }
 
     /// <summary>
@@ -144,6 +158,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.iTunes_Or_Winamp)
         ParseItunesConformXML();
+      else if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.WMP)
+        ParseWMPDatabase();
     }
 
     /// <summary>
@@ -172,7 +188,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Parse the <see cref="DBFilePath"/>.
     /// A lot of media players use the same xml format.
     /// </summary>
-    private async void ParseItunesConformXML()
+    /// <returns>Task.</returns>
+    private async Task ParseItunesConformXML()
     {
       EnableControls = false;
 
@@ -243,6 +260,34 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
 
     /// <summary>
+    /// Parses the windows media player database.
+    /// </summary>
+    /// <returns>Task.</returns>
+    private async Task ParseWMPDatabase()
+    {
+      EnableControls = false;
+
+      await Task.Run(() =>
+      {
+        OnStatusUpdated(new UpdateStatusEventArgs("Parsing Windows Media Player Library..."));
+        using (WMP wmp = new WMP())
+        {
+          // todo: this can be better
+          var scrobbles = wmp.GetMusicLibrary();
+          var scrobbleVMs = new List<MediaDBScrobbleViewModel>();
+          foreach(var scrobble in scrobbles)
+          {
+            scrobbleVMs.Add(new MediaDBScrobbleViewModel(scrobble));
+          }
+
+          ParsedScrobbles = new ObservableCollection<MediaDBScrobbleViewModel>(scrobbleVMs);
+        }
+      });
+
+      EnableControls = true;
+    }
+
+    /// <summary>
     /// Scrobbles the selected tracks.
     /// </summary>
     /// <returns></returns>
@@ -254,7 +299,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       DateTime time = DateTime.Now; ;
       foreach (var vm in ParsedScrobbles.Where(i => i.ToScrobble))
       {
-        for(int i = 0; i < vm.Scrobble.PlayCount; i++)
+        for (int i = 0; i < vm.Scrobble.PlayCount; i++)
         {
           scrobbles.Add(new Scrobble(vm.Scrobble.ArtistName, vm.Scrobble.AlbumName, vm.Scrobble.TrackName, time));
           time = time.Subtract(TimeSpan.FromSeconds(1));

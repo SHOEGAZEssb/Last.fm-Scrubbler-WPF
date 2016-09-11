@@ -46,8 +46,8 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="DB File Path:"/>
-    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding DBFilePath}" IsEnabled="{Binding EnableControls}"/>
-    <Button Grid.Row="0" Grid.Column="4" Content="..." MinWidth="25" IsEnabled="{Binding EnableControls}">
+    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding DBFilePath}" IsEnabled="{Binding CanSelectFile}"/>
+    <Button Grid.Row="0" Grid.Column="4" Content="..." MinWidth="25" IsEnabled="{Binding CanSelectFile}">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="SelectFile"/>

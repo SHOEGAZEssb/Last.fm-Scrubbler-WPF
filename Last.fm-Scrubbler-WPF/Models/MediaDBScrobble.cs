@@ -1,4 +1,6 @@
-﻿namespace Last.fm_Scrubbler_WPF.Models
+﻿using System;
+
+namespace Last.fm_Scrubbler_WPF.Models
 {
   /// <summary>
   /// Scrobble parsed from a media player library.
@@ -13,7 +15,13 @@
     public string TrackName
     {
       get { return _trackName; }
-      private set { _trackName = value; }
+      private set
+      {
+        if (value == "")
+          throw new Exception("TrackName can't be empty.");
+
+        _trackName = value;
+      }
     }
     private string _trackName;
 
@@ -22,10 +30,16 @@
     /// </summary>
     public string ArtistName
     {
-      get { return _ArtistName; }
-      private set { _ArtistName = value; }
+      get { return _artistName; }
+      private set
+      {
+        if (value == "")
+          throw new Exception("ArtistName can't be empty.");
+
+        _artistName = value;
+      }
     }
-    private string _ArtistName;
+    private string _artistName;
 
     /// <summary>
     /// Name of the album.
@@ -43,7 +57,13 @@
     public int PlayCount
     {
       get { return _playCount; }
-      private set { _playCount = value; }
+      private set
+      {
+        if (value <= 0)
+          throw new Exception("PlayCount can't <= 0.");
+
+        _playCount = value;
+      }
     }
     private int _playCount;
 

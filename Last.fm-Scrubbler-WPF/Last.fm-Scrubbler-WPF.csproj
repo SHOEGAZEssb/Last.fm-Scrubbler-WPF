@@ -94,6 +94,7 @@
     <Compile Include="GridViewSort.cs" />
     <Compile Include="Models\CSVScrobble.cs" />
     <Compile Include="Models\MediaDBScrobble.cs" />
+    <Compile Include="Models\WMP.cs" />
     <Compile Include="ViewModels\CSVScrobbleViewModel.cs" />
     <Compile Include="ViewModels\DatabaseScrobbleViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\FetchedArtistViewModel.cs" />
@@ -235,7 +236,17 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <COMReference Include="WMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="scrubbler_64.ico" />
   </ItemGroup>
