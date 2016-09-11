@@ -3,6 +3,7 @@ using Last.fm_Scrubbler_WPF.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,7 +19,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Scrobble from iTunes database (.xml).
     /// </summary>
-    iTunes
+    iTunes_Or_Winamp,
   }
 
   /// <summary>
@@ -129,8 +130,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       OpenFileDialog ofd = new OpenFileDialog();
 
-      if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.iTunes)
-        ofd.Filter = "iTunes Database XML (*.xml) | *.xml";
+      if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.iTunes_Or_Winamp)
+        ofd.Filter = "iTunes/Winamp Database XML (*.xml) | *.xml";
 
       if (ofd.ShowDialog() == DialogResult.OK)
         DBFilePath = ofd.FileName;
@@ -141,8 +142,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public void ParseFile()
     {
-      if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.iTunes)
-        ParseItunes();
+      if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.iTunes_Or_Winamp)
+        ParseItunesConformXML();
     }
 
     /// <summary>
@@ -169,8 +170,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
     /// <summary>
     /// Parse the <see cref="DBFilePath"/>.
+    /// A lot of media players use the same xml format.
     /// </summary>
-    private async void ParseItunes()
+    private async void ParseItunesConformXML()
     {
       EnableControls = false;
 
@@ -190,7 +192,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       XmlNode trackDictNode = null;
       try
       {
-        trackDictNode = xmlDocument.ChildNodes[2].ChildNodes[0].ChildNodes[15];
+        trackDictNode = xmlDocument.ChildNodes[2].ChildNodes[0].ChildNodes.OfType<XmlNode>().First(i => i.Name == "dict");
+        if (trackDictNode == null)
+          throw new Exception("Could not find 'Tracks' node in xml file");
       }
       catch (Exception)
       {
@@ -227,13 +231,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           }
           finally
           {
-            OnStatusUpdated(new UpdateStatusEventArgs("Parsing iTunes library... " + count + " / " + dictNodes.Count()));
+            OnStatusUpdated(new UpdateStatusEventArgs("Parsing database file... " + count + " / " + dictNodes.Count()));
             count++;
           }
         });
       }
 
-      OnStatusUpdated(new UpdateStatusEventArgs("Successfully parsed iTunes library"));
+      OnStatusUpdated(new UpdateStatusEventArgs("Successfully parsed database file"));
       ParsedScrobbles = new ObservableCollection<MediaDBScrobbleViewModel>(scrobbles);
       EnableControls = true;
     }
@@ -245,7 +249,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public override async Task Scrobble()
     {
       EnableControls = false;
-      OnStatusUpdated(new UpdateStatusEventArgs("Trying to scrobble selected tracks"));
       List<Scrobble> scrobbles = new List<Scrobble>();
 
       DateTime time = DateTime.Now; ;
@@ -257,6 +260,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           time = time.Subtract(TimeSpan.FromSeconds(1));
         }
       }
+
+      OnStatusUpdated(new UpdateStatusEventArgs("Trying to scrobble " + scrobbles.Count + " tracks"));
 
       var response = await MainViewModel.Scrobbler.ScrobbleAsync(scrobbles);
       if (response.Success)
