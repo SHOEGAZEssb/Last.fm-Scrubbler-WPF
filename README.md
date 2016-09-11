@@ -74,7 +74,11 @@ Timestamps will be reversed finishing with the "Finishing Time". So the last tra
 ### Media Player Database Scrobbling
 A lot of media players store their song library in a specific file. Often times, the amount of times a specific song has been played is in there too. This can be used to import your complete listening history of your media player into last.fm. Although without correct timestamps, it is still useful to have all your artists and songs back in your last.fm account.
 
-Currently only works with iTunes xml. You can read how to export your iTunes database as xml [here](http://ccm.net/faq/42531-enable-the-sharing-of-itunes-library-xml-with-other-applications).
+Currently works with iTunes and Winamp xml. 
+
+You can read how to export your iTunes database as xml [here](http://ccm.net/faq/42531-enable-the-sharing-of-itunes-library-xml-with-other-applications).
+
+You can read how to export your Winamp database as xml [here](http://forums.winamp.com/showthread.php?t=334048) (only step 1 is required.
 
 ![Media Player Database Scrobbling](https://ibin.co/2ueEB36aAC75.png)
 
