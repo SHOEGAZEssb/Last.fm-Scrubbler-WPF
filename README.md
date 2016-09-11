@@ -1,5 +1,7 @@
 # Last.fm-Scrubbler-WPF
 Manual Last.fm scrobbling for when a service (or you!) failed to scrobble.
+### IMPORTANT
+This app is still in beta. It did not get a lot of testing. I recommend trying to scrobble to a test account first and see if the things you want to scrobble do so correctly. Especially if you scrobble a lot of tracks at once there can be some problems. Please be careful with your accounts.
 
 ## Features
 
