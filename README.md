@@ -57,7 +57,7 @@ Import Mode:
 
 In this mode the tracks will be scrobbled with the timestamp calculated from the "Finish Time" and the selected duration between each track. This allows the scrobbling of the tracks even if the timestamp in the csv is older than 14 days. Therefore the first (upmost) track in the csv file will be scrobbled with the "Finish Time".
 
-![CSV Scrobbling](https://ibin.co/2kAkY5hpYtEi.png)
+![CSV Scrobbling](https://ibin.co/2ugcrHqbpbu6.png)
 Normal Mode
 
 ![CSV Scrobbling Import Mode](https://ibin.co/2kXudUqJloTY.png)
