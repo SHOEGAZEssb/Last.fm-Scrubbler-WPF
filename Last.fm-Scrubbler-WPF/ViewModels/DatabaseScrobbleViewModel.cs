@@ -287,7 +287,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
       if (SearchType == SearchType.Artist)
       {
-        OnStatusUpdated(new UpdateStatusEventArgs("Trying to search for artist '" + SearchText + "'"));
+        OnStatusUpdated("Trying to search for artist '" + SearchText + "'...");
 
         var response = await MainViewModel.Client.Artist.SearchAsync(SearchText);
         if (response.Success)
@@ -303,17 +303,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           if (FetchedArtists.Count != 0)
           {
             CurrentView = _artistResultView;
-            OnStatusUpdated(new UpdateStatusEventArgs("Found " + FetchedArtists.Count + " artists"));
+            OnStatusUpdated("Found " + FetchedArtists.Count + " artists");
           }
           else
-            OnStatusUpdated(new UpdateStatusEventArgs("Found no artists"));
+            OnStatusUpdated("Found no artists");
         }
         else
-          OnStatusUpdated(new UpdateStatusEventArgs("Error while searching for artist '" + SearchText + "'"));
+          OnStatusUpdated("Error while searching for artist '" + SearchText + "'");
       }
       else if (SearchType == SearchType.Release)
       {
-        OnStatusUpdated(new UpdateStatusEventArgs("Trying to search for release '" + SearchText + "'"));
+        OnStatusUpdated("Trying to search for release '" + SearchText + "'");
 
         var response = await MainViewModel.Client.Album.SearchAsync(SearchText);
         if (response.Success)
@@ -330,13 +330,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           {
             FetchedReleaseThroughArtist = false;
             CurrentView = _releaseResultView;
-            OnStatusUpdated(new UpdateStatusEventArgs("Found " + FetchedArtists.Count + " releases"));
+            OnStatusUpdated("Found " + FetchedArtists.Count + " releases");
           }
           else
-            OnStatusUpdated(new UpdateStatusEventArgs("Found no releases"));
+            OnStatusUpdated("Found no releases");
         }
         else
-          OnStatusUpdated(new UpdateStatusEventArgs("Error while searching for release '" + SearchText + "'"));
+          OnStatusUpdated("Error while searching for release '" + SearchText + "'");
       }
 
       EnableControls = true;
@@ -355,7 +355,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
         var artist = sender as LastArtist;
 
-        OnStatusUpdated(new UpdateStatusEventArgs("Trying to fetch releases from '" + artist.Name + "'"));
+        OnStatusUpdated("Trying to fetch releases from '" + artist.Name + "'");
 
         var response = await MainViewModel.Client.Artist.GetTopAlbumsAsync(artist.Name);
         if (response.Success)
@@ -372,13 +372,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           {
             FetchedReleaseThroughArtist = true;
             CurrentView = _releaseResultView;
-            OnStatusUpdated(new UpdateStatusEventArgs("Successfully fetched releases from '" + artist.Name + "'"));
+            OnStatusUpdated("Successfully fetched releases from '" + artist.Name + "'");
           }
           else
-            OnStatusUpdated(new UpdateStatusEventArgs("'" + artist.Name + "'" + " has no releases"));
+            OnStatusUpdated("'" + artist.Name + "'" + " has no releases");
         }
         else
-          OnStatusUpdated(new UpdateStatusEventArgs("Error while fetching releases from '" + artist.Name + "'"));
+          OnStatusUpdated("Error while fetching releases from '" + artist.Name + "'");
 
         EnableControls = true;
       }
@@ -397,7 +397,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
         var release = sender as LastAlbum;
 
-        OnStatusUpdated(new UpdateStatusEventArgs("Trying to fetch tracklist from '" + release.Name + "'"));
+        OnStatusUpdated("Trying to fetch tracklist from '" + release.Name + "'");
 
         LastResponse<LastAlbum> detailedRelease = null;
         if (release.Mbid != null && release.Mbid != "")
@@ -418,13 +418,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           if (FetchedTracks.Count != 0)
           {
             CurrentView = _trackResultView;
-            OnStatusUpdated(new UpdateStatusEventArgs("Successfully fetched tracklist from '" + release.Name + "'"));
+            OnStatusUpdated("Successfully fetched tracklist from '" + release.Name + "'");
           }
           else
-            OnStatusUpdated(new UpdateStatusEventArgs("'" + release.Name + "' has no tracks"));
+            OnStatusUpdated("'" + release.Name + "' has no tracks");
         }
         else
-          OnStatusUpdated(new UpdateStatusEventArgs("Error while fetching tracklist from '" + release.Name + "'"));
+          OnStatusUpdated("Error while fetching tracklist from '" + release.Name + "'");
 
         EnableControls = true;
       }
@@ -457,7 +457,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       EnableControls = false;
 
-      OnStatusUpdated(new UpdateStatusEventArgs("Trying to scrobble selected tracks"));
+      OnStatusUpdated("Trying to scrobble selected tracks...");
 
       // trigger time change if needed
       CurrentDateTime = CurrentDateTime;
@@ -475,9 +475,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
       var response = await MainViewModel.Scrobbler.ScrobbleAsync(scrobbles);
       if (response.Success)
-        OnStatusUpdated(new UpdateStatusEventArgs("Successfully scrobbled!"));
+        OnStatusUpdated("Successfully scrobbled!");
       else
-        OnStatusUpdated(new UpdateStatusEventArgs("Error while scrobbling!"));
+        OnStatusUpdated("Error while scrobbling!");
 
       EnableControls = true;
     }
