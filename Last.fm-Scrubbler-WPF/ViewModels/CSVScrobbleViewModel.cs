@@ -186,6 +186,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       Duration = 1;
       FinishingTime = DateTime.Now;
       _dispatcher = Dispatcher.CurrentDispatcher;
+      ScrobbleMode = CSVScrobbleMode.ImportMode;
     }
 
     /// <summary>
@@ -193,7 +194,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public void LoadCSVFileDialog()
     {
-
       OpenFileDialog ofd = new OpenFileDialog();
       ofd.Filter = "CSV Files|*.csv";
       if (ofd.ShowDialog() == DialogResult.OK)
