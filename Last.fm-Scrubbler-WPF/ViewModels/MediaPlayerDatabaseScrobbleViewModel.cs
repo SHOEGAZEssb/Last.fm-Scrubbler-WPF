@@ -201,7 +201,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       catch (Exception ex)
       {
         EnableControls = true;
-        OnStatusUpdated(new UpdateStatusEventArgs("Could not load database file: " + ex.Message));
+        OnStatusUpdated("Could not load database file: " + ex.Message);
         return;
       }
 
@@ -216,7 +216,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       catch (Exception)
       {
         EnableControls = true;
-        OnStatusUpdated(new UpdateStatusEventArgs("Could not find 'Tracks' node in xml file"));
+        OnStatusUpdated("Could not find 'Tracks' node in xml file");
         return;
       }
 
@@ -248,13 +248,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           }
           finally
           {
-            OnStatusUpdated(new UpdateStatusEventArgs("Parsing database file... " + count + " / " + dictNodes.Count()));
+            OnStatusUpdated("Parsing database file... " + count + " / " + dictNodes.Count());
             count++;
           }
         });
       }
 
-      OnStatusUpdated(new UpdateStatusEventArgs("Successfully parsed database file"));
+      OnStatusUpdated("Successfully parsed database file");
       ParsedScrobbles = new ObservableCollection<MediaDBScrobbleViewModel>(scrobbles);
       EnableControls = true;
     }
@@ -269,7 +269,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
       await Task.Run(() =>
       {
-        OnStatusUpdated(new UpdateStatusEventArgs("Parsing Windows Media Player library"));
+        OnStatusUpdated("Parsing Windows Media Player library...");
         using (WMP wmp = new WMP())
         {
           // todo: this can be better
@@ -284,7 +284,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
           ParsedScrobbles = new ObservableCollection<MediaDBScrobbleViewModel>(scrobbleVMs);
         }
-        OnStatusUpdated(new UpdateStatusEventArgs("Successfully parsed Windows Media Player library"));
+        OnStatusUpdated("Successfully parsed Windows Media Player library");
       });
 
       EnableControls = true;
@@ -309,13 +309,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         }
       }
 
-      OnStatusUpdated(new UpdateStatusEventArgs("Trying to scrobble " + scrobbles.Count + " tracks..."));
+      OnStatusUpdated("Trying to scrobble selected tracks...");
 
       var response = await MainViewModel.Scrobbler.ScrobbleAsync(scrobbles);
       if (response.Success)
-        OnStatusUpdated(new UpdateStatusEventArgs("Successfully scrobbled!"));
+        OnStatusUpdated("Successfully scrobbled!");
       else
-        OnStatusUpdated(new UpdateStatusEventArgs("Error while scrobbling!"));
+        OnStatusUpdated("Error while scrobbling!");
 
       EnableControls = true;
     }
