@@ -209,7 +209,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       try
       {
         EnableControls = false;
-        OnStatusUpdated(new UpdateStatusEventArgs("Reading CSV file..."));
+        OnStatusUpdated("Reading CSV file...");
 
         CSVFilePath = path;
         Scrobbles.Clear();
@@ -279,10 +279,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         });
 
         if (errors.Count == 0)
-          OnStatusUpdated(new UpdateStatusEventArgs("Successfully parsed CSV file. Parsed " + Scrobbles.Count + " rows"));
+          OnStatusUpdated("Successfully parsed CSV file. Parsed " + Scrobbles.Count + " rows");
         else
         {
-          OnStatusUpdated(new UpdateStatusEventArgs("Partially parsed CSV file. " + errors.Count + " rows could not be parsed"));
+          OnStatusUpdated("Partially parsed CSV file. " + errors.Count + " rows could not be parsed");
           if (MessageBox.Show("Some rows could not be parsed. Do you want to save a text file with the rows that could not be parsed?", "Error parsing rows", MessageBoxButtons.YesNo) == DialogResult.Yes)
           {
             SaveFileDialog sfd = new SaveFileDialog();
@@ -295,7 +295,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       catch (Exception ex)
       {
         Scrobbles.Clear();
-        OnStatusUpdated(new UpdateStatusEventArgs("Error parsing CSV file: " + ex.Message));
+        OnStatusUpdated("Error parsing CSV file: " + ex.Message);
       }
       finally
       {
@@ -322,7 +322,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public override async Task Scrobble()
     {
       EnableControls = false;
-      OnStatusUpdated(new UpdateStatusEventArgs("Trying to scrobble selected tracks"));
+      OnStatusUpdated("Trying to scrobble selected tracks...");
       List<Scrobble> scrobbles = new List<Scrobble>();
 
       if (ScrobbleMode == CSVScrobbleMode.Normal)
@@ -344,9 +344,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
       var response = await MainViewModel.Scrobbler.ScrobbleAsync(scrobbles);
       if (response.Success)
-        OnStatusUpdated(new UpdateStatusEventArgs("Successfully scrobbled!"));
+        OnStatusUpdated("Successfully scrobbled!");
       else
-        OnStatusUpdated(new UpdateStatusEventArgs("Error while scrobbling!"));
+        OnStatusUpdated("Error while scrobbling!");
 
       EnableControls = true;
     }

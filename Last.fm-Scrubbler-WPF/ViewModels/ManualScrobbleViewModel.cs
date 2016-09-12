@@ -130,7 +130,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       EnableControls = false;
 
-      OnStatusUpdated(new UpdateStatusEventArgs("Trying to scrobble..."));
+      OnStatusUpdated("Trying to scrobble...");
 
       if (CurrentDateTime)
         TimePlayed = DateTime.Now;
@@ -138,9 +138,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       Scrobble s = new Scrobble(Artist, Album, Track, TimePlayed);
       var response = await MainViewModel.Scrobbler.ScrobbleAsync(s);
       if (response.Success)
-        OnStatusUpdated(new UpdateStatusEventArgs("Successfully scrobbled!"));
+        OnStatusUpdated("Successfully scrobbled!");
       else
-        OnStatusUpdated(new UpdateStatusEventArgs("Error while scrobbling!"));
+        OnStatusUpdated("Error while scrobbling!");
 
       EnableControls = true;
     }

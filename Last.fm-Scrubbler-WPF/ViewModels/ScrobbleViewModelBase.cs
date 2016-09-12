@@ -59,9 +59,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Updates the status.
     /// </summary>
     /// <param name="e">New status.</param>
-    protected virtual void OnStatusUpdated(UpdateStatusEventArgs e)
+    protected virtual void OnStatusUpdated(string newStatus)
     {
-      StatusUpdated?.Invoke(this, e);
+      StatusUpdated?.Invoke(this, new UpdateStatusEventArgs(newStatus));
     }
   }
 }

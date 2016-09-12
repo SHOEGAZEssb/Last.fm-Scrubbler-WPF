@@ -143,7 +143,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
       if (ofd.ShowDialog() == DialogResult.OK)
       {
-        OnStatusUpdated(new UpdateStatusEventArgs("Trying to parse selected files..."));
+        OnStatusUpdated("Trying to parse selected files...");
         List<string> errors = new List<string>();
 
         await Task.Run(() =>
@@ -171,7 +171,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
         if (errors.Count > 0)
         {
-          OnStatusUpdated(new UpdateStatusEventArgs("Finished parsing selected files. " + errors.Count + " files could not be parsed"));
+          OnStatusUpdated("Finished parsing selected files. " + errors.Count + " files could not be parsed");
           if (MessageBox.Show("Some files could not be parsed. Do you want to save a text file with the files that could not be parsed?", "Error parsing files", MessageBoxButtons.YesNo) == DialogResult.Yes)
           {
             SaveFileDialog sfd = new SaveFileDialog();
@@ -181,7 +181,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           }
         }
         else
-          OnStatusUpdated(new UpdateStatusEventArgs("Successfully parsed selected files. Parsed " + LoadedFiles.Count + " files"));
+          OnStatusUpdated("Successfully parsed selected files. Parsed " + LoadedFiles.Count + " files");
       }
 
       EnableControls = true;
@@ -221,7 +221,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public override async Task Scrobble()
     {
       EnableControls = false;
-      OnStatusUpdated(new UpdateStatusEventArgs("Trying to scrobble selected tracks"));
+      OnStatusUpdated("Trying to scrobble selected tracks...");
 
       CurrentDateTime = CurrentDateTime;
 
@@ -235,9 +235,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
       var response = await MainViewModel.Scrobbler.ScrobbleAsync(scrobbles);
       if (response.Success)
-        OnStatusUpdated(new UpdateStatusEventArgs("Successfully scrobbled!"));
+        OnStatusUpdated("Successfully scrobbled!");
       else
-        OnStatusUpdated(new UpdateStatusEventArgs("Error while scrobbling!"));
+        OnStatusUpdated("Error while scrobbling!");
     }
 
     /// <summary>
