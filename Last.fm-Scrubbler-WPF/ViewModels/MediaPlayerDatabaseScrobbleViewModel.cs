@@ -269,7 +269,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
       await Task.Run(() =>
       {
-        OnStatusUpdated(new UpdateStatusEventArgs("Parsing Windows Media Player Library..."));
+        OnStatusUpdated(new UpdateStatusEventArgs("Parsing Windows Media Player library"));
         using (WMP wmp = new WMP())
         {
           // todo: this can be better
@@ -277,11 +277,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           var scrobbleVMs = new List<MediaDBScrobbleViewModel>();
           foreach(var scrobble in scrobbles)
           {
-            scrobbleVMs.Add(new MediaDBScrobbleViewModel(scrobble));
+            var vm = new MediaDBScrobbleViewModel(scrobble);
+            vm.ToScrobbleChanged += ToScrobbleChanged;
+            scrobbleVMs.Add(vm);
           }
 
           ParsedScrobbles = new ObservableCollection<MediaDBScrobbleViewModel>(scrobbleVMs);
         }
+        OnStatusUpdated(new UpdateStatusEventArgs("Successfully parsed Windows Media Player library"));
       });
 
       EnableControls = true;
@@ -299,14 +302,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       DateTime time = DateTime.Now; ;
       foreach (var vm in ParsedScrobbles.Where(i => i.ToScrobble))
       {
-        for (int i = 0; i < vm.Scrobble.PlayCount; i++)
+        for (int i = 0; i < 50000; i++)
         {
           scrobbles.Add(new Scrobble(vm.Scrobble.ArtistName, vm.Scrobble.AlbumName, vm.Scrobble.TrackName, time));
           time = time.Subtract(TimeSpan.FromSeconds(1));
         }
       }
 
-      OnStatusUpdated(new UpdateStatusEventArgs("Trying to scrobble " + scrobbles.Count + " tracks"));
+      OnStatusUpdated(new UpdateStatusEventArgs("Trying to scrobble " + scrobbles.Count + " tracks..."));
 
       var response = await MainViewModel.Scrobbler.ScrobbleAsync(scrobbles);
       if (response.Success)
