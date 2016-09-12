@@ -54,10 +54,10 @@
     </Grid>
 
 
-    <ListView Grid.Row="2" VerticalAlignment="Stretch" ItemsSource="{Binding FetchedTracks}">
+    <ListView Grid.Row="2" VerticalAlignment="Stretch" ItemsSource="{Binding FetchedTracks}" local:GridViewSort.AutoSort="True">
       <ListView.View>
         <GridView>
-          <GridViewColumn Header="Scrobble?">
+          <GridViewColumn Header="Scrobble?" local:GridViewSort.PropertyName="ToScrobble">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <CheckBox IsChecked="{Binding ToScrobble}" HorizontalAlignment="Center"/>
@@ -82,14 +82,14 @@
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Artist">
+          <GridViewColumn Header="Artist" local:GridViewSort.PropertyName="FetchedTrack.ArtistName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding FetchedTrack.ArtistName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Track Title">
+          <GridViewColumn Header="Track Title" local:GridViewSort.PropertyName="FetchedTrack.Name">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding FetchedTrack.Name}"/>

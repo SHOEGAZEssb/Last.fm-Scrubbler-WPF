@@ -74,38 +74,38 @@
       </Button>
     </Grid>
 
-    <ListView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5" ItemsSource="{Binding Scrobbles}">
+    <ListView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5" ItemsSource="{Binding Scrobbles}" local:GridViewSort.AutoSort="True">
       <ListView.View>
         <GridView>
-          <GridViewColumn Header="Scrobble?">
+          <GridViewColumn Header="Scrobble?" local:GridViewSort.PropertyName="ToScrobble">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <CheckBox IsChecked="{Binding ToScrobble}" IsEnabled="{Binding IsEnabled}" HorizontalAlignment="Center"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Artist">
+          <GridViewColumn Header="Artist" local:GridViewSort.PropertyName="ParsedScrobble.Artist">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding ParsedScrobble.Artist}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Album">
+          <GridViewColumn Header="Album" local:GridViewSort.PropertyName="ParsedScrobble.Album">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding ParsedScrobble.Album}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Track Title">
+          <GridViewColumn Header="Track Title" local:GridViewSort.PropertyName="ParsedScrobble.Track">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding ParsedScrobble.Track}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Date Scrobbled">
+          <GridViewColumn Header="Date Scrobbled" local:GridViewSort.PropertyName="ParsedScrobble.DateTime">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <Label Grid.Column="10" VerticalAlignment="Center" Content="{Binding ParsedScrobble.DateTime}"/>

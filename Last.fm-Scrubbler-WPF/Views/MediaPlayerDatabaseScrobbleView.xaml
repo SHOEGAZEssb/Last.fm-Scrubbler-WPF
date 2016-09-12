@@ -9,7 +9,6 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              xmlns:viewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels"
-             xmlns:scrub="clr-namespace:Last.fm_Scrubbler_WPF"
              mc:Ignorable="d"
              d:DesignHeight="330" d:DesignWidth="350">
 
@@ -67,38 +66,38 @@
 
     <local:SelectScrobblesControl Grid.Row="2" Grid.ColumnSpan="9"/>
 
-    <ListView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="9" ItemsSource="{Binding ParsedScrobbles}" scrub:GridViewSort.AutoSort="True">
+    <ListView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="9" ItemsSource="{Binding ParsedScrobbles}" local:GridViewSort.AutoSort="True">
       <ListView.View>
         <GridView>
-          <GridViewColumn Header="Scrobble?" scrub:GridViewSort.PropertyName="ToScrobble">
+          <GridViewColumn Header="Scrobble?" local:GridViewSort.PropertyName="ToScrobble">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <CheckBox IsChecked="{Binding ToScrobble}" HorizontalAlignment="Center"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Artist" scrub:GridViewSort.PropertyName="Scrobble.ArtistName">
+          <GridViewColumn Header="Artist" local:GridViewSort.PropertyName="Scrobble.ArtistName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Scrobble.ArtistName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Track Title" scrub:GridViewSort.PropertyName="Scrobble.TrackName">
+          <GridViewColumn Header="Track Title" local:GridViewSort.PropertyName="Scrobble.TrackName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Scrobble.TrackName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Album Title" scrub:GridViewSort.PropertyName="Scrobble.AlbumName">
+          <GridViewColumn Header="Album Title" local:GridViewSort.PropertyName="Scrobble.AlbumName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Scrobble.AlbumName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Play Count" scrub:GridViewSort.PropertyName="Scrobble.PlayCount">
+          <GridViewColumn Header="Play Count" local:GridViewSort.PropertyName="Scrobble.PlayCount">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Scrobble.PlayCount}"/>

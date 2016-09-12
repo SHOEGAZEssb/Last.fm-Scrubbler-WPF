@@ -5,7 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Documents;
 
-namespace Last.fm_Scrubbler_WPF
+namespace Last.fm_Scrubbler_WPF.Views
 {
   public class GridViewSort
   {
@@ -35,7 +35,7 @@ namespace Last.fm_Scrubbler_WPF
                   if (listView != null)
                   {
                     if (!GetAutoSort(listView)) // Don't change click handler if AutoSort enabled
-                        {
+                    {
                       if (e.OldValue != null && e.NewValue == null)
                       {
                         listView.RemoveHandler(GridViewColumnHeader.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
@@ -74,7 +74,7 @@ namespace Last.fm_Scrubbler_WPF
                   if (listView != null)
                   {
                     if (GetCommand(listView) == null) // Don't change click handler if a command is set
-                        {
+                    {
                       bool oldValue = (bool)e.OldValue;
                       bool newValue = (bool)e.NewValue;
                       if (oldValue && !newValue)
