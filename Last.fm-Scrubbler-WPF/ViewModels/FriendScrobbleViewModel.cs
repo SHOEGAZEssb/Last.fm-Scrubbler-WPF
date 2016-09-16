@@ -187,7 +187,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
 
     /// <summary>
-    /// Marks all fetched scrobbles an not "ToScrobble".
+    /// Marks all fetched scrobbles as not "ToScrobble".
     /// </summary>
     public void SelectNone()
     {
