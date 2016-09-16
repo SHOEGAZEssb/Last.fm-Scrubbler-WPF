@@ -5,10 +5,10 @@ using System;
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
   /// <summary>
-  /// ViewModel for a single fetched scrobble.
+  /// ViewModel for a single fetched track of a friend.
   /// Used in the <see cref="FriendScrobbleViewModel"/>.
   /// </summary>
-  class FetchedScrobbleViewModel : PropertyChangedBase
+  class FetchedFriendTrackViewModel : PropertyChangedBase
   {
     #region Properties
 
@@ -20,20 +20,20 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Gets the fetched scrobble.
     /// </summary>
-    public LastTrack Scrobble
+    public LastTrack Track
     {
       get { return _scrobble; }
       private set
       {
         _scrobble = value;
-        NotifyOfPropertyChange(() => Scrobble);
+        NotifyOfPropertyChange(() => Track);
         NotifyOfPropertyChange(() => IsEnabled);
       }
     }
     private LastTrack _scrobble;
 
     /// <summary>
-    /// Gets/sets if this scrobble should be scrobbled.
+    /// Gets/sets if this track should be scrobbled.
     /// </summary>
     public bool ToScrobble
     {
@@ -52,7 +52,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public bool IsEnabled
     {
-      get { return Scrobble.TimePlayed.Value.LocalDateTime > DateTime.Now.Subtract(TimeSpan.FromDays(14)); }
+      get { return Track.TimePlayed.Value.LocalDateTime > DateTime.Now.Subtract(TimeSpan.FromDays(14)); }
     }
 
     #endregion Properties
@@ -61,9 +61,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Constructor.
     /// </summary>
     /// <param name="scrobble">The scrobbled track.</param>
-    public FetchedScrobbleViewModel(LastTrack scrobble)
+    public FetchedFriendTrackViewModel(LastTrack scrobble)
     {
-      Scrobble = scrobble;
+      Track = scrobble;
     }
   }
 }

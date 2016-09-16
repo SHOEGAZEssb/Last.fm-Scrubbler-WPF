@@ -88,9 +88,9 @@
                 <Image Grid.Column="2" VerticalAlignment="Center">
                   <Image.Style>
                     <Style TargetType="{x:Type Image}">
-                      <Setter Property="Source" Value="{Binding Scrobble.Images.Small}"/>
+                      <Setter Property="Source" Value="{Binding Track.Images.Small}"/>
                       <Style.Triggers>
-                        <DataTrigger Binding="{Binding Scrobble.Images.Small}" Value="{x:Null}">
+                        <DataTrigger Binding="{Binding Track.Images.Small}" Value="{x:Null}">
                           <Setter Property="Source" Value="{StaticResource noalbumimage_small}"/>
                         </DataTrigger>
                       </Style.Triggers>
@@ -103,21 +103,21 @@
           <GridViewColumn Header="Artist" local:GridViewSort.PropertyName="Scrobble.ArtistName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Scrobble.ArtistName}"/>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Track.ArtistName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
           <GridViewColumn Header="Track Title" local:GridViewSort.PropertyName="Scrobble.Name">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Scrobble.Name}"/>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Track.Name}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
           <GridViewColumn Header="Date Scrobbled" local:GridViewSort.PropertyName="Scrobble.TimePlayed.LocalDateTime">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="10" VerticalAlignment="Center" Content="{Binding Scrobble.TimePlayed.LocalDateTime}"/>
+                <Label Grid.Column="10" VerticalAlignment="Center" Content="{Binding Track.TimePlayed.LocalDateTime}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>

@@ -99,7 +99,7 @@
     <Compile Include="ViewModels\DatabaseScrobbleViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\FetchedArtistViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\FetchedReleaseViewModel.cs" />
-    <Compile Include="ViewModels\SubViewModels\FetchedScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\SubViewModels\FetchedFriendTrackViewModel.cs" />
     <Compile Include="UpdateStatusEventArgs.cs" />
     <Compile Include="ViewModels\SubViewModels\FetchedTrackViewModel.cs" />
     <Compile Include="ViewModels\FileScrobbleViewModel.cs" />

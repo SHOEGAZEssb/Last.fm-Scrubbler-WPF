@@ -46,7 +46,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// List of fetched scrobbles.
     /// </summary>
-    public ObservableCollection<FetchedScrobbleViewModel> FetchedScrobbles
+    public ObservableCollection<FetchedFriendTrackViewModel> FetchedScrobbles
     {
       get { return _fetchedScrobbles; }
       private set
@@ -55,7 +55,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         NotifyOfPropertyChange(() => FetchedScrobbles);
       }
     }
-    private ObservableCollection<FetchedScrobbleViewModel> _fetchedScrobbles;
+    private ObservableCollection<FetchedFriendTrackViewModel> _fetchedScrobbles;
 
     /// <summary>
     /// Gets/sets if certain controls on the UI should be enabled.
@@ -114,7 +114,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public FriendScrobbleViewModel()
     {
       Username = "";
-      FetchedScrobbles = new ObservableCollection<FetchedScrobbleViewModel>();
+      FetchedScrobbles = new ObservableCollection<FetchedFriendTrackViewModel>();
       Amount = 20;
     }
 
@@ -134,7 +134,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         {
           if (!s.IsNowPlaying.HasValue || !s.IsNowPlaying.Value)
           {
-            FetchedScrobbleViewModel vm = new FetchedScrobbleViewModel(s);
+            FetchedFriendTrackViewModel vm = new FetchedFriendTrackViewModel(s);
             vm.ToScrobbleChanged += ToScrobbleChanged;
             FetchedScrobbles.Add(vm);
           }
@@ -163,7 +163,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       List<Scrobble> scrobbles = new List<Scrobble>();
       foreach (var vm in FetchedScrobbles.Where(i => i.ToScrobble))
       {
-        scrobbles.Add(new Scrobble(vm.Scrobble.ArtistName, vm.Scrobble.AlbumName, vm.Scrobble.Name, vm.Scrobble.TimePlayed.Value.LocalDateTime.AddSeconds(1)));
+        scrobbles.Add(new Scrobble(vm.Track.ArtistName, vm.Track.AlbumName, vm.Track.Name, vm.Track.TimePlayed.Value.LocalDateTime.AddSeconds(1)));
       }
 
       var response = await MainViewModel.Scrobbler.ScrobbleAsync(scrobbles);
