@@ -275,7 +275,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           // todo: this can be better
           var scrobbles = wmp.GetMusicLibrary();
           var scrobbleVMs = new List<MediaDBScrobbleViewModel>();
-          foreach(var scrobble in scrobbles)
+          foreach (var scrobble in scrobbles)
           {
             var vm = new MediaDBScrobbleViewModel(scrobble);
             vm.ToScrobbleChanged += ToScrobbleChanged;
@@ -302,11 +302,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       DateTime time = DateTime.Now; ;
       foreach (var vm in ParsedScrobbles.Where(i => i.ToScrobble))
       {
-        for (int i = 0; i < 50000; i++)
-        {
-          scrobbles.Add(new Scrobble(vm.Scrobble.ArtistName, vm.Scrobble.AlbumName, vm.Scrobble.TrackName, time));
-          time = time.Subtract(TimeSpan.FromSeconds(1));
-        }
+        scrobbles.Add(new Scrobble(vm.Scrobble.ArtistName, vm.Scrobble.AlbumName, vm.Scrobble.TrackName, time));
+        time = time.Subtract(TimeSpan.FromSeconds(1));
       }
 
       OnStatusUpdated("Trying to scrobble selected tracks...");
