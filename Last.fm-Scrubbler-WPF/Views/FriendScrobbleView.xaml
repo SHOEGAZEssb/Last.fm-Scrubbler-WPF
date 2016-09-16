@@ -40,7 +40,7 @@
     <Label Grid.Row="0" Grid.Column="0" Content="Username:"/>
     <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
     <Label Grid.Row="0" Grid.Column="4" Content="Amount:"/>
-    <xctk:IntegerUpDown Grid.Row="0" Grid.Column="6" Value="{Binding Amount}"/>
+    <xctk:IntegerUpDown Grid.Row="0" Grid.Column="6" Value="{Binding Amount}" Minimum="1" Maximum="1000"/>
     <Button Grid.Row="0" Grid.Column="8" Content="Fetch" IsEnabled="{Binding CanFetch}">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
