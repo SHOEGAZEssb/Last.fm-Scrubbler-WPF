@@ -302,8 +302,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       DateTime time = DateTime.Now; ;
       foreach (var vm in ParsedScrobbles.Where(i => i.ToScrobble))
       {
-        scrobbles.Add(new Scrobble(vm.Scrobble.ArtistName, vm.Scrobble.AlbumName, vm.Scrobble.TrackName, time));
-        time = time.Subtract(TimeSpan.FromSeconds(1));
+        for (int i = 0; i < vm.Scrobble.PlayCount; i++)
+        {
+          scrobbles.Add(new Scrobble(vm.Scrobble.ArtistName, vm.Scrobble.AlbumName, vm.Scrobble.TrackName, time));
+          time = time.Subtract(TimeSpan.FromSeconds(1));
+        }
       }
 
       OnStatusUpdated("Trying to scrobble selected tracks...");
