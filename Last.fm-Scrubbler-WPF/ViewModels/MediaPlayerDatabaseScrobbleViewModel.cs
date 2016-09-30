@@ -236,8 +236,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
             string trackName = xmlNodes.First(i => i.InnerText == "Name").NextSibling.InnerText;
             string artistName = xmlNodes.First(i => i.InnerText == "Artist").NextSibling.InnerText;
             string albumName = xmlNodes.FirstOrDefault(i => i.InnerText == "Album")?.NextSibling.InnerText;
+            DateTime lastPlayed = DateTime.Parse(xmlNodes.FirstOrDefault(i => i.InnerText == "Play Date UTC")?.NextSibling.InnerText);
+            
 
-            MediaDBScrobbleViewModel vm = new MediaDBScrobbleViewModel(new MediaDBScrobble(trackName, artistName, albumName, playCount));
+            MediaDBScrobbleViewModel vm = new MediaDBScrobbleViewModel(new MediaDBScrobble(trackName, artistName, albumName, playCount, lastPlayed));
             vm.ToScrobbleChanged += ToScrobbleChanged;
             scrobbles.Add(vm);
           }

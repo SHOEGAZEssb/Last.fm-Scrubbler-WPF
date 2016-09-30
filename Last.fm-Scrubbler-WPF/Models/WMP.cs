@@ -46,6 +46,11 @@ namespace Last.fm_Scrubbler_WPF
     private int _playCountIndex;
 
     /// <summary>
+    /// Access index of the last played date.
+    /// </summary>
+    private int _userLastPlayedTimeIndex;
+
+    /// <summary>
     /// Constructor.
     /// </summary>
     public WMP()
@@ -58,6 +63,7 @@ namespace Last.fm_Scrubbler_WPF
       _authorIndex = _media.getMediaAtom("Author");
       _albumIndex = _media.getMediaAtom("Album");
       _playCountIndex = _media.getMediaAtom("PlayCount");
+      _userLastPlayedTimeIndex = _media.getMediaAtom("UserLastPlayedTime");
     }
 
     /// <summary>
@@ -83,12 +89,15 @@ namespace Last.fm_Scrubbler_WPF
             mediaItem = mediaList.get_Item(i);
 
             // create the new entry and populate its properties
+            int playCount = GetPlayCount(mediaItem);
+            if (playCount == 0)
+              continue;
             string trackName = GetTitle(mediaItem);
             string artistName = GetArtist(mediaItem);
             string albumName = GetAlbum(mediaItem);
-            int playCount = GetPlayCount(mediaItem);
+            DateTime lastPlayed = GetUserLastPlayedTime(mediaItem);
 
-            entries.Add(new MediaDBScrobble(trackName, artistName, albumName, playCount));
+            entries.Add(new MediaDBScrobble(trackName, artistName, albumName, playCount, lastPlayed));
           }
           catch (Exception ex)
           {
@@ -154,6 +163,11 @@ namespace Last.fm_Scrubbler_WPF
     private int GetPlayCount(IWMPMedia mediaItem)
     {
       return int.Parse(mediaItem.getItemInfoByAtom(_playCountIndex));
+    }
+
+    private DateTime GetUserLastPlayedTime(IWMPMedia mediaItem)
+    {
+      return DateTime.Parse(mediaItem.getItemInfoByAtom(_userLastPlayedTimeIndex));
     }
 
     #region IDisposable Members

@@ -67,6 +67,16 @@ namespace Last.fm_Scrubbler_WPF.Models
     }
     private int _playCount;
 
+    /// <summary>
+    /// Time the track was last played.
+    /// </summary>
+    public DateTime LastPlayed
+    {
+      get { return _lastPlayed; }
+      private set { _lastPlayed = value; }
+    }
+    private DateTime _lastPlayed;
+
     #endregion Properties
 
     /// <summary>
@@ -76,12 +86,14 @@ namespace Last.fm_Scrubbler_WPF.Models
     /// <param name="artistName">Name of the artist.</param>
     /// <param name="albumName">Name of the album.</param>
     /// <param name="playCount">Number of times this track has been played.</param>
-    public MediaDBScrobble(string trackName, string artistName, string albumName, int playCount)
+    /// <param name="lastPlayed">Time the track was played last.</param>
+    public MediaDBScrobble(string trackName, string artistName, string albumName, int playCount, DateTime lastPlayed)
     {
       TrackName = trackName;
       ArtistName = artistName;
       AlbumName = albumName;
       PlayCount = playCount;
+      LastPlayed = lastPlayed;
     }
   }
 }

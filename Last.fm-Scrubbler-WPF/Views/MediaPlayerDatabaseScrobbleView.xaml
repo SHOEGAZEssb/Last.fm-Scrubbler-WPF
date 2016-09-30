@@ -54,7 +54,7 @@
       </i:Interaction.Triggers>
     </Button>
 
-    <ComboBox Grid.Row="0" Grid.Column="6" ItemsSource="{Binding Source={StaticResource MPDDataProvider}}" 
+    <ComboBox Grid.Row="0" Grid.Column="6" ItemsSource="{Binding Source={StaticResource MPDDataProvider}}"
               SelectedValue="{Binding MediaPlayerDatabaseType}" IsEnabled="{Binding EnableControls}"/>
     <Button Grid.Row="0" Grid.Column="8" Content="Parse" IsEnabled="{Binding EnableControls}">
       <i:Interaction.Triggers>
@@ -101,6 +101,13 @@
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Scrobble.PlayCount}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Last Played" local:GridViewSort.PropertyName="Scrobble.LastPlayed">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Scrobble.LastPlayed}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
