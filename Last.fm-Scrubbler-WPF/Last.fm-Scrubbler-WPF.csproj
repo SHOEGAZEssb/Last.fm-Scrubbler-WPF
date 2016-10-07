@@ -91,6 +91,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppBootstrapper.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="Views\GridViewSort.cs" />
     <Compile Include="Models\CSVScrobble.cs" />
     <Compile Include="Models\MediaDBScrobble.cs" />
