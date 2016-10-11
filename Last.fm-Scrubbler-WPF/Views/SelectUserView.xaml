@@ -1,0 +1,74 @@
+﻿<Window x:Class="Last.fm_Scrubbler_WPF.Views.SelectUserView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
+        mc:Ignorable="d"
+        Title="Select user" Height="300" Width="300" Icon="..\scrubbler_64.ico">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+    </Grid.ColumnDefinitions>
+
+    <Label Grid.Row="1" Grid.Column="1" Content="Active User:"/>
+    <Label Grid.Row="1" Grid.Column="3" Content="{Binding ActiveUser.Username, FallbackValue='No active user'}"/>
+
+    <Separator Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5"/>
+
+    <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Available Users:"/>
+    <ListBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding AvailableUsers}" DisplayMemberPath="Username" SelectedItem="{Binding SelectedUser}"/>
+
+    <StackPanel Grid.Row="5" Grid.Column="5" Orientation="Vertical">
+      <Button Width="25" HorizontalAlignment="Center">
+        <i:Interaction.Triggers>
+          <i:EventTrigger EventName="Click">
+            <cal:ActionMessage MethodName="AddUser"/>
+          </i:EventTrigger>
+        </i:Interaction.Triggers>
+        <Image Source="..\Resources\plus.png"/>
+        <Button.ToolTip>
+          <ToolTip>Add a new user</ToolTip>
+        </Button.ToolTip>
+      </Button>
+      <Button Width="25" HorizontalAlignment="Center" Margin="0,5,0,0" IsEnabled="{Binding CanInteractWithUser}">
+        <i:Interaction.Triggers>
+          <i:EventTrigger EventName="Click">
+            <cal:ActionMessage MethodName="RemoveUser"/>
+          </i:EventTrigger>
+        </i:Interaction.Triggers>
+        <Image Source="..\Resources\minus.png"/>
+        <Button.ToolTip>
+          <ToolTip>Remove selected user</ToolTip>
+        </Button.ToolTip>
+      </Button>
+      <Button Width="25" HorizontalAlignment="Center" Margin="0,5,0,0" IsEnabled="{Binding CanInteractWithUser}">
+        <i:Interaction.Triggers>
+          <i:EventTrigger EventName="Click">
+            <cal:ActionMessage MethodName="LoginUser"/>
+          </i:EventTrigger>
+        </i:Interaction.Triggers>
+        <Image Source="..\Resources\repeat-1.png"/>
+        <Button.ToolTip>
+          <ToolTip>Switch active user with selected user</ToolTip>
+        </Button.ToolTip>
+      </Button>
+    </StackPanel>
+  </Grid>
+</Window>

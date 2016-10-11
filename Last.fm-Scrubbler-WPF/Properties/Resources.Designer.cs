@@ -63,6 +63,16 @@ namespace Last.fm_Scrubbler_WPF.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap minus {
+            get {
+                object obj = ResourceManager.GetObject("minus", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap noalbumimage {
             get {
                 object obj = ResourceManager.GetObject("noalbumimage", resourceCulture);
@@ -86,6 +96,26 @@ namespace Last.fm_Scrubbler_WPF.Properties {
         internal static System.Drawing.Bitmap noartistimage {
             get {
                 object obj = ResourceManager.GetObject("noartistimage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap plus {
+            get {
+                object obj = ResourceManager.GetObject("plus", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap repeat_1 {
+            get {
+                object obj = ResourceManager.GetObject("repeat_1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

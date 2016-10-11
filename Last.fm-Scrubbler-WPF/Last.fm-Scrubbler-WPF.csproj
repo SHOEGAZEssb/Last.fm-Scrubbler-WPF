@@ -144,6 +144,9 @@
     <Compile Include="Views\SelectScrobblesControl.xaml.cs">
       <DependentUpon>SelectScrobblesControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SelectUserView.xaml.cs">
+      <DependentUpon>SelectUserView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TrackResultView.xaml.cs">
       <DependentUpon>TrackResultView.xaml</DependentUpon>
     </Compile>
@@ -196,6 +199,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SelectScrobblesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SelectUserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -256,6 +263,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\noalbumimage_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\plus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\repeat-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\minus.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

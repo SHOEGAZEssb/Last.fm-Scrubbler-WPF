@@ -7,7 +7,7 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
         mc:Ignorable="d"
-        Title="Login" Height="200" Width="180" Icon="..\scrubbler_64.ico" ResizeMode="NoResize">
+        Title="Login" Height="180" Width="180" Icon="..\scrubbler_64.ico" ResizeMode="NoResize">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="5"/>
@@ -15,8 +15,6 @@
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
@@ -36,17 +34,13 @@
     <Label Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" Content="Password"/>
     <PasswordBox Grid.Row="7" Grid.Column="1" x:Name="passwordBox"/>
 
-    <CheckBox Grid.Row="9" Grid.Column="1" HorizontalAlignment="Center" Content="Save login information"
-              IsEnabled="{Binding EnableControls}" x:Name="rememberCheckBox"/>
-
-    <Button Grid.Row="11" Grid.Column="1" HorizontalAlignment="Center" Content="Login" IsEnabled="{Binding EnableControls}">
+    <Button Grid.Row="9" Grid.Column="1" HorizontalAlignment="Center" Content="Login" IsEnabled="{Binding EnableControls}">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="Login">
             <cal:Parameter Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
             <cal:Parameter Value="{Binding Path=Text, ElementName=usernameTextBox}"/>
             <cal:Parameter Value="{Binding ElementName=passwordBox}"/>
-            <cal:Parameter Value="{Binding Path=IsChecked, ElementName=rememberCheckBox}"/>
           </cal:ActionMessage>
         </i:EventTrigger>
       </i:Interaction.Triggers>
@@ -59,7 +53,6 @@
           <cal:Parameter Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
           <cal:Parameter Value="{Binding Path=Text, ElementName=usernameTextBox}"/>
           <cal:Parameter Value="{Binding ElementName=passwordBox}"/>
-          <cal:Parameter Value="{Binding Path=IsChecked, ElementName=rememberCheckBox}"/>
         </cal:ActionMessage>
       </i:EventTrigger>
     </i:Interaction.Triggers>

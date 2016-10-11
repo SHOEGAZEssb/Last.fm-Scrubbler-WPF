@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Api;
-using IF.Lastfm.Core.Objects;
 using IF.Lastfm.Core.Scrobblers;
 using Last.fm_Scrubbler_WPF.Views;
 using System;
@@ -40,6 +39,20 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       }
     }
     private static Scrobbler _scrobbler;
+
+    /// <summary>
+    /// ViewModel for the <see cref="SelectUserView"/>.
+    /// </summary>
+    public UserViewModel UserViewModel
+    {
+      get { return _userViewModel; }
+      private set
+      {
+        _userViewModel = value;
+        NotifyOfPropertyChange(() => UserViewModel);
+      }
+    }
+    private UserViewModel _userViewModel;
 
     /// <summary>
     /// Event that triggers when the client authentication changes.
@@ -176,7 +189,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public MainViewModel()
     {
-      Client = new LastfmClient(APIKEY, APISECRET);
+      CreateNewClient();
+      UserViewModel = new UserViewModel();
+      UserViewModel.ActiveUserChanged += UserViewModel_ActiveUserChanged;
+      UserViewModel.LoadLastUser();
       ManualScrobbleViewModel = new ManualScrobbleViewModel();
       ManualScrobbleViewModel.StatusUpdated += StatusUpdated;
       FriendScrobbleViewModel = new FriendScrobbleViewModel();
@@ -189,7 +205,26 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       FileScrobbleViewModel.StatusUpdated += StatusUpdated;
       MediaPlayerDatabaseScrobbleViewModel = new MediaPlayerDatabaseScrobbleViewModel();
       MediaPlayerDatabaseScrobbleViewModel.StatusUpdated += StatusUpdated;
-      LoadLastSession();
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="LastfmClient"/>.
+    /// </summary>
+    internal static void CreateNewClient()
+    {
+      Client = new LastfmClient(APIKEY, APISECRET);
+      ClientAuthChanged?.Invoke(null, EventArgs.Empty);
+    }
+
+    /// <summary>
+    /// Triggers when the <see cref="UserViewModel.ActiveUser"/> changes.
+    /// </summary>
+    /// <param name="sender">Ignored.</param>
+    /// <param name="e">Ignored.</param>
+    private void UserViewModel_ActiveUserChanged(object sender, EventArgs e)
+    {
+      NotifyOfPropertyChange(() => StatusBarUsername);
+      Scrobbler = new Scrobbler(Client.Auth);
     }
 
     /// <summary>
@@ -207,31 +242,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public void HyperlinkClicked()
     {
-      LoginView lv = new LoginView();
-      lv.DataContext = new LoginViewModel();
-      if ((bool)lv.ShowDialog())
-        Scrobbler = new Scrobbler(Client.Auth);
+      SelectUserView suv = new SelectUserView();
+      suv.DataContext = UserViewModel;
+      suv.ShowDialog();
 
       NotifyOfPropertyChange(() => StatusBarUsername);
-    }
-
-    /// <summary>
-    /// Loads the last saved user session, if existing.
-    /// </summary>
-    private void LoadLastSession()
-    {
-      if (Properties.Settings.Default.Token != "" && Properties.Settings.Default.Username != "")
-      {
-        Client.Auth.LoadSession(new LastUserSession());
-        Client.Auth.UserSession.Token = Properties.Settings.Default.Token;
-        Client.Auth.UserSession.Username = Properties.Settings.Default.Username;
-        Client.Auth.UserSession.IsSubscriber = Properties.Settings.Default.IsSubscriber;
-        Scrobbler = new Scrobbler(Client.Auth);
-        NotifyOfPropertyChange(() => StatusBarUsername);
-        CurrentStatus = "Waiting to scrobble.";
-      }
-      else
-        CurrentStatus = "Waiting for user login.";
     }
   }
 }

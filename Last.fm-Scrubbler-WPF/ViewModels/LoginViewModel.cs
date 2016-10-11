@@ -48,8 +48,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		/// <param name="win">The calling <see cref="Views.LoginView"/>.</param>
 		/// <param name="username">The username.</param>
 		/// <param name="password">The <see cref="PasswordBox"/> containing the password.</param>
-		/// <param name="rememberLoginInformation">Bool determining if the login should be saved.</param>
-		public async Task Login(Window win, string username, PasswordBox password, bool rememberLoginInformation)
+		public async Task Login(Window win, string username, PasswordBox password)
 		{
 			EnableControls = false;
 
@@ -58,17 +57,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 			if (MainViewModel.Client.Auth.Authenticated)
 			{
 				MessageBox.Show("Successfully logged in and authenticated!");
-
-				if (rememberLoginInformation)
-					SaveSession();
-				else
-				{
-					Settings.Default.Token = "";
-					Settings.Default.Username = "";
-					Settings.Default.IsSubscriber = false;
-					Settings.Default.Save();
-				}
-
 				win.DialogResult = true;
 				win.Close();
 			}
@@ -86,25 +74,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 		/// <param name="win">The calling <see cref="Views.LoginView"/>.</param>
 		/// <param name="username">The username.</param>
 		/// <param name="password">The <see cref="PasswordBox"/> containing the password.</param>
-		/// <param name="rememberLoginInformation">Bool determining if the login should be saved.</param>
-		public async void ButtonPressed(KeyEventArgs e, Window win, string username, PasswordBox password, bool rememberLoginInformation)
+		public async void ButtonPressed(KeyEventArgs e, Window win, string username, PasswordBox password)
 		{
 			if (e.Key == Key.Enter)
-				await Login(win, username, password, rememberLoginInformation);
-		}
-
-		/// <summary>
-		/// Saves the user session.
-		/// </summary>
-		private void SaveSession()
-		{
-			XmlSerializer serializer = new XmlSerializer(typeof(User));
-			
-
-			Settings.Default.Token = MainViewModel.Client.Auth.UserSession.Token;
-			Settings.Default.Username = MainViewModel.Client.Auth.UserSession.Username;
-			Settings.Default.IsSubscriber = MainViewModel.Client.Auth.UserSession.IsSubscriber;
-			Settings.Default.Save();
+				await Login(win, username, password);
 		}
 	}
 }
