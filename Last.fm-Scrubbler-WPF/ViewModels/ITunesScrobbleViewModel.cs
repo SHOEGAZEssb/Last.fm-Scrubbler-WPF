@@ -242,6 +242,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         _app = new iTunesApp();
         _app.OnPlayerPlayEvent += _app_OnPlayerPlayEvent;
         _app.OnPlayerStopEvent += _app_OnPlayerStopEvent;
+        _app.OnAboutToPromptUserToQuitEvent += _app_AboutToQuitEvent;
       }
       catch(Exception ex)
       {
@@ -354,13 +355,24 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
 
     /// <summary>
+    /// Disconnect when iTunes is about to close.
+    /// </summary>
+    private void _app_AboutToQuitEvent()
+    {
+      DisconnectFromITunes();
+    }
+
+    /// <summary>
     /// Gets the album artwork of the current track.
     /// </summary>
     /// <returns></returns>
     private async Task FetchAlbumArtwork()
     {
-      var album = await MainViewModel.Client.Album.GetInfoAsync(CurrentArtistName, CurrentAlbumName);
-      CurrentAlbumArtwork = album?.Content.Images.Large;
+      if (CurrentArtistName != null && CurrentAlbumName != null)
+      {
+        var album = await MainViewModel.Client.Album.GetInfoAsync(CurrentArtistName, CurrentAlbumName);
+        CurrentAlbumArtwork = album?.Content.Images.Large;
+      }
     }
 
     /// <summary>
@@ -373,6 +385,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         // unlink events
         _app.OnPlayerPlayEvent -= _app_OnPlayerPlayEvent;
         _app.OnPlayerStopEvent -= _app_OnPlayerStopEvent;
+        _app.OnAboutToPromptUserToQuitEvent -= _app_AboutToQuitEvent;
 
         // release resources
         Marshal.ReleaseComObject(_app);
