@@ -237,9 +237,18 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       if (_app != null)
         Dispose();
 
-      _app = new iTunesApp();
-      _app.OnPlayerPlayEvent += _app_OnPlayerPlayEvent;
-      _app.OnPlayerStopEvent += _app_OnPlayerStopEvent;
+      try
+      {
+        _app = new iTunesApp();
+        _app.OnPlayerPlayEvent += _app_OnPlayerPlayEvent;
+        _app.OnPlayerStopEvent += _app_OnPlayerStopEvent;
+      }
+      catch(Exception ex)
+      {
+        OnStatusUpdated("Error connecting to iTunes: " + ex.Message);
+        AutoConnect = false;
+        return;
+      }
 
       _countTimer = new Timer(1000);
       _countTimer.Elapsed += _countTimer_Elapsed;
