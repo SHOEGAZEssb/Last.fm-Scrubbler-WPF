@@ -17,6 +17,7 @@ This tool will always be free, but if it was helpful to you, consider donating t
 - [CSV Scrobbling](#CSV Scrobbling)
 - [File Scrobbling](#File Scrobbling)
 - [Media Player Database Scrobbling](#Media Player Database Scrobbling)
+- [iTunes Scrobbling](#iTunes Scrobbling)
 
 <a name="Manual Scrobbling"/>
 ### Manual Single Track Scrobbling
@@ -87,3 +88,8 @@ You can read how to export your Winamp database as xml [here](http://forums.wina
 ![Media Player Database Scrobbling](https://ibin.co/2ueEB36aAC75.png)
 
 Once you click "Scrobble", all selected songs will be scrobbled to your last.fm account, starting with the last track in the list and finishing with the first in the list. Timestamp will be current date time - 1 second.
+<a name="iTunes Scrobbling"/>
+### iTunes Scrobbling
+This basically works like the normal Last.fm desktop app. Once you connected to iTunes a timer will measure how long you listened to that song. If you play 50% of the track, it will be scrobbled. The ProgressBar on the bottom indicates when the track will be scrobbled.
+
+![iTunes Scrobbling](https://ibin.co/30cuCVX33Gke.png)
