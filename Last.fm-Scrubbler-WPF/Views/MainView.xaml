@@ -9,6 +9,11 @@
         xmlns:views="clr-namespace:Last.fm_Scrubbler_WPF.Views"
         mc:Ignorable="d"
         Title="Last.fm Scrubbler" Height="400" Width="650" Icon="..\scrubbler_64.ico">
+  <i:Interaction.Triggers>
+    <i:EventTrigger EventName="Closing">
+      <cal:ActionMessage MethodName="MainView_Closing"/>
+    </i:EventTrigger>
+  </i:Interaction.Triggers>
 
   <Grid>
     <Grid.RowDefinitions>
@@ -34,6 +39,9 @@
       </TabItem>
       <TabItem Header="Media Player DB Scrobble">
         <views:MediaPlayerDatabaseScrobbleView DataContext="{Binding MediaPlayerDatabaseScrobbleViewModel}"/>
+      </TabItem>
+      <TabItem Header="iTunes Scrobble">
+        <views:ITunesScrobbleView DataContext="{Binding ITunesScrobbleVM}"/>
       </TabItem>
     </TabControl>
 

@@ -142,6 +142,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private MediaPlayerDatabaseScrobbleViewModel _mediaPlayerDatabaseScrobbleViewModel;
 
+    public ITunesScrobbleViewModel ITunesScrobbleVM
+    {
+      get { return _iTunesScrobbleVM; }
+      private set
+      {
+        _iTunesScrobbleVM = value;
+        NotifyOfPropertyChange(() => ITunesScrobbleVM);
+      }
+    }
+    private ITunesScrobbleViewModel _iTunesScrobbleVM;
+
     #region StatusBar Properties
 
     /// <summary>
@@ -205,6 +216,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       FileScrobbleViewModel.StatusUpdated += StatusUpdated;
       MediaPlayerDatabaseScrobbleViewModel = new MediaPlayerDatabaseScrobbleViewModel();
       MediaPlayerDatabaseScrobbleViewModel.StatusUpdated += StatusUpdated;
+      ITunesScrobbleVM = new ITunesScrobbleViewModel();
+      ITunesScrobbleVM.StatusUpdated += StatusUpdated;
     }
 
     /// <summary>
@@ -247,6 +260,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       suv.ShowDialog();
 
       NotifyOfPropertyChange(() => StatusBarUsername);
+    }
+
+    /// <summary>
+    /// Dispose iTunes com object before exit.
+    /// </summary>
+    public void MainView_Closing()
+    {
+      ITunesScrobbleVM.Dispose();
     }
   }
 }
