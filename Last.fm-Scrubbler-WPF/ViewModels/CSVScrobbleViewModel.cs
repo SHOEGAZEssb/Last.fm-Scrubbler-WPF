@@ -1,5 +1,6 @@
 ﻿using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Models;
+using Last.fm_Scrubbler_WPF.Views;
 using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
@@ -131,6 +132,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
 
     /// <summary>
+    /// Gets if the preview button is enabled.
+    /// </summary>
+    public override bool CanPreview
+    {
+      get { return Scrobbles.Any(i => i.ToScrobble) && EnableControls; }
+    }
+
+    /// <summary>
     /// Gets if the "Select All" button is enabled.
     /// </summary>
     public bool CanSelectAll
@@ -165,6 +174,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         _enableControls = value;
         NotifyOfPropertyChange(() => EnableControls);
         NotifyOfPropertyChange(() => CanScrobble);
+        NotifyOfPropertyChange(() => CanPreview);
         NotifyOfPropertyChange(() => CanSelectAll);
         NotifyOfPropertyChange(() => CanSelectNone);
       }
@@ -311,6 +321,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private void ToScrobbleChanged(object sender, EventArgs e)
     {
       NotifyOfPropertyChange(() => CanScrobble);
+      NotifyOfPropertyChange(() => CanPreview);
       NotifyOfPropertyChange(() => CanSelectAll);
       NotifyOfPropertyChange(() => CanSelectNone);
     }
@@ -323,6 +334,31 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       EnableControls = false;
       OnStatusUpdated("Trying to scrobble selected tracks...");
+
+      var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
+      if (response.Success)
+        OnStatusUpdated("Successfully scrobbled!");
+      else
+        OnStatusUpdated("Error while scrobbling!");
+
+      EnableControls = true;
+    }
+
+    /// <summary>
+    /// Previews the tracks that will be scrobbled.
+    /// </summary>
+    public override void Preview()
+    {
+      ScrobblePreviewView spv = new ScrobblePreviewView(new ScrobblePreviewViewModel(CreateScrobbles()));
+      spv.ShowDialog();
+    }
+
+    /// <summary>
+    /// Create a list with tracks that will be scrobbled.
+    /// </summary>
+    /// <returns>List with scrobbles.</returns>
+    private List<Scrobble> CreateScrobbles()
+    {
       List<Scrobble> scrobbles = new List<Scrobble>();
 
       if (ScrobbleMode == CSVScrobbleMode.Normal)
@@ -342,13 +378,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         }
       }
 
-      var response = await MainViewModel.Scrobbler.ScrobbleAsync(scrobbles);
-      if (response.Success)
-        OnStatusUpdated("Successfully scrobbled!");
-      else
-        OnStatusUpdated("Error while scrobbling!");
-
-      EnableControls = true;
+      return scrobbles;
     }
 
     /// <summary>

@@ -7,9 +7,13 @@ using System.Windows.Forms;
 using System.Windows.Threading;
 using TagLib;
 using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Views;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
+  /// <summary>
+  /// ViewModel for the <see cref="FileScrobbleView"/>.
+  /// </summary>
   class FileScrobbleViewModel : ScrobbleViewModelBase
   {
     #region Properties
@@ -70,6 +74,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         _enableControls = value;
         NotifyOfPropertyChange(() => EnableControls);
         NotifyOfPropertyChange(() => CanScrobble);
+        NotifyOfPropertyChange(() => CanPreview);
         NotifyOfPropertyChange(() => CanSelectAll);
         NotifyOfPropertyChange(() => CanSelectNone);
         NotifyOfPropertyChange(() => CanRemoveFiles);
@@ -82,6 +87,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public override bool CanScrobble
     {
       get { return MainViewModel.Client.Auth.Authenticated && LoadedFiles.Any(i => i.ToScrobble) && EnableControls; }
+    }
+
+    /// <summary>
+    /// Gets if the preview button is enabled.
+    /// </summary>
+    public override bool CanPreview
+    {
+      get { return LoadedFiles.Any(i => i.ToScrobble); }
     }
 
     /// <summary>
@@ -204,13 +217,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public void RemoveFiles()
     {
       List<LoadedFileViewModel> toRemove = LoadedFiles.Where(i => i.IsSelected).ToList();
-      for(int i = 0; i < toRemove.Count; i++)
+      for (int i = 0; i < toRemove.Count; i++)
       {
         LoadedFiles.RemoveAt(LoadedFiles.IndexOf(toRemove[i]));
       }
 
       NotifyOfPropertyChange(() => CanRemoveFiles);
       NotifyOfPropertyChange(() => CanScrobble);
+      NotifyOfPropertyChange(() => CanPreview);
       NotifyOfPropertyChange(() => CanSelectAll);
       NotifyOfPropertyChange(() => CanSelectNone);
     }
@@ -223,21 +237,40 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       EnableControls = false;
       OnStatusUpdated("Trying to scrobble selected tracks...");
 
+      // set to self to trigger update.
       CurrentDateTime = CurrentDateTime;
 
+      var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
+      if (response.Success)
+        OnStatusUpdated("Successfully scrobbled!");
+      else
+        OnStatusUpdated("Error while scrobbling!");
+    }
+
+    /// <summary>
+    /// Shows a preview of the tracks that will be scrobbled.
+    /// </summary>
+    public override void Preview()
+    {
+      ScrobblePreviewView spv = new ScrobblePreviewView(new ScrobblePreviewViewModel(CreateScrobbles()));
+      spv.ShowDialog();
+    }
+
+    /// <summary>
+    /// Creates the list of the tracks that will be scrobbled.
+    /// </summary>
+    /// <returns></returns>
+    private List<Scrobble> CreateScrobbles()
+    {
       DateTime timePlayed = FinishingTime;
       List<Scrobble> scrobbles = new List<Scrobble>();
-      foreach(var vm in LoadedFiles.Where(i => i.ToScrobble).Reverse())
+      foreach (var vm in LoadedFiles.Where(i => i.ToScrobble).Reverse())
       {
         scrobbles.Add(new Scrobble(vm.LoadedFile.Tag.FirstPerformer, vm.LoadedFile.Tag.Album, vm.LoadedFile.Tag.Title, timePlayed));
         timePlayed = timePlayed.Subtract(vm.LoadedFile.Properties.Duration);
       }
 
-      var response = await MainViewModel.Scrobbler.ScrobbleAsync(scrobbles);
-      if (response.Success)
-        OnStatusUpdated("Successfully scrobbled!");
-      else
-        OnStatusUpdated("Error while scrobbling!");
+      return scrobbles;
     }
 
     /// <summary>
@@ -249,6 +282,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private void ToScrobbleChanged(object sender, EventArgs e)
     {
       NotifyOfPropertyChange(() => CanScrobble);
+      NotifyOfPropertyChange(() => CanPreview);
       NotifyOfPropertyChange(() => CanSelectAll);
       NotifyOfPropertyChange(() => CanSelectNone);
     }

@@ -10,7 +10,7 @@
              xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              xmlns:viewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="500">
 
   <UserControl.Resources>
     <ObjectDataProvider MethodName="GetValues"
@@ -134,13 +134,7 @@
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
 
-      <Button Grid.Column="0" Grid.Row="6" Content="Scrobble" IsEnabled="{Binding CanScrobble}">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="Click">
-            <cal:ActionMessage MethodName="Scrobble"/>
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </Button>
+      <local:ScrobbleButtonControl Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="7"/>
 
       <Label Grid.Column="0" Grid.Row="0" Content="Scrobble Mode:"/>
       <ComboBox Grid.Column="2" Grid.Row="0" SelectedValue="{Binding ScrobbleMode}" ItemsSource="{Binding Source={StaticResource ScrobbleModeKeyDataProvider}}"

@@ -186,6 +186,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         _enableControls = value;
         NotifyOfPropertyChange(() => EnableControls);
         NotifyOfPropertyChange(() => CanScrobble);
+        NotifyOfPropertyChange(() => CanPreview);
         NotifyOfPropertyChange(() => CanSelectAllTracks);
         NotifyOfPropertyChange(() => CanSelectNoneTracks);
       }
@@ -212,6 +213,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public override bool CanScrobble
     {
       get { return MainViewModel.Client.Auth.Authenticated && FetchedTracks.Any(i => i.ToScrobble) && EnableControls; }
+    }
+
+    /// <summary>
+    /// Gets if the preview button is enabled.
+    /// </summary>
+    public override bool CanPreview
+    {
+      get { return FetchedTracks.Any(i => i.ToScrobble) && EnableControls; }
     }
 
     /// <summary>
@@ -439,6 +448,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private void ToScrobbleChanged(object sender, EventArgs e)
     {
       NotifyOfPropertyChange(() => CanScrobble);
+      NotifyOfPropertyChange(() => CanPreview);
       NotifyOfPropertyChange(() => CanSelectAllTracks);
       NotifyOfPropertyChange(() => CanSelectNoneTracks);
     }
@@ -462,6 +472,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       // trigger time change if needed
       CurrentDateTime = CurrentDateTime;
 
+      var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
+      if (response.Success)
+        OnStatusUpdated("Successfully scrobbled!");
+      else
+        OnStatusUpdated("Error while scrobbling!");
+
+      EnableControls = true;
+    }
+
+    private List<Scrobble> CreateScrobbles()
+    {
       DateTime finishingTime = FinishingTime;
       List<Scrobble> scrobbles = new List<Scrobble>();
       foreach (FetchedTrackViewModel vm in FetchedTracks.Where(i => i.ToScrobble).Reverse())
@@ -473,13 +494,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           finishingTime = finishingTime.Subtract(TimeSpan.FromMinutes(3.0));
       }
 
-      var response = await MainViewModel.Scrobbler.ScrobbleAsync(scrobbles);
-      if (response.Success)
-        OnStatusUpdated("Successfully scrobbled!");
-      else
-        OnStatusUpdated("Error while scrobbling!");
+      return scrobbles;
+    }
 
-      EnableControls = true;
+    public override void Preview()
+    {
+      ScrobblePreviewView spv = new ScrobblePreviewView(new ScrobblePreviewViewModel(CreateScrobbles()));
+      spv.ShowDialog();
     }
 
     /// <summary>

@@ -93,6 +93,7 @@
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="ViewModels\ITunesScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\ScrobblePreviewViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="Views\GridViewSort.cs" />
     <Compile Include="Models\CSVScrobble.cs" />
@@ -144,6 +145,12 @@
     </Compile>
     <Compile Include="Views\ReleaseResultView.xaml.cs">
       <DependentUpon>ReleaseResultView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScrobbleButtonControl.xaml.cs">
+      <DependentUpon>ScrobbleButtonControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScrobblePreviewView.xaml.cs">
+      <DependentUpon>ScrobblePreviewView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectScrobblesControl.xaml.cs">
       <DependentUpon>SelectScrobblesControl.xaml</DependentUpon>
@@ -203,6 +210,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ReleaseResultView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScrobbleButtonControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScrobblePreviewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

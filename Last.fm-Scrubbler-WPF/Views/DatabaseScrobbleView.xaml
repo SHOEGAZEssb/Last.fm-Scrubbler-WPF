@@ -36,7 +36,6 @@
       <RowDefinition Height="*"/>
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
-      <RowDefinition Height="5"/>
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="Auto"/>
@@ -49,6 +48,7 @@
       <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="Text to search:"/>
@@ -70,9 +70,12 @@
 
     <Grid Grid.Row="4" Grid.ColumnSpan="9" HorizontalAlignment="Stretch" IsEnabled="{Binding EnableControls}"
           Visibility="{Binding ShowScrobbleControls, Converter={StaticResource boolToVis}}">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="5"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition Width="5"/>
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="5"/>
         <ColumnDefinition Width="*"/>
@@ -80,17 +83,11 @@
         <ColumnDefinition Width="Auto"/>
       </Grid.ColumnDefinitions>
 
-      <Button Grid.Column="0" Content="Scrobble" IsEnabled="{Binding CanScrobble}">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="Click">
-            <cal:ActionMessage MethodName="Scrobble"/>
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </Button>
+      <local:ScrobbleButtonControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7"/>
 
-      <Label Grid.Column="2" Content="Finishing Time:"/>
-      <xctk:DateTimePicker Grid.Column="4" Value="{Binding FinishingTime}" Minimum="{Binding Source={x:Static viewModels:MainViewModel.MinimumDateTime}}"/>
-      <CheckBox Grid.Row="6" Grid.Column="6" Content="Current" IsChecked="{Binding CurrentDateTime}"
+      <Label Grid.Column="0" Content="Finishing Time:"/>
+      <xctk:DateTimePicker Grid.Column="2" Value="{Binding FinishingTime}" Minimum="{Binding Source={x:Static viewModels:MainViewModel.MinimumDateTime}}"/>
+      <CheckBox Grid.Column="4" Content="Current" IsChecked="{Binding CurrentDateTime}"
                     VerticalAlignment="Center"/>
 
     </Grid>

@@ -28,6 +28,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public abstract bool CanScrobble { get; }
 
+    /// <summary>
+    /// Gets if the preview button is enabled.
+    /// </summary>
+    public abstract bool CanPreview { get; }
+
     #endregion Properties
 
     /// <summary>
@@ -52,8 +57,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Scrobbles the selected tracks.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Task.</returns>
     public abstract Task Scrobble();
+
+    /// <summary>
+    /// Shows a preview of the tracks that will be scrobbled.
+    /// </summary>
+    public abstract void Preview();
 
     /// <summary>
     /// Updates the status.

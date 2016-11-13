@@ -1,5 +1,6 @@
 ﻿using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Models;
+using Last.fm_Scrubbler_WPF.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -87,6 +88,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         _enableControls = value;
         NotifyOfPropertyChange(() => EnableControls);
         NotifyOfPropertyChange(() => CanScrobble);
+        NotifyOfPropertyChange(() => CanPreview);
         NotifyOfPropertyChange(() => CanSelectAll);
         NotifyOfPropertyChange(() => CanSelectNone);
         NotifyOfPropertyChange(() => CanSelectFile);
@@ -109,6 +111,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       get { return MainViewModel.Client.Auth.Authenticated && ParsedScrobbles.Any(i => i.ToScrobble) && EnableControls; }
     }
 
+    /// <summary>
+    /// Gets if the preview button is enabled.
+    /// </summary>
+    public override bool CanPreview
+    {
+      get { return ParsedScrobbles.Any(i => i.ToScrobble) && EnableControls; }
+    }
     /// <summary>
     /// Gets if the "Select ALL" button is enabled on the UI.
     /// </summary>
@@ -188,8 +197,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Parse the <see cref="DBFilePath"/>.
     /// A lot of media players use the same xml format.
     /// </summary>
-    /// <returns>Task.</returns>
-    private async Task ParseItunesConformXML()
+    private async void ParseItunesConformXML()
     {
       EnableControls = false;
 
@@ -237,7 +245,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
             string artistName = xmlNodes.First(i => i.InnerText == "Artist").NextSibling.InnerText;
             string albumName = xmlNodes.FirstOrDefault(i => i.InnerText == "Album")?.NextSibling.InnerText;
             DateTime lastPlayed = DateTime.Parse(xmlNodes.FirstOrDefault(i => i.InnerText == "Play Date UTC")?.NextSibling.InnerText);
-            
+
 
             MediaDBScrobbleViewModel vm = new MediaDBScrobbleViewModel(new MediaDBScrobble(trackName, artistName, albumName, playCount, lastPlayed));
             vm.ToScrobbleChanged += ToScrobbleChanged;
@@ -264,8 +272,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Parses the windows media player database.
     /// </summary>
-    /// <returns>Task.</returns>
-    private async Task ParseWMPDatabase()
+    private async void ParseWMPDatabase()
     {
       EnableControls = false;
 
@@ -295,10 +302,34 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Scrobbles the selected tracks.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Task.</returns>
     public override async Task Scrobble()
     {
       EnableControls = false;
+
+
+      OnStatusUpdated("Trying to scrobble selected tracks...");
+
+      var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
+      if (response.Success)
+        OnStatusUpdated("Successfully scrobbled!");
+      else
+        OnStatusUpdated("Error while scrobbling!");
+
+      EnableControls = true;
+    }
+
+    /// <summary>
+    /// Previews the tracks that will be scrobbled.
+    /// </summary>
+    public override void Preview()
+    {
+      ScrobblePreviewView spv = new ScrobblePreviewView(new ScrobblePreviewViewModel(CreateScrobbles()));
+      spv.ShowDialog();
+    }
+
+    private List<Scrobble> CreateScrobbles()
+    {
       List<Scrobble> scrobbles = new List<Scrobble>();
 
       DateTime time = DateTime.Now; ;
@@ -311,15 +342,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         }
       }
 
-      OnStatusUpdated("Trying to scrobble selected tracks...");
-
-      var response = await MainViewModel.Scrobbler.ScrobbleAsync(scrobbles);
-      if (response.Success)
-        OnStatusUpdated("Successfully scrobbled!");
-      else
-        OnStatusUpdated("Error while scrobbling!");
-
-      EnableControls = true;
+      return scrobbles;
     }
 
     /// <summary>
@@ -332,6 +355,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       NotifyOfPropertyChange(() => CanSelectAll);
       NotifyOfPropertyChange(() => CanSelectNone);
       NotifyOfPropertyChange(() => CanScrobble);
+      NotifyOfPropertyChange(() => CanPreview);
     }
   }
 }

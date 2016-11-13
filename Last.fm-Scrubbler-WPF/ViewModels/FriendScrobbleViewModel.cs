@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
   /// <summary>
-  /// ViewModel for the <see cref="Views.FriendScrobbleView"/>.
+  /// ViewModel for the <see cref="FriendScrobbleView"/>.
   /// </summary>
   class FriendScrobbleViewModel : ScrobbleViewModelBase
   {
@@ -68,6 +69,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         _enableControls = value;
         NotifyOfPropertyChange(() => EnableControls);
         NotifyOfPropertyChange(() => CanScrobble);
+        NotifyOfPropertyChange(() => CanPreview);
         NotifyOfPropertyChange(() => CanFetch);
         NotifyOfPropertyChange(() => CanSelectAll);
         NotifyOfPropertyChange(() => CanSelectNone);
@@ -80,6 +82,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public override bool CanScrobble
     {
       get { return MainViewModel.Client.Auth.Authenticated && FetchedScrobbles.Any(i => i.ToScrobble) && EnableControls; }
+    }
+
+    /// <summary>
+    /// Gets if the preview button is enabled.
+    /// </summary>
+    public override bool CanPreview
+    {
+      get { return FetchedScrobbles.Any(i => i.ToScrobble) && EnableControls; }
     }
 
     /// <summary>
@@ -149,8 +159,20 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private void ToScrobbleChanged(object sender, EventArgs e)
     {
       NotifyOfPropertyChange(() => CanScrobble);
+      NotifyOfPropertyChange(() => CanPreview);
       NotifyOfPropertyChange(() => CanSelectAll);
       NotifyOfPropertyChange(() => CanSelectNone);
+    }
+
+    private List<Scrobble> CreateScrobbles()
+    {
+      List<Scrobble> scrobbles = new List<Scrobble>();
+      foreach (var vm in FetchedScrobbles.Where(i => i.ToScrobble))
+      {
+        scrobbles.Add(new Scrobble(vm.Track.ArtistName, vm.Track.AlbumName, vm.Track.Name, vm.Track.TimePlayed.Value.LocalDateTime.AddSeconds(1)));
+      }
+
+      return scrobbles;
     }
 
     /// <summary>
@@ -160,19 +182,23 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       EnableControls = false;
       OnStatusUpdated("Trying to scrobble selected tracks");
-      List<Scrobble> scrobbles = new List<Scrobble>();
-      foreach (var vm in FetchedScrobbles.Where(i => i.ToScrobble))
-      {
-        scrobbles.Add(new Scrobble(vm.Track.ArtistName, vm.Track.AlbumName, vm.Track.Name, vm.Track.TimePlayed.Value.LocalDateTime.AddSeconds(1)));
-      }
 
-      var response = await MainViewModel.Scrobbler.ScrobbleAsync(scrobbles);
+      var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
       if (response.Success)
         OnStatusUpdated("Successfully scrobbled!");
       else
         OnStatusUpdated("Error while scrobbling!");
 
       EnableControls = true;
+    }
+
+    /// <summary>
+    /// Previews the tracks that will be scrobbled.
+    /// </summary>
+    public override void Preview()
+    {
+      ScrobblePreviewView spv = new ScrobblePreviewView(new ScrobblePreviewViewModel(CreateScrobbles()));
+      spv.ShowDialog();
     }
 
     /// <summary>

@@ -115,13 +115,7 @@
       </ListView.View>
     </ListView>
 
-    <Button Grid.Row="8" Grid.Column="0" Content="Scrobble" IsEnabled="{Binding CanScrobble}">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="Scrobble"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
+    <local:ScrobbleButtonControl Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="10"/>
 
   </Grid>
 </UserControl>

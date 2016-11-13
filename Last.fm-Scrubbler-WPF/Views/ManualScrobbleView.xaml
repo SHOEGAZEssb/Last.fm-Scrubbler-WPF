@@ -21,7 +21,6 @@
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
       <RowDefinition Height="Auto"/>
-      <RowDefinition Height="5"/>
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="Auto"/>
@@ -29,7 +28,6 @@
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="Auto"/>
-      <ColumnDefinition Width="5"/>
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="Artist:"/>
@@ -46,12 +44,6 @@
     <CheckBox Grid.Row="6" Grid.Column="4" Content="Current" IsChecked="{Binding CurrentDateTime}"
                     VerticalAlignment="Center"/>
 
-    <Button Grid.Row="8" Grid.Column="0" Content="Scrobble" IsEnabled="{Binding CanScrobble}">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="Scrobble"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
+    <local:ScrobbleButtonControl Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="5"/>
   </Grid>
 </UserControl>

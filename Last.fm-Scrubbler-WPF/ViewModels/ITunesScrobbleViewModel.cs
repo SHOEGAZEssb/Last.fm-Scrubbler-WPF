@@ -183,6 +183,15 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       get { return MainViewModel.Client.Auth.Authenticated; }
     }
 
+    /// <summary>
+    /// Gets if the preview button is enabled.
+    /// Not needed here.
+    /// </summary>
+    public override bool CanPreview
+    {
+      get { throw new NotImplementedException(); }
+    }
+
     #endregion Properties
 
     #region Private Member
@@ -244,7 +253,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         _app.OnPlayerStopEvent += _app_OnPlayerStopEvent;
         _app.OnAboutToPromptUserToQuitEvent += _app_AboutToQuitEvent;
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         OnStatusUpdated("Error connecting to iTunes: " + ex.Message);
         AutoConnect = false;
@@ -417,6 +426,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
         EnableControls = true;
       }
+    }
+
+    /// <summary>
+    /// Does nothing here.
+    /// </summary>
+    public override void Preview()
+    {
+      throw new NotImplementedException();
     }
   }
 }

@@ -1,0 +1,74 @@
+﻿<Window x:Class="Last.fm_Scrubbler_WPF.Views.ScrobblePreviewView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
+        mc:Ignorable="d"
+        Title="Scrobble Preview" Height="300" Width="500">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="50"/>
+      <ColumnDefinition Width="5"/>
+    </Grid.ColumnDefinitions>
+
+    <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Content="The following tracks will be scrobbled:"/>
+    <ListView Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" ItemsSource="{Binding Scrobbles}">
+      <ListView.View>
+        <GridView>
+          <GridViewColumn Header="Artist" local:GridViewSort.PropertyName="Scrobble.ArtistName">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Artist}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Track" local:GridViewSort.PropertyName="Scrobble.Name">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Track}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Album" local:GridViewSort.PropertyName="Scrobble.Album">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Album}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Scrobble Time" local:GridViewSort.PropertyName="Scrobble.TimePlayed.LocalDateTime">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label Grid.Column="10" VerticalAlignment="Center" Content="{Binding TimePlayed.LocalDateTime}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+        </GridView>
+      </ListView.View>
+    </ListView>
+
+    <Button Grid.Row="5" Grid.Column="2" HorizontalAlignment="Right" Content="OK" Width="50">
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Click">
+          <cal:ActionMessage MethodName="OK">
+            <cal:Parameter Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+          </cal:ActionMessage>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
+    </Button>
+  </Grid>
+</Window>

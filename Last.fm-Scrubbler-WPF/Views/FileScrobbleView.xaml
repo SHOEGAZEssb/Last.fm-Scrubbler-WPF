@@ -17,10 +17,10 @@
       <RowDefinition Height="*"/>
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto"/>
-      <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="*"/>
@@ -127,17 +127,11 @@
       </ListView.ItemContainerStyle>
     </ListView>
 
-    <Button Grid.Row="4" Grid.Column="0" Content="Scrobble" IsEnabled="{Binding CanScrobble}">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="Scrobble"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
+    <local:ScrobbleButtonControl Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="5"/>
 
-    <Label Grid.Row="4" Grid.Column="2" Content="Finishing Time:"/>
-    <xctk:DateTimePicker Grid.Row="4" Grid.Column="4" Value="{Binding FinishingTime}" Minimum="{Binding Source={x:Static viewModels:MainViewModel.MinimumDateTime}}"/>
-    <CheckBox Grid.Row="4" Grid.Column="6" Content="Current" IsChecked="{Binding CurrentDateTime}"
+    <Label Grid.Row="4" Grid.Column="0" Content="Finishing Time:"/>
+    <xctk:DateTimePicker Grid.Row="4" Grid.Column="2" Value="{Binding FinishingTime}" Minimum="{Binding Source={x:Static viewModels:MainViewModel.MinimumDateTime}}"/>
+    <CheckBox Grid.Row="4" Grid.Column="4" Content="Current" IsChecked="{Binding CurrentDateTime}"
                     VerticalAlignment="Center"/>
   </Grid>
 </UserControl>

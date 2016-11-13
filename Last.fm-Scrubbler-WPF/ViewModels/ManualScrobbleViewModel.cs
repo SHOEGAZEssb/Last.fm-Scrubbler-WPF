@@ -1,11 +1,12 @@
 ﻿using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Views;
 using System;
 using System.Threading.Tasks;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
   /// <summary>
-  /// ViewModel for the <see cref="Views.ManualScrobbleView"/>.
+  /// ViewModel for the <see cref="ManualScrobbleView"/>.
   /// </summary>
   class ManualScrobbleViewModel : ScrobbleViewModelBase
   {
@@ -22,6 +23,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         _artist = value;
         NotifyOfPropertyChange(() => Artist);
         NotifyOfPropertyChange(() => CanScrobble);
+        NotifyOfPropertyChange(() => CanPreview);
       }
     }
     private string _artist;
@@ -37,6 +39,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         _track = value;
         NotifyOfPropertyChange(() => Track);
         NotifyOfPropertyChange(() => CanScrobble);
+        NotifyOfPropertyChange(() => CanPreview);
       }
     }
     private string _track;
@@ -98,6 +101,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         _enableControls = value;
         NotifyOfPropertyChange(() => EnableControls);
         NotifyOfPropertyChange(() => CanScrobble);
+        NotifyOfPropertyChange(() => CanPreview);
       }
     }
 
@@ -107,6 +111,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public override bool CanScrobble
     {
       get { return MainViewModel.Client.Auth.Authenticated && Artist.Length > 0 && Track.Length > 0 && EnableControls; }
+    }
+
+    /// <summary>
+    /// Gets if the preview button is enabled.
+    /// </summary>
+    public override bool CanPreview
+    {
+      get { return Artist.Length > 0 && Track.Length > 0 && EnableControls; }
     }
 
     #endregion Properties
@@ -143,6 +155,15 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         OnStatusUpdated("Error while scrobbling!");
 
       EnableControls = true;
+    }
+
+    /// <summary>
+    /// Preview the track that will be scrobbled.
+    /// </summary>
+    public override void Preview()
+    {
+      ScrobblePreviewView spv = new ScrobblePreviewView(new ScrobblePreviewViewModel(new Scrobble[] { new Scrobble(Artist, Album, Track, TimePlayed) }));
+      spv.ShowDialog();
     }
   }
 }
