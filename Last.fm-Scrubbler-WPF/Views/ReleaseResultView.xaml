@@ -20,7 +20,7 @@
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
-    <Button Grid.Row="0" Content="Back To Artists" HorizontalAlignment="Left"
+    <Button Grid.Row="0" Content="Back To Artist" HorizontalAlignment="Left"
             Visibility="{Binding FetchedReleaseThroughArtist, Converter={StaticResource boolToVis}}">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
