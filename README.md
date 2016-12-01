@@ -83,7 +83,7 @@ Currently works with iTunes, Winamp and Windows Media Player.
 
 You can read how to export your iTunes database as xml [here](http://ccm.net/faq/42531-enable-the-sharing-of-itunes-library-xml-with-other-applications).
 
-You can read how to export your Winamp database as xml [here](http://forums.winamp.com/showthread.php?t=334048) (only step 1 is required.
+You can read how to export your Winamp database as xml [here](http://forums.winamp.com/showthread.php?t=334048) (only step 1 is required).
 
 ![Media Player Database Scrobbling](https://ibin.co/2ueEB36aAC75.png)
 
