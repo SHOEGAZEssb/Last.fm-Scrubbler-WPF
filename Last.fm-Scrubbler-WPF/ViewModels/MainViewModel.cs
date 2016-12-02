@@ -120,6 +120,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private CSVScrobbleViewModel _csvScrobbleViewModel;
 
+    /// <summary>
+    /// ViewModel for the <see cref="FileScrobbleView"/>.
+    /// </summary>
     public FileScrobbleViewModel FileScrobbleViewModel
     {
       get { return _fileScrobbleViewModel; }
@@ -131,6 +134,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private FileScrobbleViewModel _fileScrobbleViewModel;
 
+    /// <summary>
+    /// ViewModel for the <see cref="MediaPlayerDatabaseScrobbleView"/>.
+    /// </summary>
     public MediaPlayerDatabaseScrobbleViewModel MediaPlayerDatabaseScrobbleViewModel
     {
       get { return _mediaPlayerDatabaseScrobbleViewModel; }
@@ -142,6 +148,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private MediaPlayerDatabaseScrobbleViewModel _mediaPlayerDatabaseScrobbleViewModel;
 
+    /// <summary>
+    /// ViewModel for the <see cref="ITunesScrobbleView"/>.
+    /// </summary>
     public ITunesScrobbleViewModel ITunesScrobbleVM
     {
       get { return _iTunesScrobbleVM; }
