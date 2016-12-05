@@ -45,8 +45,9 @@
     <Reference Include="Caliburn.Micro.Platform">
       <HintPath>Libs\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="IF.Lastfm.Core">
-      <HintPath>Libs\IF.Lastfm.Core.dll</HintPath>
+    <Reference Include="IF.Lastfm.Core, Version=1.0.0.294, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Inflatable.Lastfm.1.0.0.294\lib\netstandard1.1\IF.Lastfm.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
