@@ -227,6 +227,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       MediaPlayerDatabaseScrobbleViewModel.StatusUpdated += StatusUpdated;
       ITunesScrobbleVM = new ITunesScrobbleViewModel();
       ITunesScrobbleVM.StatusUpdated += StatusUpdated;
+
+      CurrentStatus = "Waiting to scrobble...";
     }
 
     /// <summary>
