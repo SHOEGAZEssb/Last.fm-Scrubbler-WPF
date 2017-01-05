@@ -8,14 +8,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.PasteYourTasteView"/>.
   /// </summary>
-  class PasteYourTasteViewModel : PropertyChangedBase
+  class PasteYourTasteViewModel : ViewModelBase
   {
     #region Properties
-
-    /// <summary>
-    /// Event that triggers when the status should be changed.
-    /// </summary>
-    public event EventHandler<UpdateStatusEventArgs> StatusUpdated;
 
     /// <summary>
     /// The name of the user whose taste to paste.
@@ -69,7 +64,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         _tasteText = value;
         NotifyOfPropertyChange(() => TasteText);
-        NotifyOfPropertyChange(() => EnableCopyButton);
+        NotifyOfPropertyChange(() => CanCopy);
       }
     }
     private string _tasteText;
@@ -77,22 +72,21 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Gets if certain controls on the ui are enabled.
     /// </summary>
-    public bool EnableControls
+    public override bool EnableControls
     {
       get { return _enableControls; }
-      private set
+      protected set
       {
         _enableControls = value;
         NotifyOfPropertyChange(() => EnableControls);
-        NotifyOfPropertyChange(() => EnableCopyButton);
+        NotifyOfPropertyChange(() => CanCopy);
       }
     }
-    private bool _enableControls;
 
     /// <summary>
     /// Gets if the copy button on the ui is enabled.
     /// </summary>
-    public bool EnableCopyButton
+    public bool CanCopy
     {
       get { return TasteText != string.Empty && EnableControls; }
     }
@@ -115,7 +109,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public async void GetTopArtists()
     {
       EnableControls = false;
-      StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Fetching top artists..."));
+      OnStatusUpdated("Fetching top artists...");
 
       var response = await MainViewModel.Client.User.GetTopArtists(Username, TimeSpan, 0, Amount);
       if(response.Success)
@@ -129,10 +123,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         }
 
         TasteText = tasteText;
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Successfully fetched top artists"));
+        OnStatusUpdated("Successfully fetched top artists");
       }
       else
-        StatusUpdated?.Invoke(this, new UpdateStatusEventArgs("Error fetching top artists"));
+        OnStatusUpdated("Error fetching top artists");
 
       EnableControls = true;
     }

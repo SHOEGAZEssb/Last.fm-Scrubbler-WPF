@@ -1,5 +1,4 @@
-﻿using Caliburn.Micro;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
@@ -7,21 +6,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// Base class for all scrobblers.
   /// </summary>
-  abstract class ScrobbleViewModelBase : PropertyChangedBase
+  abstract class ScrobbleViewModelBase : ViewModelBase
   {
     #region Properties
-
-    /// <summary>
-    /// Event that triggers when the status should be changed.
-    /// </summary>
-    public event EventHandler<UpdateStatusEventArgs> StatusUpdated;
-
-    /// <summary>
-    /// Gets if certain controls that modify the
-    /// scrobbling data are enabled.
-    /// </summary>
-    public abstract bool EnableControls { get; protected set; }
-    protected bool _enableControls;
 
     /// <summary>
     /// Gets if the scrobble button is enabled.
@@ -39,9 +26,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Constructor.
     /// </summary>
     public ScrobbleViewModelBase()
+      : base()
     {
       MainViewModel.ClientAuthChanged += MainViewModel_ClientAuthChanged;
-      EnableControls = true;
     }
 
     /// <summary>
@@ -64,14 +51,5 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Shows a preview of the tracks that will be scrobbled.
     /// </summary>
     public abstract void Preview();
-
-    /// <summary>
-    /// Updates the status.
-    /// </summary>
-    /// <param name="newStatus">New status.</param>
-    protected virtual void OnStatusUpdated(string newStatus)
-    {
-      StatusUpdated?.Invoke(this, new UpdateStatusEventArgs(newStatus));
-    }
   }
 }
