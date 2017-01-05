@@ -45,7 +45,7 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="Username:"/>
-    <TextBox Grid.Row="0" Grid.Column="2" IsEnabled="{Binding EnableControls}" Text="{Binding Username}"/>
+    <TextBox Grid.Row="0" Grid.Column="2" IsEnabled="{Binding EnableControls}" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
 
     <Label Grid.Row="0" Grid.Column="4" Content="Timespan:"/>
     <ComboBox Grid.Row="0" Grid.Column="6" IsEnabled="{Binding EnableControls}" ItemsSource="{Binding Source={StaticResource TimeSpanDataProvider}}" SelectedItem="{Binding TimeSpan}"/>
@@ -53,7 +53,7 @@
     <Label Grid.Row="0" Grid.Column="8" Content="Amount:"/>
     <xctk:IntegerUpDown Grid.Row="0" Grid.Column="10" Minimum="1" Maximum="1000" IsEnabled="{Binding EnableControls}" Value="{Binding Amount}"/>
 
-    <Button Grid.Row="0" Grid.Column="12" IsEnabled="{Binding EnableControls}" Content="Fetch">
+    <Button Grid.Row="0" Grid.Column="12" IsEnabled="{Binding CanFetch}" Content="Fetch">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="GetTopArtists"/>
@@ -72,7 +72,7 @@
         <ColumnDefinition Width="32"/>
       </Grid.ColumnDefinitions>
 
-      <TextBox Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" IsReadOnly="True" Text="{Binding PasteText}"/>
+      <TextBox Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" IsReadOnly="True" Text="{Binding TasteText, Mode=OneWay}"/>
       <Button Grid.Row="0" Grid.Column="2" IsEnabled="{Binding CanCopy}">
         <i:Interaction.Triggers>
           <i:EventTrigger EventName="Click">

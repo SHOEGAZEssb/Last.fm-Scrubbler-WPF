@@ -22,6 +22,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         _username = value;
         NotifyOfPropertyChange(() => Username);
+        NotifyOfPropertyChange(() => CanFetch);
       }
     }
     private string _username;
@@ -79,8 +80,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         _enableControls = value;
         NotifyOfPropertyChange(() => EnableControls);
+        NotifyOfPropertyChange(() => CanFetch);
         NotifyOfPropertyChange(() => CanCopy);
       }
+    }
+
+    /// <summary>
+    /// Gets if the fetch button on the ui is enabled.
+    /// </summary>
+    public bool CanFetch
+    {
+      get { return Username != null && Username != string.Empty && EnableControls; }
     }
 
     /// <summary>
@@ -88,7 +98,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public bool CanCopy
     {
-      get { return TasteText != string.Empty && EnableControls; }
+      get { return TasteText != null && TasteText != string.Empty && EnableControls; }
     }
 
     #endregion Properties
