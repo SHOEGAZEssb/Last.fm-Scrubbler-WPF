@@ -22,26 +22,37 @@
     </Grid.RowDefinitions>
 
     <TabControl Grid.Row="0">
-      <TabItem Header="Manual Scrobble">
-        <views:ManualScrobbleView DataContext="{Binding ManualScrobbleViewModel}"/>
+      <TabItem Header="Scrobble Functions">
+        <TabControl>
+          <TabItem Header="Manual Scrobble">
+            <views:ManualScrobbleView DataContext="{Binding ManualScrobbleViewModel}"/>
+          </TabItem>
+          <TabItem Header="Friend Scrobble">
+            <views:FriendScrobbleView DataContext="{Binding FriendScrobbleViewModel}"/>
+          </TabItem>
+          <TabItem Header="Database Scrobble">
+            <views:DatabaseScrobbleView DataContext="{Binding DatabaseScrobbleViewModel}"/>
+          </TabItem>
+          <TabItem Header="CSV Scrobble">
+            <views:CSVScrobbleView DataContext="{Binding CSVScrobbleViewModel}"/>
+          </TabItem>
+          <TabItem Header="File Scrobble">
+            <views:FileScrobbleView DataContext="{Binding FileScrobbleViewModel}"/>
+          </TabItem>
+          <TabItem Header="Media Player DB Scrobble">
+            <views:MediaPlayerDatabaseScrobbleView DataContext="{Binding MediaPlayerDatabaseScrobbleViewModel}"/>
+          </TabItem>
+          <TabItem Header="iTunes Scrobble">
+            <views:ITunesScrobbleView DataContext="{Binding ITunesScrobbleVM}"/>
+          </TabItem>
+        </TabControl>
       </TabItem>
-      <TabItem Header="Friend Scrobble">
-        <views:FriendScrobbleView DataContext="{Binding FriendScrobbleViewModel}"/>
-      </TabItem>
-      <TabItem Header="Database Scrobble">
-        <views:DatabaseScrobbleView DataContext="{Binding DatabaseScrobbleViewModel}"/>
-      </TabItem>
-      <TabItem Header="CSV Scrobble">
-        <views:CSVScrobbleView DataContext="{Binding CSVScrobbleViewModel}"/>
-      </TabItem>
-      <TabItem Header="File Scrobble">
-        <views:FileScrobbleView DataContext="{Binding FileScrobbleViewModel}"/>
-      </TabItem>
-      <TabItem Header="Media Player DB Scrobble">
-        <views:MediaPlayerDatabaseScrobbleView DataContext="{Binding MediaPlayerDatabaseScrobbleViewModel}"/>
-      </TabItem>
-      <TabItem Header="iTunes Scrobble">
-        <views:ITunesScrobbleView DataContext="{Binding ITunesScrobbleVM}"/>
+      <TabItem Header="Extra Functions">
+        <TabControl>
+          <TabItem Header="Paste Your Taste">
+            <views:PasteYourTasteView DataContext="{Binding PasteYourTasteVM}"/>
+          </TabItem>
+        </TabControl>
       </TabItem>
     </TabControl>
 

@@ -93,96 +93,104 @@
     </ApplicationDefinition>
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="ViewModels\ITunesScrobbleViewModel.cs" />
-    <Compile Include="ViewModels\ScrobblePreviewViewModel.cs" />
+    <Compile Include="ViewModels\PasteYourTasteViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\ITunesScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\ScrobblePreviewViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="Views\GridViewSort.cs" />
     <Compile Include="Models\CSVScrobble.cs" />
     <Compile Include="Models\MediaDBScrobble.cs" />
     <Compile Include="Models\WMP.cs" />
-    <Compile Include="ViewModels\CSVScrobbleViewModel.cs" />
-    <Compile Include="ViewModels\DatabaseScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\CSVScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\DatabaseScrobbleViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\FetchedArtistViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\FetchedReleaseViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\FetchedFriendTrackViewModel.cs" />
     <Compile Include="UpdateStatusEventArgs.cs" />
     <Compile Include="ViewModels\SubViewModels\FetchedTrackViewModel.cs" />
-    <Compile Include="ViewModels\FileScrobbleViewModel.cs" />
-    <Compile Include="ViewModels\FriendScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\FileScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\FriendScrobbleViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\LoadedFileViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\ManualScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\ManualScrobbleViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\MediaDBScrobbleViewModel.cs" />
-    <Compile Include="ViewModels\MediaPlayerDatabaseScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\MediaPlayerDatabaseScrobbleViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\ParsedCSVScrobbleViewModel.cs" />
-    <Compile Include="ViewModels\ScrobbleViewModelBase.cs" />
-    <Compile Include="Views\ArtistResultView.xaml.cs">
+    <Compile Include="ViewModels\ScrobbleViewModels\ScrobbleViewModelBase.cs" />
+    <Compile Include="Views\PasteYourTasteView.xaml.cs">
+      <DependentUpon>PasteYourTasteView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SubViews\ArtistResultView.xaml.cs">
       <DependentUpon>ArtistResultView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CSVScrobbleView.xaml.cs">
+    <Compile Include="Views\ScrobbleViews\CSVScrobbleView.xaml.cs">
       <DependentUpon>CSVScrobbleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DatabaseScrobbleView.xaml.cs">
+    <Compile Include="Views\ScrobbleViews\DatabaseScrobbleView.xaml.cs">
       <DependentUpon>DatabaseScrobbleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FileScrobbleView.xaml.cs">
+    <Compile Include="Views\ScrobbleViews\FileScrobbleView.xaml.cs">
       <DependentUpon>FileScrobbleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FriendScrobbleView.xaml.cs">
+    <Compile Include="Views\ScrobbleViews\FriendScrobbleView.xaml.cs">
       <DependentUpon>FriendScrobbleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ITunesScrobbleView.xaml.cs">
+    <Compile Include="Views\ScrobbleViews\ITunesScrobbleView.xaml.cs">
       <DependentUpon>ITunesScrobbleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ManualScrobbleView.xaml.cs">
+    <Compile Include="Views\ScrobbleViews\ManualScrobbleView.xaml.cs">
       <DependentUpon>ManualScrobbleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MediaPlayerDatabaseScrobbleView.xaml.cs">
+    <Compile Include="Views\ScrobbleViews\MediaPlayerDatabaseScrobbleView.xaml.cs">
       <DependentUpon>MediaPlayerDatabaseScrobbleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ReleaseResultView.xaml.cs">
+    <Compile Include="Views\SubViews\ReleaseResultView.xaml.cs">
       <DependentUpon>ReleaseResultView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ScrobbleButtonControl.xaml.cs">
+    <Compile Include="Views\ScrobbleViews\ScrobbleButtonControl.xaml.cs">
       <DependentUpon>ScrobbleButtonControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ScrobblePreviewView.xaml.cs">
+    <Compile Include="Views\ScrobbleViews\ScrobblePreviewView.xaml.cs">
       <DependentUpon>ScrobblePreviewView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SelectScrobblesControl.xaml.cs">
+    <Compile Include="Views\ScrobbleViews\SelectScrobblesControl.xaml.cs">
       <DependentUpon>SelectScrobblesControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectUserView.xaml.cs">
       <DependentUpon>SelectUserView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TrackResultView.xaml.cs">
+    <Compile Include="Views\SubViews\TrackResultView.xaml.cs">
       <DependentUpon>TrackResultView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\ArtistResultView.xaml">
+    <Page Include="Views\PasteYourTasteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CSVScrobbleView.xaml">
+    <Page Include="Views\SubViews\ArtistResultView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DatabaseScrobbleView.xaml">
+    <Page Include="Views\ScrobbleViews\CSVScrobbleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FileScrobbleView.xaml">
+    <Page Include="Views\ScrobbleViews\DatabaseScrobbleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FriendScrobbleView.xaml">
+    <Page Include="Views\ScrobbleViews\FileScrobbleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ITunesScrobbleView.xaml">
+    <Page Include="Views\ScrobbleViews\FriendScrobbleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScrobbleViews\ITunesScrobbleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -202,27 +210,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ManualScrobbleView.xaml">
+    <Page Include="Views\ScrobbleViews\ManualScrobbleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MediaPlayerDatabaseScrobbleView.xaml">
+    <Page Include="Views\ScrobbleViews\MediaPlayerDatabaseScrobbleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ReleaseResultView.xaml">
+    <Page Include="Views\SubViews\ReleaseResultView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ScrobbleButtonControl.xaml">
+    <Page Include="Views\ScrobbleViews\ScrobbleButtonControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ScrobblePreviewView.xaml">
+    <Page Include="Views\ScrobbleViews\ScrobblePreviewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SelectScrobblesControl.xaml">
+    <Page Include="Views\ScrobbleViews\SelectScrobblesControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -230,7 +238,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TrackResultView.xaml">
+    <Page Include="Views\SubViews\TrackResultView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -305,6 +313,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\minus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\copy.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

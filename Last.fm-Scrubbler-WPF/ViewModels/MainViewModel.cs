@@ -64,6 +64,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public static DateTime MinimumDateTime = DateTime.Now.Subtract(TimeSpan.FromDays(14));
 
+    #region ScrobbleViewModels
+
     /// <summary>
     /// The ViewModel for the <see cref="ManualScrobbleView"/>.
     /// </summary>
@@ -162,6 +164,26 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private ITunesScrobbleViewModel _iTunesScrobbleVM;
 
+    #endregion ScrobbleViewModels
+
+    #region ExtraViewModels
+
+    /// <summary>
+    /// ViewModel for the <see cref="PasteYourTasteView"/>.
+    /// </summary>
+    public PasteYourTasteViewModel PasteYourTasteVM
+    {
+      get { return _pasteYourTasteVM; }
+      private set
+      {
+        _pasteYourTasteVM = value;
+        NotifyOfPropertyChange(() => PasteYourTasteVM);
+      }
+    }
+    private PasteYourTasteViewModel _pasteYourTasteVM;
+
+    #endregion ExtraViewModels
+
     #region StatusBar Properties
 
     /// <summary>
@@ -227,6 +249,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       MediaPlayerDatabaseScrobbleViewModel.StatusUpdated += StatusUpdated;
       ITunesScrobbleVM = new ITunesScrobbleViewModel();
       ITunesScrobbleVM.StatusUpdated += StatusUpdated;
+
+      PasteYourTasteVM = new PasteYourTasteViewModel();
+      PasteYourTasteVM.StatusUpdated += StatusUpdated;
 
       CurrentStatus = "Waiting to scrobble...";
     }
