@@ -71,7 +71,7 @@ Normal Mode
 Import Mode
 <a name="File Scrobbling"/>
 ### File Scrobbling
-Allows you to select music files (currently only .mp3) from your computer and scrobble them.
+Allows you to select music files (currently .mp3, .m4a and .wma) from your computer and scrobble them.
 Timestamps will be reversed finishing with the "Finishing Time". So the last track in the list will be scrobbled with the "Finishing Time"
 
 ![File Scrobbler](https://ibin.co/2kz1FH1Htpm8.png)
