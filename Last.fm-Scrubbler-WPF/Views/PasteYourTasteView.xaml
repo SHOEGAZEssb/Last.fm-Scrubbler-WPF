@@ -72,7 +72,7 @@
         <ColumnDefinition Width="32"/>
       </Grid.ColumnDefinitions>
 
-      <TextBox Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" IsReadOnly="True" Text="{Binding TasteText, Mode=OneWay}"/>
+      <TextBox Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" IsReadOnly="True" Text="{Binding TasteText, Mode=OneWay}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
       <Button Grid.Row="0" Grid.Column="2" IsEnabled="{Binding CanCopy}">
         <i:Interaction.Triggers>
           <i:EventTrigger EventName="Click">

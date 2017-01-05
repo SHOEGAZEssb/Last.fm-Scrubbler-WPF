@@ -121,15 +121,15 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       EnableControls = false;
       OnStatusUpdated("Fetching top artists...");
 
-      var response = await MainViewModel.Client.User.GetTopArtists(Username, TimeSpan, 0, Amount);
+      var response = await MainViewModel.Client.User.GetTopArtists(Username, TimeSpan, 1, Amount);
       if(response.Success)
       {
         string tasteText = GetIntroText();
-        for(int i = 0; i < response.TotalItems; i++)
+        for(int i = 0; i < response.Content.Count; i++)
         {
-          tasteText += response.Content[i];
-          if (i + 1 != response.TotalItems)
-            tasteText += ",";
+          tasteText += response.Content[i].Name;
+          if (i + 1 != response.Content.Count)
+            tasteText += ", ";
         }
 
         TasteText = tasteText;
