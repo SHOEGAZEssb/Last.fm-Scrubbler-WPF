@@ -16,9 +16,9 @@
     private string _newStatus;
 
     /// <summary>
-    /// Contructor.
+    /// Constructor.
     /// </summary>
-    /// <param name="newStatus">Then ew status string.</param>
+    /// <param name="newStatus">The new status string.</param>
     public UpdateStatusEventArgs(string newStatus)
     {
       NewStatus = newStatus;
