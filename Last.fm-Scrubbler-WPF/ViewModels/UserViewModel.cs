@@ -14,6 +14,9 @@ using System.Xml.Serialization;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
+  /// <summary>
+  /// ViewModel for adding / removing / logging in users.
+  /// </summary>
   class UserViewModel : PropertyChangedBase
   {
     #region Properties
@@ -210,7 +213,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
             }
           }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
           Debug.WriteLine(string.Format("Error serializing User {0}: {1}", usr.Username, ex.Message));
         }
@@ -222,7 +225,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public void LoadLastUser()
     {
-      if(Settings.Default.Username != "")
+      if (Settings.Default.Username != "")
       {
         User usr = AvailableUsers.Where(i => i.Username == Settings.Default.Username).FirstOrDefault();
         if (usr != null)
