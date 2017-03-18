@@ -182,6 +182,20 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private PasteYourTasteViewModel _pasteYourTasteVM;
 
+    /// <summary>
+    /// ViewModel for the <see cref="CSVDownloaderView"/>.
+    /// </summary>
+    public CSVDownloaderViewModel CSVDownloaderVM
+    {
+      get { return _csvDownloaderVM; }
+      private set
+      {
+        _csvDownloaderVM = value;
+        NotifyOfPropertyChange(() => CSVDownloaderVM);
+      }
+    }
+    private CSVDownloaderViewModel _csvDownloaderVM;
+
     #endregion ExtraViewModels
 
     #region StatusBar Properties
@@ -252,6 +266,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
       PasteYourTasteVM = new PasteYourTasteViewModel();
       PasteYourTasteVM.StatusUpdated += StatusUpdated;
+      CSVDownloaderVM = new CSVDownloaderViewModel();
+      CSVDownloaderVM.StatusUpdated += StatusUpdated;
 
       CurrentStatus = "Waiting to scrobble...";
     }

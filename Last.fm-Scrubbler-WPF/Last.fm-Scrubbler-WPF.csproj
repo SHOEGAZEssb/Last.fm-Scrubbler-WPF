@@ -94,11 +94,15 @@
     </ApplicationDefinition>
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="ViewModels\CSVDownloaderViewModel.cs" />
     <Compile Include="ViewModels\PasteYourTasteViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ITunesScrobbleViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobblePreviewViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\CSVDownloaderView.xaml.cs">
+      <DependentUpon>CSVDownloaderView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\GridViewSort.cs" />
     <Compile Include="Models\CSVScrobble.cs" />
     <Compile Include="Models\MediaDBScrobble.cs" />
@@ -168,6 +172,10 @@
     <Compile Include="Views\SubViews\TrackResultView.xaml.cs">
       <DependentUpon>TrackResultView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\CSVDownloaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PasteYourTasteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="Last.fm_Scrubbler_WPF.Views.CSVDownloaderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
+
+    <Label Grid.Row="0" Grid.Column="0" Content="Username:"/>
+    <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Username}" IsEnabled="{Binding EnableControls, UpdateSourceTrigger=PropertyChanged}"/>
+
+    <Label Grid.Row="2" Grid.Column="0" Content="File Path:"/>
+    <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding FilePath}" IsEnabled="{Binding EnableControls, UpdateSourceTrigger=PropertyChanged}"/>
+    <Button Grid.Row="2" Grid.Column="4" Content="..." Width="25" IsEnabled="{Binding EnableControls}">
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Click">
+          <cal:ActionMessage MethodName="SelectFilePath"/>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
+    </Button>
+
+    <Button Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" HorizontalAlignment="Right" Content="Download Scrobbles" IsEnabled="{Binding CanDownload}">
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Click">
+          <cal:ActionMessage MethodName="Download"/>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
+    </Button>
+  </Grid>
+</UserControl>

@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cal="http://www.caliburnproject.org"
-        xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF"
         xmlns:views="clr-namespace:Last.fm_Scrubbler_WPF.Views"
         mc:Ignorable="d"
         Title="Last.fm Scrubbler" Height="400" Width="650" Icon="..\scrubbler_64.ico">
@@ -51,6 +50,9 @@
         <TabControl>
           <TabItem Header="Paste Your Taste">
             <views:PasteYourTasteView DataContext="{Binding PasteYourTasteVM}"/>
+          </TabItem>
+          <TabItem Header="CSV Downloader">
+            <views:CSVDownloaderView DataContext="{Binding CSVDownloaderVM}"/>
           </TabItem>
         </TabControl>
       </TabItem>
