@@ -1,6 +1,8 @@
 ﻿using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Models;
+using Last.fm_Scrubbler_WPF.Properties;
 using Last.fm_Scrubbler_WPF.Views;
+using Last.fm_Scrubbler_WPF.Views.ScrobbleViews;
 using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
@@ -237,17 +239,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           {
             try
             {
-              // csv should be "Artist, Album, Track, Date"
               fields = parser.ReadFields();
 
-              if (fields.Length != 4)
-                throw new Exception("Parsed row has wrong number of fields!");
-
               DateTime date = DateTime.Now;
-              string dateString = fields[3];
+              string dateString = fields[Settings.Default.TimestampFieldIndex];
 
               // check for 'now playing'
-              if (fields[3] == "" && ScrobbleMode == CSVScrobbleMode.Normal)
+              if (dateString == "" && ScrobbleMode == CSVScrobbleMode.Normal)
                 continue;
 
               if (DateTime.TryParse(dateString, out date))
@@ -269,7 +267,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
                   throw new Exception("Timestamp could not be parsed!");
               }
 
-              CSVScrobble parsedScrobble = new CSVScrobble(fields[0], fields[1], fields[2], date.AddSeconds(1));
+              CSVScrobble parsedScrobble = new CSVScrobble(fields[Settings.Default.ArtistFieldIndex], fields[Settings.Default.AlbumFieldIndex],
+                                                           fields[Settings.Default.TrackFieldIndex], date.AddSeconds(1));
               ParsedCSVScrobbleViewModel vm = new ParsedCSVScrobbleViewModel(parsedScrobble, ScrobbleMode);
               vm.ToScrobbleChanged += ToScrobbleChanged;
               _dispatcher.Invoke(() => Scrobbles.Add(vm));
@@ -379,6 +378,15 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       }
 
       return scrobbles;
+    }
+
+    /// <summary>
+    /// Opens the <see cref="ConfigureCSVParserView"/>
+    /// </summary>
+    public void OpenCSVParserSettings()
+    {
+      ConfigureCSVParserView view = new ConfigureCSVParserView();
+      view.ShowDialog();
     }
 
     /// <summary>

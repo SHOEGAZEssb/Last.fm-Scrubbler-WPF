@@ -98,6 +98,7 @@
     <Compile Include="ViewModels\PasteYourTasteViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ITunesScrobbleViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobblePreviewViewModel.cs" />
+    <Compile Include="ViewModels\SubViewModels\ConfigureCSVParserViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\CSVDownloaderView.xaml.cs">
@@ -126,6 +127,9 @@
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobbleViewModelBase.cs" />
     <Compile Include="Views\PasteYourTasteView.xaml.cs">
       <DependentUpon>PasteYourTasteView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScrobbleViews\ConfigureCSVParserView.xaml.cs">
+      <DependentUpon>ConfigureCSVParserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SubViews\ArtistResultView.xaml.cs">
       <DependentUpon>ArtistResultView.xaml</DependentUpon>
@@ -177,6 +181,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PasteYourTasteView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScrobbleViews\ConfigureCSVParserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -12,7 +12,7 @@ namespace Last.fm_Scrubbler_WPF.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.0.1.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -44,6 +44,54 @@ namespace Last.fm_Scrubbler_WPF.Properties {
             }
             set {
                 this["AutoConnect"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ArtistFieldIndex {
+            get {
+                return ((int)(this["ArtistFieldIndex"]));
+            }
+            set {
+                this["ArtistFieldIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int AlbumFieldIndex {
+            get {
+                return ((int)(this["AlbumFieldIndex"]));
+            }
+            set {
+                this["AlbumFieldIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int TrackFieldIndex {
+            get {
+                return ((int)(this["TrackFieldIndex"]));
+            }
+            set {
+                this["TrackFieldIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int TimestampFieldIndex {
+            get {
+                return ((int)(this["TimestampFieldIndex"]));
+            }
+            set {
+                this["TimestampFieldIndex"] = value;
             }
         }
     }

@@ -39,42 +39,38 @@
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="CSV File:"/>
     <TextBox Grid.Row="0" Grid.Column="2" IsReadOnly="True" Text="{Binding CSVFilePath, Mode=OneWay}"/>
-    <Button Grid.Row="0" Grid.Column="4" Content="Load" IsEnabled="{Binding EnableControls}">
+    <Button Grid.Row="0" Grid.Column="4" Content=" ... " IsEnabled="{Binding EnableControls}">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="LoadCSVFileDialog"/>
         </i:EventTrigger>
       </i:Interaction.Triggers>
     </Button>
+    <Button Grid.Row="0" Grid.Column="6" Content="Settings">
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Click">
+          <cal:ActionMessage MethodName="OpenCSVParserSettings"/>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
+    </Button>
 
-    <Grid Grid.Row="2" Grid.ColumnSpan="5">
+    <Grid Grid.Row="2" Grid.ColumnSpan="7">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="5"/>
         <ColumnDefinition Width="Auto"/>
       </Grid.ColumnDefinitions>
 
-      <Button Grid.Column="0" Content="Select ALL" IsEnabled="{Binding EnableControls}">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="Click">
-            <cal:ActionMessage MethodName="SelectAll"/>
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </Button>
-      <Button Grid.Column="2" Content="Select NONE" IsEnabled="{Binding EnableControls}">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="Click">
-            <cal:ActionMessage MethodName="SelectNone"/>
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </Button>
+      <local:SelectScrobblesControl Grid.Column="0" Grid.ColumnSpan="5"/>
     </Grid>
 
-    <ListView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5" ItemsSource="{Binding Scrobbles}" local:GridViewSort.AutoSort="True">
+    <ListView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="7" ItemsSource="{Binding Scrobbles}" local:GridViewSort.AutoSort="True">
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Scrobble?" local:GridViewSort.PropertyName="ToScrobble">
@@ -116,7 +112,7 @@
       </ListView.View>
     </ListView>
 
-    <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="9">
+    <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="7">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="5"/>
