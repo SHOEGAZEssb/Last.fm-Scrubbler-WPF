@@ -187,8 +187,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         NotifyOfPropertyChange(() => EnableControls);
         NotifyOfPropertyChange(() => CanScrobble);
         NotifyOfPropertyChange(() => CanPreview);
-        NotifyOfPropertyChange(() => CanSelectAllTracks);
-        NotifyOfPropertyChange(() => CanSelectNoneTracks);
+        NotifyOfPropertyChange(() => CanSelectAll);
+        NotifyOfPropertyChange(() => CanSelectNone);
       }
     }
 
@@ -226,7 +226,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Gets if the "Select All" button is enabled.
     /// </summary>
-    public bool CanSelectAllTracks
+    public bool CanSelectAll
     {
       get { return !FetchedTracks.All(i => i.ToScrobble) && EnableControls; }
     }
@@ -234,7 +234,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Gets if the "Select None" button is enabled.
     /// </summary>
-    public bool CanSelectNoneTracks
+    public bool CanSelectNone
     {
       get { return FetchedTracks.Any(i => i.ToScrobble) && EnableControls; }
     }
@@ -449,8 +449,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       NotifyOfPropertyChange(() => CanScrobble);
       NotifyOfPropertyChange(() => CanPreview);
-      NotifyOfPropertyChange(() => CanSelectAllTracks);
-      NotifyOfPropertyChange(() => CanSelectNoneTracks);
+      NotifyOfPropertyChange(() => CanSelectAll);
+      NotifyOfPropertyChange(() => CanSelectNone);
     }
 
     /// <summary>
@@ -522,7 +522,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Marks all tracks as "ToScrobble".
     /// </summary>
-    public void SelectAllTracks()
+    public void SelectAll()
     {
       foreach (var vm in FetchedTracks)
       {
@@ -533,7 +533,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Marks all tracks as not "ToScrobble";
     /// </summary>
-    public void SelectNoneTracks()
+    public void SelectNone()
     {
       foreach (var vm in FetchedTracks)
       {

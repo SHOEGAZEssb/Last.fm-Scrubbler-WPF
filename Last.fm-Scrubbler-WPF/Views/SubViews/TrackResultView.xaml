@@ -23,9 +23,7 @@
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="5"/>
-        <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition Width="5"/>
-        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
 
       <Button Grid.Row="0" Content="Back To Releases">
@@ -36,21 +34,7 @@
         </i:Interaction.Triggers>
       </Button>
 
-      <Button Grid.Column="2" Content="Select ALL" IsEnabled="{Binding CanSelectAllTracks}">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="Click">
-            <cal:ActionMessage MethodName="SelectAllTracks"/>
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </Button>
-
-      <Button Grid.Column="4" Content="Select NONE" IsEnabled="{Binding CanSelectNoneTracks}">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="Click">
-            <cal:ActionMessage MethodName="SelectNoneTracks"/>
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </Button>
+      <local:SelectScrobblesControl Grid.Row="0" Grid.Column="2"/>
     </Grid>
 
 
