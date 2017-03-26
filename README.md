@@ -11,13 +11,13 @@ This tool will always be free, but if it was helpful to you, consider donating t
 
 **Table of Contents**
 
-- [Manual Single Track Scrobbling](#Manual Scrobbling)
-- [Friend Scrobbling](#Friend Scrobbling)
-- [Database Scrobbling](#Database Scrobbling)
-- [CSV Scrobbling](#CSV Scrobbling)
-- [File Scrobbling](#File Scrobbling)
-- [Media Player Database Scrobbling](#Media Player Database Scrobbling)
-- [iTunes Scrobbling](#iTunes Scrobbling)
+- [Manual Single Track Scrobbling](#Manual-Single-Track-Scrobbling)
+- [Friend Scrobbling](#Friend-Scrobbling)
+- [Database Scrobbling](#Database-Scrobbling)
+- [CSV Scrobbling](#CSV-Scrobbling)
+- [File Scrobbling](#File-Scrobbling)
+- [Media Player Database Scrobbling](#Media-Player-Database-Scrobbling)
+- [iTunes Scrobbling](#iTunes-Scrobbling)
 
 <a name="Manual Scrobbling"/>
 ### Manual Single Track Scrobbling
