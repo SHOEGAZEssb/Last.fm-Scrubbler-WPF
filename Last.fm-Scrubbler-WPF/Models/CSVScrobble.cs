@@ -2,6 +2,9 @@
 
 namespace Last.fm_Scrubbler_WPF.Models
 {
+  /// <summary>
+  /// A scrobble parsed from a csv line.
+  /// </summary>
   class CSVScrobble
   {
     #region Properties

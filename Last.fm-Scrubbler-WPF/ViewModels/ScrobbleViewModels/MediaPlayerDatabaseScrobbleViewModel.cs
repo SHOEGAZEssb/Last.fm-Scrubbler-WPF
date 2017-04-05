@@ -253,13 +253,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           }
           catch (Exception ex)
           {
-            // todo: corrupted or something, log and continue.
-            //errorNodes.Add(trackNode, ex.Message);
+            // corrupted or something, log and continue.
+            errorNodes.Add(trackNode, ex.Message);
           }
           finally
           {
-            OnStatusUpdated("Parsing database file... " + count + " / " + dictNodes.Count());
-            count++;
+            OnStatusUpdated("Parsing database file... " + count++ + " / " + dictNodes.Count());
           }
         });
       }
