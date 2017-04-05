@@ -49,6 +49,10 @@
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="Text to search:"/>
@@ -58,7 +62,9 @@
               IsEnabled="{Binding EnableControls}"/>
     <ComboBox Grid.Row="0" Grid.Column="6" SelectedValue="{Binding SearchType}" ItemsSource="{Binding Source={StaticResource SearchTypeKeyDataProvider}}"
               IsEnabled="{Binding EnableControls}"/>
-    <Button Grid.Row="0" Grid.Column="8" Content="Search" IsEnabled="{Binding EnableControls}">
+    <Label Grid.Row="0" Grid.Column="8" Content="Max Results:"/>
+    <xctk:IntegerUpDown Grid.Row="0" Grid.Column="10" Minimum="1" Maximum="1000" Value="{Binding MaxResults}"/>
+    <Button Grid.Row="0" Grid.Column="12" Content="Search" IsEnabled="{Binding EnableControls}">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="Search"/>
@@ -66,9 +72,9 @@
       </i:Interaction.Triggers>
     </Button>
 
-    <ContentPresenter Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9" Content="{Binding CurrentView}"/>
+    <ContentPresenter Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="14" Content="{Binding CurrentView}"/>
 
-    <Grid Grid.Row="4" Grid.ColumnSpan="9" HorizontalAlignment="Stretch" IsEnabled="{Binding EnableControls}"
+    <Grid Grid.Row="4" Grid.ColumnSpan="14" HorizontalAlignment="Stretch" IsEnabled="{Binding EnableControls}"
           Visibility="{Binding ShowScrobbleControls, Converter={StaticResource boolToVis}}">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>

@@ -11,7 +11,7 @@ using System.Windows.Controls;
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
   /// <summary>
-  /// Enum of available databases to search.
+  /// Available databases to search.
   /// </summary>
   public enum Database
   {
@@ -22,7 +22,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   }
 
   /// <summary>
-  /// Enum of available search types.
+  /// Available search types.
   /// </summary>
   public enum SearchType
   {
@@ -85,6 +85,20 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       }
     }
     private SearchType _searchType;
+
+    /// <summary>
+    /// Maximum amount of search results.
+    /// </summary>
+    public int MaxResults
+    {
+      get { return _maxResults; }
+      set
+      {
+        _maxResults = value;
+        NotifyOfPropertyChange(() => MaxResults);
+      }
+    }
+    private int _maxResults;
 
     /// <summary>
     /// The current view that is displayed.
@@ -276,6 +290,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       SearchText = "";
       DatabaseToSearch = Database.LastFm;
       SearchType = SearchType.Artist;
+      MaxResults = 25;
       FetchedArtists = new ObservableCollection<FetchedArtistViewModel>();
       FetchedReleases = new ObservableCollection<FetchedReleaseViewModel>();
       FetchedTracks = new ObservableCollection<FetchedTrackViewModel>();
@@ -287,68 +302,85 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
     /// <summary>
     /// Sarches the entered <see cref="SearchText"/>.
-    /// And displays the info.
     /// </summary>
     /// <returns>Task.</returns>
     public async Task Search()
     {
       EnableControls = false;
-
-      if (SearchType == SearchType.Artist)
+      try
       {
-        OnStatusUpdated("Trying to search for artist '" + SearchText + "'...");
+        if (SearchType == SearchType.Artist)
+          await SearchByArtist();
+        else if (SearchType == SearchType.Release)
+          await SearchByRelease();
+      }
+      finally
+      {
+        EnableControls = true;
+      }
+    }
 
-        var response = await MainViewModel.Client.Artist.SearchAsync(SearchText);
-        if (response.Success)
+    /// <summary>
+    /// Searches for artists with the entered <see cref="SearchText"/>.
+    /// </summary>
+    /// <returns>Task.</returns>
+    private async Task SearchByArtist()
+    {
+      OnStatusUpdated("Trying to search for artist '" + SearchText + "'...");
+
+      var response = await MainViewModel.Client.Artist.SearchAsync(SearchText, 1, MaxResults);
+      if (response.Success)
+      {
+        FetchedArtists.Clear();
+        foreach (var s in response.Content)
         {
-          FetchedArtists.Clear();
-          foreach (var s in response.Content)
-          {
-            FetchedArtistViewModel vm = new FetchedArtistViewModel(s);
-            vm.ArtistClicked += ArtistClicked;
-            FetchedArtists.Add(vm);
-          }
+          FetchedArtistViewModel vm = new FetchedArtistViewModel(s);
+          vm.ArtistClicked += ArtistClicked;
+          FetchedArtists.Add(vm);
+        }
 
-          if (FetchedArtists.Count != 0)
-          {
-            CurrentView = _artistResultView;
-            OnStatusUpdated("Found " + FetchedArtists.Count + " artists");
-          }
-          else
-            OnStatusUpdated("Found no artists");
+        if (FetchedArtists.Count != 0)
+        {
+          CurrentView = _artistResultView;
+          OnStatusUpdated("Found " + FetchedArtists.Count + " artists");
         }
         else
-          OnStatusUpdated("Error while searching for artist '" + SearchText + "'");
+          OnStatusUpdated("Found no artists");
       }
-      else if (SearchType == SearchType.Release)
+      else
+        OnStatusUpdated("Error while searching for artist '" + SearchText + "'");
+    }
+
+    /// <summary>
+    /// Searches for releases with the entered <see cref="SearchText"/>.
+    /// </summary>
+    /// <returns>Task.</returns>
+    private async Task SearchByRelease()
+    {
+      OnStatusUpdated("Trying to search for release '" + SearchText + "'");
+
+      var response = await MainViewModel.Client.Album.SearchAsync(SearchText, 1, MaxResults);
+      if (response.Success)
       {
-        OnStatusUpdated("Trying to search for release '" + SearchText + "'");
-
-        var response = await MainViewModel.Client.Album.SearchAsync(SearchText);
-        if (response.Success)
+        FetchedReleases.Clear();
+        foreach (var s in response.Content)
         {
-          FetchedReleases.Clear();
-          foreach (var s in response.Content)
-          {
-            FetchedReleaseViewModel vm = new FetchedReleaseViewModel(s);
-            vm.ReleaseClicked += ReleaseClicked;
-            FetchedReleases.Add(vm);
-          }
+          FetchedReleaseViewModel vm = new FetchedReleaseViewModel(s);
+          vm.ReleaseClicked += ReleaseClicked;
+          FetchedReleases.Add(vm);
+        }
 
-          if (FetchedReleases.Count != 0)
-          {
-            FetchedReleaseThroughArtist = false;
-            CurrentView = _releaseResultView;
-            OnStatusUpdated("Found " + FetchedArtists.Count + " releases");
-          }
-          else
-            OnStatusUpdated("Found no releases");
+        if (FetchedReleases.Count != 0)
+        {
+          FetchedReleaseThroughArtist = false;
+          CurrentView = _releaseResultView;
+          OnStatusUpdated("Found " + FetchedArtists.Count + " releases");
         }
         else
-          OnStatusUpdated("Error while searching for release '" + SearchText + "'");
+          OnStatusUpdated("Found no releases");
       }
-
-      EnableControls = true;
+      else
+        OnStatusUpdated("Error while searching for release '" + SearchText + "'");
     }
 
     /// <summary>
@@ -366,7 +398,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
         OnStatusUpdated("Trying to fetch releases from '" + artist.Name + "'");
 
-        var response = await MainViewModel.Client.Artist.GetTopAlbumsAsync(artist.Name);
+        var response = await MainViewModel.Client.Artist.GetTopAlbumsAsync(artist.Name, false, 1, MaxResults);
         if (response.Success)
         {
           FetchedReleases.Clear();
