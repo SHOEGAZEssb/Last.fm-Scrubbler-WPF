@@ -20,7 +20,7 @@
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
-    <Button Grid.Row="0" Content="Back To Artist" HorizontalAlignment="Left"
+    <Button Grid.Row="0" Content="Back To Artists" HorizontalAlignment="Left"
             Visibility="{Binding FetchedReleaseThroughArtist, Converter={StaticResource boolToVis}}">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
@@ -54,12 +54,12 @@
                 <Image Grid.Row="0">
                   <Image.Style>
                     <Style TargetType="{x:Type Image}">
-                      <Setter Property="Source" Value="{Binding FetchedRelease.Images.Large}"/>
-                      <Style.Triggers>
+                      <Setter Property="Source" Value="{Binding FetchedRelease.Image, TargetNullValue={StaticResource noalbumimage}}"/>
+                      <!--<Style.Triggers>
                         <DataTrigger Binding="{Binding FetchedRelease.Images.Large}" Value="{x:Null}">
                           <Setter Property="Source" Value="{StaticResource noalbumimage}"/>
                         </DataTrigger>
-                      </Style.Triggers>
+                      </Style.Triggers>-->
                     </Style>
                   </Image.Style>
                   <i:Interaction.Triggers>

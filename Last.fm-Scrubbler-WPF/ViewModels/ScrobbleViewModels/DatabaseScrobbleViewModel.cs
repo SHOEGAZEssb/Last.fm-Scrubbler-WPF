@@ -1,5 +1,6 @@
 ﻿using IF.Lastfm.Core.Api.Helpers;
 using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Models;
 using Last.fm_Scrubbler_WPF.Views;
 using System;
 using System.Collections.Generic;
@@ -310,9 +311,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       try
       {
         if (SearchType == SearchType.Artist)
-          await SearchByArtist();
+          await SearchArtist();
         else if (SearchType == SearchType.Release)
-          await SearchByRelease();
+          await SearchRelease();
       }
       finally
       {
@@ -324,17 +325,28 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Searches for artists with the entered <see cref="SearchText"/>.
     /// </summary>
     /// <returns>Task.</returns>
-    private async Task SearchByArtist()
+    private async Task SearchArtist()
     {
       OnStatusUpdated("Trying to search for artist '" + SearchText + "'...");
 
+      if (DatabaseToSearch == Database.LastFm)
+        await SearchArtistLastFm();
+    }
+
+    /// <summary>
+    /// Searches for artists with the entered <see cref="SearchText"/>
+    /// on Last.fm.
+    /// </summary>
+    /// <returns>Task.</returns>
+    private async Task SearchArtistLastFm()
+    {
       var response = await MainViewModel.Client.Artist.SearchAsync(SearchText, 1, MaxResults);
       if (response.Success)
       {
         FetchedArtists.Clear();
         foreach (var s in response.Content)
         {
-          FetchedArtistViewModel vm = new FetchedArtistViewModel(s);
+          FetchedArtistViewModel vm = new FetchedArtistViewModel(new Artist(s.Name, s.Mbid, s.MainImage.Large));
           vm.ArtistClicked += ArtistClicked;
           FetchedArtists.Add(vm);
         }
@@ -355,17 +367,28 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Searches for releases with the entered <see cref="SearchText"/>.
     /// </summary>
     /// <returns>Task.</returns>
-    private async Task SearchByRelease()
+    private async Task SearchRelease()
     {
       OnStatusUpdated("Trying to search for release '" + SearchText + "'");
 
+      if (DatabaseToSearch == Database.LastFm)
+        await SearchReleaseLastFm();
+    }
+
+    /// <summary>
+    /// Searches for releases with the entered <see cref="SearchText"/>
+    /// on Last.fm.
+    /// </summary>
+    /// <returns>Task.</returns>
+    private async Task SearchReleaseLastFm()
+    {
       var response = await MainViewModel.Client.Album.SearchAsync(SearchText, 1, MaxResults);
       if (response.Success)
       {
         FetchedReleases.Clear();
         foreach (var s in response.Content)
         {
-          FetchedReleaseViewModel vm = new FetchedReleaseViewModel(s);
+          FetchedReleaseViewModel vm = new FetchedReleaseViewModel(new Release(s.Name, s.ArtistName, s.Mbid, s.Images.Large));
           vm.ReleaseClicked += ReleaseClicked;
           FetchedReleases.Add(vm);
         }
@@ -384,7 +407,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
 
     /// <summary>
-    /// Fetches the release list of the clicked artist and displays it.
+    /// Fetches the release list of the clicked artist.
     /// </summary>
     /// <param name="sender">Clicked artist as <see cref="LastArtist"/>.</param>
     /// <param name="e">Ignored.</param>
@@ -394,35 +417,46 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         EnableControls = false;
 
-        var artist = sender as LastArtist;
+        var artist = sender as Artist;
 
         OnStatusUpdated("Trying to fetch releases from '" + artist.Name + "'");
 
-        var response = await MainViewModel.Client.Artist.GetTopAlbumsAsync(artist.Name, false, 1, MaxResults);
-        if (response.Success)
-        {
-          FetchedReleases.Clear();
-          foreach (var s in response.Content)
-          {
-            FetchedReleaseViewModel vm = new FetchedReleaseViewModel(s);
-            vm.ReleaseClicked += ReleaseClicked;
-            FetchedReleases.Add(vm);
-          }
-
-          if (FetchedReleases.Count != 0)
-          {
-            FetchedReleaseThroughArtist = true;
-            CurrentView = _releaseResultView;
-            OnStatusUpdated("Successfully fetched releases from '" + artist.Name + "'");
-          }
-          else
-            OnStatusUpdated("'" + artist.Name + "'" + " has no releases");
-        }
-        else
-          OnStatusUpdated("Error while fetching releases from '" + artist.Name + "'");
+        if (DatabaseToSearch == Database.LastFm)
+          await ArtistClickedLastFm(artist);
 
         EnableControls = true;
       }
+    }
+
+    /// <summary>
+    /// Fetches the release list of the clicked artist via Last.fm.
+    /// </summary>
+    /// <param name="artist"></param>
+    /// <returns>Task.</returns>
+    private async Task ArtistClickedLastFm(Artist artist)
+    {
+      var response = await MainViewModel.Client.Artist.GetTopAlbumsAsync(artist.Name, false, 1, MaxResults);
+      if (response.Success)
+      {
+        FetchedReleases.Clear();
+        foreach (var s in response.Content)
+        {
+          FetchedReleaseViewModel vm = new FetchedReleaseViewModel(new Release(s.Name, s.ArtistName, s.Mbid, s.Images.Large));
+          vm.ReleaseClicked += ReleaseClicked;
+          FetchedReleases.Add(vm);
+        }
+
+        if (FetchedReleases.Count != 0)
+        {
+          FetchedReleaseThroughArtist = true;
+          CurrentView = _releaseResultView;
+          OnStatusUpdated("Successfully fetched releases from '" + artist.Name + "'");
+        }
+        else
+          OnStatusUpdated("'" + artist.Name + "'" + " has no releases");
+      }
+      else
+        OnStatusUpdated("Error while fetching releases from '" + artist.Name + "'");
     }
 
     /// <summary>
@@ -436,7 +470,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         EnableControls = false;
 
-        var release = sender as LastAlbum;
+        var release = sender as Release;
 
         OnStatusUpdated("Trying to fetch tracklist from '" + release.Name + "'");
 
@@ -451,7 +485,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           FetchedTracks.Clear();
           foreach (var t in detailedRelease.Content.Tracks)
           {
-            FetchedTrackViewModel vm = new FetchedTrackViewModel(t, release.Images.Small);
+            FetchedTrackViewModel vm = new FetchedTrackViewModel(new Track(t.Name, t.ArtistName, t.AlbumName, t.Duration), release.Image);
             vm.ToScrobbleChanged += ToScrobbleChanged;
             FetchedTracks.Add(vm);
           }
@@ -513,13 +547,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       EnableControls = true;
     }
 
+    /// <summary>
+    /// Creates the list of scrobbles.
+    /// </summary>
+    /// <returns>List with scrobbles.</returns>
     private List<Scrobble> CreateScrobbles()
     {
       DateTime finishingTime = FinishingTime;
       List<Scrobble> scrobbles = new List<Scrobble>();
       foreach (FetchedTrackViewModel vm in FetchedTracks.Where(i => i.ToScrobble).Reverse())
       {
-        scrobbles.Add(new Scrobble(vm.FetchedTrack.ArtistName, vm.FetchedTrack.AlbumName, vm.FetchedTrack.Name, finishingTime));
+        scrobbles.Add(new Scrobble(vm.FetchedTrack.ArtistName, vm.FetchedTrack.ReleaseName, vm.FetchedTrack.Name, finishingTime));
         if (vm.FetchedTrack.Duration.HasValue)
           finishingTime = finishingTime.Subtract(vm.FetchedTrack.Duration.Value);
         else
@@ -529,6 +567,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       return scrobbles;
     }
 
+    /// <summary>
+    /// Previews the scrobbles.
+    /// </summary>
     public override void Preview()
     {
       ScrobblePreviewView spv = new ScrobblePreviewView(new ScrobblePreviewViewModel(CreateScrobbles()));

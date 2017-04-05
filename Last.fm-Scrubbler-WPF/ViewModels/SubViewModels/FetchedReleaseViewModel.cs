@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Models;
 using System;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
@@ -19,7 +19,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// The fetched release.
     /// </summary>
-    public LastAlbum FetchedRelease
+    public Release FetchedRelease
     {
       get { return _fetchedRelease; }
       private set
@@ -28,7 +28,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         NotifyOfPropertyChange(() => FetchedRelease);
       }
     }
-    private LastAlbum _fetchedRelease;
+    private Release _fetchedRelease;
 
     #endregion Properties
 
@@ -36,7 +36,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Constructor.
     /// </summary>
     /// <param name="fetchedRelease">The fetched release.</param>
-    public FetchedReleaseViewModel(LastAlbum fetchedRelease)
+    public FetchedReleaseViewModel(Release fetchedRelease)
     {
       FetchedRelease = fetchedRelease;
     }

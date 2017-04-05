@@ -93,6 +93,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppBootstrapper.cs" />
+    <Compile Include="Models\Artist.cs" />
+    <Compile Include="Models\Release.cs" />
+    <Compile Include="Models\Track.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="ViewModels\CSVDownloaderViewModel.cs" />
     <Compile Include="ViewModels\PasteYourTasteViewModel.cs" />

@@ -54,12 +54,7 @@
                 <Image Grid.Column="2" VerticalAlignment="Center">
                   <Image.Style>
                     <Style TargetType="{x:Type Image}">
-                      <Setter Property="Source" Value="{Binding SmallAlbumImage}"/>
-                      <Style.Triggers>
-                        <DataTrigger Binding="{Binding SmallAlbumImage}" Value="{x:Null}">
-                          <Setter Property="Source" Value="{StaticResource noalbumimage_small}"/>
-                        </DataTrigger>
-                      </Style.Triggers>
+                      <Setter Property="Source" Value="{Binding Image, TargetNullValue={StaticResource noalbumimage_small}}"/>
                     </Style>
                   </Image.Style>
                 </Image>
@@ -70,6 +65,13 @@
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding FetchedTrack.ArtistName}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Release Title" local:GridViewSort.PropertyName="FetchedTrack.ReleaseName">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding FetchedTrack.ReleaseName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>

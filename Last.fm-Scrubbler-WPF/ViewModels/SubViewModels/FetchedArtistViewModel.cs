@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Models;
 using System;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
@@ -19,7 +20,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// The fetched artist.
     /// </summary>
-    public LastArtist FetchedArtist
+    public Artist FetchedArtist
     {
       get { return _fetchedArtist; }
       private set
@@ -28,15 +29,15 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         NotifyOfPropertyChange(() => FetchedArtist);
       }
     }
-    private LastArtist _fetchedArtist;
+    private Artist _fetchedArtist;
 
-    #endregion
+    #endregion Properties
 
     /// <summary>
     /// Constructor.
     /// </summary>
     /// <param name="fetchedArtist">The fetched artist.</param>
-    public FetchedArtistViewModel(LastArtist fetchedArtist)
+    public FetchedArtistViewModel(Artist fetchedArtist)
     {
       FetchedArtist = fetchedArtist;
     }

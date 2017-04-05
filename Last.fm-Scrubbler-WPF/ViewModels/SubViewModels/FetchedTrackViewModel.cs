@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Models;
 using System;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
@@ -19,7 +20,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// The fetched track.
     /// </summary>
-    public LastTrack FetchedTrack
+    public Track FetchedTrack
     {
       get { return _fetchedTrack; }
       private set
@@ -28,7 +29,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         NotifyOfPropertyChange(() => FetchedTrack);
       }
     }
-    private LastTrack _fetchedTrack;
+    private Track _fetchedTrack;
 
     /// <summary>
     /// Gets/sets if this scrobble should be scrobbled.
@@ -48,16 +49,16 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// The Uri of the small image of the parent album.
     /// </summary>
-    public Uri SmallAlbumImage
+    public Uri Image
     {
-      get { return _smallAlbumImage; }
+      get { return _image; }
       private set
       {
-        _smallAlbumImage = value;
-        NotifyOfPropertyChange(() => SmallAlbumImage);
+        _image = value;
+        NotifyOfPropertyChange(() => Image);
       }
     }
-    private Uri _smallAlbumImage;
+    private Uri _image;
 
     #endregion Properties
 
@@ -65,11 +66,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Constructor.
     /// </summary>
     /// <param name="fetchedTrack">The fetched track.</param>
-    /// <param name="smallAlbumImage">The small image of the parent album.</param>
-    public FetchedTrackViewModel(LastTrack fetchedTrack, Uri smallAlbumImage)
+    /// <param name="image">The small image of the parent album.</param>
+    public FetchedTrackViewModel(Track fetchedTrack, Uri image)
     {
       FetchedTrack = fetchedTrack;
-      SmallAlbumImage = smallAlbumImage;
+      Image = image;
     }
   }
 }

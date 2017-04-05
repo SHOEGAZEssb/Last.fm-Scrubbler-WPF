@@ -38,12 +38,12 @@
                 <Image Grid.Row="0">
                   <Image.Style>
                     <Style TargetType="{x:Type Image}">
-                      <Setter Property="Source" Value="{Binding FetchedArtist.MainImage.Large}"/>
-                      <Style.Triggers>
+                      <Setter Property="Source" Value="{Binding FetchedArtist.Image, TargetNullValue={StaticResource noartistimage}}"/>
+                      <!--<Style.Triggers>
                         <DataTrigger Binding="{Binding FetchedArtist.MainImage.Large}" Value="{x:Null}">
                           <Setter Property="Source" Value="{StaticResource noartistimage}"/>
                         </DataTrigger>
-                      </Style.Triggers>
+                      </Style.Triggers>-->
                     </Style>
                   </Image.Style>
                   <i:Interaction.Triggers>
