@@ -19,7 +19,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Search Last.fm.
     /// </summary>
-    LastFm
+    LastFm,
   }
 
   /// <summary>
@@ -327,10 +327,27 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <returns>Task.</returns>
     private async Task SearchArtist()
     {
-      OnStatusUpdated("Trying to search for artist '" + SearchText + "'...");
+      try
+      {
+        OnStatusUpdated("Trying to search for artist '" + SearchText + "'...");
 
-      if (DatabaseToSearch == Database.LastFm)
-        await SearchArtistLastFm();
+        FetchedArtists.Clear();
+
+        if (DatabaseToSearch == Database.LastFm)
+          await SearchArtistLastFm();
+
+        if (FetchedArtists.Count != 0)
+        {
+          CurrentView = _artistResultView;
+          OnStatusUpdated("Found " + FetchedArtists.Count + " artists");
+        }
+        else
+          OnStatusUpdated("Found no artists");
+      }
+      catch(Exception ex)
+      {
+        OnStatusUpdated("Error while searching for artist '" + SearchText + "': " + ex.Message);
+      }
     }
 
     /// <summary>
@@ -343,24 +360,26 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       var response = await MainViewModel.Client.Artist.SearchAsync(SearchText, 1, MaxResults);
       if (response.Success)
       {
-        FetchedArtists.Clear();
         foreach (var s in response.Content)
         {
-          FetchedArtistViewModel vm = new FetchedArtistViewModel(new Artist(s.Name, s.Mbid, s.MainImage.Large));
-          vm.ArtistClicked += ArtistClicked;
-          FetchedArtists.Add(vm);
+          AddArtistViewModel(s.Name, s.Mbid, s.MainImage.Large);
         }
-
-        if (FetchedArtists.Count != 0)
-        {
-          CurrentView = _artistResultView;
-          OnStatusUpdated("Found " + FetchedArtists.Count + " artists");
-        }
-        else
-          OnStatusUpdated("Found no artists");
       }
       else
-        OnStatusUpdated("Error while searching for artist '" + SearchText + "'");
+        throw new Exception(response.Status.ToString());
+    }
+
+    /// <summary>
+    /// Adds a new <see cref="FetchedArtistViewModel"/> to the <see cref="FetchedArtists"/>.
+    /// </summary>
+    /// <param name="name">Name of the artist.</param>
+    /// <param name="mbid">Mbid of the artist.</param>
+    /// <param name="image">Image of the artist.</param>
+    private void AddArtistViewModel(string name, string mbid, Uri image)
+    {
+      FetchedArtistViewModel vm = new FetchedArtistViewModel(new Artist(name, mbid, image));
+      vm.ArtistClicked += ArtistClicked;
+      FetchedArtists.Add(vm);
     }
 
     /// <summary>
@@ -369,10 +388,28 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <returns>Task.</returns>
     private async Task SearchRelease()
     {
-      OnStatusUpdated("Trying to search for release '" + SearchText + "'");
+      try
+      {
+        OnStatusUpdated("Trying to search for release '" + SearchText + "'");
 
-      if (DatabaseToSearch == Database.LastFm)
-        await SearchReleaseLastFm();
+        FetchedReleases.Clear();
+
+        if (DatabaseToSearch == Database.LastFm)
+          await SearchReleaseLastFm();
+
+        if (FetchedReleases.Count != 0)
+        {
+          FetchedReleaseThroughArtist = false;
+          CurrentView = _releaseResultView;
+          OnStatusUpdated("Found " + FetchedReleases.Count + " releases");
+        }
+        else
+          OnStatusUpdated("Found no releases");
+      }
+      catch(Exception ex)
+      {
+        OnStatusUpdated("Error while searching for release '" + SearchText + "': " + ex.Message);
+      }
     }
 
     /// <summary>
@@ -385,25 +422,27 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       var response = await MainViewModel.Client.Album.SearchAsync(SearchText, 1, MaxResults);
       if (response.Success)
       {
-        FetchedReleases.Clear();
         foreach (var s in response.Content)
         {
-          FetchedReleaseViewModel vm = new FetchedReleaseViewModel(new Release(s.Name, s.ArtistName, s.Mbid, s.Images.Large));
-          vm.ReleaseClicked += ReleaseClicked;
-          FetchedReleases.Add(vm);
+          AddReleaseViewModel(s.Name, s.ArtistName, s.Mbid, s.Images.Large);
         }
-
-        if (FetchedReleases.Count != 0)
-        {
-          FetchedReleaseThroughArtist = false;
-          CurrentView = _releaseResultView;
-          OnStatusUpdated("Found " + FetchedArtists.Count + " releases");
-        }
-        else
-          OnStatusUpdated("Found no releases");
       }
       else
-        OnStatusUpdated("Error while searching for release '" + SearchText + "'");
+        throw new Exception(response.Status.ToString());
+    }
+
+    /// <summary>
+    /// Adds a new <see cref="FetchedReleaseViewModel"/> to the <see cref="FetchedReleases"/>.
+    /// </summary>
+    /// <param name="name">Name of the release.</param>
+    /// <param name="artistName">Name of the artist.</param>
+    /// <param name="mbid">Mbid of the release.</param>
+    /// <param name="image">Image of the release.</param>
+    private void AddReleaseViewModel(string name, string artistName, string mbid, Uri image)
+    {
+      FetchedReleaseViewModel vm = new FetchedReleaseViewModel(new Release(name, artistName, mbid, image));
+      vm.ReleaseClicked += ReleaseClicked;
+      FetchedReleases.Add(vm);
     }
 
     /// <summary>
