@@ -1,5 +1,4 @@
 ﻿using Caliburn.Micro;
-using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Models;
 using System;
 

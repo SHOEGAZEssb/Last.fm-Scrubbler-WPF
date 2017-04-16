@@ -54,6 +54,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         _csvFilePath = value;
         NotifyOfPropertyChange(() => CSVFilePath);
+        NotifyOfPropertyChange(() => CanParse);
       }
     }
     private string _csvFilePath;
@@ -80,16 +81,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       get { return _scrobbleMode; }
       set
       {
+        _scrobbleMode = value;
+
         if (Scrobbles.Count > 0)
         {
           if (MessageBox.Show("Do you want to switch the Scrobble Mode? The CSV file will be parsed again!", "Change Scrobble Mode", MessageBoxButtons.YesNo) == DialogResult.Yes)
-          {
-            _scrobbleMode = value;
-            LoadCSVFile(CSVFilePath);
-          }
+            ParseCSVFile();
         }
-        else
-          _scrobbleMode = value;
 
         NotifyOfPropertyChange(() => ScrobbleMode);
         NotifyOfPropertyChange(() => ShowImportModeSettings);
@@ -158,6 +156,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
 
     /// <summary>
+    /// Gets if the "Parse" button is enabled.
+    /// </summary>
+    public bool CanParse
+    {
+      get { return CSVFilePath != null && CSVFilePath != string.Empty; }
+    }
+
+    /// <summary>
     /// Gets if the import mode settings should be visible on the UI.
     /// </summary>
     public bool ShowImportModeSettings
@@ -209,21 +215,19 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       OpenFileDialog ofd = new OpenFileDialog();
       ofd.Filter = "CSV Files|*.csv";
       if (ofd.ShowDialog() == DialogResult.OK)
-        LoadCSVFile(ofd.FileName);
+        CSVFilePath = ofd.FileName;
     }
 
     /// <summary>
     /// Loads and parses a csv file.
     /// </summary>
-    /// <param name="path">Path of the csv file to load.</param>
-    private async void LoadCSVFile(string path)
+    /// <returns>Task.</returns>
+    public async Task ParseCSVFile()
     {
       try
       {
         EnableControls = false;
         OnStatusUpdated("Reading CSV file...");
-
-        CSVFilePath = path;
         Scrobbles.Clear();
 
         TextFieldParser parser = new TextFieldParser(CSVFilePath);

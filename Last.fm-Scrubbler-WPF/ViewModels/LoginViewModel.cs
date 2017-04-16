@@ -1,20 +1,15 @@
 ﻿using Caliburn.Micro;
-using Last.fm_Scrubbler_WPF.Models;
-using Last.fm_Scrubbler_WPF.Properties;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Xml;
-using System.Xml.Serialization;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
-	/// <summary>
-	/// ViewModel for the <see cref="Views.LoginView"/>
-	/// </summary>
-	class LoginViewModel : PropertyChangedBase
+  /// <summary>
+  /// ViewModel for the <see cref="Views.LoginView"/>
+  /// </summary>
+  class LoginViewModel : PropertyChangedBase
 	{
 		#region Properties
 

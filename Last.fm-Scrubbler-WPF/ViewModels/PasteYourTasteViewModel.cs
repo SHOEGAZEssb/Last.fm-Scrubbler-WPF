@@ -1,6 +1,4 @@
-﻿using Caliburn.Micro;
-using IF.Lastfm.Core.Api.Enums;
-using System;
+﻿using IF.Lastfm.Core.Api.Enums;
 using System.Windows;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels

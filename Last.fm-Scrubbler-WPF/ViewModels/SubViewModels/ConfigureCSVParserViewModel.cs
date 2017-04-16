@@ -1,7 +1,6 @@
 ﻿using Caliburn.Micro;
 using Last.fm_Scrubbler_WPF.Properties;
 using Last.fm_Scrubbler_WPF.Views.ScrobbleViews;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 
