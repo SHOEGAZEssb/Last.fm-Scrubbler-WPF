@@ -10,8 +10,7 @@ This tool will always be free, but if it was helpful to you, consider donating t
 
 ## Features
 
-**Table of Contents**
-
+**Scrobblers**
 - [Manual Single Track Scrobbling](#manual-single-track-scrobbling)
 - [Friend Scrobbling](#friend-scrobbling)
 - [Database Scrobbling](#database-scrobbling)
@@ -19,6 +18,10 @@ This tool will always be free, but if it was helpful to you, consider donating t
 - [File Scrobbling](#file-scrobbling)
 - [Media Player Database Scrobbling](#media-player-database-scrobbling)
 - [iTunes Scrobbling](#itunes-scrobbling)
+
+**Extra Functions**
+- [Paste Your Taste](#paste-your-taste)
+- [CSV Downloader](#csv-downloader)
 
 ### Manual Single Track Scrobbling
 Allows you to enter artist, track and album info aswell as when you listened to the song and lets you scrobble it.
@@ -41,12 +44,10 @@ Search Last.fm for artists and albums and scrobble one or more tracks from it.
 
 ### CSV Scrobbling
 Allows you to load a .csv file and scrobble the info contained in it.
-Currently only supports the following structure:
+You can download the csv of any account with the built-in [CSV Downloader](#csv-downloader).
+If the .csv file you have has a different data sequence, you can configure the field indexes via the "Settings" button.
 
-"Artist, Album, Track, Timestamp"
-Needs to be excactly in this structure to work.
-
-I recommend downloading your last.fm csv with [this tool](http://benjaminbenben.com/lastfm-to-csv/)
+![CSV Scrobbling Settings](http://i.imgur.com/PbINNdk.png)
 
 Individual fields can be enclosed by quotes and NEED to be enclosed by quotes if the field contains a comma.
 For example:
@@ -64,10 +65,10 @@ Import Mode:
 
 In this mode the tracks will be scrobbled with the timestamp calculated from the "Finish Time" and the selected duration between each track. This allows the scrobbling of the tracks even if the timestamp in the csv is older than 14 days. Therefore the first (upmost) track in the csv file will be scrobbled with the "Finish Time".
 
-![CSV Scrobbling](https://ibin.co/2ugcrHqbpbu6.png)
+![CSV Scrobbling](http://i.imgur.com/HVxT3id.png)
 Normal Mode
 
-![CSV Scrobbling Import Mode](https://ibin.co/2kXudUqJloTY.png)
+![CSV Scrobbling Import Mode](http://i.imgur.com/3rnSa8d.png)
 Import Mode
 
 ### File Scrobbling
@@ -93,3 +94,13 @@ Once you click "Scrobble", all selected songs will be scrobbled to your last.fm 
 This basically works like the normal Last.fm desktop app. Once you connected to iTunes a timer will measure how long you listened to that song. If you play 50% of the track, it will be scrobbled. The ProgressBar on the bottom indicates when the track will be scrobbled.
 
 ![iTunes Scrobbling](https://ibin.co/30cuCVX33Gke.png)
+
+### Paste Your Taste
+With this you can create a "Paste Your Taste" text. You can select the time period and how many artists you want to include.
+
+![Paste Your Taste](http://i.imgur.com/sTjEsKs.png)
+
+### CSV Downloader
+This allows you to download the data of any Last.fm user as a csv file. The format of the csv file will be "Artist, Album, Track, Timestamp".
+
+![CSV Downloader](http://i.imgur.com/P7uY6Py.png)
