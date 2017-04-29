@@ -212,8 +212,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public void LoadCSVFileDialog()
     {
-      OpenFileDialog ofd = new OpenFileDialog();
-      ofd.Filter = "CSV Files|*.csv";
+      OpenFileDialog ofd = new OpenFileDialog()
+      {
+        Filter = "CSV Files|*.csv"
+      };
       if (ofd.ShowDialog() == DialogResult.OK)
         CSVFilePath = ofd.FileName;
     }
@@ -230,8 +232,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         OnStatusUpdated("Reading CSV file...");
         Scrobbles.Clear();
 
-        TextFieldParser parser = new TextFieldParser(CSVFilePath);
-        parser.HasFieldsEnclosedInQuotes = true;
+        TextFieldParser parser = new TextFieldParser(CSVFilePath)
+        {
+          HasFieldsEnclosedInQuotes = true
+        };
         parser.SetDelimiters(",");
 
         string[] fields = new string[0];
@@ -298,8 +302,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           OnStatusUpdated("Partially parsed CSV file. " + errors.Count + " rows could not be parsed");
           if (MessageBox.Show("Some rows could not be parsed. Do you want to save a text file with the rows that could not be parsed?", "Error parsing rows", MessageBoxButtons.YesNo) == DialogResult.Yes)
           {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Text Files|*.txt";
+            SaveFileDialog sfd = new SaveFileDialog()
+            {
+              Filter = "Text Files|*.txt"
+            };
             if (sfd.ShowDialog() == DialogResult.OK)
               File.WriteAllLines(sfd.FileName, errors.ToArray());
           }
