@@ -72,48 +72,55 @@
       </Button>
     </Grid>
 
-    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7"  VerticalAlignment="Stretch" ItemsSource="{Binding LoadedFiles}" SelectionMode="Extended">
+    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7"  VerticalAlignment="Stretch" ItemsSource="{Binding LoadedFiles}" SelectionMode="Extended" local:GridViewSort.AutoSort="True">
       <ListView.View>
         <GridView>
-          <GridViewColumn Header="Scrobble?">
+          <GridViewColumn Header="Scrobble?" local:GridViewSort.PropertyName="ToScrobble">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <CheckBox IsChecked="{Binding ToScrobble}" HorizontalAlignment="Center"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="#">
+          <GridViewColumn Header="#" local:GridViewSort.PropertyName="LoadedFile.Tag.Track">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding LoadedFile.Tag.Track}"/>
+                <Label VerticalAlignment="Center" Content="{Binding LoadedFile.Tag.Track}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Artist">
+          <GridViewColumn Header="Artist" local:GridViewSort.PropertyName="LoadedFile.Tag.FirstPerformer">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding LoadedFile.Tag.FirstPerformer}"/>
+                <Label VerticalAlignment="Center" Content="{Binding LoadedFile.Tag.FirstPerformer}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Album">
+          <GridViewColumn Header="Album" local:GridViewSort.PropertyName="LoadedFile.Tag.Album">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding LoadedFile.Tag.Album}"/>
+                <Label VerticalAlignment="Center" Content="{Binding LoadedFile.Tag.Album}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Track">
+          <GridViewColumn Header="Track" local:GridViewSort.PropertyName="LoadedFile.Tag.Title">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding LoadedFile.Tag.Title}"/>
+                <Label VerticalAlignment="Center" Content="{Binding LoadedFile.Tag.Title}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Duration">
+          <GridViewColumn Header="Album Artist" local:GridViewSort.PropertyName="LoadedFile.Tag.FirstAlbumArtist">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding LoadedFile.Properties.Duration}"/>
+                <Label VerticalAlignment="Center" Content="{Binding LoadedFile.Tag.FirstAlbumArtist}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Duration" local:GridViewSort.PropertyName="LoadedFile.Properties.Duration">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label VerticalAlignment="Center" Content="{Binding LoadedFile.Properties.Duration}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>

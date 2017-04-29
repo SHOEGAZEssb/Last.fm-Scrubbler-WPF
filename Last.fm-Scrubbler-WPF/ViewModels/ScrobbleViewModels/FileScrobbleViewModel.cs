@@ -235,16 +235,28 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public override async Task Scrobble()
     {
       EnableControls = false;
-      OnStatusUpdated("Trying to scrobble selected tracks...");
 
-      // set to self to trigger update.
-      CurrentDateTime = CurrentDateTime;
+      try
+      {
+        OnStatusUpdated("Trying to scrobble selected tracks...");
 
-      var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
-      if (response.Success)
-        OnStatusUpdated("Successfully scrobbled!");
-      else
-        OnStatusUpdated("Error while scrobbling!");
+        // set to self to trigger update.
+        CurrentDateTime = CurrentDateTime;
+
+        var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
+        if (response.Success)
+          OnStatusUpdated("Successfully scrobbled!");
+        else
+          OnStatusUpdated("Error while scrobbling!");
+      }
+      catch(Exception ex)
+      {
+        OnStatusUpdated("An error occurred while trying to scrobble the selected tracks. Error: " + ex.Message);
+      }
+      finally
+      {
+        EnableControls = true;
+      }
     }
 
     /// <summary>
@@ -259,14 +271,15 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Creates the list of the tracks that will be scrobbled.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>List with scrobbles.</returns>
     private List<Scrobble> CreateScrobbles()
     {
       DateTime timePlayed = FinishingTime;
       List<Scrobble> scrobbles = new List<Scrobble>();
       foreach (var vm in LoadedFiles.Where(i => i.ToScrobble).Reverse())
       {
-        scrobbles.Add(new Scrobble(vm.LoadedFile.Tag.FirstPerformer, vm.LoadedFile.Tag.Album, vm.LoadedFile.Tag.Title, timePlayed));
+        scrobbles.Add(new Scrobble(vm.LoadedFile.Tag.FirstPerformer, vm.LoadedFile.Tag.Album, vm.LoadedFile.Tag.Title, timePlayed)
+                      { AlbumArtist = vm.LoadedFile.Tag.FirstAlbumArtist, Duration = vm.LoadedFile.Properties.Duration});
         timePlayed = timePlayed.Subtract(vm.LoadedFile.Properties.Duration);
       }
 

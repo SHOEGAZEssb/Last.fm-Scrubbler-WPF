@@ -26,7 +26,7 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Content="The following tracks will be scrobbled:"/>
-    <ListView Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" ItemsSource="{Binding Scrobbles}">
+    <ListView Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" ItemsSource="{Binding Scrobbles}" local:GridViewSort.AutoSort="True">
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Artist" local:GridViewSort.PropertyName="Scrobble.ArtistName">
