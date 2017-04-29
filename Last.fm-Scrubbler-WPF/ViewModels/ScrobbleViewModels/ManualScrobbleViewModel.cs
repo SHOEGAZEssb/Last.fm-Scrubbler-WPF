@@ -59,6 +59,32 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private string _album;
 
     /// <summary>
+    /// Name of the artist this album is sorted under.
+    /// </summary>
+    public string AlbumArtist
+    {
+      get { return _albumArtist; }
+      set
+      {
+        _albumArtist = value;
+        NotifyOfPropertyChange(() => AlbumArtist);
+      }
+    }
+    private string _albumArtist;
+
+    public TimeSpan Duration
+    {
+      get { return _duration; }
+      set
+      {
+        _duration = value;
+        NotifyOfPropertyChange(() => Duration);
+      }
+    }
+    private TimeSpan _duration;
+
+
+    /// <summary>
     /// Time of the scrobble to scrobbled.
     /// </summary>
     public DateTime TimePlayed
@@ -131,6 +157,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       Artist = "";
       Track = "";
       Album = "";
+      AlbumArtist = "";
+      Duration = TimeSpan.FromSeconds(0);
       CurrentDateTime = true;
       TimePlayed = DateTime.Now;
     }
@@ -147,7 +175,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       if (CurrentDateTime)
         TimePlayed = DateTime.Now;
 
-      Scrobble s = new Scrobble(Artist, Album, Track, TimePlayed);
+      Scrobble s = new Scrobble(Artist, Album, Track, TimePlayed) { AlbumArtist = AlbumArtist, Duration = Duration };
       var response = await MainViewModel.Scrobbler.ScrobbleAsync(s);
       if (response.Success)
         OnStatusUpdated("Successfully scrobbled!");
@@ -162,7 +190,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public override void Preview()
     {
-      ScrobblePreviewView spv = new ScrobblePreviewView(new ScrobblePreviewViewModel(new Scrobble[] { new Scrobble(Artist, Album, Track, TimePlayed) }));
+      ScrobblePreviewView spv = new ScrobblePreviewView(new ScrobblePreviewViewModel(
+        new Scrobble[] { new Scrobble(Artist, Album, Track, TimePlayed) { AlbumArtist = AlbumArtist, Duration = Duration} }));
       spv.ShowDialog();
     }
   }
