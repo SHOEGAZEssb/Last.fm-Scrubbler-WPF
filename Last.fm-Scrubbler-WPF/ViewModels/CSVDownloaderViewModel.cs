@@ -95,8 +95,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public void SelectFilePath()
     {
-      SaveFileDialog sfd = new SaveFileDialog();
-      sfd.Filter = "CSV Files (*.csv) | *.csv";
+      SaveFileDialog sfd = new SaveFileDialog()
+      {
+        Filter = "CSV Files (*.csv) | *.csv"
+      };
       if (sfd.ShowDialog() == DialogResult.OK)
         FilePath = sfd.FileName;
     }
@@ -147,9 +149,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
                   string artist = EncloseComma(scrobble.ArtistName);
                   string album = EncloseComma(scrobble.AlbumName);
                   string track = EncloseComma(scrobble.Name);
+                  string duration = EncloseComma(scrobble.Duration.ToString());
                   var timeStamp = scrobble.TimePlayed;
 
-                  string newLine = string.Format("{0},{1},{2},{3}", artist, album, track, timeStamp);
+                  string newLine = string.Format("{0},{1},{2},{3},{4},{5}", artist, album, track, timeStamp, "", duration);
                   csv.AppendLine(newLine);
                 }
               }

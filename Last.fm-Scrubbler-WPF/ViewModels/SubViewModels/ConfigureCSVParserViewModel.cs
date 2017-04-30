@@ -65,6 +65,32 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
       }
     }
 
+    /// <summary>
+    /// Index of the album artist field in the csv file.
+    /// </summary>
+    public int AlbumArtistFieldIndex
+    {
+      get { return Settings.Default.AlbumArtistFieldIndex; }
+      set
+      {
+        Settings.Default.AlbumArtistFieldIndex = value;
+        NotifyOfPropertyChange(() => AlbumArtistFieldIndex);
+      }
+    }
+
+    /// <summary>
+    /// Index of the duration field in the csv file.
+    /// </summary>
+    public int DurationFieldIndex
+    {
+      get { return Settings.Default.DurationFieldIndex; }
+      set
+      {
+        Settings.Default.DurationFieldIndex = value;
+        NotifyOfPropertyChange(() => DurationFieldIndex);
+      }
+    }
+
     #endregion Properties
 
     /// <summary>
@@ -77,6 +103,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
       vm.Close();
     }
 
+    /// <summary>
+    /// Saves the settings.
+    /// </summary>
     private void SaveSettings()
     {
       int[] vals = new int[] { ArtistFieldIndex, AlbumFieldIndex, TrackFieldIndex, TimestampFieldIndex };
@@ -90,6 +119,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
       Settings.Default.Save();
     }
 
+    /// <summary>
+    /// Reloads the saved values of the settings.
+    /// </summary>
     private void ReloadSettings()
     {
       Settings.Default.Reload();
@@ -114,6 +146,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
       AlbumFieldIndex = int.Parse((string)Settings.Default.Properties["AlbumFieldIndex"].DefaultValue);
       TrackFieldIndex = int.Parse((string)Settings.Default.Properties["TrackFieldIndex"].DefaultValue);
       TimestampFieldIndex = int.Parse((string)Settings.Default.Properties["TimestampFieldIndex"].DefaultValue);
+      AlbumArtistFieldIndex = int.Parse((string)Settings.Default.Properties["AlbumArtistFieldIndex"].DefaultValue);
+      DurationFieldIndex = int.Parse((string)Settings.Default.Properties["DurationFieldIndex"].DefaultValue);
     }
   }
 }

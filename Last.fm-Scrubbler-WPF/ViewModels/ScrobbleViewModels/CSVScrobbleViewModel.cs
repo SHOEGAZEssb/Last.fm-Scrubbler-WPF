@@ -275,8 +275,26 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
                   throw new Exception("Timestamp could not be parsed!");
               }
 
-              CSVScrobble parsedScrobble = new CSVScrobble(fields[Settings.Default.ArtistFieldIndex], fields[Settings.Default.AlbumFieldIndex],
-                                                           fields[Settings.Default.TrackFieldIndex], date.AddSeconds(1));
+              // try to get optional parameters first
+              string album = fields.ElementAtOrDefault(Settings.Default.AlbumFieldIndex);
+              string albumArtist = fields.ElementAtOrDefault(Settings.Default.AlbumArtistFieldIndex);
+              string duration = fields.ElementAtOrDefault(Settings.Default.DurationFieldIndex);
+              TimeSpan time = TimeSpan.FromSeconds(0);
+
+              if (string.IsNullOrEmpty(duration))
+              {
+                try
+                {
+                  time = TimeSpan.Parse(duration);
+                }
+                catch
+                {
+                  // swallow
+                }
+              }
+
+              CSVScrobble parsedScrobble = new CSVScrobble(fields[Settings.Default.ArtistFieldIndex], album,
+                                                           fields[Settings.Default.TrackFieldIndex], albumArtist, time, date.AddSeconds(1));
               ParsedCSVScrobbleViewModel vm = new ParsedCSVScrobbleViewModel(parsedScrobble, ScrobbleMode);
               vm.ToScrobbleChanged += ToScrobbleChanged;
               _dispatcher.Invoke(() => Scrobbles.Add(vm));
