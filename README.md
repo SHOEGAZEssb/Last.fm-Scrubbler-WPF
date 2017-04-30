@@ -26,7 +26,7 @@ This tool will always be free, but if it was helpful to you, consider donating t
 ### Manual Single Track Scrobbling
 Allows you to enter artist, track and album info aswell as when you listened to the song and lets you scrobble it.
 
-![ManualScrobble](https://ibin.co/2jj4riPWJvZB.png)
+![ManualScrobble](http://i.imgur.com/AsEFc4i.png)
 
 ### Friend Scrobbling
 Allows you to fetch recent scrobbles of any last.fm user and scrobble them to your account.
@@ -52,7 +52,7 @@ If the .csv file you have has a different data sequence, you can configure the f
 Individual fields can be enclosed by quotes and NEED to be enclosed by quotes if the field contains a comma.
 For example:
 
-"ArtistWith, CommaInTheName", Album, Track, 06/13/2016 19:54 
+"ArtistWith, CommaInTheName", Album, Track, 06/13/2016 19:54, AlbumArtist, 00:02:33 
 
 CSV scrobbling has two modes. They can be changed with the "Scrobbling Mode" ComboBox.
 
