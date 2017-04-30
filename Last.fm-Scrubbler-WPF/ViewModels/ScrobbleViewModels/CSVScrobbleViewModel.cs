@@ -281,7 +281,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
               string duration = fields.ElementAtOrDefault(Settings.Default.DurationFieldIndex);
               TimeSpan time = TimeSpan.FromSeconds(0);
 
-              if (string.IsNullOrEmpty(duration))
+              if (!string.IsNullOrEmpty(duration))
               {
                 try
                 {
