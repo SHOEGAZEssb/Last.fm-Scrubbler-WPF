@@ -95,9 +95,11 @@ namespace Last.fm_Scrubbler_WPF
             string trackName = GetTitle(mediaItem);
             string artistName = GetArtist(mediaItem);
             string albumName = GetAlbum(mediaItem);
+            string albumArtist = GetAlbumArtist(mediaItem);
+            TimeSpan duration = TimeSpan.FromSeconds(mediaItem.duration);
             DateTime lastPlayed = GetUserLastPlayedTime(mediaItem);
 
-            entries.Add(new MediaDBScrobble(trackName, artistName, albumName, playCount, lastPlayed));
+            entries.Add(new MediaDBScrobble(trackName, artistName, albumName, albumArtist, duration, playCount, lastPlayed));
           }
           catch (Exception ex)
           {
@@ -109,9 +111,7 @@ namespace Last.fm_Scrubbler_WPF
       {
         // make sure we clean up as this is COM
         if (mediaList != null)
-        {
           mediaList.clear();
-        }
       }
 
       return entries;
@@ -124,11 +124,17 @@ namespace Last.fm_Scrubbler_WPF
     /// <returns>The artist name.</returns>
     private string GetArtist(IWMPMedia mediaItem)
     {
-      string artist = mediaItem.getItemInfoByAtom(_albumArtistIndex);
-      if (string.IsNullOrEmpty(artist) || artist == "VARIOUS ARTISTS")
-        artist = mediaItem.getItemInfoByAtom(_authorIndex);
+      return mediaItem.getItemInfoByAtom(_authorIndex);
+    }
 
-      return artist;
+    /// <summary>
+    /// Gets the album artist name.
+    /// </summary>
+    /// <param name="mediaItem">Item to get album artist name for.</param>
+    /// <returns>The album artist name.</returns>
+    private string GetAlbumArtist(IWMPMedia mediaItem)
+    {
+      return mediaItem.getItemInfoByAtom(_albumArtistIndex);
     }
 
     /// <summary>

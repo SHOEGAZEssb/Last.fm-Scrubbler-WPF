@@ -52,6 +52,26 @@ namespace Last.fm_Scrubbler_WPF.Models
     private string _albumName;
 
     /// <summary>
+    /// Name of the album artist.
+    /// </summary>
+    public string AlbumArtist
+    {
+      get { return _albumArtist; }
+      private set { _albumArtist = value; }
+    }
+    private string _albumArtist;
+
+    /// <summary>
+    /// Length of this track.
+    /// </summary>
+    public TimeSpan Duration
+    {
+      get { return _duration; }
+      private set { _duration = value; }
+    }
+    private TimeSpan _duration;
+
+    /// <summary>
     /// Number of times this track has been played.
     /// </summary>
     public int PlayCount
@@ -85,13 +105,17 @@ namespace Last.fm_Scrubbler_WPF.Models
     /// <param name="trackName">Name of the track.</param>
     /// <param name="artistName">Name of the artist.</param>
     /// <param name="albumName">Name of the album.</param>
+    /// <param name="albumArtist">Name of the album artist.</param>
+    /// <param name="duration">Length of this track.</param>
     /// <param name="playCount">Number of times this track has been played.</param>
     /// <param name="lastPlayed">Time the track was played last.</param>
-    public MediaDBScrobble(string trackName, string artistName, string albumName, int playCount, DateTime lastPlayed)
+    public MediaDBScrobble(string trackName, string artistName, string albumName, string albumArtist, TimeSpan duration, int playCount, DateTime lastPlayed)
     {
       TrackName = trackName;
       ArtistName = artistName;
       AlbumName = albumName;
+      AlbumArtist = albumArtist;
+      Duration = duration;
       PlayCount = playCount;
       LastPlayed = lastPlayed;
     }

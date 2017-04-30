@@ -221,10 +221,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         if (trackDictNode == null)
           throw new Exception("Could not find 'Tracks' node in xml file");
       }
-      catch (Exception)
+      catch (Exception ex)
       {
         EnableControls = true;
-        OnStatusUpdated("Could not find 'Tracks' node in xml file");
+        OnStatusUpdated("Error parsing database file: " + ex.Message);
         return;
       }
 
@@ -244,10 +244,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
             string trackName = xmlNodes.First(i => i.InnerText == "Name").NextSibling.InnerText;
             string artistName = xmlNodes.First(i => i.InnerText == "Artist").NextSibling.InnerText;
             string albumName = xmlNodes.FirstOrDefault(i => i.InnerText == "Album")?.NextSibling.InnerText;
+            string albumArtist = xmlNodes.FirstOrDefault(i => i.InnerText == "Album Artist")?.NextSibling.InnerText;
+            TimeSpan duration = TimeSpan.FromMilliseconds(int.Parse(xmlNodes.FirstOrDefault(i => i.InnerText == "Total Time")?.NextSibling.InnerText));
             DateTime lastPlayed = DateTime.Parse(xmlNodes.FirstOrDefault(i => i.InnerText == "Play Date UTC")?.NextSibling.InnerText);
 
-
-            MediaDBScrobbleViewModel vm = new MediaDBScrobbleViewModel(new MediaDBScrobble(trackName, artistName, albumName, playCount, lastPlayed));
+            MediaDBScrobbleViewModel vm = new MediaDBScrobbleViewModel(new MediaDBScrobble(trackName, artistName, albumName, albumArtist, duration, playCount, lastPlayed));
             vm.ToScrobbleChanged += ToScrobbleChanged;
             scrobbles.Add(vm);
           }
@@ -275,27 +276,36 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       EnableControls = false;
 
-      await Task.Run(() =>
+      try
       {
-        OnStatusUpdated("Parsing Windows Media Player library...");
-        using (WMP wmp = new WMP())
+        await Task.Run(() =>
         {
-          // todo: this can be better
-          var scrobbles = wmp.GetMusicLibrary();
-          var scrobbleVMs = new List<MediaDBScrobbleViewModel>();
-          foreach (var scrobble in scrobbles)
+          OnStatusUpdated("Parsing Windows Media Player library...");
+          using (WMP wmp = new WMP())
           {
-            var vm = new MediaDBScrobbleViewModel(scrobble);
-            vm.ToScrobbleChanged += ToScrobbleChanged;
-            scrobbleVMs.Add(vm);
+            // todo: this can be better
+            var scrobbles = wmp.GetMusicLibrary();
+            var scrobbleVMs = new List<MediaDBScrobbleViewModel>();
+            foreach (var scrobble in scrobbles)
+            {
+              var vm = new MediaDBScrobbleViewModel(scrobble);
+              vm.ToScrobbleChanged += ToScrobbleChanged;
+              scrobbleVMs.Add(vm);
+            }
+
+            ParsedScrobbles = new ObservableCollection<MediaDBScrobbleViewModel>(scrobbleVMs);
           }
-
-          ParsedScrobbles = new ObservableCollection<MediaDBScrobbleViewModel>(scrobbleVMs);
-        }
-        OnStatusUpdated("Successfully parsed Windows Media Player library");
-      });
-
-      EnableControls = true;
+          OnStatusUpdated("Successfully parsed Windows Media Player library");
+        });
+      }
+      catch (Exception ex)
+      {
+        OnStatusUpdated("Fatal error while parsing Windows Media Player library. Error: " + ex.Message);
+      }
+      finally
+      {
+        EnableControls = true;
+      }
     }
 
     /// <summary>
@@ -306,16 +316,24 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       EnableControls = false;
 
+      try
+      {
+        OnStatusUpdated("Trying to scrobble selected tracks...");
 
-      OnStatusUpdated("Trying to scrobble selected tracks...");
-
-      var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
-      if (response.Success)
-        OnStatusUpdated("Successfully scrobbled!");
-      else
-        OnStatusUpdated("Error while scrobbling!");
-
-      EnableControls = true;
+        var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
+        if (response.Success)
+          OnStatusUpdated("Successfully scrobbled!");
+        else
+          OnStatusUpdated("Error while scrobbling!");
+      }
+      catch (Exception ex)
+      {
+        OnStatusUpdated("Fatal error while trying to scrobble selected tracks. Error: " + ex.Message);
+      }
+      finally
+      {
+        EnableControls = true;
+      }
     }
 
     /// <summary>
@@ -327,6 +345,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       spv.ShowDialog();
     }
 
+    /// <summary>
+    /// Creates a list with scrobbles that will be scrobbled.
+    /// </summary>
+    /// <returns>List with scrobbles.</returns>
     private List<Scrobble> CreateScrobbles()
     {
       List<Scrobble> scrobbles = new List<Scrobble>();
@@ -336,7 +358,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         for (int i = 0; i < vm.Scrobble.PlayCount; i++)
         {
-          scrobbles.Add(new Scrobble(vm.Scrobble.ArtistName, vm.Scrobble.AlbumName, vm.Scrobble.TrackName, time));
+          scrobbles.Add(new Scrobble(vm.Scrobble.ArtistName, vm.Scrobble.AlbumName, vm.Scrobble.TrackName, time) { AlbumArtist = vm.Scrobble.AlbumArtist, Duration = vm.Scrobble.Duration});
           time = time.Subtract(TimeSpan.FromSeconds(1));
         }
       }

@@ -79,35 +79,49 @@
           <GridViewColumn Header="Artist" local:GridViewSort.PropertyName="Scrobble.ArtistName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Scrobble.ArtistName}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Scrobble.ArtistName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
           <GridViewColumn Header="Track Title" local:GridViewSort.PropertyName="Scrobble.TrackName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Scrobble.TrackName}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Scrobble.TrackName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
           <GridViewColumn Header="Album Title" local:GridViewSort.PropertyName="Scrobble.AlbumName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Scrobble.AlbumName}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Scrobble.AlbumName}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Album Artist" local:GridViewSort.PropertyName="Scrobble.AlbumArtist">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label VerticalAlignment="Center" Content="{Binding Scrobble.AlbumArtist}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Album Duration" local:GridViewSort.PropertyName="Scrobble.Duration">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label VerticalAlignment="Center" Content="{Binding Scrobble.Duration}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
           <GridViewColumn Header="Play Count" local:GridViewSort.PropertyName="Scrobble.PlayCount">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Scrobble.PlayCount}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Scrobble.PlayCount}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
           <GridViewColumn Header="Last Played" local:GridViewSort.PropertyName="Scrobble.LastPlayed">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Scrobble.LastPlayed}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Scrobble.LastPlayed}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
