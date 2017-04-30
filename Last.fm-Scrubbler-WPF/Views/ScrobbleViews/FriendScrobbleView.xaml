@@ -101,21 +101,28 @@
           <GridViewColumn Header="Artist" local:GridViewSort.PropertyName="Scrobble.ArtistName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Track.ArtistName}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Track.ArtistName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
           <GridViewColumn Header="Track Title" local:GridViewSort.PropertyName="Scrobble.Name">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding Track.Name}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Track.Name}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Duration" local:GridViewSort.PropertyName="Scrobble.Duration">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label VerticalAlignment="Center" Content="{Binding Track.Duration}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
           <GridViewColumn Header="Date Scrobbled" local:GridViewSort.PropertyName="Scrobble.TimePlayed.LocalDateTime">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="10" VerticalAlignment="Center" Content="{Binding Track.TimePlayed.LocalDateTime}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Track.TimePlayed.LocalDateTime}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>

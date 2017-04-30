@@ -156,6 +156,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       EnableControls = true;
     }
 
+    /// <summary>
+    /// Signals that the "ToScrobble" property of a scrobble has changed.
+    /// </summary>
+    /// <param name="sender">Ignored.</param>
+    /// <param name="e">Ignored.</param>
     private void ToScrobbleChanged(object sender, EventArgs e)
     {
       NotifyOfPropertyChange(() => CanScrobble);
@@ -164,12 +169,16 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       NotifyOfPropertyChange(() => CanSelectNone);
     }
 
+    /// <summary>
+    /// Creates a list with scrobbles that will be scrobbled.
+    /// </summary>
+    /// <returns>List with scrobbles.</returns>
     private List<Scrobble> CreateScrobbles()
     {
       List<Scrobble> scrobbles = new List<Scrobble>();
       foreach (var vm in FetchedScrobbles.Where(i => i.ToScrobble))
       {
-        scrobbles.Add(new Scrobble(vm.Track.ArtistName, vm.Track.AlbumName, vm.Track.Name, vm.Track.TimePlayed.Value.LocalDateTime.AddSeconds(1)));
+        scrobbles.Add(new Scrobble(vm.Track.ArtistName, vm.Track.AlbumName, vm.Track.Name, vm.Track.TimePlayed.Value.LocalDateTime.AddSeconds(1)) { Duration = vm.Track.Duration });
       }
 
       return scrobbles;
@@ -181,15 +190,25 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public override async Task Scrobble()
     {
       EnableControls = false;
-      OnStatusUpdated("Trying to scrobble selected tracks");
 
-      var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
-      if (response.Success)
-        OnStatusUpdated("Successfully scrobbled!");
-      else
-        OnStatusUpdated("Error while scrobbling!");
+      try
+      {
+        OnStatusUpdated("Trying to scrobble selected tracks");
 
-      EnableControls = true;
+        var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
+        if (response.Success)
+          OnStatusUpdated("Successfully scrobbled!");
+        else
+          OnStatusUpdated("Error while scrobbling!");
+      }
+      catch (Exception ex)
+      {
+        OnStatusUpdated("Fatal error while trying to scrobble selected tracks. Error: " + ex.Message);
+      }
+      finally
+      {
+        EnableControls = true;
+      }
     }
 
     /// <summary>
