@@ -80,57 +80,32 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public string CurrentTrackName
     {
-      get { return _currentTrackName; }
-      private set
-      {
-        _currentTrackName = value;
-        NotifyOfPropertyChange(() => CurrentTrackName);
-      }
+      get { return _app?.CurrentTrack?.Name; }
     }
-    private string _currentTrackName;
 
     /// <summary>
     /// Name of the current artist.
     /// </summary>
     public string CurrentArtistName
     {
-      get { return _currentArtistName; }
-      private set
-      {
-        _currentArtistName = value;
-        NotifyOfPropertyChange(() => CurrentArtistName);
-      }
+      get { return _app?.CurrentTrack?.Artist; }
     }
-    private string _currentArtistName;
 
     /// <summary>
     /// Name of the current album.
     /// </summary>
     public string CurrentAlbumName
     {
-      get { return _currentAlbumName; }
-      private set
-      {
-        _currentAlbumName = value;
-        NotifyOfPropertyChange(() => CurrentAlbumName);
-      }
+      get { return _app?.CurrentTrack?.Album; }
     }
-    private string _currentAlbumName;
 
     /// <summary>
-    /// Duration of the current track.
+    /// Duration of the current track in seconds.
     /// </summary>
     public int CurrentTrackLength
     {
-      get { return _currentTrackLength; }
-      private set
-      {
-        _currentTrackLength = value;
-        NotifyOfPropertyChange(() => CurrentTrackLength);
-        NotifyOfPropertyChange(() => ProgressMaximum);
-      }
+      get { return (_app?.CurrentTrack?.Duration).HasValue ? _app.CurrentTrack.Duration : 0; }
     }
-    private int _currentTrackLength;
 
     public bool AutoConnect
     {
@@ -249,8 +224,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       try
       {
         _app = new iTunesApp();
-        _app.OnPlayerPlayEvent += _app_OnPlayerPlayEvent;
-        _app.OnPlayerStopEvent += _app_OnPlayerStopEvent;
         _app.OnAboutToPromptUserToQuitEvent += _app_AboutToQuitEvent;
       }
       catch (Exception ex)
@@ -260,18 +233,16 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         return;
       }
 
+      CountedSeconds = 0;
       _countTimer = new Timer(1000);
       _countTimer.Elapsed += _countTimer_Elapsed;
-      CountedSeconds = 0;
-
-      if (_app.PlayerState == ITPlayerState.ITPlayerStatePlaying)
-        _countTimer.Start();
+      _countTimer.Start();
 
       NotifyOfPropertyChange(() => ITunesStatusLabelText);
       NotifyOfPropertyChange(() => ConnectToITunesButtonText);
       NotifyOfPropertyChange(() => CanDisconnect);
 
-      GetCurrentTrackInfo();
+      UpdateCurrentTrackInfo();
       await FetchAlbumArtwork();
 
       _refreshTimer = new Timer(100);
@@ -292,18 +263,19 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       NotifyOfPropertyChange(() => ITunesStatusLabelText);
       NotifyOfPropertyChange(() => CanDisconnect);
       CurrentAlbumArtwork = null;
-      GetCurrentTrackInfo();
+      UpdateCurrentTrackInfo();
     }
 
     /// <summary>
     /// Gets the info of the currently playing track.
     /// </summary>
-    private void GetCurrentTrackInfo()
+    private void UpdateCurrentTrackInfo()
     {
-      CurrentTrackName = _app?.CurrentTrack?.Name;
-      CurrentArtistName = _app?.CurrentTrack?.Artist;
-      CurrentAlbumName = _app?.CurrentTrack?.Album;
-      CurrentTrackLength = (_app?.CurrentTrack?.Duration).HasValue ? _app.CurrentTrack.Duration : 0;
+      NotifyOfPropertyChange(() => CurrentTrackName);
+      NotifyOfPropertyChange(() => CurrentArtistName);
+      NotifyOfPropertyChange(() => CurrentAlbumName);
+      NotifyOfPropertyChange(() => CurrentTrackLength);
+      NotifyOfPropertyChange(() => ProgressMaximum);
       _currentTrackID = (_app?.CurrentTrack?.trackID).HasValue ? _app.CurrentTrack.trackID : 0;
     }
 
@@ -321,7 +293,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         {
           CountedSeconds = 0;
           CurrentTrackScrobbled = false;
-          GetCurrentTrackInfo();
+          UpdateCurrentTrackInfo();
           FetchAlbumArtwork();
         }
       }
@@ -330,37 +302,22 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Counts up and scrobbles if the track has been played longer than 50%.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    /// <param name="sender">Ignored.</param>
+    /// <param name="e">Ignored.</param>
     private void _countTimer_Elapsed(object sender, ElapsedEventArgs e)
     {
       lock (_lockAnchor)
       {
-        CountedSeconds++;
-        if (CountedSeconds >= _app.CurrentTrack.Duration / 2 && !CurrentTrackScrobbled)
+        if (_app?.PlayerState == ITPlayerState.ITPlayerStatePlaying)
         {
-          _countTimer.Stop();
-          Scrobble();
+          CountedSeconds++;
+          if (CountedSeconds >= _app.CurrentTrack.Duration / 2 && !CurrentTrackScrobbled)
+          {
+            _countTimer.Stop();
+            Scrobble();
+          }
         }
       }
-    }
-
-    /// <summary>
-    /// Stops the <see cref="_countTimer"/>
-    /// </summary>
-    /// <param name="iTrack">Ignored.</param>
-    private void _app_OnPlayerStopEvent(object iTrack)
-    {
-      _countTimer.Stop();
-    }
-
-    /// <summary>
-    /// Starts the <see cref="_countTimer"/>
-    /// </summary>
-    /// <param name="iTrack">Ignored.</param>
-    private void _app_OnPlayerPlayEvent(object iTrack)
-    {
-      _countTimer.Start();
     }
 
     /// <summary>
@@ -392,9 +349,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       if (_app != null)
       {
         // unlink events
-        _app.OnPlayerPlayEvent -= _app_OnPlayerPlayEvent;
-        _app.OnPlayerStopEvent -= _app_OnPlayerStopEvent;
         _app.OnAboutToPromptUserToQuitEvent -= _app_AboutToQuitEvent;
+        _countTimer.Elapsed -= _countTimer_Elapsed;
+        _refreshTimer.Elapsed -= _refreshTimer_Elapsed;
 
         // release resources
         Marshal.ReleaseComObject(_app);
@@ -405,26 +362,35 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Scrobbles the current song.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Task.</returns>
     public override async Task Scrobble()
     {
       if (CanScrobble)
       {
         EnableControls = false;
 
-        OnStatusUpdated("Trying to scrobble currently playing track...");
-
-        Scrobble s = new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now);
-        var response = await MainViewModel.Scrobbler.ScrobbleAsync(s);
-        if (response.Success)
+        try
         {
-          OnStatusUpdated("Successfully scrobbled!");
-          CurrentTrackScrobbled = true;
-        }
-        else
-          OnStatusUpdated("Error while scrobbling!");
+          OnStatusUpdated("Trying to scrobble currently playing track...");
 
-        EnableControls = true;
+          Scrobble s = new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now) { Duration = TimeSpan.FromSeconds(CurrentTrackLength) };
+          var response = await MainViewModel.Scrobbler.ScrobbleAsync(s);
+          if (response.Success)
+          {
+            OnStatusUpdated("Successfully scrobbled!");
+            CurrentTrackScrobbled = true;
+          }
+          else
+            OnStatusUpdated("Error while scrobbling!");
+        }
+        catch (Exception ex)
+        {
+          OnStatusUpdated("Fatal error while trying to scrobble currently playing track. Error: " + ex.Message);
+        }
+        finally
+        {
+          EnableControls = true;
+        }
       }
     }
 
