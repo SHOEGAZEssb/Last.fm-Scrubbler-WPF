@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="600" Background="White">
   <UserControl.Resources>
@@ -31,8 +30,29 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="iTunes Status:" FontWeight="Bold"/>
-    <Label Grid.Row="0" Grid.Column="2" Content="{Binding ITunesStatusLabelText}"/>
-    <Button Grid.Row="0" Grid.Column="4" Content="{Binding ConnectToITunesButtonText}">
+    <Label Grid.Row="0" Grid.Column="2">
+      <Label.Style>
+        <Style TargetType="Label">
+          <Setter Property="Content" Value="Connected to iTunes"/>
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding ITunesApp}" Value="{x:Null}">
+              <Setter Property="Content" Value="Not connected to iTunes"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Label.Style>
+    </Label>
+    <Button Grid.Row="0" Grid.Column="4">
+      <Button.Style>
+        <Style TargetType="Button">
+          <Setter Property="Content" Value="Reconnect"/>
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding ITunesApp}" Value="{x:Null}">
+              <Setter Property="Content" Value="Connect to iTunes"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Button.Style>
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="ConnectToITunes"/>
@@ -104,6 +124,11 @@
         </Label.Style>
       </Label>
       <ProgressBar Grid.Row="2" Grid.Column="2" Value="{Binding CountedSeconds, Mode=OneWay}" Maximum="{Binding ProgressMaximum}"/>
+      <StackPanel Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" Orientation="Horizontal">
+        <Label Content="{Binding CountedSeconds}"/>
+        <Label Content="/"/>
+        <Label Content="{Binding CurrentTrackLengthToScrobble}"/>
+      </StackPanel>
     </Grid>
   </Grid>
 </UserControl>

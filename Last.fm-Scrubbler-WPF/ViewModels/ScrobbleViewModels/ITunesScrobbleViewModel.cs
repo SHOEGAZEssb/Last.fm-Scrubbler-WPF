@@ -18,20 +18,18 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     #region iTunes
 
     /// <summary>
-    /// Text of the status label.
+    /// Connection to iTunes.
     /// </summary>
-    public string ITunesStatusLabelText
+    public iTunesApp ITunesApp
     {
-      get { return _app == null ? "Not connected to iTunes" : "Connected to iTunes"; }
+      get { return _iTunesApp; }
+      private set
+      {
+        _iTunesApp = value;
+        NotifyOfPropertyChange(() => ITunesApp);
+      }
     }
-
-    /// <summary>
-    /// Test of the connect / reconnect button.
-    /// </summary>
-    public string ConnectToITunesButtonText
-    {
-      get { return _app == null ? "Connect to iTunes" : "Reconnect"; }
-    }
+    private iTunesApp _iTunesApp;
 
     /// <summary>
     /// Currently amount of played seconds.
@@ -80,7 +78,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public string CurrentTrackName
     {
-      get { return _app?.CurrentTrack?.Name; }
+      get { return ITunesApp?.CurrentTrack?.Name; }
     }
 
     /// <summary>
@@ -88,7 +86,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public string CurrentArtistName
     {
-      get { return _app?.CurrentTrack?.Artist; }
+      get { return ITunesApp?.CurrentTrack?.Artist; }
     }
 
     /// <summary>
@@ -96,7 +94,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public string CurrentAlbumName
     {
-      get { return _app?.CurrentTrack?.Album; }
+      get { return ITunesApp?.CurrentTrack?.Album; }
     }
 
     /// <summary>
@@ -104,7 +102,16 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public int CurrentTrackLength
     {
-      get { return (_app?.CurrentTrack?.Duration).HasValue ? _app.CurrentTrack.Duration : 0; }
+      get { return (ITunesApp?.CurrentTrack?.Duration).HasValue ? ITunesApp.CurrentTrack.Duration : 0; }
+    }
+
+    /// <summary>
+    /// Gets the amount of seconds needed to hear the current
+    /// track to scrobble it.
+    /// </summary>
+    public int CurrentTrackLengthToScrobble
+    {
+      get { return CurrentTrackLength / 2; }
     }
 
     public bool AutoConnect
@@ -132,7 +139,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public bool CanDisconnect
     {
-      get { return _app != null; }
+      get { return ITunesApp != null; }
     }
 
     #endregion iTunes
@@ -170,11 +177,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     #endregion Properties
 
     #region Private Member
-
-    /// <summary>
-    /// Connection to iTunes.
-    /// </summary>
-    private iTunesApp _app;
 
     /// <summary>
     /// ID of the current playing track.
@@ -218,13 +220,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       EnableControls = false;
       CurrentTrackScrobbled = false;
 
-      if (_app != null)
+      if (ITunesApp != null)
         Dispose();
 
       try
       {
-        _app = new iTunesApp();
-        _app.OnAboutToPromptUserToQuitEvent += _app_AboutToQuitEvent;
+        ITunesApp = new iTunesApp();
+        ITunesApp.OnAboutToPromptUserToQuitEvent += _app_AboutToQuitEvent;
       }
       catch (Exception ex)
       {
@@ -238,8 +240,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       _countTimer.Elapsed += _countTimer_Elapsed;
       _countTimer.Start();
 
-      NotifyOfPropertyChange(() => ITunesStatusLabelText);
-      NotifyOfPropertyChange(() => ConnectToITunesButtonText);
       NotifyOfPropertyChange(() => CanDisconnect);
 
       UpdateCurrentTrackInfo();
@@ -259,8 +259,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       _refreshTimer.Stop();
       _countTimer.Stop();
       Dispose();
-      NotifyOfPropertyChange(() => ConnectToITunesButtonText);
-      NotifyOfPropertyChange(() => ITunesStatusLabelText);
       NotifyOfPropertyChange(() => CanDisconnect);
       CurrentAlbumArtwork = null;
       UpdateCurrentTrackInfo();
@@ -275,8 +273,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       NotifyOfPropertyChange(() => CurrentArtistName);
       NotifyOfPropertyChange(() => CurrentAlbumName);
       NotifyOfPropertyChange(() => CurrentTrackLength);
+      NotifyOfPropertyChange(() => CurrentTrackLengthToScrobble);
       NotifyOfPropertyChange(() => ProgressMaximum);
-      _currentTrackID = (_app?.CurrentTrack?.trackID).HasValue ? _app.CurrentTrack.trackID : 0;
+      _currentTrackID = (ITunesApp?.CurrentTrack?.trackID).HasValue ? ITunesApp.CurrentTrack.trackID : 0;
     }
 
     /// <summary>
@@ -289,7 +288,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       lock (_lockAnchor)
       {
-        if (_app?.CurrentTrack?.trackID != _currentTrackID)
+        if (ITunesApp?.CurrentTrack?.trackID != _currentTrackID)
         {
           CountedSeconds = 0;
           CurrentTrackScrobbled = false;
@@ -308,11 +307,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       lock (_lockAnchor)
       {
-        if (_app?.PlayerState == ITPlayerState.ITPlayerStatePlaying)
+        if (ITunesApp?.PlayerState == ITPlayerState.ITPlayerStatePlaying)
         {
           CountedSeconds++;
-          if (CountedSeconds >= _app.CurrentTrack.Duration / 2 && !CurrentTrackScrobbled)
+          if (CountedSeconds >= CurrentTrackLengthToScrobble && !CurrentTrackScrobbled)
           {
+            // stop count timer to not trigger scrobble multiple times
             _countTimer.Stop();
             Scrobble();
           }
@@ -346,16 +346,16 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public void Dispose()
     {
-      if (_app != null)
+      if (ITunesApp != null)
       {
         // unlink events
-        _app.OnAboutToPromptUserToQuitEvent -= _app_AboutToQuitEvent;
+        ITunesApp.OnAboutToPromptUserToQuitEvent -= _app_AboutToQuitEvent;
         _countTimer.Elapsed -= _countTimer_Elapsed;
         _refreshTimer.Elapsed -= _refreshTimer_Elapsed;
 
         // release resources
-        Marshal.ReleaseComObject(_app);
-        _app = null;
+        Marshal.ReleaseComObject(ITunesApp);
+        ITunesApp = null;
       }
     }
 
@@ -377,7 +377,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           var response = await MainViewModel.Scrobbler.ScrobbleAsync(s);
           if (response.Success)
           {
-            OnStatusUpdated("Successfully scrobbled!");
+            OnStatusUpdated(string.Format("Successfully scrobbled {0}!", CurrentTrackName));
             CurrentTrackScrobbled = true;
           }
           else
@@ -390,6 +390,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         finally
         {
           EnableControls = true;
+          // re-enable count timer
+          _countTimer.Start();
         }
       }
     }
