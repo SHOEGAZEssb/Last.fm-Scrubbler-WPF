@@ -91,7 +91,7 @@ You can read how to export your Winamp database as xml [here](http://forums.wina
 Once you click "Scrobble", all selected songs will be scrobbled to your last.fm account, starting with the last track in the list and finishing with the first in the list. Timestamp will be current date time - 1 second.
 
 ### iTunes Scrobbling
-This basically works like the normal Last.fm desktop app. Once you connected to iTunes a timer will measure how long you listened to that song. If you play 50% of the track, it will be scrobbled. The ProgressBar on the bottom indicates when the track will be scrobbled.
+This basically works like the normal Last.fm desktop app. Once you connected to iTunes a timer will measure how long you listened to that song. If you play 50% of the track (tracks under 30 seconds will work), it will be scrobbled. The ProgressBar on the bottom indicates when the track will be scrobbled.
 
 ![iTunes Scrobbling](https://ibin.co/30cuCVX33Gke.png)
 
@@ -101,6 +101,6 @@ With this you can create a "Paste Your Taste" text. You can select the time peri
 ![Paste Your Taste](http://i.imgur.com/sTjEsKs.png)
 
 ### CSV Downloader
-This allows you to download the data of any Last.fm user as a csv file. The format of the csv file will be "Artist, Album, Track, Timestamp".
+This allows you to download the data of any Last.fm user as a csv file. The format of the csv file will be "Artist, Album, Track, Timestamp, Album Artist, Timestamp".
 
 ![CSV Downloader](http://i.imgur.com/P7uY6Py.png)
