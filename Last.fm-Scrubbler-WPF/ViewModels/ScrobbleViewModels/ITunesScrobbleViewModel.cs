@@ -2,6 +2,7 @@
 using iTunesLib;
 using Last.fm_Scrubbler_WPF.Properties;
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Timers;
@@ -72,6 +73,20 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       }
     }
     private Uri _currentAlbumArtwork;
+
+    /// <summary>
+    /// If the current track is loved on Last.fm.
+    /// </summary>
+    public bool CurrentTrackLoved
+    {
+      get { return _currentTrackLoved; }
+      private set
+      {
+        _currentTrackLoved = value;
+        NotifyOfPropertyChange(() => CurrentTrackLoved);
+      }
+    }
+    private bool _currentTrackLoved;
 
     /// <summary>
     /// Name of the current track.
@@ -201,6 +216,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     private object _lockAnchor = new object();
 
+    private const string LASTFMURL = "https://www.last.fm/music/";
+
     #endregion Private Member
 
     /// <summary>
@@ -276,6 +293,42 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       NotifyOfPropertyChange(() => CurrentTrackLengthToScrobble);
       NotifyOfPropertyChange(() => ProgressMaximum);
       _currentTrackID = (ITunesApp?.CurrentTrack?.trackID).HasValue ? ITunesApp.CurrentTrack.trackID : 0;
+      UpdateLovedInfo();
+    }
+
+    /// <summary>
+    /// Checks if the current track is loved.
+    /// </summary>
+    /// <returns>Task.</returns>
+    private async Task UpdateLovedInfo()
+    {
+      var info = await MainViewModel.Client.Track.GetInfoAsync(CurrentTrackName, CurrentArtistName, MainViewModel.Client.Auth.UserSession.Username);
+      if (info.Success)
+        CurrentTrackLoved = info.Content.IsLoved.Value;
+    }
+
+    /// <summary>
+    /// Loves / unloves the curren track.
+    /// </summary>
+    /// <returns>Task.</returns>
+    public async Task SwitchLoveState()
+    {
+      EnableControls = false;
+
+      try
+      {
+        if (CurrentTrackLoved)
+          await MainViewModel.Client.Track.UnloveAsync(CurrentTrackName, CurrentArtistName);
+        else
+          await MainViewModel.Client.Track.LoveAsync(CurrentTrackName, CurrentArtistName);
+
+        await UpdateLovedInfo();
+      }
+      catch(Exception ex)
+      {
+        OnStatusUpdated("Fatal error while loving/unloving track: " + ex.Message);
+        EnableControls = true;
+      }
     }
 
     /// <summary>
@@ -339,6 +392,30 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         var album = await MainViewModel.Client.Album.GetInfoAsync(CurrentArtistName, CurrentAlbumName);
         CurrentAlbumArtwork = album?.Content.Images.Large;
       }
+    }
+
+    /// <summary>
+    /// Opens the Last.fm page for the current track.
+    /// </summary>
+    public void TrackClicked()
+    {
+      Process.Start(string.Format(LASTFMURL + "{0}/{1}/{2}", CurrentArtistName.Replace(' ', '+'), CurrentAlbumName.Replace(' ', '+'), CurrentTrackName.Replace(' ', '+')));
+    }
+
+    /// <summary>
+    /// Opens the Last.fm page for the current artist.
+    /// </summary>
+    public void ArtistClicked()
+    {
+      Process.Start(string.Format(LASTFMURL + "{0}", CurrentArtistName.Replace(' ', '+')));
+    }
+
+    /// <summary>
+    /// Opens the Last.fm page for the current track.
+    /// </summary>
+    public void AlbumClicked()
+    {
+      Process.Start(string.Format(LASTFMURL + "{0}/{1}", CurrentArtistName.Replace(' ', '+'), CurrentAlbumName.Replace(' ', '+')));
     }
 
     /// <summary>
