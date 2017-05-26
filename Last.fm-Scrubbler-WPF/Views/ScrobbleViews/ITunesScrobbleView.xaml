@@ -164,9 +164,16 @@
           <Button.Style>
             <Style TargetType="Button">
               <Setter Property="Content" Value="Love"/>
+              <Setter Property="IsEnabled" Value="True"/>
               <Style.Triggers>
                 <DataTrigger Binding="{Binding CurrentTrackLoved}" Value="True">
                   <Setter Property="Content" Value="Unlove"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding EnableControls}" Value="False">
+                  <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ITunesApp}" Value="{x:Null}">
+                  <Setter Property="IsEnabled" Value="False"/>
                 </DataTrigger>
               </Style.Triggers>
             </Style>
