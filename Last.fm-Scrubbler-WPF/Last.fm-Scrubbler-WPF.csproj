@@ -93,7 +93,7 @@
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Models\Artist.cs" />
     <Compile Include="Models\Release.cs" />
-    <Compile Include="Models\Track.cs" />
+    <Compile Include="Models\ScrobbleBase.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="ViewModels\ExtraFunctions\CSVDownloaderViewModel.cs" />
     <Compile Include="ViewModels\ExtraFunctions\PasteYourTasteViewModel.cs" />
@@ -106,7 +106,7 @@
       <DependentUpon>CSVDownloaderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GridViewSort.cs" />
-    <Compile Include="Models\CSVScrobble.cs" />
+    <Compile Include="Models\DatedScrobble.cs" />
     <Compile Include="Models\MediaDBScrobble.cs" />
     <Compile Include="Models\WMP.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\CSVScrobbleViewModel.cs" />

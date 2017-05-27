@@ -19,7 +19,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// The fetched track.
     /// </summary>
-    public Track FetchedTrack
+    public ScrobbleBase FetchedTrack
     {
       get { return _fetchedTrack; }
       private set
@@ -28,7 +28,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         NotifyOfPropertyChange(() => FetchedTrack);
       }
     }
-    private Track _fetchedTrack;
+    private ScrobbleBase _fetchedTrack;
 
     /// <summary>
     /// Gets/sets if this scrobble should be scrobbled.
@@ -66,7 +66,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     /// <param name="fetchedTrack">The fetched track.</param>
     /// <param name="image">The small image of the parent album.</param>
-    public FetchedTrackViewModel(Track fetchedTrack, Uri image)
+    public FetchedTrackViewModel(ScrobbleBase fetchedTrack, Uri image)
     {
       FetchedTrack = fetchedTrack;
       Image = image;

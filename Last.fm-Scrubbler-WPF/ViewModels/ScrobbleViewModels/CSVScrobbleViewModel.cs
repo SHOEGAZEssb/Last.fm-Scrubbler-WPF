@@ -293,8 +293,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
                 }
               }
 
-              CSVScrobble parsedScrobble = new CSVScrobble(fields[Settings.Default.ArtistFieldIndex], album,
-                                                           fields[Settings.Default.TrackFieldIndex], albumArtist, time, date.AddSeconds(1));
+              DatedScrobble parsedScrobble = new DatedScrobble(date.AddSeconds(1), fields[Settings.Default.TrackFieldIndex],
+                                                              fields[Settings.Default.ArtistFieldIndex], album,
+                                                              albumArtist, time);
               ParsedCSVScrobbleViewModel vm = new ParsedCSVScrobbleViewModel(parsedScrobble, ScrobbleMode);
               vm.ToScrobbleChanged += ToScrobbleChanged;
               _dispatcher.Invoke(() => Scrobbles.Add(vm));
@@ -392,7 +393,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
         {
-          scrobbles.Add(new Scrobble(vm.ParsedScrobble.Artist, vm.ParsedScrobble.Album, vm.ParsedScrobble.Track, vm.ParsedScrobble.DateTime));
+          scrobbles.Add(new Scrobble(vm.ParsedScrobble.ArtistName, vm.ParsedScrobble.AlbumName, vm.ParsedScrobble.TrackName, vm.ParsedScrobble.Played));
         }
       }
       else if (ScrobbleMode == CSVScrobbleMode.ImportMode)
@@ -400,7 +401,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         DateTime time = FinishingTime;
         foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
         {
-          scrobbles.Add(new Scrobble(vm.ParsedScrobble.Artist, vm.ParsedScrobble.Album, vm.ParsedScrobble.Track, time));
+          scrobbles.Add(new Scrobble(vm.ParsedScrobble.ArtistName, vm.ParsedScrobble.AlbumArtist, vm.ParsedScrobble.TrackName, time));
           time = time.Subtract(TimeSpan.FromSeconds(Duration));
         }
       }

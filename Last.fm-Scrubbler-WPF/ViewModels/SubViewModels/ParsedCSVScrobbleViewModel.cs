@@ -16,7 +16,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// The scrobble parsed from the csv file.
     /// </summary>
-    public CSVScrobble ParsedScrobble
+    public DatedScrobble ParsedScrobble
     {
       get { return _parsedScrobble; }
       private set
@@ -26,7 +26,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         NotifyOfPropertyChange(() => IsEnabled);
       }
     }
-    private CSVScrobble _parsedScrobble;
+    private DatedScrobble _parsedScrobble;
 
     /// <summary>
     /// Indicates if this scrobble should be scrobbled.
@@ -48,7 +48,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public bool IsEnabled
     {
-      get { return ParsedScrobble.DateTime > DateTime.Now.Subtract(TimeSpan.FromDays(14)) || _scrobbleMode == CSVScrobbleMode.ImportMode; }
+      get { return ParsedScrobble.Played > DateTime.Now.Subtract(TimeSpan.FromDays(14)) || _scrobbleMode == CSVScrobbleMode.ImportMode; }
     }
 
     #endregion Properties
@@ -64,7 +64,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     /// <param name="parsedScrobble">The scrobble parsed from the csv file.</param>
     /// <param name="scrobbleMode">The current scrobble mode.</param>
-    public ParsedCSVScrobbleViewModel(CSVScrobble parsedScrobble, CSVScrobbleMode scrobbleMode)
+    public ParsedCSVScrobbleViewModel(DatedScrobble parsedScrobble, CSVScrobbleMode scrobbleMode)
     {
       ParsedScrobble = parsedScrobble;
       _scrobbleMode = scrobbleMode;

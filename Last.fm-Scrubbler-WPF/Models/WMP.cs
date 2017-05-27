@@ -99,7 +99,7 @@ namespace Last.fm_Scrubbler_WPF
             TimeSpan duration = TimeSpan.FromSeconds(mediaItem.duration);
             DateTime lastPlayed = GetUserLastPlayedTime(mediaItem);
 
-            entries.Add(new MediaDBScrobble(trackName, artistName, albumName, albumArtist, duration, playCount, lastPlayed));
+            entries.Add(new MediaDBScrobble(playCount, lastPlayed, trackName, artistName, albumName, albumArtist, duration));
           }
           catch (Exception ex)
           {

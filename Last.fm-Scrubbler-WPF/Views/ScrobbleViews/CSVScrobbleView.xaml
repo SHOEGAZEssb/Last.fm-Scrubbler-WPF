@@ -81,24 +81,24 @@
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Artist" local:GridViewSort.PropertyName="ParsedScrobble.Artist">
+          <GridViewColumn Header="Artist" local:GridViewSort.PropertyName="ParsedScrobble.ArtistName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding ParsedScrobble.Artist}"/>
+                <Label VerticalAlignment="Center" Content="{Binding ParsedScrobble.ArtistName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Album" local:GridViewSort.PropertyName="ParsedScrobble.Album">
+          <GridViewColumn Header="Album" local:GridViewSort.PropertyName="ParsedScrobble.AlbumName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding ParsedScrobble.Album}"/>
+                <Label VerticalAlignment="Center" Content="{Binding ParsedScrobble.AlbumName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Track Title" local:GridViewSort.PropertyName="ParsedScrobble.Track">
+          <GridViewColumn Header="Track Title" local:GridViewSort.PropertyName="ParsedScrobble.TrackName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding ParsedScrobble.Track}"/>
+                <Label VerticalAlignment="Center" Content="{Binding ParsedScrobble.TrackName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
@@ -116,10 +116,10 @@
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Date Scrobbled" local:GridViewSort.PropertyName="ParsedScrobble.DateTime">
+          <GridViewColumn Header="Date Scrobbled" local:GridViewSort.PropertyName="ParsedScrobble.Played">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding ParsedScrobble.DateTime}"/>
+                <Label VerticalAlignment="Center" Content="{Binding ParsedScrobble.Played}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>

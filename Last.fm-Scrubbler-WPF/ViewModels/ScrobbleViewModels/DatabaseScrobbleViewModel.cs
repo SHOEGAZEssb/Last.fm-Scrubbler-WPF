@@ -524,7 +524,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           FetchedTracks.Clear();
           foreach (var t in detailedRelease.Content.Tracks)
           {
-            FetchedTrackViewModel vm = new FetchedTrackViewModel(new Track(t.Name, t.ArtistName, t.AlbumName, t.Duration), release.Image);
+            FetchedTrackViewModel vm = new FetchedTrackViewModel(new ScrobbleBase(t.Name, t.ArtistName, t.AlbumName, "", t.Duration), release.Image);
             vm.ToScrobbleChanged += ToScrobbleChanged;
             FetchedTracks.Add(vm);
           }
@@ -596,7 +596,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       List<Scrobble> scrobbles = new List<Scrobble>();
       foreach (FetchedTrackViewModel vm in FetchedTracks.Where(i => i.ToScrobble).Reverse())
       {
-        scrobbles.Add(new Scrobble(vm.FetchedTrack.ArtistName, vm.FetchedTrack.ReleaseName, vm.FetchedTrack.Name, finishingTime));
+        scrobbles.Add(new Scrobble(vm.FetchedTrack.ArtistName, vm.FetchedTrack.AlbumName, vm.FetchedTrack.TrackName, finishingTime));
         if (vm.FetchedTrack.Duration.HasValue)
           finishingTime = finishingTime.Subtract(vm.FetchedTrack.Duration.Value);
         else

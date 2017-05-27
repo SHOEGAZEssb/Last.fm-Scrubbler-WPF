@@ -68,17 +68,17 @@
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Release Title" local:GridViewSort.PropertyName="FetchedTrack.ReleaseName">
+          <GridViewColumn Header="Release Title" local:GridViewSort.PropertyName="FetchedTrack.AlbumName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding FetchedTrack.ReleaseName}"/>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding FetchedTrack.AlbumName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Track Title" local:GridViewSort.PropertyName="FetchedTrack.Name">
+          <GridViewColumn Header="Track Title" local:GridViewSort.PropertyName="FetchedTrack.TrackName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding FetchedTrack.Name}"/>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding FetchedTrack.TrackName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
