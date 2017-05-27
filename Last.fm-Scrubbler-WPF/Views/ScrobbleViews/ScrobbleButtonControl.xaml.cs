@@ -7,6 +7,9 @@ namespace Last.fm_Scrubbler_WPF.Views
   /// </summary>
   public partial class ScrobbleButtonControl : UserControl
   {
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public ScrobbleButtonControl()
     {
       InitializeComponent();

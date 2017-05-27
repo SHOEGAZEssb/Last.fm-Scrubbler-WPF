@@ -307,8 +307,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public void HyperlinkClicked()
     {
-      SelectUserView suv = new SelectUserView();
-      suv.DataContext = UserViewModel;
+      SelectUserView suv = new SelectUserView()
+      {
+        DataContext = UserViewModel
+      };
       suv.ShowDialog();
 
       NotifyOfPropertyChange(() => StatusBarUsername);

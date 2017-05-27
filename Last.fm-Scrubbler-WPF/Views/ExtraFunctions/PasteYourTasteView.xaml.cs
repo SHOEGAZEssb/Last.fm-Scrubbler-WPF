@@ -7,6 +7,9 @@ namespace Last.fm_Scrubbler_WPF.Views
   /// </summary>
   public partial class PasteYourTasteView : UserControl
   {
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public PasteYourTasteView()
     {
       InitializeComponent();
