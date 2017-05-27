@@ -95,14 +95,14 @@
     <Compile Include="Models\Release.cs" />
     <Compile Include="Models\Track.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="ViewModels\CSVDownloaderViewModel.cs" />
-    <Compile Include="ViewModels\PasteYourTasteViewModel.cs" />
+    <Compile Include="ViewModels\ExtraFunctions\CSVDownloaderViewModel.cs" />
+    <Compile Include="ViewModels\ExtraFunctions\PasteYourTasteViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ITunesScrobbleViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobblePreviewViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\ConfigureCSVParserViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="Views\CSVDownloaderView.xaml.cs">
+    <Compile Include="Views\ExtraFunctions\CSVDownloaderView.xaml.cs">
       <DependentUpon>CSVDownloaderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GridViewSort.cs" />
@@ -126,7 +126,7 @@
     <Compile Include="ViewModels\ScrobbleViewModels\MediaPlayerDatabaseScrobbleViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\ParsedCSVScrobbleViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobbleViewModelBase.cs" />
-    <Compile Include="Views\PasteYourTasteView.xaml.cs">
+    <Compile Include="Views\ExtraFunctions\PasteYourTasteView.xaml.cs">
       <DependentUpon>PasteYourTasteView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScrobbleViews\ConfigureCSVParserView.xaml.cs">
@@ -177,11 +177,11 @@
     <Compile Include="Views\SubViews\TrackResultView.xaml.cs">
       <DependentUpon>TrackResultView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\CSVDownloaderView.xaml">
+    <Page Include="Views\ExtraFunctions\CSVDownloaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PasteYourTasteView.xaml">
+    <Page Include="Views\ExtraFunctions\PasteYourTasteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

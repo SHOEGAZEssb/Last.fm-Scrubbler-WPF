@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Api.Enums;
+using System;
 using System.Windows;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
@@ -54,6 +55,21 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private LastStatsTimeSpan _timeSpan;
 
     /// <summary>
+    /// If the profile link should be added before
+    /// the artists.
+    /// </summary>
+    public bool AddProfileLink
+    {
+      get { return _addProfileLink; }
+      set
+      {
+        _addProfileLink = value;
+        NotifyOfPropertyChange(() => AddProfileLink);
+      }
+    }
+    private bool _addProfileLink;
+
+    /// <summary>
     /// The taste text.
     /// </summary>
     public string TasteText
@@ -101,6 +117,15 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
     #endregion Properties
 
+    #region Private Member
+
+    /// <summary>
+    /// Base url to a Last.fm user profle.
+    /// </summary>
+    private const string LASTFMPROFILEURL = "https://www.last.fm/user/";
+
+    #endregion Private Member
+
     /// <summary>
     /// Constructor.
     /// </summary>
@@ -117,26 +142,40 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public async void GetTopArtists()
     {
       EnableControls = false;
-      OnStatusUpdated("Fetching top artists...");
 
-      var response = await MainViewModel.Client.User.GetTopArtists(Username, TimeSpan, 1, Amount);
-      if(response.Success)
+      try
       {
-        string tasteText = GetIntroText();
-        for(int i = 0; i < response.Content.Count; i++)
+        OnStatusUpdated("Fetching top artists...");
+
+        var response = await MainViewModel.Client.User.GetTopArtists(Username, TimeSpan, 1, Amount);
+        if (response.Success)
         {
-          tasteText += response.Content[i].Name;
-          if (i + 1 != response.Content.Count)
-            tasteText += ", ";
+          string tasteText = "";
+          if (AddProfileLink)
+            tasteText += LASTFMPROFILEURL + Username + Environment.NewLine + Environment.NewLine;
+
+          tasteText += GetIntroText();
+          for (int i = 0; i < response.Content.Count; i++)
+          {
+            tasteText += response.Content[i].Name;
+            if (i + 1 != response.Content.Count)
+              tasteText += ", ";
+          }
+
+          TasteText = tasteText;
+          OnStatusUpdated("Successfully fetched top artists");
         }
-
-        TasteText = tasteText;
-        OnStatusUpdated("Successfully fetched top artists");
+        else
+          OnStatusUpdated("Error fetching top artists");
       }
-      else
-        OnStatusUpdated("Error fetching top artists");
-
-      EnableControls = true;
+      catch (Exception ex)
+      {
+        OnStatusUpdated("Fatal error while fetching top artists: " + ex.Message);
+      }
+      finally
+      {
+        EnableControls = true;
+      }
     }
 
     /// <summary>
@@ -154,7 +193,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <returns>Intro text.</returns>
     private string GetIntroText()
     {
-      switch(TimeSpan)
+      switch (TimeSpan)
       {
         case LastStatsTimeSpan.Overall:
           return "I'm into ";

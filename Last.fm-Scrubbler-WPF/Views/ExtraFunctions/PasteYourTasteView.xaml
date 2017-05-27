@@ -8,7 +8,6 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:lastEnums="clr-namespace:IF.Lastfm.Core.Api.Enums;assembly=IF.Lastfm.Core"
-             xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="400">
 
@@ -42,6 +41,8 @@
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="Username:"/>
@@ -53,7 +54,9 @@
     <Label Grid.Row="0" Grid.Column="8" Content="Amount:"/>
     <xctk:IntegerUpDown Grid.Row="0" Grid.Column="10" Minimum="1" Maximum="1000" IsEnabled="{Binding EnableControls}" Value="{Binding Amount}"/>
 
-    <Button Grid.Row="0" Grid.Column="12" IsEnabled="{Binding CanFetch}" Content="Fetch">
+    <CheckBox Grid.Row="0" Grid.Column="12" Content="Add Profile Link" VerticalAlignment="Center" IsChecked="{Binding AddProfileLink}"/>
+
+    <Button Grid.Row="0" Grid.Column="14" IsEnabled="{Binding CanFetch}" Content="Fetch">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="GetTopArtists"/>
@@ -61,7 +64,7 @@
       </i:Interaction.Triggers>
     </Button>
 
-    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="13">
+    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="15">
       <Grid.RowDefinitions>
         <RowDefinition Height="32"/>
         <RowDefinition Height="*"/>
@@ -79,7 +82,7 @@
             <cal:ActionMessage MethodName="CopyTasteText"/>
           </i:EventTrigger>
         </i:Interaction.Triggers>
-        <Image Source="..\Resources\copy.png"/>
+        <Image Source="..\..\Resources\copy.png"/>
         <Button.ToolTip>
           <ToolTip>Copies the text to the clipboard.</ToolTip>
         </Button.ToolTip>
