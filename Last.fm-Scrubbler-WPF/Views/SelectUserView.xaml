@@ -5,9 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cal="http://www.caliburnproject.org"
-        xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
         mc:Ignorable="d"
         Title="Select user" Height="300" Width="300" Icon="..\scrubbler_64.ico">
+
+  <Window.Resources>
+    <Style x:Key="UserButtonStyle" TargetType="Button">
+      <Setter Property="Width" Value="25"/>
+      <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="UserInteractionButtonStyle" TargetType="Button" BasedOn="{StaticResource UserButtonStyle}">
+      <Setter Property="Margin" Value="0,5,0,0"/>
+      <Setter Property="IsEnabled" Value="True"/>
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding SelectedUser}" Value="{x:Null}">
+          <Setter Property="IsEnabled" Value="False"/>
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+  </Window.Resources>
+
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="5"/>
@@ -16,6 +33,7 @@
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="5"/>
       <RowDefinition Height="*"/>
+      <RowDefinition Height="5"/>
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="5"/>
@@ -27,16 +45,16 @@
       <ColumnDefinition Width="5"/>
     </Grid.ColumnDefinitions>
 
-    <Label Grid.Row="1" Grid.Column="1" Content="Active User:"/>
+    <Label Grid.Row="1" Grid.Column="1" Content="Active User:" FontWeight="Bold"/>
     <Label Grid.Row="1" Grid.Column="3" Content="{Binding ActiveUser.Username, FallbackValue='No active user'}"/>
 
     <Separator Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5"/>
 
-    <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Available Users:"/>
+    <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Available Users:" FontWeight="Bold"/>
     <ListBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding AvailableUsers}" DisplayMemberPath="Username" SelectedItem="{Binding SelectedUser}"/>
 
     <StackPanel Grid.Row="5" Grid.Column="5" Orientation="Vertical">
-      <Button Width="25" HorizontalAlignment="Center">
+      <Button Style="{StaticResource UserButtonStyle}">
         <i:Interaction.Triggers>
           <i:EventTrigger EventName="Click">
             <cal:ActionMessage MethodName="AddUser"/>
@@ -47,7 +65,7 @@
           <ToolTip>Add a new user</ToolTip>
         </Button.ToolTip>
       </Button>
-      <Button Width="25" HorizontalAlignment="Center" Margin="0,5,0,0" IsEnabled="{Binding CanInteractWithUser}">
+      <Button Style="{StaticResource UserInteractionButtonStyle}">
         <i:Interaction.Triggers>
           <i:EventTrigger EventName="Click">
             <cal:ActionMessage MethodName="RemoveUser"/>
@@ -58,7 +76,7 @@
           <ToolTip>Remove selected user</ToolTip>
         </Button.ToolTip>
       </Button>
-      <Button Width="25" HorizontalAlignment="Center" Margin="0,5,0,0" IsEnabled="{Binding CanInteractWithUser}">
+      <Button Style="{StaticResource UserInteractionButtonStyle}">
         <i:Interaction.Triggers>
           <i:EventTrigger EventName="Click">
             <cal:ActionMessage MethodName="LoginUser"/>

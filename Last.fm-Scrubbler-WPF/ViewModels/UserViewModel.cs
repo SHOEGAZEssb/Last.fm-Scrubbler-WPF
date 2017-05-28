@@ -21,6 +21,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   {
     #region Properties
 
+    /// <summary>
+    /// Event that triggers when the active user switches.
+    /// </summary>
     public event EventHandler ActiveUserChanged;
 
     /// <summary>
@@ -68,7 +71,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private ObservableCollection<User> _availableUsers;
 
     /// <summary>
-    /// Currently selected user in the listbox.
+    /// Currently selected user in the ListBox.
     /// </summary>
     public User SelectedUser
     {
@@ -77,18 +80,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         _selectedUser = value;
         NotifyOfPropertyChange(() => SelectedUser);
-        NotifyOfPropertyChange(() => CanInteractWithUser);
       }
     }
     private User _selectedUser;
-
-    /// <summary>
-    /// Gets if certain ui elements are enabled.
-    /// </summary>
-    public bool CanInteractWithUser
-    {
-      get { return SelectedUser != null; }
-    }
 
     #endregion Properties
 
@@ -111,8 +105,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public void AddUser()
     {
-      LoginView lv = new LoginView();
-      lv.DataContext = new LoginViewModel();
+      LoginView lv = new LoginView()
+      {
+        DataContext = new LoginViewModel()
+      };
+
       if (lv.ShowDialog().Value)
       {
         User usr = new User(MainViewModel.Client.Auth.UserSession.Username, MainViewModel.Client.Auth.UserSession.Token, MainViewModel.Client.Auth.UserSession.IsSubscriber);
@@ -161,10 +158,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <param name="usr">User to log in.</param>
     private void LoginUser(User usr)
     {
-      var session = new LastUserSession();
-      session.Username = usr.Username;
-      session.Token = usr.Token;
-      session.IsSubscriber = usr.IsSubscriber;
+      var session = new LastUserSession()
+      {
+        Username = usr.Username,
+        Token = usr.Token,
+        IsSubscriber = usr.IsSubscriber
+      };
 
       if (MainViewModel.Client.Auth.LoadSession(session))
         ActiveUser = usr;
