@@ -8,12 +8,7 @@
     /// <summary>
     /// The new status string.
     /// </summary>
-    public string NewStatus
-    {
-      get { return _newStatus; }
-      private set { _newStatus = value; }
-    }
-    private string _newStatus;
+    public string NewStatus { get; private set; }
 
     /// <summary>
     /// Constructor.

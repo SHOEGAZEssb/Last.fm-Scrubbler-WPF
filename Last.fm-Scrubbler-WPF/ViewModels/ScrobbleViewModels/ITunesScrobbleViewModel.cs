@@ -216,6 +216,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     private object _lockAnchor = new object();
 
+    /// <summary>
+    /// Base URL to Last.fm music objects.
+    /// </summary>
     private const string LASTFMURL = "https://www.last.fm/music/";
 
     #endregion Private Member
@@ -308,7 +311,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
 
     /// <summary>
-    /// Loves / unloves the curren track.
+    /// Loves / unloves the current track.
     /// </summary>
     /// <returns>Task.</returns>
     public async Task SwitchLoveState()

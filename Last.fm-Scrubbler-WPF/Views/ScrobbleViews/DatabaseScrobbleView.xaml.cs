@@ -6,13 +6,13 @@ namespace Last.fm_Scrubbler_WPF.Views
   /// Interaction logic for DatabaseScrobbleView.xaml
   /// </summary>
   public partial class DatabaseScrobbleView : UserControl
-	{
+  {
     /// <summary>
     /// Constructor.
     /// </summary>
 		public DatabaseScrobbleView()
-		{
-			InitializeComponent();
-		}
-	}
+    {
+      InitializeComponent();
+    }
+  }
 }

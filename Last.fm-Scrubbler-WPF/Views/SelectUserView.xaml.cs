@@ -7,6 +7,9 @@ namespace Last.fm_Scrubbler_WPF.Views
   /// </summary>
   public partial class SelectUserView : Window
   {
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public SelectUserView()
     {
       InitializeComponent();

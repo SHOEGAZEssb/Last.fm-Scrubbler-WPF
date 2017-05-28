@@ -10,32 +10,17 @@
     /// <summary>
     /// Username of this user.
     /// </summary>
-    public string Username
-    {
-      get { return _username; }
-      set { _username = value; }
-    }
-    private string _username;
+    public string Username { get; set; }
 
     /// <summary>
     /// Login token of this username.
     /// </summary>
-    public string Token
-    {
-      get { return _token; }
-      set { _token = value; }
-    }
-    private string _token;
+    public string Token { get; set; }
 
     /// <summary>
     /// If this user is a subscriber.
     /// </summary>
-    public bool IsSubscriber
-    {
-      get { return _isSubscriber; }
-      set { _isSubscriber = value; }
-    }
-    private bool _isSubscriber;
+    public bool IsSubscriber { get; set; }
 
     #endregion Properties
 

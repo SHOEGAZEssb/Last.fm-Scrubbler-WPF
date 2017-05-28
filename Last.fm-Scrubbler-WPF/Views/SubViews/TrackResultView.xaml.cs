@@ -10,7 +10,7 @@ namespace Last.fm_Scrubbler_WPF.Views
     /// <summary>
     /// Constructor.
     /// </summary>
-		public TrackResultView()
+    public TrackResultView()
     {
       InitializeComponent();
     }

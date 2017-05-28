@@ -120,7 +120,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     #region Private Member
 
     /// <summary>
-    /// Base url to a Last.fm user profle.
+    /// Base URL to a Last.fm user profile.
     /// </summary>
     private const string LASTFMPROFILEURL = "https://www.last.fm/user/";
 

@@ -10,6 +10,8 @@ namespace Last.fm_Scrubbler_WPF
   /// </summary>
   class WMP : IDisposable
   {
+    #region Private Member
+
     /// <summary>
     /// Reference to the windows media player.
     /// </summary>
@@ -49,6 +51,8 @@ namespace Last.fm_Scrubbler_WPF
     /// Access index of the last played date.
     /// </summary>
     private int _userLastPlayedTimeIndex;
+
+    #endregion Private Member
 
     /// <summary>
     /// Constructor.
@@ -103,7 +107,7 @@ namespace Last.fm_Scrubbler_WPF
           }
           catch (Exception ex)
           {
-            // probably missing neccessary info...
+            // probably missing necessary info...
           }
         }
       }
@@ -184,9 +188,7 @@ namespace Last.fm_Scrubbler_WPF
     public void Dispose()
     {
       if (_mediaPlayer != null)
-      {
         _mediaPlayer.close();
-      }
     }
 
     #endregion IDisposable Members

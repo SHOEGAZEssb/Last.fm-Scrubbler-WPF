@@ -13,12 +13,7 @@ namespace Last.fm_Scrubbler_WPF.Models
     /// <summary>
     /// Time played / scrobbled.
     /// </summary>
-    public DateTime Played
-    {
-      get { return _played; }
-      private set { _played = value; }
-    }
-    private DateTime _played;
+    public DateTime Played { get; private set; }
 
     #endregion Properties
 

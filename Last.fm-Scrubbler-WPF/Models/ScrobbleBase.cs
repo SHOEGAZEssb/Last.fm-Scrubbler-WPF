@@ -44,32 +44,17 @@ namespace Last.fm_Scrubbler_WPF.Models
     /// <summary>
     /// Name of the album.
     /// </summary>
-    public string AlbumName
-    {
-      get { return _albumName; }
-      private set { _albumName = value; }
-    }
-    private string _albumName;
+    public string AlbumName { get; private set; }
 
     /// <summary>
     /// Name of the album artist.
     /// </summary>
-    public string AlbumArtist
-    {
-      get { return _albumArtist; }
-      private set { _albumArtist = value; }
-    }
-    private string _albumArtist;
+    public string AlbumArtist { get; private set; }
 
     /// <summary>
     /// Length of this track.
     /// </summary>
-    public TimeSpan? Duration
-    {
-      get { return _duration; }
-      private set { _duration = value; }
-    }
-    private TimeSpan? _duration;
+    public TimeSpan? Duration { get; private set; }
 
     #endregion Properties
 

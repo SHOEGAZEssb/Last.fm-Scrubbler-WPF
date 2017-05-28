@@ -9,7 +9,7 @@ namespace Last.fm_Scrubbler_WPF
   internal class AppBootstrapper : BootstrapperBase
   {
     /// <summary>
-    /// Ctor.
+    /// Constructor.
     /// </summary>
     public AppBootstrapper()
     {

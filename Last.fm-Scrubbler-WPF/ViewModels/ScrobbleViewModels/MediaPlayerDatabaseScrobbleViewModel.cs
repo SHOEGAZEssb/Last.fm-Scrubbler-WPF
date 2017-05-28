@@ -28,7 +28,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   }
 
   /// <summary>
-  /// ViewModel for the <see cref="Views.MediaPlayerDatabaseScrobbleView"/>.
+  /// ViewModel for the <see cref="MediaPlayerDatabaseScrobbleView"/>.
   /// </summary>
   class MediaPlayerDatabaseScrobbleViewModel : ScrobbleViewModelBase
   {

@@ -176,8 +176,7 @@ namespace Last.fm_Scrubbler_WPF.Views
 
     private static void ColumnHeader_Click(object sender, RoutedEventArgs e)
     {
-      GridViewColumnHeader headerClicked = e.OriginalSource as GridViewColumnHeader;
-      if (headerClicked != null && headerClicked.Column != null)
+      if (e.OriginalSource is GridViewColumnHeader headerClicked && headerClicked.Column != null)
       {
         string propertyName = GetPropertyName(headerClicked.Column);
         if (!string.IsNullOrEmpty(propertyName))
@@ -310,17 +309,21 @@ namespace Last.fm_Scrubbler_WPF.Views
           y2 = tmp;
         }
 
-        PathSegmentCollection pathSegmentCollection = new PathSegmentCollection();
-        pathSegmentCollection.Add(new LineSegment(new Point(x2, y1), true));
-        pathSegmentCollection.Add(new LineSegment(new Point(x3, y2), true));
+        PathSegmentCollection pathSegmentCollection = new PathSegmentCollection
+        {
+          new LineSegment(new Point(x2, y1), true),
+          new LineSegment(new Point(x3, y2), true)
+        };
 
         PathFigure pathFigure = new PathFigure(
             new Point(x1, y1),
             pathSegmentCollection,
             true);
 
-        PathFigureCollection pathFigureCollection = new PathFigureCollection();
-        pathFigureCollection.Add(pathFigure);
+        PathFigureCollection pathFigureCollection = new PathFigureCollection
+        {
+          pathFigure
+        };
 
         PathGeometry pathGeometry = new PathGeometry(pathFigureCollection);
         return pathGeometry;

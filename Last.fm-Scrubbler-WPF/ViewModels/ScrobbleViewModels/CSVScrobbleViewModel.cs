@@ -40,11 +40,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     #region Properties
 
     /// <summary>
-    /// Different formats to try in case TryParse fails.
-    /// </summary>
-    public static string[] Formats = new string[] { "M/dd/yyyy h:mm" };
-
-    /// <summary>
     /// The path to the csv file.
     /// </summary>
     public string CSVFilePath
@@ -190,10 +185,19 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
     #endregion Properties
 
+    #region Private Member
+
+    /// <summary>
+    /// Different formats to try in case TryParse fails.
+    /// </summary>
+    private static string[] _formats = new string[] { "M/dd/yyyy h:mm" };
+
     /// <summary>
     /// Dispatcher used to invoke from another thread.
     /// </summary>
     private Dispatcher _dispatcher;
+
+    #endregion Private Member
 
     /// <summary>
     /// Constructor.
@@ -216,6 +220,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         Filter = "CSV Files|*.csv"
       };
+
       if (ofd.ShowDialog() == DialogResult.OK)
         CSVFilePath = ofd.FileName;
     }
@@ -264,7 +269,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
               {
                 bool parsed = false;
                 // try different formats until succeeded
-                foreach (string format in Formats)
+                foreach (string format in _formats)
                 {
                   parsed = DateTime.TryParseExact(dateString, format, CultureInfo.CurrentCulture, DateTimeStyles.None, out date);
                   if (parsed)
