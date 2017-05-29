@@ -1,7 +1,9 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Scrobblers;
+using Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions;
 using Last.fm_Scrubbler_WPF.Views;
+using Last.fm_Scrubbler_WPF.Views.ExtraFunctions;
 using System;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
@@ -196,6 +198,20 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private CSVDownloaderViewModel _csvDownloaderVM;
 
+    /// <summary>
+    /// ViewModel for the <see cref="CollageCreatorView"/>
+    /// </summary>
+    public CollageCreatorViewModel CollageCreatorVM
+    {
+      get { return _collageCreatorVM; }
+      private set
+      {
+        _collageCreatorVM = value;
+        NotifyOfPropertyChange(() => CollageCreatorVM);
+      }
+    }
+    private CollageCreatorViewModel _collageCreatorVM;
+
     #endregion ExtraViewModels
 
     #region StatusBar Properties
@@ -268,6 +284,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       PasteYourTasteVM.StatusUpdated += StatusUpdated;
       CSVDownloaderVM = new CSVDownloaderViewModel();
       CSVDownloaderVM.StatusUpdated += StatusUpdated;
+      CollageCreatorVM = new CollageCreatorViewModel();
+      CollageCreatorVM.StatusUpdated += StatusUpdated;
 
       CurrentStatus = "Waiting to scrobble...";
     }

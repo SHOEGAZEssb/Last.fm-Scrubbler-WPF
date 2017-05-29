@@ -91,10 +91,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppBootstrapper.cs" />
+    <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Models\Artist.cs" />
     <Compile Include="Models\Release.cs" />
     <Compile Include="Models\ScrobbleBase.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="ViewModels\ExtraFunctions\CollageCreatorViewModel.cs" />
     <Compile Include="ViewModels\ExtraFunctions\CSVDownloaderViewModel.cs" />
     <Compile Include="ViewModels\ExtraFunctions\PasteYourTasteViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ITunesScrobbleViewModel.cs" />
@@ -102,6 +104,9 @@
     <Compile Include="ViewModels\SubViewModels\ConfigureCSVParserViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\ExtraFunctions\CollageCreatorView.xaml.cs">
+      <DependentUpon>CollageCreatorView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ExtraFunctions\CSVDownloaderView.xaml.cs">
       <DependentUpon>CSVDownloaderView.xaml</DependentUpon>
     </Compile>
@@ -177,6 +182,10 @@
     <Compile Include="Views\SubViews\TrackResultView.xaml.cs">
       <DependentUpon>TrackResultView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\ExtraFunctions\CollageCreatorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ExtraFunctions\CSVDownloaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
