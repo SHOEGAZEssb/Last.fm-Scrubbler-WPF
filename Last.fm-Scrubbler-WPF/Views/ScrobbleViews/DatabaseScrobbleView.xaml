@@ -56,15 +56,14 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="Text to search:"/>
-    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-             IsEnabled="{Binding EnableControls}"/>
+    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource EnableControlsStyle}"/>
     <ComboBox Grid.Row="0" Grid.Column="4" SelectedValue="{Binding DatabaseToSearch}" ItemsSource="{Binding Source={StaticResource DatabaseKeyDataProvider}}"
-              IsEnabled="{Binding EnableControls}"/>
+              Style="{StaticResource EnableControlsStyle}"/>
     <ComboBox Grid.Row="0" Grid.Column="6" SelectedValue="{Binding SearchType}" ItemsSource="{Binding Source={StaticResource SearchTypeKeyDataProvider}}"
-              IsEnabled="{Binding EnableControls}"/>
+              Style="{StaticResource EnableControlsStyle}"/>
     <Label Grid.Row="0" Grid.Column="8" Content="Max Results:"/>
-    <xctk:IntegerUpDown Grid.Row="0" Grid.Column="10" Minimum="1" Maximum="1000" Value="{Binding MaxResults}"/>
-    <Button Grid.Row="0" Grid.Column="12" Content="Search" IsEnabled="{Binding EnableControls}">
+    <xctk:IntegerUpDown Grid.Row="0" Grid.Column="10" Minimum="1" Maximum="1000" Value="{Binding MaxResults}" Style="{StaticResource EnableControlsStyle}"/>
+    <Button Grid.Row="0" Grid.Column="12" Content="Search" Style="{StaticResource EnableControlsStyle}">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="Search"/>
@@ -74,7 +73,7 @@
 
     <ContentPresenter Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="14" Content="{Binding CurrentView}"/>
 
-    <Grid Grid.Row="4" Grid.ColumnSpan="14" HorizontalAlignment="Stretch" IsEnabled="{Binding EnableControls}"
+    <Grid Grid.Row="4" Grid.ColumnSpan="14" HorizontalAlignment="Stretch" Style="{StaticResource EnableControlsStyle}"
           Visibility="{Binding ShowScrobbleControls, Converter={StaticResource boolToVis}}">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
@@ -97,6 +96,5 @@
                     VerticalAlignment="Center"/>
 
     </Grid>
-
   </Grid>
 </UserControl>

@@ -7,6 +7,14 @@
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary>
           <local:AppBootstrapper x:Key="bootstrapper" />
+
+          <Style x:Key="EnableControlsStyle" TargetType="FrameworkElement">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding EnableControls}" Value="False">
+                <Setter Property="IsEnabled" Value="False"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
         </ResourceDictionary>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>

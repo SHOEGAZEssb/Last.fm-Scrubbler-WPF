@@ -47,7 +47,7 @@
 
     <Label Grid.Row="0" Grid.Column="0" Content="CSV File:"/>
     <TextBox Grid.Row="0" Grid.Column="2" IsReadOnly="True" Text="{Binding CSVFilePath, Mode=OneWay}"/>
-    <Button Grid.Row="0" Grid.Column="4" Content=" ... " IsEnabled="{Binding EnableControls}">
+    <Button Grid.Row="0" Grid.Column="4" Content=" ... " Style="{StaticResource EnableControlsStyle}">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="LoadCSVFileDialog"/>
@@ -149,16 +149,16 @@
 
       <Label Grid.Column="0" Grid.Row="0" Content="Scrobble Mode:"/>
       <ComboBox Grid.Column="2" Grid.Row="0" SelectedValue="{Binding ScrobbleMode}" ItemsSource="{Binding Source={StaticResource ScrobbleModeKeyDataProvider}}"
-                IsEnabled="{Binding EnableControls}"/>
+                Style="{StaticResource EnableControlsStyle}"/>
 
       <Label Grid.Column="0" Grid.Row="2" Content="Finishing time:" Visibility="{Binding ShowImportModeSettings, Converter={StaticResource boolToVis}}"/>
       <xctk:DateTimePicker Grid.Column="2" Grid.Row="2" Visibility="{Binding ShowImportModeSettings, Converter={StaticResource boolToVis}}"
                            Value="{Binding FinishingTime}" Minimum="{Binding Source={x:Static viewModels:MainViewModel.MinimumDateTime}}"
-                           IsEnabled="{Binding EnableControls}"/>
+                           Style="{StaticResource EnableControlsStyle}"/>
 
       <Label Grid.Column="4" Grid.Row="2" Content="Duration per Song (sec):" Visibility="{Binding ShowImportModeSettings, Converter={StaticResource boolToVis}}"/>
       <xctk:IntegerUpDown Grid.Column="6" Grid.Row="2" Minimum="1" Value="{Binding Duration}"
-                          Visibility="{Binding ShowImportModeSettings, Converter={StaticResource boolToVis}}" IsEnabled="{Binding EnableControls}"/>
+                          Visibility="{Binding ShowImportModeSettings, Converter={StaticResource boolToVis}}" Style="{StaticResource EnableControlsStyle}"/>
     </Grid>
 
   </Grid>

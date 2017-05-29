@@ -24,11 +24,11 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="Username:"/>
-    <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding EnableControls}"/>
+    <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource EnableControlsStyle}"/>
 
     <Label Grid.Row="2" Grid.Column="0" Content="File Path:"/>
-    <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding EnableControls}"/>
-    <Button Grid.Row="2" Grid.Column="4" Content="..." Width="25" IsEnabled="{Binding EnableControls}">
+    <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource EnableControlsStyle}"/>
+    <Button Grid.Row="2" Grid.Column="4" Content="..." Width="25" Style="{StaticResource EnableControlsStyle}">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="SelectFilePath"/>

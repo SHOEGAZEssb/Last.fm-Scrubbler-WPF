@@ -55,8 +55,8 @@
     </Button>
 
     <ComboBox Grid.Row="0" Grid.Column="6" ItemsSource="{Binding Source={StaticResource MPDDataProvider}}"
-              SelectedValue="{Binding MediaPlayerDatabaseType}" IsEnabled="{Binding EnableControls}"/>
-    <Button Grid.Row="0" Grid.Column="8" Content="Parse" IsEnabled="{Binding EnableControls}">
+              SelectedValue="{Binding MediaPlayerDatabaseType}" Style="{StaticResource EnableControlsStyle}"/>
+    <Button Grid.Row="0" Grid.Column="8" Content="Parse" Style="{StaticResource EnableControlsStyle}">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="ParseFile"/>

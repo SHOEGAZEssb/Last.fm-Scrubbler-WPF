@@ -46,13 +46,13 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="Username:"/>
-    <TextBox Grid.Row="0" Grid.Column="2" IsEnabled="{Binding EnableControls}" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
+    <TextBox Grid.Row="0" Grid.Column="2" Style="{StaticResource EnableControlsStyle}" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
 
     <Label Grid.Row="0" Grid.Column="4" Content="Timespan:"/>
-    <ComboBox Grid.Row="0" Grid.Column="6" IsEnabled="{Binding EnableControls}" ItemsSource="{Binding Source={StaticResource TimeSpanDataProvider}}" SelectedItem="{Binding TimeSpan}"/>
+    <ComboBox Grid.Row="0" Grid.Column="6" Style="{StaticResource EnableControlsStyle}" ItemsSource="{Binding Source={StaticResource TimeSpanDataProvider}}" SelectedItem="{Binding TimeSpan}"/>
 
     <Label Grid.Row="0" Grid.Column="8" Content="Amount:"/>
-    <xctk:IntegerUpDown Grid.Row="0" Grid.Column="10" Minimum="1" Maximum="1000" IsEnabled="{Binding EnableControls}" Value="{Binding Amount}"/>
+    <xctk:IntegerUpDown Grid.Row="0" Grid.Column="10" Minimum="1" Maximum="1000" Style="{StaticResource EnableControlsStyle}" Value="{Binding Amount}"/>
 
     <CheckBox Grid.Row="0" Grid.Column="12" Content="Add Profile Link" VerticalAlignment="Center" IsChecked="{Binding AddProfileLink}"/>
 
