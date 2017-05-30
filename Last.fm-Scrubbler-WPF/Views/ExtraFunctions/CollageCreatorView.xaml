@@ -10,7 +10,7 @@
              xmlns:extraFuncVMs="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions"
              xmlns:conv="clr-namespace:Last.fm_Scrubbler_WPF.Converters"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="30" d:DesignWidth="500">
 
   <UserControl.Resources>
     <ObjectDataProvider MethodName="GetValues"
@@ -52,13 +52,14 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="Username:"/>
-    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Username}"/>
+    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Username}" Style="{StaticResource EnableControlsStyle}"/>
 
     <Label Grid.Row="0" Grid.Column="4" Content="TimeSpan:"/>
-    <ComboBox Grid.Row="0" Grid.Column="6" ItemsSource="{Binding Source={StaticResource TimeSpanDataProvider}}" SelectedValue="{Binding TimeSpan}"/>
+    <ComboBox Grid.Row="0" Grid.Column="6" ItemsSource="{Binding Source={StaticResource TimeSpanDataProvider}}" SelectedValue="{Binding TimeSpan}" Style="{StaticResource EnableControlsStyle}"/>
 
     <Label Grid.Row="0" Grid.Column="8" Content="Collage Size:"/>
-    <ComboBox Grid.Row="0" Grid.Column="10" ItemsSource="{Binding Source={StaticResource CollageSizeDataProvider}}" SelectedValue="{Binding SelectedCollageSize}">
+    <ComboBox Grid.Row="0" Grid.Column="10" ItemsSource="{Binding Source={StaticResource CollageSizeDataProvider}}" SelectedValue="{Binding SelectedCollageSize}"
+              Style="{StaticResource EnableControlsStyle}">
       <ComboBox.ItemTemplate>
         <DataTemplate>
           <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConv}}"/>
@@ -66,7 +67,7 @@
       </ComboBox.ItemTemplate>
     </ComboBox>
 
-    <Button Grid.Row="0" Grid.Column="12" Content="Create">
+    <Button Grid.Row="0" Grid.Column="12" Content="Create" Style="{StaticResource EnableControlsStyle}">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="CreateCollage"/>

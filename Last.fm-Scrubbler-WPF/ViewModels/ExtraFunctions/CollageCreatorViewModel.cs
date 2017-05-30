@@ -1,14 +1,19 @@
 ﻿using IF.Lastfm.Core.Api.Enums;
+using IF.Lastfm.Core.Api.Helpers;
+using IF.Lastfm.Core.Objects;
 using System;
+using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml.Linq;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
 {
@@ -34,12 +39,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
     /// </summary>
     [Description("5x5")]
     FiveByFive = 5,
-
-    /// <summary>
-    /// Create a 10x10 collage.
-    /// </summary>
-    [Description("10x10")]
-    TenByTen = 10
   }
 
   class CollageCreatorViewModel : ViewModelBase
@@ -103,6 +102,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
 
     #endregion Properties
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public CollageCreatorViewModel()
     {
       Username = "";
@@ -110,6 +112,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
       SelectedCollageSize = CollageSize.ThreeByThree;
     }
 
+    /// <summary>
+    /// Creates and uploads a collage of top artists.
+    /// </summary>
     public async void CreateCollage()
     {
       EnableControls = false;
@@ -124,17 +129,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
         {
           OnStatusUpdated("Getting artist images...");
 
-          // extract images
-          Uri[] imageUris = new Uri[numCollageItems];
-          for (int i = 0; i < numCollageItems; i++)
-          {
-            imageUris[i] = response.Content[i].MainImage.ExtraLarge;
-          }
-
-
-          OnStatusUpdated("Stitching images together...");
-          await StitchImagesTogether(imageUris);
-
+          await StitchImagesTogether(response);
+          OnStatusUpdated("Successfully created collage");
         }
         else
           OnStatusUpdated("Error while fetching top artists");
@@ -149,15 +145,21 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
       }
     }
 
-    private async Task StitchImagesTogether(Uri[] uris)
+    /// <summary>
+    /// Combines the images to one big image.
+    /// </summary>
+    /// <param name="response">Fetched top artists.</param>
+    /// <returns></returns>
+    private async Task StitchImagesTogether(PageResponse<LastArtist> response)
     {
-      BitmapFrame[] frames = new BitmapFrame[uris.Length];
-      for(int i = 0; i < frames.Length; i++)
+      BitmapFrame[] frames = new BitmapFrame[response.Content.Count];
+      for (int i = 0; i < frames.Length; i++)
       {
-        frames[i] = BitmapDecoder.Create(uris[i], BitmapCreateOptions.None, BitmapCacheOption.OnLoad).Frames.First();
+        frames[i] = BitmapDecoder.Create(response.Content[i].MainImage.ExtraLarge, BitmapCreateOptions.None, BitmapCacheOption.OnDemand).Frames.First();
       }
 
-      while(frames.Any(f => f.IsDownloading))
+      OnStatusUpdated("Downloading images...");
+      while (frames.Any(f => f.IsDownloading))
       {
         await Task.Delay(100);
       }
@@ -170,11 +172,25 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
       using (DrawingContext dc = dv.RenderOpen())
       {
         int cnt = 0;
-        for(int y = 0; y < col; y++)
+        for (int y = 0; y < col; y++)
         {
-          for(int x = 0; x < col; x++)
+          for (int x = 0; x < col; x++)
           {
-            dc.DrawImage(frames[cnt++], new Rect(x * imageWidth, y * imageHeight, imageWidth, imageHeight));
+            dc.DrawImage(frames[cnt], new Rect(x * imageWidth, y * imageHeight, imageWidth, imageHeight));
+
+            string text = response.Content[cnt].Name + Environment.NewLine + "Plays: " + response.Content[cnt].PlayCount;
+
+            // create artist text
+            FormattedText extraText = new FormattedText(text, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface("Verdana"), 14, Brushes.Black)
+            {
+              MaxTextWidth = imageWidth,
+              MaxTextHeight = imageHeight
+            };
+
+            dc.DrawText(extraText, new Point(x * imageWidth + 1, y * imageHeight + 1));
+            extraText.SetForegroundBrush(Brushes.White);
+            dc.DrawText(extraText, new Point(x * imageWidth, y * imageHeight));
+            cnt++;
           }
         }
       }
@@ -187,9 +203,37 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
       PngBitmapEncoder encoder = new PngBitmapEncoder();
       encoder.Frames.Add(BitmapFrame.Create(bmp));
 
-      // Saves the image into a file using the encoder
-      using (Stream stream = File.Create("tmpImg.bmp"))
-        encoder.Save(stream);
+      await UploadImage(encoder);
+    }
+
+    private async Task UploadImage(PngBitmapEncoder encoder)
+    {
+      OnStatusUpdated("Uploading image...");
+      using (var w = new WebClient())
+      {
+
+        w.Proxy = null;
+        w.Headers.Add("Authorization", "Client-ID " + "80dfa34b8899ce5");
+
+        using (MemoryStream ms = new MemoryStream())
+        {
+          encoder.Save(ms);
+          var values = new NameValueCollection
+          {
+            { "image", Convert.ToBase64String(ms.ToArray()) },
+            { "type", "file" }
+          };
+
+          byte[] response = null;
+          await Task.Run(() => response = w.UploadValues("https://api.imgur.com/3/upload.xml", values));
+
+          var doc = XDocument.Load(new MemoryStream(response));
+
+          string link = doc.Descendants().Where(i => i.Name == "link").FirstOrDefault().Value;
+
+          Process.Start(link);
+        }
+      }
     }
   }
 }
