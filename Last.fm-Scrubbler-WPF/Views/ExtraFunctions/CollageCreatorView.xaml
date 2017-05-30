@@ -27,6 +27,13 @@
         <x:Type TypeName="extraFuncVMs:CollageSize"/>
       </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
+    <ObjectDataProvider MethodName="GetValues"
+                    ObjectType="{x:Type sys:Enum}"
+                    x:Key="CollageTypeDataProvider">
+      <ObjectDataProvider.MethodParameters>
+        <x:Type TypeName="extraFuncVMs:CollageType"/>
+      </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
 
     <conv:EnumDescriptionConverter x:Key="EnumDescriptionConv"/>
   </UserControl.Resources>
@@ -42,11 +49,15 @@
       <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="5"/>
-      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="5"/>
-      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
@@ -57,8 +68,12 @@
     <Label Grid.Row="0" Grid.Column="4" Content="TimeSpan:"/>
     <ComboBox Grid.Row="0" Grid.Column="6" ItemsSource="{Binding Source={StaticResource TimeSpanDataProvider}}" SelectedValue="{Binding TimeSpan}" Style="{StaticResource EnableControlsStyle}"/>
 
-    <Label Grid.Row="0" Grid.Column="8" Content="Collage Size:"/>
-    <ComboBox Grid.Row="0" Grid.Column="10" ItemsSource="{Binding Source={StaticResource CollageSizeDataProvider}}" SelectedValue="{Binding SelectedCollageSize}"
+    <Label Grid.Row="0" Grid.Column="8" Content="Type:"/>
+    <ComboBox Grid.Row="0" Grid.Column="10" ItemsSource="{Binding Source={StaticResource CollageTypeDataProvider}}" SelectedValue="{Binding SelectedCollageType}"
+              Style="{StaticResource EnableControlsStyle}"/>
+
+    <Label Grid.Row="0" Grid.Column="12" Content="Collage Size:"/>
+    <ComboBox Grid.Row="0" Grid.Column="14" ItemsSource="{Binding Source={StaticResource CollageSizeDataProvider}}" SelectedValue="{Binding SelectedCollageSize}"
               Style="{StaticResource EnableControlsStyle}">
       <ComboBox.ItemTemplate>
         <DataTemplate>
@@ -67,7 +82,7 @@
       </ComboBox.ItemTemplate>
     </ComboBox>
 
-    <Button Grid.Row="0" Grid.Column="12" Content="Create" Style="{StaticResource EnableControlsStyle}">
+    <Button Grid.Row="0" Grid.Column="16" Content="Create" Style="{StaticResource EnableControlsStyle}">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="CreateCollage"/>

@@ -1,7 +1,9 @@
 ﻿using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Api.Helpers;
 using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Views.ExtraFunctions;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -41,6 +43,25 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
     FiveByFive = 5,
   }
 
+  /// <summary>
+  /// Which type of top data to get.
+  /// </summary>
+  public enum CollageType
+  {
+    /// <summary>
+    /// Get the top artists.
+    /// </summary>
+    Artists,
+
+    /// <summary>
+    /// Get the top albums.
+    /// </summary>
+    Albums
+  }
+
+  /// <summary>
+  /// ViewModel for the <see cref="CollageCreatorView"/>
+  /// </summary>
   class CollageCreatorViewModel : ViewModelBase
   {
     #region Properties
@@ -88,6 +109,20 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
     private CollageSize _selectedCollageSize;
 
     /// <summary>
+    /// Selected type of the collage to be created.
+    /// </summary>
+    public CollageType SelectedCollageType
+    {
+      get { return _selectedCollageType; }
+      set
+      {
+        _selectedCollageType = value;
+        NotifyOfPropertyChange(() => SelectedCollageType);
+      }
+    }
+    private CollageType _selectedCollageType;
+
+    /// <summary>
     /// Gets if certain controls on the ui are enabled.
     /// </summary>
     public override bool EnableControls
@@ -113,7 +148,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
     }
 
     /// <summary>
-    /// Creates and uploads a collage of top artists.
+    /// Creates and uploads a collage of the top <see cref="SelectedCollageType"/>.
     /// </summary>
     public async void CreateCollage()
     {
@@ -121,19 +156,40 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
 
       try
       {
-        OnStatusUpdated("Fetching top artists...");
-
         int numCollageItems = (int)SelectedCollageSize * (int)SelectedCollageSize;
-        var response = await MainViewModel.Client.User.GetTopArtists(Username, TimeSpan, 1, numCollageItems);
-        if (response.Success)
-        {
-          OnStatusUpdated("Getting artist images...");
 
-          await StitchImagesTogether(response);
-          OnStatusUpdated("Successfully created collage");
+        if (SelectedCollageType == CollageType.Artists)
+        {
+          OnStatusUpdated("Fetching top artists...");
+          var response = await MainViewModel.Client.User.GetTopArtists(Username, TimeSpan, 1, numCollageItems);
+          if (response.Success)
+          {
+            OnStatusUpdated("Getting artist images...");
+
+            await StitchImagesTogether(response.Content.Select(a => new Tuple<Uri, string>(a.MainImage.ExtraLarge,
+              string.Format("{0}{1}Plays: {2}", a.Name, Environment.NewLine, a.PlayCount))).ToList());
+
+            OnStatusUpdated("Successfully created collage");
+          }
+          else
+            OnStatusUpdated("Error while fetching top artists");
         }
-        else
-          OnStatusUpdated("Error while fetching top artists");
+        else if(SelectedCollageType == CollageType.Albums)
+        {
+          OnStatusUpdated("Fetching top albums...");
+          var response = await MainViewModel.Client.User.GetTopAlbums(Username, TimeSpan, 1, numCollageItems);
+          if(response.Success)
+          {
+            OnStatusUpdated("Getting album images...");
+
+            await StitchImagesTogether(response.Content.Select(a => new Tuple<Uri, string>(a.Images.ExtraLarge,
+              string.Format("{0}{1}{2}{3}Plays: {4}", a.ArtistName, Environment.NewLine, a.Name, Environment.NewLine, a.PlayCount))).ToList());
+
+            OnStatusUpdated("Successfully created collage");
+          }
+          else
+            OnStatusUpdated("Error while fetching top albums");
+        }
       }
       catch (Exception ex)
       {
@@ -148,14 +204,15 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
     /// <summary>
     /// Combines the images to one big image.
     /// </summary>
-    /// <param name="response">Fetched top artists.</param>
-    /// <returns></returns>
-    private async Task StitchImagesTogether(PageResponse<LastArtist> response)
+    /// <param name="infos">Tuple containing the image
+    /// and text to stitch together.</param>
+    /// <returns>Task.</returns>
+    private async Task StitchImagesTogether(List<Tuple<Uri, string>> infos)
     {
-      BitmapFrame[] frames = new BitmapFrame[response.Content.Count];
+      BitmapFrame[] frames = new BitmapFrame[infos.Count];
       for (int i = 0; i < frames.Length; i++)
       {
-        frames[i] = BitmapDecoder.Create(response.Content[i].MainImage.ExtraLarge, BitmapCreateOptions.None, BitmapCacheOption.OnDemand).Frames.First();
+        frames[i] = BitmapDecoder.Create(infos[i].Item1, BitmapCreateOptions.None, BitmapCacheOption.OnDemand).Frames.First();
       }
 
       OnStatusUpdated("Downloading images...");
@@ -178,10 +235,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
           {
             dc.DrawImage(frames[cnt], new Rect(x * imageWidth, y * imageHeight, imageWidth, imageHeight));
 
-            string text = response.Content[cnt].Name + Environment.NewLine + "Plays: " + response.Content[cnt].PlayCount;
-
             // create artist text
-            FormattedText extraText = new FormattedText(text, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface("Verdana"), 14, Brushes.Black)
+            FormattedText extraText = new FormattedText(infos[cnt].Item2, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface("Verdana"), 14, Brushes.Black)
             {
               MaxTextWidth = imageWidth,
               MaxTextHeight = imageHeight
@@ -206,6 +261,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
       await UploadImage(encoder);
     }
 
+    /// <summary>
+    /// Uploads the image to imgur.
+    /// </summary>
+    /// <param name="encoder">Encoder containing the stitched image.</param>
+    /// <returns>Task.</returns>
     private async Task UploadImage(PngBitmapEncoder encoder)
     {
       OnStatusUpdated("Uploading image...");
@@ -221,7 +281,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
           var values = new NameValueCollection
           {
             { "image", Convert.ToBase64String(ms.ToArray()) },
-            { "type", "file" }
           };
 
           byte[] response = null;
