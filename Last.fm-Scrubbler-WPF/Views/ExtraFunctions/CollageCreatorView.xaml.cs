@@ -7,6 +7,9 @@ namespace Last.fm_Scrubbler_WPF.Views.ExtraFunctions
   /// </summary>
   public partial class CollageCreatorView : UserControl
   {
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public CollageCreatorView()
     {
       InitializeComponent();
