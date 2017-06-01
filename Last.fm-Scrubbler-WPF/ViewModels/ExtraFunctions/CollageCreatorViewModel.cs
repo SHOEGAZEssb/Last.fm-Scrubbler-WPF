@@ -212,9 +212,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
       BitmapFrame[] frames = new BitmapFrame[infos.Count];
       for (int i = 0; i < frames.Length; i++)
       {
-        frames[i] = BitmapDecoder.Create(infos[i].Item1 != null ? infos[i].Item1 :
-          (SelectedCollageType == CollageType.Albums ? new Uri("pack://application:,,,/Resources/noalbumimage.png") : new Uri("pack://application:,,,/Resources/noartistimage.png"))
-          , BitmapCreateOptions.None, BitmapCacheOption.OnDemand).Frames.First();
+        frames[i] = BitmapDecoder.Create(infos[i].Item1 ?? (SelectedCollageType == CollageType.Albums ? new Uri("pack://application:,,,/Resources/noalbumimage.png") : new Uri("pack://application:,,,/Resources/noartistimage.png")), BitmapCreateOptions.None, BitmapCacheOption.OnDemand).Frames.First();
       }
 
       OnStatusUpdated("Downloading images...");
