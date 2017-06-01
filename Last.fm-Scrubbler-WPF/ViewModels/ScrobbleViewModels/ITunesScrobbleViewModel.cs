@@ -297,6 +297,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       NotifyOfPropertyChange(() => ProgressMaximum);
       _currentTrackID = (ITunesApp?.CurrentTrack?.trackID).HasValue ? ITunesApp.CurrentTrack.trackID : 0;
       UpdateLovedInfo();
+      UpdateNowPlaying();
     }
 
     /// <summary>
@@ -305,9 +306,22 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <returns>Task.</returns>
     private async Task UpdateLovedInfo()
     {
-      var info = await MainViewModel.Client.Track.GetInfoAsync(CurrentTrackName, CurrentArtistName, MainViewModel.Client.Auth.UserSession.Username);
-      if (info.Success)
-        CurrentTrackLoved = info.Content.IsLoved.Value;
+      if ((ITunesApp?.CurrentTrack?.trackID).HasValue)
+      {
+        var info = await MainViewModel.Client.Track.GetInfoAsync(CurrentTrackName, CurrentArtistName, MainViewModel.Client.Auth.UserSession.Username);
+        if (info.Success)
+          CurrentTrackLoved = info.Content.IsLoved.Value;
+      }
+    }
+
+    /// <summary>
+    /// Updates the "now playing" info.
+    /// </summary>
+    /// <returns></returns>
+    private async Task UpdateNowPlaying()
+    {
+      if ((ITunesApp?.CurrentTrack?.trackID).HasValue)
+        await MainViewModel.Client.Track.UpdateNowPlayingAsync(new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now));
     }
 
     /// <summary>
@@ -327,7 +341,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
         await UpdateLovedInfo();
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         OnStatusUpdated("Fatal error while loving/unloving track: " + ex.Message);
         EnableControls = true;

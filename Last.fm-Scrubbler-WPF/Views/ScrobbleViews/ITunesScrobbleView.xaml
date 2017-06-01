@@ -175,6 +175,12 @@
                 <DataTrigger Binding="{Binding ITunesApp}" Value="{x:Null}">
                   <Setter Property="IsEnabled" Value="False"/>
                 </DataTrigger>
+                <DataTrigger Binding="{Binding CurrentTrackName}" Value="{x:Null}">
+                  <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding CurrentArtistName}" Value="{x:Null}">
+                  <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
               </Style.Triggers>
             </Style>
           </Button.Style>
