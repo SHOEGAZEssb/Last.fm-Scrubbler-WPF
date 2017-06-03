@@ -345,10 +345,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         OnStatusUpdated("Fatal error while loving/unloving track: " + ex.Message);
       }
-			finally
-			{
-				EnableControls = true;
-			}
+      finally
+      {
+        EnableControls = true;
+      }
     }
 
     /// <summary>
