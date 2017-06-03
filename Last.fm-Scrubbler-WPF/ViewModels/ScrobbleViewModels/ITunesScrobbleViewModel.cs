@@ -344,8 +344,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       catch (Exception ex)
       {
         OnStatusUpdated("Fatal error while loving/unloving track: " + ex.Message);
-        EnableControls = true;
       }
+			finally
+			{
+				EnableControls = true;
+			}
     }
 
     /// <summary>
@@ -484,7 +487,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         finally
         {
           EnableControls = true;
-          // re-enable count timer
           _countTimer.Start();
         }
       }
