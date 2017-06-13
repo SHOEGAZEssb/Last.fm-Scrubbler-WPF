@@ -151,13 +151,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public void SelectFile()
     {
-      OpenFileDialog ofd = new OpenFileDialog();
+      using (OpenFileDialog ofd = new OpenFileDialog())
+      {
+        if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.iTunes_Or_Winamp)
+          ofd.Filter = "iTunes/Winamp Database XML (*.xml) | *.xml";
 
-      if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.iTunes_Or_Winamp)
-        ofd.Filter = "iTunes/Winamp Database XML (*.xml) | *.xml";
-
-      if (ofd.ShowDialog() == DialogResult.OK)
-        DBFilePath = ofd.FileName;
+        if (ofd.ShowDialog() == DialogResult.OK)
+          DBFilePath = ofd.FileName;
+      }
     }
 
     /// <summary>

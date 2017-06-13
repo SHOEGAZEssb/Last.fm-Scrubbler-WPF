@@ -216,13 +216,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public void LoadCSVFileDialog()
     {
-      OpenFileDialog ofd = new OpenFileDialog()
+      using (OpenFileDialog ofd = new OpenFileDialog() { Filter = "CSV Files|*.csv" })
       {
-        Filter = "CSV Files|*.csv"
-      };
-
-      if (ofd.ShowDialog() == DialogResult.OK)
-        CSVFilePath = ofd.FileName;
+        if (ofd.ShowDialog() == DialogResult.OK)
+          CSVFilePath = ofd.FileName;
+      }
     }
 
     /// <summary>
