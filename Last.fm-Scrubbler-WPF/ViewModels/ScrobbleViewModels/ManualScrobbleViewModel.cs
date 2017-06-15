@@ -170,19 +170,28 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       EnableControls = false;
 
-      OnStatusUpdated("Trying to scrobble...");
+      try
+      {
+        OnStatusUpdated("Trying to scrobble...");
 
-      if (CurrentDateTime)
-        TimePlayed = DateTime.Now;
+        if (CurrentDateTime)
+          TimePlayed = DateTime.Now;
 
-      Scrobble s = new Scrobble(Artist, Album, Track, TimePlayed) { AlbumArtist = AlbumArtist, Duration = Duration };
-      var response = await MainViewModel.Scrobbler.ScrobbleAsync(s);
-      if (response.Success)
-        OnStatusUpdated("Successfully scrobbled!");
-      else
-        OnStatusUpdated("Error while scrobbling!");
-
-      EnableControls = true;
+        Scrobble s = new Scrobble(Artist, Album, Track, TimePlayed) { AlbumArtist = AlbumArtist, Duration = Duration };
+        var response = await MainViewModel.Scrobbler.ScrobbleAsync(s);
+        if (response.Success)
+          OnStatusUpdated("Successfully scrobbled!");
+        else
+          OnStatusUpdated("Error while scrobbling!");
+      }
+      catch (Exception ex)
+      {
+        OnStatusUpdated("Fatal error while trying to scrobble: " + ex.Message);
+      }
+      finally
+      {
+        EnableControls = true;
+      }
     }
 
     /// <summary>
@@ -191,7 +200,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public override void Preview()
     {
       ScrobblePreviewView spv = new ScrobblePreviewView(new ScrobblePreviewViewModel(
-        new Scrobble[] { new Scrobble(Artist, Album, Track, TimePlayed) { AlbumArtist = AlbumArtist, Duration = Duration} }));
+        new Scrobble[] { new Scrobble(Artist, Album, Track, TimePlayed) { AlbumArtist = AlbumArtist, Duration = Duration } }));
       spv.ShowDialog();
     }
   }

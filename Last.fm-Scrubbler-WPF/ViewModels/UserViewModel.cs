@@ -175,7 +175,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private void DeserializeUsers()
     {
       XmlSerializer serializer = new XmlSerializer(typeof(User), typeof(User).GetNestedTypes());
-      var files = Directory.GetFiles(USERSFOLDER).Where(i => i.EndsWith("xml"));
+      string[] files = null;
+
+      try
+      {
+        files = Directory.GetFiles(USERSFOLDER).Where(i => i.EndsWith("xml")).ToArray();
+      }
+      catch(Exception ex)
+      {
+        Debug.WriteLine("Fatal error while deserializing users: " + ex.Message);
+        return;
+      }
 
       foreach (var file in files)
       {
@@ -224,7 +234,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public void LoadLastUser()
     {
-      if (Settings.Default.Username != "")
+      if (Settings.Default.Username != string.Empty)
       {
         User usr = AvailableUsers.Where(i => i.Username == Settings.Default.Username).FirstOrDefault();
         if (usr != null)
