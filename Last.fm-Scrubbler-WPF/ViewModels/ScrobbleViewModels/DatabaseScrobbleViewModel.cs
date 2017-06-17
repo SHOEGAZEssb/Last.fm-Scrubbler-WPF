@@ -111,7 +111,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         _currentView = value;
         NotifyOfPropertyChange(() => CurrentView);
-        NotifyOfPropertyChange(() => ShowScrobbleControls);
       }
     }
     private UserControl _currentView;
@@ -252,14 +251,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public bool CanSelectNone
     {
       get { return FetchedTracks.Any(i => i.ToScrobble) && EnableControls; }
-    }
-
-    /// <summary>
-    /// Gets if the scrobble controls should be shown on the <see cref="DatabaseScrobbleView"/>
-    /// </summary>
-    public bool ShowScrobbleControls
-    {
-      get { return CurrentView == _trackResultView; }
     }
 
     #endregion Properties

@@ -9,6 +9,7 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:viewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels"
+             xmlns:converters="clr-namespace:Last.fm_Scrubbler_WPF.Converters"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
   <UserControl.Resources>
@@ -26,7 +27,7 @@
         <x:Type TypeName="viewModels:SearchType"/>
       </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <BooleanToVisibilityConverter x:Key="boolToVis"/>
+    <converters:DataTypeConverter x:Key="DataTypeConv"/>
   </UserControl.Resources>
 
   <Grid>
@@ -73,8 +74,17 @@
 
     <ContentPresenter Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="14" Content="{Binding CurrentView}"/>
 
-    <Grid Grid.Row="4" Grid.ColumnSpan="14" HorizontalAlignment="Stretch" Style="{StaticResource EnableControlsStyle}"
-          Visibility="{Binding ShowScrobbleControls, Converter={StaticResource boolToVis}}">
+    <Grid Grid.Row="4" Grid.ColumnSpan="14" HorizontalAlignment="Stretch">
+      <Grid.Style>
+        <Style TargetType="Grid" BasedOn="{StaticResource EnableControlsStyle}">
+          <Setter Property="Visibility" Value="Collapsed"/>
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CurrentView, Converter={StaticResource DataTypeConv}}" Value="{x:Type local:TrackResultView}">
+              <Setter Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Grid.Style>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="5"/>
