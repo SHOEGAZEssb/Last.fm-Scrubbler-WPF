@@ -26,10 +26,10 @@
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
 
-      <Button Grid.Row="0" Content="Back To Releases">
+      <Button Grid.Row="0" Content="Back">
         <i:Interaction.Triggers>
           <i:EventTrigger EventName="Click">
-            <cal:ActionMessage MethodName="BackToReleases"/>
+            <cal:ActionMessage MethodName="BackFromTrackResult"/>
           </i:EventTrigger>
         </i:Interaction.Triggers>
       </Button>

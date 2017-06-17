@@ -626,7 +626,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Switches the <see cref="CurrentView"/> to the <see cref="_releaseResultView"/>.
     /// </summary>
-    public void BackToReleases()
+    public void BackFromTrackResult()
     {
       CurrentView = _releaseResultView;
     }

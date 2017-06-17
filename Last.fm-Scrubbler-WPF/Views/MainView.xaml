@@ -6,6 +6,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:views="clr-namespace:Last.fm_Scrubbler_WPF.Views"
+        xmlns:scrobbleViews="clr-namespace:Last.fm_Scrubbler_WPF.Views.ScrobbleViews"
         xmlns:extraViews="clr-namespace:Last.fm_Scrubbler_WPF.Views.ExtraFunctions"
         mc:Ignorable="d"
         Title="Last.fm Scrubbler" Height="400" Width="650" Icon="..\scrubbler_64.ico">
@@ -44,6 +45,9 @@
           </TabItem>
           <TabItem Header="iTunes Scrobble">
             <views:ITunesScrobbleView DataContext="{Binding ITunesScrobbleVM}"/>
+          </TabItem>
+          <TabItem Header="SetlistFM Scrobble">
+            <scrobbleViews:SetlistFMScrobbleView DataContext="{Binding SetlistFMScrobbleVM}"/>
           </TabItem>
         </TabControl>
       </TabItem>

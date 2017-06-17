@@ -2,6 +2,7 @@
 using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Scrobblers;
 using Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions;
+using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using Last.fm_Scrubbler_WPF.Views;
 using Last.fm_Scrubbler_WPF.Views.ExtraFunctions;
 using System;
@@ -166,6 +167,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private ITunesScrobbleViewModel _iTunesScrobbleVM;
 
+    public SetlistFMScrobbleViewModel SetlistFMScrobbleVM
+    {
+      get { return _setlistFMScrobbleVM; }
+      private set
+      {
+        _setlistFMScrobbleVM = value;
+        NotifyOfPropertyChange(() => SetlistFMScrobbleVM);
+      }
+    }
+    private SetlistFMScrobbleViewModel _setlistFMScrobbleVM;
+
     #endregion ScrobbleViewModels
 
     #region ExtraViewModels
@@ -279,6 +291,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       MediaPlayerDatabaseScrobbleViewModel.StatusUpdated += StatusUpdated;
       ITunesScrobbleVM = new ITunesScrobbleViewModel();
       ITunesScrobbleVM.StatusUpdated += StatusUpdated;
+      SetlistFMScrobbleVM = new SetlistFMScrobbleViewModel();
+      SetlistFMScrobbleVM.StatusUpdated += StatusUpdated;
 
       PasteYourTasteVM = new PasteYourTasteViewModel();
       PasteYourTasteVM.StatusUpdated += StatusUpdated;
