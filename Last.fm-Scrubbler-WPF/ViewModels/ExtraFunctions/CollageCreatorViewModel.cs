@@ -1,6 +1,4 @@
 ﻿using IF.Lastfm.Core.Api.Enums;
-using IF.Lastfm.Core.Api.Helpers;
-using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Views.ExtraFunctions;
 using System;
 using System.Collections.Generic;

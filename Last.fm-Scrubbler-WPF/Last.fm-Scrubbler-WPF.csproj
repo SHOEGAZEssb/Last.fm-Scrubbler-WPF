@@ -56,6 +56,14 @@
       <HintPath>..\packages\taglib.2.1.0.0\lib\policy.2.0.taglib-sharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SetlistFmApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\SetlistFmApi.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -91,6 +99,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppBootstrapper.cs" />
+    <Compile Include="Converters\DataTypeConverter.cs" />
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Models\Artist.cs" />
     <Compile Include="Models\Release.cs" />
@@ -101,7 +110,9 @@
     <Compile Include="ViewModels\ExtraFunctions\PasteYourTasteViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ITunesScrobbleViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobblePreviewViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\SetlistFMScrobbleViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\ConfigureCSVParserViewModel.cs" />
+    <Compile Include="ViewModels\SubViewModels\FetchedSetlistViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\ExtraFunctions\CollageCreatorView.xaml.cs">
@@ -136,6 +147,9 @@
     </Compile>
     <Compile Include="Views\ScrobbleViews\ConfigureCSVParserView.xaml.cs">
       <DependentUpon>ConfigureCSVParserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScrobbleViews\SetlistFMScrobbleView.xaml.cs">
+      <DependentUpon>SetlistFMScrobbleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SubViews\ArtistResultView.xaml.cs">
       <DependentUpon>ArtistResultView.xaml</DependentUpon>
@@ -179,6 +193,9 @@
     <Compile Include="Views\SelectUserView.xaml.cs">
       <DependentUpon>SelectUserView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SubViews\SetlistResultView.xaml.cs">
+      <DependentUpon>SetlistResultView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SubViews\TrackResultView.xaml.cs">
       <DependentUpon>TrackResultView.xaml</DependentUpon>
     </Compile>
@@ -195,6 +212,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ScrobbleViews\ConfigureCSVParserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScrobbleViews\SetlistFMScrobbleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -263,6 +284,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SelectUserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SubViews\SetlistResultView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

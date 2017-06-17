@@ -1,0 +1,103 @@
+﻿<UserControl x:Class="Last.fm_Scrubbler_WPF.Views.ScrobbleViews.SetlistFMScrobbleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views.ScrobbleViews"
+             xmlns:views="clr-namespace:Last.fm_Scrubbler_WPF.Views"
+             xmlns:viewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels"
+             xmlns:scrobbleViewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels"
+             xmlns:converters="clr-namespace:Last.fm_Scrubbler_WPF.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+  <UserControl.Resources>
+    <ObjectDataProvider MethodName="GetValues"
+                    ObjectType="{x:Type sys:Enum}"
+                    x:Key="SetlistSearchTypeKeyDataProvider">
+      <ObjectDataProvider.MethodParameters>
+        <x:Type TypeName="scrobbleViewModels:SetlistSearchType"/>
+      </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+    <converters:DataTypeConverter x:Key="DataTypeConv"/>
+  </UserControl.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
+
+    <Label Grid.Row="0" Grid.Column="0" Content="Search Text:"/>
+    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding SearchText}" Style="{StaticResource EnableControlsStyle}"/>
+
+    <Label Grid.Row="0" Grid.Column="4" Content="Search Type:"/>
+    <ComboBox Grid.Row="0" Grid.Column="6" SelectedItem="{Binding SelectedSearchType}" ItemsSource="{Binding Source={StaticResource SetlistSearchTypeKeyDataProvider}}"
+              Style="{StaticResource EnableControlsStyle}"/>
+
+    <Button Grid.Row="0" Grid.Column="8" Content="Search" Style="{StaticResource EnableControlsStyle}">
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Click">
+          <cal:ActionMessage MethodName="Search"/>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
+    </Button>
+
+    <ContentPresenter Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9" Content="{Binding CurrentView}"/>
+
+    <Grid Grid.Row="4" Grid.ColumnSpan="14" HorizontalAlignment="Stretch">
+      <Grid.Style>
+        <Style TargetType="Grid" BasedOn="{StaticResource EnableControlsStyle}">
+          <Setter Property="Visibility" Value="Collapsed"/>
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CurrentView, Converter={StaticResource DataTypeConv}}" Value="{x:Type views:TrackResultView}">
+              <Setter Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Grid.Style>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="5"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="5"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+
+      <Label Grid.Row="0" Grid.Column="0" Content="Album String:"/>
+      <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding AlbumString}" IsEnabled="{Binding IsChecked, ElementName=CustomAlbumStringCheckBox}"/>
+      <CheckBox x:Name="CustomAlbumStringCheckBox" Grid.Row="0" Grid.Column="4" Content="Custom" VerticalAlignment="Center" IsChecked="{Binding CustomAlbumString}"/>
+
+      <Label Grid.Column="0" Grid.Row="2" Content="Finishing Time:"/>
+      <xctk:DateTimePicker Grid.Column="2" Grid.Row="2" Value="{Binding FinishingTime}" Minimum="{Binding Source={x:Static viewModels:MainViewModel.MinimumDateTime}}"/>
+      <CheckBox Grid.Column="4" Grid.Row="2" Content="Current" IsChecked="{Binding CurrentDateTime}"
+                    VerticalAlignment="Center"/>
+
+      <views:ScrobbleButtonControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="7"/>
+    </Grid>
+  </Grid>
+</UserControl>
