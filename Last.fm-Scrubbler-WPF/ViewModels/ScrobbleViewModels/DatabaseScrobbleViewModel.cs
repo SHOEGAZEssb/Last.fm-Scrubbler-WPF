@@ -302,12 +302,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
 
     /// <summary>
-    /// Sarches the entered <see cref="SearchText"/>.
+    /// Searches the entered <see cref="SearchText"/>.
     /// </summary>
     /// <returns>Task.</returns>
     public async Task Search()
     {
       EnableControls = false;
+
       try
       {
         if (SearchType == SearchType.Artist)
@@ -456,14 +457,23 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         EnableControls = false;
 
-        var artist = sender as Artist;
+        try
+        {
+          var artist = sender as Artist;
 
-        OnStatusUpdated("Trying to fetch releases from '" + artist.Name + "'");
+          OnStatusUpdated("Trying to fetch releases from '" + artist.Name + "'");
 
-        if (DatabaseToSearch == Database.LastFm)
-          await ArtistClickedLastFm(artist);
-
-        EnableControls = true;
+          if (DatabaseToSearch == Database.LastFm)
+            await ArtistClickedLastFm(artist);
+        }
+        catch (Exception ex)
+        {
+          OnStatusUpdated("Fatal error while fetching releases from artist: " + ex.Message);
+        }
+        finally
+        {
+          EnableControls = true;
+        }
       }
     }
 
@@ -509,38 +519,47 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         EnableControls = false;
 
-        var release = sender as Release;
-
-        OnStatusUpdated("Trying to fetch tracklist from '" + release.Name + "'");
-
-        LastResponse<LastAlbum> detailedRelease = null;
-        if (release.Mbid != null && release.Mbid != "")
-          detailedRelease = await MainViewModel.Client.Album.GetInfoByMbidAsync(release.Mbid);
-        else
-          detailedRelease = await MainViewModel.Client.Album.GetInfoAsync(release.ArtistName, release.Name);
-
-        if (detailedRelease.Success)
+        try
         {
-          FetchedTracks.Clear();
-          foreach (var t in detailedRelease.Content.Tracks)
-          {
-            FetchedTrackViewModel vm = new FetchedTrackViewModel(new ScrobbleBase(t.Name, t.ArtistName, t.AlbumName, "", t.Duration), release.Image);
-            vm.ToScrobbleChanged += ToScrobbleChanged;
-            FetchedTracks.Add(vm);
-          }
+          var release = sender as Release;
 
-          if (FetchedTracks.Count != 0)
+          OnStatusUpdated("Trying to fetch tracklist from '" + release.Name + "'");
+
+          LastResponse<LastAlbum> detailedRelease = null;
+          if (release.Mbid != null && release.Mbid != "")
+            detailedRelease = await MainViewModel.Client.Album.GetInfoByMbidAsync(release.Mbid);
+          else
+            detailedRelease = await MainViewModel.Client.Album.GetInfoAsync(release.ArtistName, release.Name);
+
+          if (detailedRelease.Success)
           {
-            CurrentView = _trackResultView;
-            OnStatusUpdated("Successfully fetched tracklist from '" + release.Name + "'");
+            FetchedTracks.Clear();
+            foreach (var t in detailedRelease.Content.Tracks)
+            {
+              FetchedTrackViewModel vm = new FetchedTrackViewModel(new ScrobbleBase(t.Name, t.ArtistName, t.AlbumName, "", t.Duration), release.Image);
+              vm.ToScrobbleChanged += ToScrobbleChanged;
+              FetchedTracks.Add(vm);
+            }
+
+            if (FetchedTracks.Count != 0)
+            {
+              CurrentView = _trackResultView;
+              OnStatusUpdated("Successfully fetched tracklist from '" + release.Name + "'");
+            }
+            else
+              OnStatusUpdated("'" + release.Name + "' has no tracks");
           }
           else
-            OnStatusUpdated("'" + release.Name + "' has no tracks");
+            OnStatusUpdated("Error while fetching tracklist from '" + release.Name + "'");
         }
-        else
-          OnStatusUpdated("Error while fetching tracklist from '" + release.Name + "'");
-
-        EnableControls = true;
+        catch(Exception ex)
+        {
+          OnStatusUpdated("Fatal error while fetching tracklist from release: " + ex.Message);
+        }
+        finally
+        {
+          EnableControls = true;
+        }
       }
     }
 
@@ -572,18 +591,27 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       EnableControls = false;
 
-      OnStatusUpdated("Trying to scrobble selected tracks...");
+      try
+      {
+        OnStatusUpdated("Trying to scrobble selected tracks...");
 
-      // trigger time change if needed
-      CurrentDateTime = CurrentDateTime;
+        // trigger time change if needed
+        CurrentDateTime = CurrentDateTime;
 
-      var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
-      if (response.Success)
-        OnStatusUpdated("Successfully scrobbled!");
-      else
-        OnStatusUpdated("Error while scrobbling!");
-
-      EnableControls = true;
+        var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
+        if (response.Success)
+          OnStatusUpdated("Successfully scrobbled!");
+        else
+          OnStatusUpdated("Error while scrobbling!");
+      }
+      catch (Exception ex)
+      {
+        OnStatusUpdated("Fatal error while scrobbling: " + ex.Message);
+      }
+      finally
+      {
+        EnableControls = true;
+      }
     }
 
     /// <summary>
