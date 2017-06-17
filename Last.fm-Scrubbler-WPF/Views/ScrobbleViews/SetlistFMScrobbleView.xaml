@@ -7,7 +7,6 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views.ScrobbleViews"
              xmlns:views="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              xmlns:viewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels"
              xmlns:scrobbleViewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels"

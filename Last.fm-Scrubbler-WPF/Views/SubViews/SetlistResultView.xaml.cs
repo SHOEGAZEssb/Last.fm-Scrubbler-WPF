@@ -7,6 +7,9 @@ namespace Last.fm_Scrubbler_WPF.Views.SubViews
   /// </summary>
   public partial class SetlistResultView : UserControl
   {
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public SetlistResultView()
     {
       InitializeComponent();

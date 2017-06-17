@@ -7,6 +7,9 @@ namespace Last.fm_Scrubbler_WPF.Views.ScrobbleViews
   /// </summary>
   public partial class SetlistFMScrobbleView : UserControl
   {
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public SetlistFMScrobbleView()
     {
       InitializeComponent();
