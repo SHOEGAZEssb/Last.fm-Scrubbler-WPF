@@ -95,7 +95,7 @@ Once you click "Scrobble", all selected songs will be scrobbled to your last.fm 
 ### iTunes Scrobbling
 This basically works like the normal Last.fm desktop app. Once you connected to iTunes a timer will measure how long you listened to that song. If you play 50% of the track (tracks under 30 seconds will work), it will be scrobbled. The ProgressBar on the bottom indicates when the track will be scrobbled.
 
-![iTunes Scrobbling](https://ibin.co/30cuCVX33Gke.png)
+![iTunes Scrobbling](http://i.imgur.com/TukLKzB.png)
 
 ### SetlistFM Scrobbling
 This feature allows you to search for artists on [Setlist.fm](https://setlist.fm) and scrobble their live sets. The search is still very basic. 
