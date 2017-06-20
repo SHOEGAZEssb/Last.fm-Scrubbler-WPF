@@ -18,7 +18,7 @@ This tool will always be free, but if it was helpful to you, consider donating t
 - [File Scrobbling](#file-scrobbling)
 - [Media Player Database Scrobbling](#media-player-database-scrobbling)
 - [iTunes Scrobbling](#itunes-scrobbling)
-- [Setlist.fm Scrobbling](#setlist-fm-scrobbling)
+- [Setlist.fm Scrobbling](#setlistfm-scrobbling)
 
 **Extra Functions**
 - [Paste Your Taste](#paste-your-taste)
@@ -97,7 +97,7 @@ This basically works like the normal Last.fm desktop app. Once you connected to 
 
 ![iTunes Scrobbling](https://ibin.co/30cuCVX33Gke.png)
 
-### Setlist.fm Scrobbling
+### SetlistFM Scrobbling
 This feature allows you to search for artists on [Setlist.fm](https://setlist.fm) and scrobble their live sets. The search is still very basic. 
 
 ![Setlist.fm Artist Search](http://i.imgur.com/eLmOC4n.png)
