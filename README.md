@@ -18,10 +18,12 @@ This tool will always be free, but if it was helpful to you, consider donating t
 - [File Scrobbling](#file-scrobbling)
 - [Media Player Database Scrobbling](#media-player-database-scrobbling)
 - [iTunes Scrobbling](#itunes-scrobbling)
+- [Setlist.fm Scrobbling](#setlist.fm-scrobbling)
 
 **Extra Functions**
 - [Paste Your Taste](#paste-your-taste)
 - [CSV Downloader](#csv-downloader)
+- [Collage Creator](#collage-creator)
 
 ### Manual Single Track Scrobbling
 Allows you to enter artist, track and album info aswell as when you listened to the song and lets you scrobble it.
@@ -95,6 +97,21 @@ This basically works like the normal Last.fm desktop app. Once you connected to 
 
 ![iTunes Scrobbling](https://ibin.co/30cuCVX33Gke.png)
 
+### Setlist.fm Scrobbling
+This feature allows you to search for artists on [Setlist.fm](https://setlist.fm) and scrobble their live sets. The search is still very basic. 
+
+![Setlist.fm Artist Search](http://i.imgur.com/eLmOC4n.png)
+
+When you click on an artist, the setlists of that artist are shown.
+
+![Setlist.fm Setlist Results](http://i.imgur.com/iR5hlUI.png)
+
+And finally when you click on a setlist its tracks are shown and you can select which ones to scrobble and with what timestamps.  You can also add a custom album string. If you don't want to add a custom album string, the tracks will be scrobbled with blank album info.
+
+![Setlist.fm Setlist Tracks](http://i.imgur.com/hqSSs9B.png)
+
+As always, timestamps are reversed meaning the first track in the list gets scrobbled with the oldest timestamp and the last track in the list is scrobbled with the "Finishing Time".
+
 ### Paste Your Taste
 With this you can create a "Paste Your Taste" text. You can select the time period and how many artists you want to include.
 
@@ -104,3 +121,8 @@ With this you can create a "Paste Your Taste" text. You can select the time peri
 This allows you to download the data of any Last.fm user as a csv file. The format of the csv file will be "Artist, Album, Track, Timestamp, Album Artist, Timestamp".
 
 ![CSV Downloader](http://i.imgur.com/P7uY6Py.png)
+
+### Collage Create
+This allows you to create collages of your top artists and album arranged in a grid with artist or album photo. Just pick a size, enter your username and the collage will be created and uploaded to imgur and then opened in your browser. 
+
+![Collage Creator](http://i.imgur.com/uTQauQa.png)
