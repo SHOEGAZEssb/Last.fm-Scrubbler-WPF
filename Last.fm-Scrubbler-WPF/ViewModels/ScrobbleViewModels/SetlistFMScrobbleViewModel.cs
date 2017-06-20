@@ -93,6 +93,39 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     private bool _customAlbumString;
 
     /// <summary>
+    /// The number of the result page of setlists to get.
+    /// </summary>
+    public int SetlistResultPage
+    {
+      get { return _setlistResultPage; }
+      set
+      {
+        _setlistResultPage = value;
+        NotifyOfPropertyChange(() => SetlistResultPage);
+
+        // todo: if we ever fetch setlists other than by clicking an
+        // artist we need to change this I guess.
+        if(_lastClickedArtist != null)
+          ArtistClicked(_lastClickedArtist, EventArgs.Empty);
+      }
+    }
+    private int _setlistResultPage;
+
+    /// <summary>
+    /// The number of the result page of artists to get.
+    /// </summary>
+    public int ArtistResultPage
+    {
+      get { return _artistResultPage; }
+      set
+      {
+        _artistResultPage = value;
+        NotifyOfPropertyChange(() => ArtistResultPage);
+      }
+    }
+    private int _artistResultPage;
+
+    /// <summary>
     /// List of fetched artists.
     /// </summary>
     public ObservableCollection<FetchedArtistViewModel> FetchedArtists
@@ -254,6 +287,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// </summary>
     private TrackResultView _trackResultView;
 
+    /// <summary>
+    /// The last clicked <see cref="Artist"/>.
+    /// </summary>
+    private Models.Artist _lastClickedArtist;
+
     #endregion Private Member
 
     /// <summary>
@@ -270,6 +308,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       FetchedSetlists = new ObservableCollection<FetchedSetlistViewModel>();
       FetchedTracks = new ObservableCollection<FetchedTrackViewModel>();
       CurrentDateTime = true;
+      SetlistResultPage = 1;
+      ArtistResultPage = 1;
     }
 
     /// <summary>
@@ -294,7 +334,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       {
         OnStatusUpdated(string.Format("Searching for artist '{0}'", SearchText));
         ArtistSearchResult asr = null;
-        await Task.Run(() => asr = _setlistFMClient.FindArtists(new ArtistSearchOptions() { Name = SearchText }));
+        await Task.Run(() => asr = _setlistFMClient.FindArtists(new ArtistSearchOptions() { Name = SearchText, Page = ArtistResultPage }));
 
         if (asr != null)
         {
@@ -349,9 +389,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
         {
           OnStatusUpdated("Fetching setlists from selected artist...");
           Models.Artist clickedArtist = sender as Models.Artist;
+          _lastClickedArtist = clickedArtist;
 
           SetlistSearchResult ssr = null;
-          await Task.Run(() => ssr = _setlistFMClient.FindSetlistsByArtist(new SetlistByArtistSearchOptions() { MbId = clickedArtist.Mbid }));
+          await Task.Run(() => ssr = _setlistFMClient.FindSetlistsByArtist(new SetlistByArtistSearchOptions() { MbId = clickedArtist.Mbid, Page = SetlistResultPage}));
 
           if (ssr != null)
           {

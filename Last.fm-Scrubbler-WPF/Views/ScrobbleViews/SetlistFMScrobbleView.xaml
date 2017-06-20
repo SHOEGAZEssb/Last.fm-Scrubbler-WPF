@@ -8,11 +8,12 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:views="clr-namespace:Last.fm_Scrubbler_WPF.Views"
+             xmlns:subViews="clr-namespace:Last.fm_Scrubbler_WPF.Views.SubViews"
              xmlns:viewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels"
              xmlns:scrobbleViewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels"
              xmlns:converters="clr-namespace:Last.fm_Scrubbler_WPF.Converters"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="350">
   <UserControl.Resources>
     <ObjectDataProvider MethodName="GetValues"
                     ObjectType="{x:Type sys:Enum}"
@@ -23,9 +24,20 @@
     </ObjectDataProvider>
 
     <converters:DataTypeConverter x:Key="DataTypeConv"/>
+
+    <Style TargetType="FrameworkElement" BasedOn="{StaticResource EnableControlsStyle}" x:Key="SetlistResultPageVisibilityStyle">
+      <Setter Property="Visibility" Value="Collapsed"/>
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding CurrentView, Converter={StaticResource DataTypeConv}}" Value="{x:Type subViews:SetlistResultView}">
+          <Setter Property="Visibility" Value="Visible"/>
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
   </UserControl.Resources>
   <Grid>
     <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="5"/>
       <RowDefinition Height="*"/>
@@ -42,6 +54,10 @@
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="Search Text:"/>
@@ -51,7 +67,10 @@
     <ComboBox Grid.Row="0" Grid.Column="6" SelectedItem="{Binding SelectedSearchType}" ItemsSource="{Binding Source={StaticResource SetlistSearchTypeKeyDataProvider}}"
               Style="{StaticResource EnableControlsStyle}"/>
 
-    <Button Grid.Row="0" Grid.Column="8" Content="Search" Style="{StaticResource EnableControlsStyle}">
+    <Label Grid.Row="0" Grid.Column="8" Content="Artist Result Page:" Style="{StaticResource EnableControlsStyle}"/>
+    <xctk:IntegerUpDown Grid.Row="0" Grid.Column="10" HorizontalAlignment="Left" Value="{Binding ArtistResultPage}" Minimum="1" Style="{StaticResource EnableControlsStyle}"/>
+
+    <Button Grid.Row="0" Grid.Column="12" Content="Search" Style="{StaticResource EnableControlsStyle}">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="Search"/>
@@ -59,9 +78,12 @@
       </i:Interaction.Triggers>
     </Button>
 
-    <ContentPresenter Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9" Content="{Binding CurrentView}"/>
+    <Label Grid.Row="2" Grid.Column="0" Content="Setlist Result Page:" Style="{StaticResource SetlistResultPageVisibilityStyle}"/>
+    <xctk:IntegerUpDown Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Value="{Binding SetlistResultPage}" Minimum="1" Style="{StaticResource SetlistResultPageVisibilityStyle}"/>
 
-    <Grid Grid.Row="4" Grid.ColumnSpan="14" HorizontalAlignment="Stretch">
+    <ContentPresenter Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="13" Content="{Binding CurrentView}"/>
+
+    <Grid Grid.Row="6" Grid.ColumnSpan="13" HorizontalAlignment="Stretch">
       <Grid.Style>
         <Style TargetType="Grid" BasedOn="{StaticResource EnableControlsStyle}">
           <Setter Property="Visibility" Value="Collapsed"/>
