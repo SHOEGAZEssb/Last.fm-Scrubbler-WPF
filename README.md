@@ -18,7 +18,7 @@ This tool will always be free, but if it was helpful to you, consider donating t
 - [File Scrobbling](#file-scrobbling)
 - [Media Player Database Scrobbling](#media-player-database-scrobbling)
 - [iTunes Scrobbling](#itunes-scrobbling)
-- [Setlist.fm Scrobbling](#setlist.fm-scrobbling)
+- [Setlist.fm Scrobbling](#setlist-fm-scrobbling)
 
 **Extra Functions**
 - [Paste Your Taste](#paste-your-taste)
@@ -122,7 +122,7 @@ This allows you to download the data of any Last.fm user as a csv file. The form
 
 ![CSV Downloader](http://i.imgur.com/P7uY6Py.png)
 
-### Collage Create
+### Collage Creator
 This allows you to create collages of your top artists and album arranged in a grid with artist or album photo. Just pick a size, enter your username and the collage will be created and uploaded to imgur and then opened in your browser. 
 
 ![Collage Creator](http://i.imgur.com/uTQauQa.png)
