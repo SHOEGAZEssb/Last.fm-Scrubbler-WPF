@@ -201,6 +201,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private int _currentTrackID;
 
     /// <summary>
+    /// Cached playcount of the current track.
+    /// We use this to check if something is running on repeat.
+    /// </summary>
+    private int _currentTrackPlayCount;
+
+    /// <summary>
     /// Timer to count seconds.
     /// </summary>
     private Timer _countTimer;
@@ -361,8 +367,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       lock (_lockAnchor)
       {
-        if (ITunesApp?.CurrentTrack?.trackID != _currentTrackID)
+        if (ITunesApp?.CurrentTrack?.trackID != _currentTrackID || ITunesApp?.CurrentTrack?.PlayedCount > _currentTrackPlayCount)
         {
+          _currentTrackPlayCount = ITunesApp.CurrentTrack.PlayedCount;
           CountedSeconds = 0;
           CurrentTrackScrobbled = false;
           UpdateCurrentTrackInfo();
