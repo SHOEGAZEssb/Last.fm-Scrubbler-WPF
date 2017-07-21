@@ -28,7 +28,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     Normal,
 
     /// <summary>
-    /// Set the timestamp by setting <see cref="CSVScrobbleViewModel.FinishingTime"/>.
+    /// Set the timestamp by setting <see cref="ScrobbleTimeViewModelBase.Time"/>.
     /// </summary>
     ImportMode
   }

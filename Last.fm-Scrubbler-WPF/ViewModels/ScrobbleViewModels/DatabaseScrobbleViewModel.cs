@@ -543,8 +543,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <remarks>
     /// Scrobbles will be 'reversed' meaning track 1 of the release
     /// will be scrobbled last.
-    /// The first track to be scrobbled will have the <see cref="FinishingTime"/>
-    /// as timestamp. The last track (track 1) will have the <see cref="FinishingTime"/>
+    /// The first track to be scrobbled will have the <see cref="ScrobbleTimeViewModelBase.Time"/>
+    /// as timestamp. The last track (track 1) will have the <see cref="ScrobbleTimeViewModelBase.Time"/>
     /// minus all the durations of the scrobbles before. 3 minute default duration.
     /// </remarks>
     public override async Task Scrobble()
