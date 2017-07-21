@@ -10,6 +10,7 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:viewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels"
              xmlns:converters="clr-namespace:Last.fm_Scrubbler_WPF.Converters"
+             xmlns:scrobbleViews="clr-namespace:Last.fm_Scrubbler_WPF.Views.ScrobbleViews"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
   <UserControl.Resources>
@@ -101,9 +102,7 @@
       <local:ScrobbleButtonControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7"/>
 
       <Label Grid.Column="0" Content="Finishing Time:"/>
-      <xctk:DateTimePicker Grid.Column="2" Value="{Binding FinishingTime}" Minimum="{Binding Source={x:Static viewModels:MainViewModel.MinimumDateTime}}"/>
-      <CheckBox Grid.Column="4" Content="Current" IsChecked="{Binding CurrentDateTime}"
-                    VerticalAlignment="Center"/>
+      <scrobbleViews:SelectScrobbleTimeControl Grid.Column="2" Grid.ColumnSpan="3"/>
 
     </Grid>
   </Grid>

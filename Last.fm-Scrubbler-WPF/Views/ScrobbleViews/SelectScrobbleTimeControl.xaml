@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="Last.fm_Scrubbler_WPF.Views.ScrobbleViews.SelectScrobbleTimeControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:viewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="25" d:DesignWidth="300">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
+
+    <xctk:DateTimePicker Grid.Column="0" Value="{Binding Time}" Minimum="{Binding Source={x:Static viewModels:MainViewModel.MinimumDateTime}}">
+      <xctk:DateTimePicker.Style>
+        <Style BasedOn="{StaticResource EnableControlsStyle}" TargetType="xctk:DateTimePicker">
+          <Setter Property="IsEnabled" Value="False"/>
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding UseCurrentTime}" Value="False">
+              <Setter Property="IsEnabled" Value="True"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </xctk:DateTimePicker.Style>
+    </xctk:DateTimePicker>
+    <CheckBox Grid.Column="4" Content="Use Current Time" VerticalAlignment="Center" IsChecked="{Binding UseCurrentTime}" Style="{StaticResource EnableControlsStyle}"/>
+  </Grid>
+</UserControl>

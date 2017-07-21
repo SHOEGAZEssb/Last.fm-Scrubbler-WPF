@@ -6,6 +6,7 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:viewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels"
              xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
+             xmlns:scrobbleViews="clr-namespace:Last.fm_Scrubbler_WPF.Views.ScrobbleViews"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
   <Grid>
@@ -48,9 +49,7 @@
     <xctk:TimeSpanUpDown Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="3" Value="{Binding Duration}" Minimum="0" />
 
     <Label Grid.Row="10" Grid.Column="0" Content="Time Played:"/>
-    <xctk:DateTimePicker Grid.Row="10" Grid.Column="2" Value="{Binding TimePlayed}" Minimum="{Binding Source={x:Static viewModels:MainViewModel.MinimumDateTime}}"/>
-    <CheckBox Grid.Row="10" Grid.Column="4" Content="Current" IsChecked="{Binding CurrentDateTime}"
-                    VerticalAlignment="Center"/>
+    <scrobbleViews:SelectScrobbleTimeControl Grid.Row="10" Grid.Column="2" Grid.ColumnSpan="3"/>
 
     <local:ScrobbleButtonControl Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="5"/>
   </Grid>

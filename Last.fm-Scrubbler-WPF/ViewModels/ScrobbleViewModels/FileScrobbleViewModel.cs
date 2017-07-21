@@ -8,13 +8,14 @@ using System.Windows.Threading;
 using TagLib;
 using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Views;
+using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
   /// <summary>
   /// ViewModel for the <see cref="FileScrobbleView"/>.
   /// </summary>
-  class FileScrobbleViewModel : ScrobbleViewModelBase
+  class FileScrobbleViewModel : ScrobbleTimeViewModelBase
   {
     #region Properties
 
@@ -31,37 +32,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       }
     }
     private ObservableCollection<LoadedFileViewModel> _loadedFiles;
-
-    /// <summary>
-    /// Time to reverse when scrobbling.
-    /// </summary>
-    public DateTime FinishingTime
-    {
-      get { return _finishingTime; }
-      set
-      {
-        _finishingTime = value;
-        NotifyOfPropertyChange(() => FinishingTime);
-      }
-    }
-    private DateTime _finishingTime;
-
-    /// <summary>
-    /// Gets if the current date time should be used for the <see cref="FinishingTime"/>
-    /// </summary>
-    public bool CurrentDateTime
-    {
-      get { return _currentDateTime; }
-      set
-      {
-        _currentDateTime = value;
-        if (value)
-          FinishingTime = DateTime.Now;
-
-        NotifyOfPropertyChange(() => CurrentDateTime);
-      }
-    }
-    private bool _currentDateTime;
 
     /// <summary>
     /// Gets if certain controls should be enabled on the UI.
@@ -139,7 +109,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       LoadedFiles = new ObservableCollection<LoadedFileViewModel>();
       _dispatcher = Dispatcher.CurrentDispatcher;
-      CurrentDateTime = true;
+      UseCurrentTime = true;
     }
 
     /// <summary>
@@ -190,8 +160,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
               OnStatusUpdated("Finished parsing selected files. " + errors.Count + " files could not be parsed");
               if (MessageBox.Show("Some files could not be parsed. Do you want to save a text file with the files that could not be parsed?", "Error parsing files", MessageBoxButtons.YesNo) == DialogResult.Yes)
               {
-                SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "Text Files|*.txt";
+                SaveFileDialog sfd = new SaveFileDialog()
+                {
+                  Filter = "Text Files|*.txt"
+                };
+
                 if (sfd.ShowDialog() == DialogResult.OK)
                   System.IO.File.WriteAllLines(sfd.FileName, errors.ToArray());
               }
@@ -251,9 +224,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         OnStatusUpdated("Trying to scrobble selected tracks...");
 
-        // set to self to trigger update.
-        CurrentDateTime = CurrentDateTime;
-
         var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
         if (response.Success)
           OnStatusUpdated("Successfully scrobbled!");
@@ -285,7 +255,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <returns>List with scrobbles.</returns>
     private List<Scrobble> CreateScrobbles()
     {
-      DateTime timePlayed = FinishingTime;
+      DateTime timePlayed = Time;
       List<Scrobble> scrobbles = new List<Scrobble>();
       foreach (var vm in LoadedFiles.Where(i => i.ToScrobble).Reverse())
       {

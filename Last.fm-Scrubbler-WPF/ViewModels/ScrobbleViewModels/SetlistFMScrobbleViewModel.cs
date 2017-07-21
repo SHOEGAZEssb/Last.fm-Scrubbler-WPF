@@ -29,7 +29,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
   /// <summary>
   /// Viewmodel for the <see cref="Views.ScrobbleViews.SetlistFMScrobbleView"/>
   /// </summary>
-  class SetlistFMScrobbleViewModel : ScrobbleViewModelBase
+  class SetlistFMScrobbleViewModel : ScrobbleTimeViewModelBase
   {
     #region Properties
 
@@ -185,38 +185,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     private UserControl _currentView;
 
     /// <summary>
-    /// The timestamp when the last track of the tracklist finished.
-    /// </summary>
-    public DateTime FinishingTime
-    {
-      get { return _finishingTime; }
-      set
-      {
-        _finishingTime = value;
-        NotifyOfPropertyChange(() => FinishingTime);
-      }
-    }
-    private DateTime _finishingTime;
-
-    /// <summary>
-    /// Gets/sets if the current DateTime should be used
-    /// for <see cref="FinishingTime"/>.
-    /// </summary>
-    public bool CurrentDateTime
-    {
-      get { return _currentDateTime; }
-      set
-      {
-        _currentDateTime = value;
-        if (value)
-          FinishingTime = DateTime.Now;
-
-        NotifyOfPropertyChange(() => CurrentDateTime);
-      }
-    }
-    private bool _currentDateTime;
-
-    /// <summary>
     /// Gets if certain controls that modify the
     /// scrobbling data are enabled.
     /// </summary>
@@ -307,7 +275,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       FetchedArtists = new ObservableCollection<FetchedArtistViewModel>();
       FetchedSetlists = new ObservableCollection<FetchedSetlistViewModel>();
       FetchedTracks = new ObservableCollection<FetchedTrackViewModel>();
-      CurrentDateTime = true;
+      UseCurrentTime = true;
       SetlistResultPage = 1;
       ArtistResultPage = 1;
     }
@@ -517,9 +485,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       {
         OnStatusUpdated("Trying to scrobble selected tracks...");
 
-        // trigger time change if needed
-        CurrentDateTime = CurrentDateTime;
-
         var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
         if (response.Success)
           OnStatusUpdated("Successfully scrobbled!");
@@ -552,7 +517,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// scrobbled with the current settings.</returns>
     private List<Scrobble> CreateScrobbles()
     {
-      DateTime finishingTime = FinishingTime;
+      DateTime finishingTime = Time;
       List<Scrobble> scrobbles = new List<Scrobble>();
       foreach (FetchedTrackViewModel vm in FetchedTracks.Where(i => i.ToScrobble).Reverse())
       {

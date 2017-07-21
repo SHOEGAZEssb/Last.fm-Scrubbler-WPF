@@ -1,6 +1,7 @@
 ﻿using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Models;
 using Last.fm_Scrubbler_WPF.Properties;
+using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using Last.fm_Scrubbler_WPF.Views;
 using Last.fm_Scrubbler_WPF.Views.ScrobbleViews;
 using Microsoft.VisualBasic.FileIO;
@@ -35,7 +36,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.CSVScrobbleView"/>.
   /// </summary>
-  class CSVScrobbleViewModel : ScrobbleViewModelBase
+  class CSVScrobbleViewModel : ScrobbleTimeViewModelBase
   {
     #region Properties
 
@@ -89,20 +90,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       }
     }
     private CSVScrobbleMode _scrobbleMode;
-
-    /// <summary>
-    /// The time the last track played.
-    /// </summary>
-    public DateTime FinishingTime
-    {
-      get { return _finishingTime; }
-      set
-      {
-        _finishingTime = value;
-        NotifyOfPropertyChange(() => FinishingTime);
-      }
-    }
-    private DateTime _finishingTime;
 
     /// <summary>
     /// Duration between scrobbles in seconds.
@@ -206,7 +193,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       Scrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>();
       Duration = 1;
-      FinishingTime = DateTime.Now;
+      UseCurrentTime = true;
       _dispatcher = Dispatcher.CurrentDispatcher;
       ScrobbleMode = CSVScrobbleMode.ImportMode;
     }
@@ -401,7 +388,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       }
       else if (ScrobbleMode == CSVScrobbleMode.ImportMode)
       {
-        DateTime time = FinishingTime;
+        DateTime time = Time;
         foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
         {
           scrobbles.Add(new Scrobble(vm.ParsedScrobble.ArtistName, vm.ParsedScrobble.AlbumArtist, vm.ParsedScrobble.TrackName, time));

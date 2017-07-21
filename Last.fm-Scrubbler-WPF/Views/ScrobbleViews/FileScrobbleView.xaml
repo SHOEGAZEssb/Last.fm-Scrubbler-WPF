@@ -5,9 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             xmlns:viewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels"
              xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
+             xmlns:scrobbleViews="clr-namespace:Last.fm_Scrubbler_WPF.Views.ScrobbleViews"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
   <Grid>
@@ -137,8 +136,6 @@
     <local:ScrobbleButtonControl Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="5"/>
 
     <Label Grid.Row="4" Grid.Column="0" Content="Finishing Time:"/>
-    <xctk:DateTimePicker Grid.Row="4" Grid.Column="2" Value="{Binding FinishingTime}" Minimum="{Binding Source={x:Static viewModels:MainViewModel.MinimumDateTime}}"/>
-    <CheckBox Grid.Row="4" Grid.Column="4" Content="Current" IsChecked="{Binding CurrentDateTime}"
-                    VerticalAlignment="Center"/>
+    <scrobbleViews:SelectScrobbleTimeControl Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3"/>
   </Grid>
 </UserControl>

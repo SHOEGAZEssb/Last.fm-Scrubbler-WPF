@@ -1,6 +1,7 @@
 ﻿using IF.Lastfm.Core.Api.Helpers;
 using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Models;
+using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using Last.fm_Scrubbler_WPF.Views;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="DatabaseScrobbleView"/>.
   /// </summary>
-  class DatabaseScrobbleViewModel : ScrobbleViewModelBase
+  class DatabaseScrobbleViewModel : ScrobbleTimeViewModelBase
   {
     #region Properties
 
@@ -158,38 +159,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private ObservableCollection<FetchedTrackViewModel> _fetchedTracks;
 
     /// <summary>
-    /// The timestamp when the last track of the tracklist finished.
-    /// </summary>
-    public DateTime FinishingTime
-    {
-      get { return _finishingTime; }
-      set
-      {
-        _finishingTime = value;
-        NotifyOfPropertyChange(() => FinishingTime);
-      }
-    }
-    private DateTime _finishingTime;
-
-    /// <summary>
-    /// Gets/sets if the current DateTime should be used
-    /// for <see cref="FinishingTime"/>.
-    /// </summary>
-    public bool CurrentDateTime
-    {
-      get { return _currentDateTime; }
-      set
-      {
-        _currentDateTime = value;
-        if (value)
-          FinishingTime = DateTime.Now;
-
-        NotifyOfPropertyChange(() => CurrentDateTime);
-      }
-    }
-    private bool _currentDateTime;
-
-    /// <summary>
     /// Gets if certain controls should be enabled on the UI.
     /// </summary>
     public override bool EnableControls
@@ -289,7 +258,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       _artistResultView = new ArtistResultView() { DataContext = this };
       _releaseResultView = new ReleaseResultView() { DataContext = this };
       _trackResultView = new TrackResultView() { DataContext = this };
-      CurrentDateTime = true;
+      UseCurrentTime = true;
     }
 
     /// <summary>
@@ -586,9 +555,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         OnStatusUpdated("Trying to scrobble selected tracks...");
 
-        // trigger time change if needed
-        CurrentDateTime = CurrentDateTime;
-
         var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
         if (response.Success)
           OnStatusUpdated("Successfully scrobbled!");
@@ -611,7 +577,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <returns>List with scrobbles.</returns>
     private List<Scrobble> CreateScrobbles()
     {
-      DateTime finishingTime = FinishingTime;
+      DateTime finishingTime = Time;
       List<Scrobble> scrobbles = new List<Scrobble>();
       foreach (FetchedTrackViewModel vm in FetchedTracks.Where(i => i.ToScrobble).Reverse())
       {

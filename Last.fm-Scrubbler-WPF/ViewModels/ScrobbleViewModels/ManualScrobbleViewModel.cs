@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using Last.fm_Scrubbler_WPF.Views;
 using System;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="ManualScrobbleView"/>.
   /// </summary>
-  class ManualScrobbleViewModel : ScrobbleViewModelBase
+  class ManualScrobbleViewModel : ScrobbleTimeViewModelBase
   {
     #region Properties
 
@@ -83,38 +84,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private TimeSpan _duration;
 
-
-    /// <summary>
-    /// Time of the scrobble to scrobbled.
-    /// </summary>
-    public DateTime TimePlayed
-    {
-      get { return _timePlayed; }
-      set
-      {
-        _timePlayed = value;
-        NotifyOfPropertyChange(() => TimePlayed);
-      }
-    }
-    private DateTime _timePlayed;
-
-    /// <summary>
-    /// Gets/sets if the <see cref="TimePlayed"/> is the current time.
-    /// </summary>
-    public bool CurrentDateTime
-    {
-      get { return _currentDateTime; }
-      set
-      {
-        _currentDateTime = value;
-        if (value)
-          TimePlayed = DateTime.Now;
-
-        NotifyOfPropertyChange(() => CurrentDateTime);
-      }
-    }
-    private bool _currentDateTime;
-
     /// <summary>
     /// Gets if certain controls that modify the
     /// scrobbling data are enabled.
@@ -159,8 +128,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       Album = "";
       AlbumArtist = "";
       Duration = TimeSpan.FromSeconds(0);
-      CurrentDateTime = true;
-      TimePlayed = DateTime.Now;
+      UseCurrentTime = true;
     }
 
     /// <summary>
@@ -174,10 +142,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         OnStatusUpdated("Trying to scrobble...");
 
-        if (CurrentDateTime)
-          TimePlayed = DateTime.Now;
-
-        Scrobble s = new Scrobble(Artist, Album, Track, TimePlayed) { AlbumArtist = AlbumArtist, Duration = Duration };
+        Scrobble s = new Scrobble(Artist, Album, Track, Time) { AlbumArtist = AlbumArtist, Duration = Duration };
         var response = await MainViewModel.Scrobbler.ScrobbleAsync(s);
         if (response.Success)
           OnStatusUpdated("Successfully scrobbled!");
@@ -200,7 +165,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public override void Preview()
     {
       ScrobblePreviewView spv = new ScrobblePreviewView(new ScrobblePreviewViewModel(
-        new Scrobble[] { new Scrobble(Artist, Album, Track, TimePlayed) { AlbumArtist = AlbumArtist, Duration = Duration } }));
+        new Scrobble[] { new Scrobble(Artist, Album, Track, Time) { AlbumArtist = AlbumArtist, Duration = Duration } }));
       spv.ShowDialog();
     }
   }

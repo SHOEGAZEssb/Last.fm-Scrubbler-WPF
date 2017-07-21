@@ -9,7 +9,7 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:views="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              xmlns:subViews="clr-namespace:Last.fm_Scrubbler_WPF.Views.SubViews"
-             xmlns:viewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels"
+             xmlns:scrobbleViews="clr-namespace:Last.fm_Scrubbler_WPF.Views.ScrobbleViews"
              xmlns:scrobbleViewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels"
              xmlns:converters="clr-namespace:Last.fm_Scrubbler_WPF.Converters"
              mc:Ignorable="d"
@@ -114,9 +114,7 @@
       <CheckBox x:Name="CustomAlbumStringCheckBox" Grid.Row="0" Grid.Column="4" Content="Custom" VerticalAlignment="Center" IsChecked="{Binding CustomAlbumString}"/>
 
       <Label Grid.Column="0" Grid.Row="2" Content="Finishing Time:"/>
-      <xctk:DateTimePicker Grid.Column="2" Grid.Row="2" Value="{Binding FinishingTime}" Minimum="{Binding Source={x:Static viewModels:MainViewModel.MinimumDateTime}}"/>
-      <CheckBox Grid.Column="4" Grid.Row="2" Content="Current" IsChecked="{Binding CurrentDateTime}"
-                    VerticalAlignment="Center"/>
+      <scrobbleViews:SelectScrobbleTimeControl Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3"/>
 
       <views:ScrobbleButtonControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="7"/>
     </Grid>

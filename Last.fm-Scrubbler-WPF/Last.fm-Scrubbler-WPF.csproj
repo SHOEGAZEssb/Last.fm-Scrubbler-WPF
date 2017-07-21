@@ -110,6 +110,7 @@
     <Compile Include="ViewModels\ExtraFunctions\PasteYourTasteViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ITunesScrobbleViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobblePreviewViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\ScrobbleTimeViewModelBase.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\SetlistFMScrobbleViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\ConfigureCSVParserViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\FetchedSetlistViewModel.cs" />
@@ -147,6 +148,9 @@
     </Compile>
     <Compile Include="Views\ScrobbleViews\ConfigureCSVParserView.xaml.cs">
       <DependentUpon>ConfigureCSVParserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScrobbleViews\SelectScrobbleTimeControl.xaml.cs">
+      <DependentUpon>SelectScrobbleTimeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScrobbleViews\SetlistFMScrobbleView.xaml.cs">
       <DependentUpon>SetlistFMScrobbleView.xaml</DependentUpon>
@@ -212,6 +216,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ScrobbleViews\ConfigureCSVParserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScrobbleViews\SelectScrobbleTimeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
