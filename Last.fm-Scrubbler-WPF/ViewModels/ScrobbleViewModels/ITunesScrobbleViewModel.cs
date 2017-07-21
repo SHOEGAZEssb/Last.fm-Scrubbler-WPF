@@ -477,7 +477,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         {
           OnStatusUpdated("Trying to scrobble currently playing track...");
 
-          Scrobble s = new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now) { Duration = TimeSpan.FromSeconds(CurrentTrackLength) };
+          Scrobble s = new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now) { Duration = TimeSpan.FromSeconds(CurrentTrackLength),
+                                                                                                           AlbumArtist = (ITunesApp.CurrentTrack as dynamic).AlbumArtist };
           var response = await MainViewModel.Scrobbler.ScrobbleAsync(s);
           if (response.Success)
           {
