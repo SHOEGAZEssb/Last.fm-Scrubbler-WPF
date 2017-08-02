@@ -64,6 +64,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\SetlistFmApi.dll</HintPath>
     </Reference>
+    <Reference Include="SpotifyAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SpotifyAPI-NET.2.15.1\lib\SpotifyAPI.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -109,9 +112,11 @@
     <Compile Include="ViewModels\ExtraFunctions\CSVDownloaderViewModel.cs" />
     <Compile Include="ViewModels\ExtraFunctions\PasteYourTasteViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ITunesScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\MediaPlayerScrobbleViewModelBase.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobblePreviewViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobbleTimeViewModelBase.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\SetlistFMScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\SpotifyScrobbleViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\ConfigureCSVParserViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\FetchedSetlistViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
