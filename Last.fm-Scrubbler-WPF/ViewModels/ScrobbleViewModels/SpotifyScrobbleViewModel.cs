@@ -77,7 +77,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       else
       {
         ConnectEvents();
-        IsSpotifyConnected = true;
         _currentResponse = _spotify.GetStatus();
         UpdateCurrentTrackInfo();
       }
@@ -88,6 +87,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       _spotify.OnTrackChange += _spotify_OnTrackChange;
       _spotify.OnTrackTimeChange += _spotify_OnTrackTimeChange;
       _spotify.ListenForEvents = true;
+      IsSpotifyConnected = true;
     }
 
     private void _spotify_OnTrackTimeChange(object sender, TrackTimeChangeEventArgs e)
@@ -114,6 +114,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       _spotify.ListenForEvents = false;
       _spotify.OnTrackChange -= _spotify_OnTrackChange;
       _spotify.OnTrackTimeChange -= _spotify_OnTrackTimeChange;
+      IsSpotifyConnected = false;
     }
 
     /// <summary>
