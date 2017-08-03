@@ -1,8 +1,9 @@
 ﻿using IF.Lastfm.Core.Objects;
 using iTunesLib;
 using Last.fm_Scrubbler_WPF.Properties;
+using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
+using Last.fm_Scrubbler_WPF.Views.ScrobbleViews;
 using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Timers;
@@ -10,9 +11,9 @@ using System.Timers;
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
   /// <summary>
-  /// ViewModel for the <see cref="Views.ITunesScrobbleView"/>.
+  /// ViewModel for the <see cref="MediaPlayerScrobbleControl"/>.
   /// </summary>
-  class ITunesScrobbleViewModel : ScrobbleViewModelBase, IDisposable
+  class ITunesScrobbleViewModel : MediaPlayerScrobbleViewModelBase, IDisposable
   {
     #region Properties
 
@@ -33,65 +34,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private iTunesApp _iTunesApp;
 
     /// <summary>
-    /// Currently amount of played seconds.
-    /// </summary>
-    public int CountedSeconds
-    {
-      get { return _countedSeconds; }
-      private set
-      {
-        _countedSeconds = value;
-        NotifyOfPropertyChange(() => CountedSeconds);
-      }
-    }
-    private int _countedSeconds;
-
-    /// <summary>
-    /// If the current playing track has been successfully scrobbled.
-    /// </summary>
-    public bool CurrentTrackScrobbled
-    {
-      get { return _currentTrackScrobbled; }
-      private set
-      {
-        _currentTrackScrobbled = value;
-        NotifyOfPropertyChange(() => CurrentTrackScrobbled);
-      }
-    }
-    private bool _currentTrackScrobbled;
-
-    /// <summary>
-    /// The artwork of the current playing album.
-    /// </summary>
-    public Uri CurrentAlbumArtwork
-    {
-      get { return _currentAlbumArtwork; }
-      private set
-      {
-        _currentAlbumArtwork = value;
-        NotifyOfPropertyChange(() => CurrentAlbumArtwork);
-      }
-    }
-    private Uri _currentAlbumArtwork;
-
-    /// <summary>
-    /// If the current track is loved on Last.fm.
-    /// </summary>
-    public bool CurrentTrackLoved
-    {
-      get { return _currentTrackLoved; }
-      private set
-      {
-        _currentTrackLoved = value;
-        NotifyOfPropertyChange(() => CurrentTrackLoved);
-      }
-    }
-    private bool _currentTrackLoved;
-
-    /// <summary>
     /// Name of the current track.
     /// </summary>
-    public string CurrentTrackName
+    public override string CurrentTrackName
     {
       get { return ITunesApp?.CurrentTrack?.Name; }
     }
@@ -99,7 +44,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Name of the current artist.
     /// </summary>
-    public string CurrentArtistName
+    public override string CurrentArtistName
     {
       get { return ITunesApp?.CurrentTrack?.Artist; }
     }
@@ -107,7 +52,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Name of the current album.
     /// </summary>
-    public string CurrentAlbumName
+    public override string CurrentAlbumName
     {
       get { return ITunesApp?.CurrentTrack?.Album; }
     }
@@ -115,18 +60,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Duration of the current track in seconds.
     /// </summary>
-    public int CurrentTrackLength
+    public override int CurrentTrackLength
     {
       get { return (ITunesApp?.CurrentTrack?.Duration).HasValue ? ITunesApp.CurrentTrack.Duration : 0; }
-    }
-
-    /// <summary>
-    /// Gets the amount of seconds needed to hear the current
-    /// track to scrobble it.
-    /// </summary>
-    public int CurrentTrackLengthToScrobble
-    {
-      get { return CurrentTrackLength / 2; }
     }
 
     public bool AutoConnect
@@ -141,15 +77,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
 
     /// <summary>
-    /// Maximum of the progress bar.
-    /// Basically 50% of the track duration.
-    /// </summary>
-    public int ProgressMaximum
-    {
-      get { return CurrentTrackLength / 2; }
-    }
-
-    /// <summary>
     /// Gets if the "Disconnect" button should be enabled.
     /// </summary>
     public bool CanDisconnect
@@ -158,36 +85,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
 
     #endregion iTunes
-
-    /// <summary>
-    /// If certain controls should be enabled.
-    /// </summary>
-    public override bool EnableControls
-    {
-      get { return _enableControls; }
-      protected set
-      {
-        _enableControls = value;
-        NotifyOfPropertyChange(() => EnableControls);
-      }
-    }
-
-    /// <summary>
-    /// Gets if the client is ready to scrobble.
-    /// </summary>
-    public override bool CanScrobble
-    {
-      get { return MainViewModel.Client.Auth.Authenticated; }
-    }
-
-    /// <summary>
-    /// Gets if the preview button is enabled.
-    /// Not needed here.
-    /// </summary>
-    public override bool CanPreview
-    {
-      get { throw new NotImplementedException(); }
-    }
 
     #endregion Properties
 
@@ -222,11 +119,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     private object _lockAnchor = new object();
 
-    /// <summary>
-    /// Base URL to Last.fm music objects.
-    /// </summary>
-    private const string LASTFMURL = "https://www.last.fm/music/";
-
     #endregion Private Member
 
     /// <summary>
@@ -234,14 +126,16 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public ITunesScrobbleViewModel()
     {
+      PercentageToScrobble = 0.5;
+
       if (AutoConnect)
-        ConnectToITunes();
+        Connect();
     }
 
     /// <summary>
     /// Connects/reconnects to iTunes.
     /// </summary>
-    public async void ConnectToITunes()
+    public override async void Connect()
     {
       EnableControls = false;
       CurrentTrackScrobbled = false;
@@ -280,7 +174,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Disposes the current connection to the iTunes com.
     /// </summary>
-    public void DisconnectFromITunes()
+    public override void Disconnect()
     {
       _refreshTimer.Stop();
       _countTimer.Stop();
@@ -293,14 +187,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Gets the info of the currently playing track.
     /// </summary>
-    private void UpdateCurrentTrackInfo()
+    protected override void UpdateCurrentTrackInfo()
     {
-      NotifyOfPropertyChange(() => CurrentTrackName);
-      NotifyOfPropertyChange(() => CurrentArtistName);
-      NotifyOfPropertyChange(() => CurrentAlbumName);
-      NotifyOfPropertyChange(() => CurrentTrackLength);
-      NotifyOfPropertyChange(() => CurrentTrackLengthToScrobble);
-      NotifyOfPropertyChange(() => ProgressMaximum);
+      base.UpdateCurrentTrackInfo();
       _currentTrackID = (ITunesApp?.CurrentTrack?.trackID).HasValue ? ITunesApp.CurrentTrack.trackID : 0;
       UpdateLovedInfo();
       UpdateNowPlaying();
@@ -310,7 +199,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Checks if the current track is loved.
     /// </summary>
     /// <returns>Task.</returns>
-    private async Task UpdateLovedInfo()
+    protected override async Task UpdateLovedInfo()
     {
       if ((ITunesApp?.CurrentTrack?.trackID).HasValue)
       {
@@ -324,37 +213,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Updates the "now playing" info.
     /// </summary>
     /// <returns></returns>
-    private async Task UpdateNowPlaying()
+    protected override async Task UpdateNowPlaying()
     {
       if ((ITunesApp?.CurrentTrack?.trackID).HasValue)
         await MainViewModel.Client.Track.UpdateNowPlayingAsync(new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now));
-    }
-
-    /// <summary>
-    /// Loves / unloves the current track.
-    /// </summary>
-    /// <returns>Task.</returns>
-    public async Task SwitchLoveState()
-    {
-      EnableControls = false;
-
-      try
-      {
-        if (CurrentTrackLoved)
-          await MainViewModel.Client.Track.UnloveAsync(CurrentTrackName, CurrentArtistName);
-        else
-          await MainViewModel.Client.Track.LoveAsync(CurrentTrackName, CurrentArtistName);
-
-        await UpdateLovedInfo();
-      }
-      catch (Exception ex)
-      {
-        OnStatusUpdated("Fatal error while loving/unloving track: " + ex.Message);
-      }
-      finally
-      {
-        EnableControls = true;
-      }
     }
 
     /// <summary>
@@ -405,44 +267,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     private void _app_AboutToQuitEvent()
     {
-      DisconnectFromITunes();
-    }
-
-    /// <summary>
-    /// Gets the album artwork of the current track.
-    /// </summary>
-    /// <returns></returns>
-    private async Task FetchAlbumArtwork()
-    {
-      if (CurrentArtistName != null && CurrentAlbumName != null)
-      {
-        var album = await MainViewModel.Client.Album.GetInfoAsync(CurrentArtistName, CurrentAlbumName);
-        CurrentAlbumArtwork = album?.Content.Images.Large;
-      }
-    }
-
-    /// <summary>
-    /// Opens the Last.fm page for the current track.
-    /// </summary>
-    public void TrackClicked()
-    {
-      Process.Start(string.Format(LASTFMURL + "{0}/{1}/{2}", CurrentArtistName.Replace(' ', '+'), CurrentAlbumName.Replace(' ', '+'), CurrentTrackName.Replace(' ', '+')));
-    }
-
-    /// <summary>
-    /// Opens the Last.fm page for the current artist.
-    /// </summary>
-    public void ArtistClicked()
-    {
-      Process.Start(string.Format(LASTFMURL + "{0}", CurrentArtistName.Replace(' ', '+')));
-    }
-
-    /// <summary>
-    /// Opens the Last.fm page for the current track.
-    /// </summary>
-    public void AlbumClicked()
-    {
-      Process.Start(string.Format(LASTFMURL + "{0}/{1}", CurrentArtistName.Replace(' ', '+'), CurrentAlbumName.Replace(' ', '+')));
+      Disconnect();
     }
 
     /// <summary>
@@ -498,14 +323,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           _countTimer.Start();
         }
       }
-    }
-
-    /// <summary>
-    /// Does nothing here.
-    /// </summary>
-    public override void Preview()
-    {
-      throw new NotImplementedException();
     }
   }
 }

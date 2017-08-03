@@ -154,6 +154,9 @@
     <Compile Include="Views\ScrobbleViews\ConfigureCSVParserView.xaml.cs">
       <DependentUpon>ConfigureCSVParserView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ScrobbleViews\MediaPlayerScrobbleControl.xaml.cs">
+      <DependentUpon>MediaPlayerScrobbleControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ScrobbleViews\SelectScrobbleTimeControl.xaml.cs">
       <DependentUpon>SelectScrobbleTimeControl.xaml</DependentUpon>
     </Compile>
@@ -174,9 +177,6 @@
     </Compile>
     <Compile Include="Views\ScrobbleViews\FriendScrobbleView.xaml.cs">
       <DependentUpon>FriendScrobbleView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ScrobbleViews\ITunesScrobbleView.xaml.cs">
-      <DependentUpon>ITunesScrobbleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
@@ -224,6 +224,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ScrobbleViews\MediaPlayerScrobbleControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ScrobbleViews\SelectScrobbleTimeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -249,10 +253,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ScrobbleViews\FriendScrobbleView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ScrobbleViews\ITunesScrobbleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

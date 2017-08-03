@@ -44,7 +44,10 @@
             <views:MediaPlayerDatabaseScrobbleView DataContext="{Binding MediaPlayerDatabaseScrobbleViewModel}"/>
           </TabItem>
           <TabItem Header="iTunes Scrobble">
-            <views:ITunesScrobbleView DataContext="{Binding ITunesScrobbleVM}"/>
+            <scrobbleViews:MediaPlayerScrobbleControl DataContext="{Binding ITunesScrobbleVM}"/>
+          </TabItem>
+          <TabItem Header="Spotify Scrobble">
+            <scrobbleViews:MediaPlayerScrobbleControl DataContext="{Binding SpotifyScrobbleVM}"/>
           </TabItem>
           <TabItem Header="SetlistFM Scrobble">
             <scrobbleViews:SetlistFMScrobbleView DataContext="{Binding SetlistFMScrobbleVM}"/>

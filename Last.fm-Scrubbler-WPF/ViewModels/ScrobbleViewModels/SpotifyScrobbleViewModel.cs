@@ -13,49 +13,46 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
   {
     #region Properties
 
-    public override bool CanScrobble => throw new NotImplementedException();
-
-    public override bool CanPreview => throw new NotImplementedException();
-
-    public override bool EnableControls { get => throw new NotImplementedException(); protected set => throw new NotImplementedException(); }
-
-    public bool IsSpotifyConnected
-    {
-      get { return _isSpotifyConnected; }
-      private set
-      {
-        _isSpotifyConnected = value;
-        NotifyOfPropertyChange(() => IsSpotifyConnected);
-      }
-    }
-
     public override string CurrentTrackName => _currentResponse?.Track?.TrackResource?.Name;
 
     public override string CurrentArtistName => _currentResponse?.Track?.ArtistResource?.Name;
 
     public override string CurrentAlbumName => _currentResponse?.Track?.AlbumResource?.Name;
 
-    public override int CurrentTrackLength => (int)_currentResponse?.Track?.Length;
+    public override int CurrentTrackLength => (_currentResponse == null ? 0 : _currentResponse.Track.Length);
 
-    private bool _isSpotifyConnected;
+
 
     #endregion Properties
 
     #region Member
 
+    /// <summary>
+    /// Connection to the local Spotify client.
+    /// </summary>
     private SpotifyLocalAPI _spotify;
+
+    /// <summary>
+    /// Info about the current Spotify status.
+    /// </summary>
     private StatusResponse _currentResponse;
 
     #endregion Member
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public SpotifyScrobbleViewModel()
     {
       _spotify = new SpotifyLocalAPI();
     }
 
+    /// <summary>
+    /// Connects to the Spotify client.
+    /// </summary>
     public override void Connect()
     {
-      if (IsSpotifyConnected)
+      if (IsConnected)
         DisconnectEvents();
 
       if (!SpotifyLocalAPI.IsSpotifyRunning())
@@ -72,7 +69,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       if (!_spotify.Connect())
       {
         OnStatusUpdated("Error connecting to Spotify: Unknown error");
-        IsSpotifyConnected = false;
+        IsConnected = false;
       }
       else
       {
@@ -87,7 +84,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       _spotify.OnTrackChange += _spotify_OnTrackChange;
       _spotify.OnTrackTimeChange += _spotify_OnTrackTimeChange;
       _spotify.ListenForEvents = true;
-      IsSpotifyConnected = true;
+      IsConnected = true;
     }
 
     private void _spotify_OnTrackTimeChange(object sender, TrackTimeChangeEventArgs e)
@@ -114,7 +111,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       _spotify.ListenForEvents = false;
       _spotify.OnTrackChange -= _spotify_OnTrackChange;
       _spotify.OnTrackTimeChange -= _spotify_OnTrackTimeChange;
-      IsSpotifyConnected = false;
+      IsConnected = false;
     }
 
     /// <summary>

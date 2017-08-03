@@ -1,15 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
 {
+  /// <summary>
+  /// Base class for all scrobblers that scrobble a media player.
+  /// </summary>
   abstract class MediaPlayerScrobbleViewModelBase : ScrobbleViewModelBase
   {
     #region Properties
+
+    /// <summary>
+    /// Indicates if a connection
+    /// to a client is established.
+    /// </summary>
+    public bool IsConnected
+    {
+      get { return _isConnected; }
+      protected set
+      {
+        _isConnected = value;
+        NotifyOfPropertyChange(() => IsConnected);
+      }
+    }
+    private bool _isConnected;
 
     /// <summary>
     /// If the current playing track has been successfully scrobbled.
@@ -31,7 +46,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     public bool CurrentTrackLoved
     {
       get { return _currentTrackLoved; }
-      private set
+      protected set
       {
         _currentTrackLoved = value;
         NotifyOfPropertyChange(() => CurrentTrackLoved);
@@ -39,9 +54,24 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     }
     private bool _currentTrackLoved;
 
+    /// <summary>
+    /// The name of the current playing track.
+    /// </summary>
     public abstract string CurrentTrackName { get; }
+
+    /// <summary>
+    /// The name of the current artist.
+    /// </summary>
     public abstract string CurrentArtistName { get; }
+
+    /// <summary>
+    /// The name of the current album.
+    /// </summary>
     public abstract string CurrentAlbumName { get; }
+
+    /// <summary>
+    /// The length of the current track.
+    /// </summary>
     public abstract int CurrentTrackLength { get; }
 
     /// <summary>
@@ -58,6 +88,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     }
     private Uri _currentAlbumArtwork;
 
+    /// <summary>
+    /// Currently amount of played seconds.
+    /// </summary>
     public int CountedSeconds
     {
       get { return _countedSeconds; }
@@ -69,6 +102,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     }
     private int _countedSeconds;
 
+    /// <summary>
+    /// The factor by which to determine the amount of
+    /// seconds to listen to the current song
+    /// needed to scrobble the song.
+    /// </summary>
     public double PercentageToScrobble
     {
       get { return _percentageToScrobble; }
@@ -83,9 +121,42 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     }
     private double _percentageToScrobble;
 
+    /// <summary>
+    /// Seconds needed to listen to the current song to scrobble it.
+    /// </summary>
     public int CurrentTrackLengthToScrobble
     {
       get { return (int)Math.Ceiling(CurrentTrackLength * PercentageToScrobble); }
+    }
+
+    /// <summary>
+    /// If certain controls should be enabled.
+    /// </summary>
+    public override bool EnableControls
+    {
+      get { return _enableControls; }
+      protected set
+      {
+        _enableControls = value;
+        NotifyOfPropertyChange(() => EnableControls);
+      }
+    }
+
+    /// <summary>
+    /// Gets if the client is ready to scrobble.
+    /// </summary>
+    public override bool CanScrobble
+    {
+      get { return MainViewModel.Client.Auth.Authenticated; }
+    }
+
+    /// <summary>
+    /// Gets if the preview button is enabled.
+    /// Not needed here.
+    /// </summary>
+    public override bool CanPreview
+    {
+      get { throw new NotImplementedException(); }
     }
 
     #endregion Properties
@@ -99,9 +170,19 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
 
     #endregion Member
 
+    /// <summary>
+    /// Connects to the client.
+    /// </summary>
     public abstract void Connect();
+
+    /// <summary>
+    /// Disconnects from the client.
+    /// </summary>
     public abstract void Disconnect();
 
+    /// <summary>
+    /// Notifies the ui of changed song info.
+    /// </summary>
     protected virtual void UpdateCurrentTrackInfo()
     {
       NotifyOfPropertyChange(() => CurrentTrackName);
@@ -113,6 +194,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       UpdateNowPlaying();
     }
 
+    /// <summary>
+    /// Loves / unloves the current track.
+    /// </summary>
+    /// <returns></returns>
     public async Task SwitchLoveState()
     {
       EnableControls = false;
@@ -136,14 +221,23 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       }
     }
 
+    /// <summary>
+    /// Checks the loved status of the current track.
+    /// </summary>
+    /// <returns>Task.</returns>
     protected abstract Task UpdateLovedInfo();
+
+    /// <summary>
+    /// Updates the now playing info.
+    /// </summary>
+    /// <returns>Task.</returns>
     protected abstract Task UpdateNowPlaying();
 
     /// <summary>
     /// Gets the album artwork of the current track.
     /// </summary>
     /// <returns>Task.</returns>
-    private async Task FetchAlbumArtwork()
+    protected async Task FetchAlbumArtwork()
     {
       if (CurrentArtistName != null && CurrentAlbumName != null)
       {
@@ -174,6 +268,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     public void AlbumClicked()
     {
       Process.Start(string.Format(LASTFMURL + "{0}/{1}", CurrentArtistName.Replace(' ', '+'), CurrentAlbumName.Replace(' ', '+')));
+    }
+
+    /// <summary>
+    /// Does nothing here.
+    /// </summary>
+    public override void Preview()
+    {
+      throw new NotImplementedException();
     }
   }
 }
