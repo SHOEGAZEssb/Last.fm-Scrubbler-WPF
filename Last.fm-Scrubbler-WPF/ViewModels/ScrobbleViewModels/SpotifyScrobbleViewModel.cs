@@ -66,16 +66,23 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
         return;
       }
 
-      if (!_spotify.Connect())
+      try
       {
-        OnStatusUpdated("Error connecting to Spotify: Unknown error");
-        IsConnected = false;
+        if (!_spotify.Connect())
+        {
+          OnStatusUpdated("Error connecting to Spotify: Unknown error");
+          IsConnected = false;
+        }
+        else
+        {
+          ConnectEvents();
+          _currentResponse = _spotify.GetStatus();
+          UpdateCurrentTrackInfo();
+        }
       }
-      else
+      catch(Exception ex)
       {
-        ConnectEvents();
-        _currentResponse = _spotify.GetStatus();
-        UpdateCurrentTrackInfo();
+        OnStatusUpdated("Fatal error connecting to Spotify: " + ex.Message);
       }
     }
 
@@ -158,16 +165,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     }
 
     public override void Disconnect()
-    {
-      throw new NotImplementedException();
-    }
-
-    protected override Task UpdateLovedInfo()
-    {
-      throw new NotImplementedException();
-    }
-
-    protected override Task UpdateNowPlaying()
     {
       throw new NotImplementedException();
     }

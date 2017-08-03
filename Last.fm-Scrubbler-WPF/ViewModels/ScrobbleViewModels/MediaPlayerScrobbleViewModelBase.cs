@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IF.Lastfm.Core.Objects;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -195,6 +196,30 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     }
 
     /// <summary>
+    /// Checks if the current track is loved.
+    /// </summary>
+    /// <returns>Task.</returns>
+    protected async Task UpdateLovedInfo()
+    {
+      if (CurrentTrackName != null && CurrentArtistName != null && MainViewModel.Client.Auth.UserSession != null)
+      {
+        var info = await MainViewModel.Client.Track.GetInfoAsync(CurrentTrackName, CurrentArtistName, MainViewModel.Client.Auth.UserSession.Username);
+        if (info.Success)
+          CurrentTrackLoved = info.Content.IsLoved.Value;
+      }
+    }
+
+    /// <summary>
+    /// Updates the "now playing" info.
+    /// </summary>
+    /// <returns></returns>
+    protected async Task UpdateNowPlaying()
+    {
+      if (CurrentTrackName != null && CurrentArtistName != null)
+        await MainViewModel.Client.Track.UpdateNowPlayingAsync(new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now));
+    }
+
+    /// <summary>
     /// Loves / unloves the current track.
     /// </summary>
     /// <returns></returns>
@@ -220,18 +245,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
         EnableControls = true;
       }
     }
-
-    /// <summary>
-    /// Checks the loved status of the current track.
-    /// </summary>
-    /// <returns>Task.</returns>
-    protected abstract Task UpdateLovedInfo();
-
-    /// <summary>
-    /// Updates the now playing info.
-    /// </summary>
-    /// <returns>Task.</returns>
-    protected abstract Task UpdateNowPlaying();
 
     /// <summary>
     /// Gets the album artwork of the current track.

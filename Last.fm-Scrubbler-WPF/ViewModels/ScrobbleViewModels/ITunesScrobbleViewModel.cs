@@ -196,30 +196,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
 
     /// <summary>
-    /// Checks if the current track is loved.
-    /// </summary>
-    /// <returns>Task.</returns>
-    protected override async Task UpdateLovedInfo()
-    {
-      if ((ITunesApp?.CurrentTrack?.trackID).HasValue)
-      {
-        var info = await MainViewModel.Client.Track.GetInfoAsync(CurrentTrackName, CurrentArtistName, MainViewModel.Client.Auth.UserSession.Username);
-        if (info.Success)
-          CurrentTrackLoved = info.Content.IsLoved.Value;
-      }
-    }
-
-    /// <summary>
-    /// Updates the "now playing" info.
-    /// </summary>
-    /// <returns></returns>
-    protected override async Task UpdateNowPlaying()
-    {
-      if ((ITunesApp?.CurrentTrack?.trackID).HasValue)
-        await MainViewModel.Client.Track.UpdateNowPlayingAsync(new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now));
-    }
-
-    /// <summary>
     /// Checks if the current playing song is still the same.
     /// If not, prepare for new track.
     /// </summary>
