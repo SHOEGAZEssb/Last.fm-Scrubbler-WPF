@@ -47,8 +47,8 @@
         <Style TargetType="Button">
           <Setter Property="Content" Value="Reconnect"/>
           <Style.Triggers>
-            <DataTrigger Binding="{Binding IsConnected}" Value="True">
-              <Setter Property="Content" Value="Connect to iTunes"/>
+            <DataTrigger Binding="{Binding IsConnected}" Value="False">
+              <Setter Property="Content" Value="Connect"/>
             </DataTrigger>
           </Style.Triggers>
         </Style>

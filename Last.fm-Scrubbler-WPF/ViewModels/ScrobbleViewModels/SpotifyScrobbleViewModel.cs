@@ -21,8 +21,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
 
     public override int CurrentTrackLength => (_currentResponse == null ? 0 : _currentResponse.Track.Length);
 
-
-
     #endregion Properties
 
     #region Member
@@ -44,6 +42,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// </summary>
     public SpotifyScrobbleViewModel()
     {
+      PercentageToScrobble = 0.5;
       _spotify = new SpotifyLocalAPI();
     }
 
@@ -96,7 +95,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
 
     private void _spotify_OnTrackTimeChange(object sender, TrackTimeChangeEventArgs e)
     {
-      CountedSeconds = (int)e.TrackTime;
+      CountedSeconds++;
 
       if (CountedSeconds == CurrentTrackLengthToScrobble)
         Scrobble();
@@ -119,6 +118,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       _spotify.OnTrackChange -= _spotify_OnTrackChange;
       _spotify.OnTrackTimeChange -= _spotify_OnTrackTimeChange;
       IsConnected = false;
+    }
+
+    protected override void UpdateCurrentTrackInfo()
+    {
+      base.UpdateCurrentTrackInfo();
+      FetchAlbumArtwork();
     }
 
     /// <summary>
