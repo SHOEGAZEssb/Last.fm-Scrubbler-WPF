@@ -64,6 +64,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\SetlistFmApi.dll</HintPath>
     </Reference>
+    <Reference Include="SpotifyAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SpotifyAPI-NET.2.15.1\lib\SpotifyAPI.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -109,9 +112,11 @@
     <Compile Include="ViewModels\ExtraFunctions\CSVDownloaderViewModel.cs" />
     <Compile Include="ViewModels\ExtraFunctions\PasteYourTasteViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ITunesScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\MediaPlayerScrobbleViewModelBase.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobblePreviewViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobbleTimeViewModelBase.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\SetlistFMScrobbleViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\SpotifyScrobbleViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\ConfigureCSVParserViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\FetchedSetlistViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
@@ -149,6 +154,9 @@
     <Compile Include="Views\ScrobbleViews\ConfigureCSVParserView.xaml.cs">
       <DependentUpon>ConfigureCSVParserView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ScrobbleViews\MediaPlayerScrobbleControl.xaml.cs">
+      <DependentUpon>MediaPlayerScrobbleControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ScrobbleViews\SelectScrobbleTimeControl.xaml.cs">
       <DependentUpon>SelectScrobbleTimeControl.xaml</DependentUpon>
     </Compile>
@@ -169,9 +177,6 @@
     </Compile>
     <Compile Include="Views\ScrobbleViews\FriendScrobbleView.xaml.cs">
       <DependentUpon>FriendScrobbleView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ScrobbleViews\ITunesScrobbleView.xaml.cs">
-      <DependentUpon>ITunesScrobbleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
@@ -219,6 +224,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ScrobbleViews\MediaPlayerScrobbleControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ScrobbleViews\SelectScrobbleTimeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -244,10 +253,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ScrobbleViews\FriendScrobbleView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ScrobbleViews\ITunesScrobbleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

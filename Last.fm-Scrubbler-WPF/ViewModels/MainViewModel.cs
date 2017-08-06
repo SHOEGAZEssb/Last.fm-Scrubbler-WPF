@@ -5,6 +5,7 @@ using Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using Last.fm_Scrubbler_WPF.Views;
 using Last.fm_Scrubbler_WPF.Views.ExtraFunctions;
+using Last.fm_Scrubbler_WPF.Views.ScrobbleViews;
 using System;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
@@ -154,7 +155,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private MediaPlayerDatabaseScrobbleViewModel _mediaPlayerDatabaseScrobbleViewModel;
 
     /// <summary>
-    /// ViewModel for the <see cref="ITunesScrobbleView"/>.
+    /// ViewModel for the iTunes <see cref="MediaPlayerScrobbleControl"/>.
     /// </summary>
     public ITunesScrobbleViewModel ITunesScrobbleVM
     {
@@ -166,6 +167,20 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       }
     }
     private ITunesScrobbleViewModel _iTunesScrobbleVM;
+
+    /// <summary>
+    /// ViewModel for the Spotify <see cref="MediaPlayerScrobbleControl"/>.
+    /// </summary>
+    public SpotifyScrobbleViewModel SpotifyScrobbleVM
+    {
+      get { return _spotifyScrobbleVM; }
+      private set
+      {
+        _spotifyScrobbleVM = value;
+        NotifyOfPropertyChange(() => SpotifyScrobbleVM);
+      }
+    }
+    private SpotifyScrobbleViewModel _spotifyScrobbleVM;
 
     public SetlistFMScrobbleViewModel SetlistFMScrobbleVM
     {
@@ -291,6 +306,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       MediaPlayerDatabaseScrobbleViewModel.StatusUpdated += StatusUpdated;
       ITunesScrobbleVM = new ITunesScrobbleViewModel();
       ITunesScrobbleVM.StatusUpdated += StatusUpdated;
+      SpotifyScrobbleVM = new SpotifyScrobbleViewModel();
+      SpotifyScrobbleVM.StatusUpdated += StatusUpdated;
       SetlistFMScrobbleVM = new SetlistFMScrobbleViewModel();
       SetlistFMScrobbleVM.StatusUpdated += StatusUpdated;
 
