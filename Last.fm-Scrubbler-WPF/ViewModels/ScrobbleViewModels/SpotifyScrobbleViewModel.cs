@@ -102,11 +102,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// </summary>
     public override void Connect()
     {
-      if (IsConnected)
-        Disconnect();
-
       try
       {
+        EnableControls = false;
+
+        if (IsConnected)
+          Disconnect();
+
         SpotifyLocalAPI.RunSpotify();
         SpotifyLocalAPI.RunSpotifyWebHelper();
 
@@ -144,6 +146,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       catch (Exception ex)
       {
         OnStatusUpdated("Fatal error connecting to Spotify: " + ex.Message);
+      }
+      finally
+      {
+        EnableControls = true;
       }
     }
 
