@@ -194,8 +194,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       base.UpdateCurrentTrackInfo();
       _currentTrackID = (ITunesApp?.CurrentTrack?.trackID).HasValue ? ITunesApp.CurrentTrack.trackID : 0;
-      UpdateLovedInfo();
-      UpdateNowPlaying();
     }
 
     /// <summary>
