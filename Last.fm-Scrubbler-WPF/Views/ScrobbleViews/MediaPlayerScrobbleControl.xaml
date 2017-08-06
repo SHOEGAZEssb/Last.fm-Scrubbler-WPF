@@ -60,7 +60,18 @@
       </i:Interaction.Triggers>
     </Button>
 
-    <Button Grid.Row="0" Grid.Column="6" Content="Disconnect" IsEnabled="{Binding CanDisconnect}">
+    <Button Grid.Row="0" Grid.Column="6" Content="Disconnect">
+      <Button.Style>
+        <Style TargetType="Button">
+          <Setter Property="IsEnabled" Value="False"/>
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding IsConnected}" Value="True">
+              <Setter Property="IsEnabled" Value="True"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Button.Style>
+
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="Disconnect"/>

@@ -28,6 +28,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     private bool _isConnected;
 
     /// <summary>
+    /// When true, tries to connect to the media player on startup.
+    /// </summary>
+    public abstract bool AutoConnect { get; set; }
+
+    /// <summary>
     /// If the current playing track has been successfully scrobbled.
     /// </summary>
     public bool CurrentTrackScrobbled
@@ -257,6 +262,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
         var album = await MainViewModel.Client.Album.GetInfoAsync(CurrentArtistName, CurrentAlbumName);
         CurrentAlbumArtwork = album?.Content.Images.Large;
       }
+      else
+        CurrentAlbumArtwork = null;
     }
 
     /// <summary>

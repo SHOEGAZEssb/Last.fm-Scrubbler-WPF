@@ -5,7 +5,7 @@
     <Setting Name="Username" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="AutoConnect" Type="System.Boolean" Scope="User">
+    <Setting Name="ITunesAutoConnect" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ArtistFieldIndex" Type="System.Int32" Scope="User">
@@ -25,6 +25,9 @@
     </Setting>
     <Setting Name="DurationFieldIndex" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="SpotifyAutoConnect" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

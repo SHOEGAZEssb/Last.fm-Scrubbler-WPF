@@ -1,25 +1,54 @@
 ﻿using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Properties;
+using Last.fm_Scrubbler_WPF.Views.ScrobbleViews;
 using SpotifyAPI.Local;
 using SpotifyAPI.Local.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
 {
+  /// <summary>
+  /// ViewModel for the Spotify <see cref="MediaPlayerScrobbleControl"/>
+  /// </summary>
   class SpotifyScrobbleViewModel : MediaPlayerScrobbleViewModelBase
   {
     #region Properties
 
+    /// <summary>
+    /// When true, tries to connect to Spotify on startup.
+    /// </summary>
+    public override bool AutoConnect
+    {
+      get { return Settings.Default.SpotifyAutoConnect; }
+      set
+      {
+        Settings.Default.SpotifyAutoConnect = value;
+        Settings.Default.Save();
+        NotifyOfPropertyChange(() => AutoConnect);
+      }
+    }
+
+    /// <summary>
+    /// The name of the current playing track.
+    /// </summary>
     public override string CurrentTrackName => _currentResponse?.Track?.TrackResource?.Name;
 
+    /// <summary>
+    /// The name of the current artist.
+    /// </summary>
     public override string CurrentArtistName => _currentResponse?.Track?.ArtistResource?.Name;
 
+    /// <summary>
+    /// The name of the current album.
+    /// </summary>
     public override string CurrentAlbumName => _currentResponse?.Track?.AlbumResource?.Name;
 
-    public override int CurrentTrackLength => (_currentResponse == null ? 0 : _currentResponse.Track.Length);
+    /// <summary>
+    /// The length of the current track.
+    /// </summary>
+    public override int CurrentTrackLength => ((_currentResponse == null ||_currentResponse.Track == null) ? 0 : _currentResponse.Track.Length);
 
     #endregion Properties
 
@@ -35,6 +64,21 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// </summary>
     private StatusResponse _currentResponse;
 
+    /// <summary>
+    /// Timer counting the played seconds.
+    /// </summary>
+    private Timer _counterTimer;
+
+    /// <summary>
+    /// Timer updating the <see cref="_currentResponse"/>.
+    /// </summary>
+    private Timer _refreshTimer;
+
+    /// <summary>
+    /// Uri of the last played track.
+    /// </summary>
+    private string _lastTrack;
+
     #endregion Member
 
     /// <summary>
@@ -44,6 +88,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     {
       PercentageToScrobble = 0.5;
       _spotify = new SpotifyLocalAPI();
+      _counterTimer = new Timer(1000);
+      _counterTimer.Elapsed += _counterTimer_Elapsed;
+      _refreshTimer = new Timer(1000);
+      _refreshTimer.Elapsed += _refreshTimer_Elapsed;
+
+      if (AutoConnect)
+        Connect();
     }
 
     /// <summary>
@@ -52,48 +103,103 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     public override void Connect()
     {
       if (IsConnected)
-        DisconnectEvents();
-
-      if (!SpotifyLocalAPI.IsSpotifyRunning())
-      {
-        OnStatusUpdated("Error connecting to Spotify: Client not running");
-        return;
-      }
-      if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning())
-      {
-        OnStatusUpdated("Error connecting to Spotify: WebHelper not running");
-        return;
-      }
+        Disconnect();
 
       try
       {
+        SpotifyLocalAPI.RunSpotify();
+        SpotifyLocalAPI.RunSpotifyWebHelper();
+
+        if (!SpotifyLocalAPI.IsSpotifyRunning())
+        {
+          OnStatusUpdated("Error connecting to Spotify: Client not running");
+          return;
+        }
+        if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning())
+        {
+          OnStatusUpdated("Error connecting to Spotify: WebHelper not running");
+          return;
+        }
+
         if (!_spotify.Connect())
         {
           OnStatusUpdated("Error connecting to Spotify: Unknown error");
-          IsConnected = false;
         }
         else
         {
           ConnectEvents();
           _currentResponse = _spotify.GetStatus();
           UpdateCurrentTrackInfo();
+
+          _refreshTimer.Start();
+
+          if (_currentResponse.Playing)
+            _counterTimer.Start();
+          else
+            _counterTimer.Stop();
+
+          IsConnected = true;
         }
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         OnStatusUpdated("Fatal error connecting to Spotify: " + ex.Message);
       }
     }
 
-    private void ConnectEvents()
+    /// <summary>
+    /// Disconnects from the Spotify client.
+    /// </summary>
+    public override void Disconnect()
     {
-      _spotify.OnTrackChange += _spotify_OnTrackChange;
-      _spotify.OnTrackTimeChange += _spotify_OnTrackTimeChange;
-      _spotify.ListenForEvents = true;
-      IsConnected = true;
+      _counterTimer.Stop();
+      _refreshTimer.Stop();
+      DisconnectEvents();
+      _spotify.Dispose();
+      _currentResponse = null;
+      IsConnected = false;
+      UpdateCurrentTrackInfo();
     }
 
-    private void _spotify_OnTrackTimeChange(object sender, TrackTimeChangeEventArgs e)
+    /// <summary>
+    /// Connects the necessary Spotify events.
+    /// </summary>
+    private void ConnectEvents()
+    {
+      _spotify.OnPlayStateChange += _spotify_OnPlayStateChange;
+      _spotify.ListenForEvents = true;
+    }
+
+    /// <summary>
+    /// Disconnects the Spotify events.
+    /// </summary>
+    private void DisconnectEvents()
+    {
+      _spotify.ListenForEvents = false;
+      _spotify.OnPlayStateChange -= _spotify_OnPlayStateChange;
+    }
+
+    /// <summary>
+    /// Starts or stops the <see cref="_counterTimer"/> depending
+    /// on the Spotify play state.
+    /// </summary>
+    /// <param name="sender">Ignored.</param>
+    /// <param name="e">EventArgs containing the current play state.</param>
+    private void _spotify_OnPlayStateChange(object sender, PlayStateEventArgs e)
+    {
+      if (e.Playing)
+        _counterTimer.Start();
+      else
+        _counterTimer.Stop();
+    }
+
+    /// <summary>
+    /// Counts the listened seconds and scrobbles when
+    /// the user listened long enough.
+    /// </summary>
+    /// <param name="sender">Ignored.</param>
+    /// <param name="e">Ignored.</param>
+    private void _counterTimer_Elapsed(object sender, ElapsedEventArgs e)
     {
       CountedSeconds++;
 
@@ -101,25 +207,34 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
         Scrobble();
     }
 
-    private void _spotify_OnTrackChange(object sender, TrackChangeEventArgs e)
+    /// <summary>
+    /// Updates the Spotify info.
+    /// Disconnects if we can't a track.
+    /// </summary>
+    /// <param name="sender">Ignored.</param>
+    /// <param name="e">Ignored.</param>
+    private void _refreshTimer_Elapsed(object sender, ElapsedEventArgs e)
     {
-      if (e.NewTrack.TrackResource.Uri != e.OldTrack.TrackResource.Uri)
+      _lastTrack = _currentResponse?.Track?.TrackResource.Uri;
+      _currentResponse = _spotify.GetStatus();
+
+      if (_currentResponse.Track == null)
+      {
+        Disconnect();
+        return;
+      }
+
+      if (_lastTrack != _currentResponse.Track.TrackResource.Uri)
+      {
+        CountedSeconds = 0;
+        CurrentTrackScrobbled = false;
         UpdateCurrentTrackInfo();
-
-      CountedSeconds = 0;
-      CurrentTrackScrobbled = false;
-
-      // repeat?
+      }
     }
 
-    private void DisconnectEvents()
-    {
-      _spotify.ListenForEvents = false;
-      _spotify.OnTrackChange -= _spotify_OnTrackChange;
-      _spotify.OnTrackTimeChange -= _spotify_OnTrackTimeChange;
-      IsConnected = false;
-    }
-
+    /// <summary>
+    /// Notifies the ui of new track info.
+    /// </summary>
     protected override void UpdateCurrentTrackInfo()
     {
       base.UpdateCurrentTrackInfo();
@@ -127,13 +242,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     }
 
     /// <summary>
-    /// Can't happen here.
+    /// Scrobbles the currently playing track.
     /// </summary>
-    public override void Preview()
-    {
-      throw new NotImplementedException();
-    }
-
+    /// <returns>Task.</returns>
     public override async Task Scrobble()
     {
       if (CanScrobble && !CurrentTrackScrobbled && !_currentResponse.Track.IsAd())
@@ -167,11 +278,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
           EnableControls = true;
         }
       }
-    }
-
-    public override void Disconnect()
-    {
-      throw new NotImplementedException();
     }
   }
 }

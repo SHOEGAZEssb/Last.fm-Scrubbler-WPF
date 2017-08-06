@@ -38,12 +38,12 @@ namespace Last.fm_Scrubbler_WPF.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool AutoConnect {
+        public bool ITunesAutoConnect {
             get {
-                return ((bool)(this["AutoConnect"]));
+                return ((bool)(this["ITunesAutoConnect"]));
             }
             set {
-                this["AutoConnect"] = value;
+                this["ITunesAutoConnect"] = value;
             }
         }
         
@@ -116,6 +116,18 @@ namespace Last.fm_Scrubbler_WPF.Properties {
             }
             set {
                 this["DurationFieldIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SpotifyAutoConnect {
+            get {
+                return ((bool)(this["SpotifyAutoConnect"]));
+            }
+            set {
+                this["SpotifyAutoConnect"] = value;
             }
         }
     }

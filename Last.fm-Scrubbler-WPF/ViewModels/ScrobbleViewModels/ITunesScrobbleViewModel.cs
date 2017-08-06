@@ -65,12 +65,15 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       get { return (ITunesApp?.CurrentTrack?.Duration).HasValue ? ITunesApp.CurrentTrack.Duration : 0; }
     }
 
-    public bool AutoConnect
+    /// <summary>
+    /// When true, tries to connect to iTunes on startup.
+    /// </summary>
+    public override bool AutoConnect
     {
-      get { return Settings.Default.AutoConnect; }
+      get { return Settings.Default.ITunesAutoConnect; }
       set
       {
-        Settings.Default.AutoConnect = value;
+        Settings.Default.ITunesAutoConnect = value;
         Settings.Default.Save();
         NotifyOfPropertyChange(() => AutoConnect);
       }
