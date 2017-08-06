@@ -125,7 +125,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         using (OpenFileDialog ofd = new OpenFileDialog())
         {
           ofd.Multiselect = true;
-          ofd.Filter = "Music Files|*.mp3;*.m4a;*.wma";
+          ofd.Filter = "Music Files|*.flac;*.mp3;*.m4a;*.wma";
 
           if (ofd.ShowDialog() == DialogResult.OK)
           {
