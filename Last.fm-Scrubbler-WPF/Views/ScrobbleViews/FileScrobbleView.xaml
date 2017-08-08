@@ -71,7 +71,8 @@
       </Button>
     </Grid>
 
-    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7"  VerticalAlignment="Stretch" ItemsSource="{Binding LoadedFiles}" SelectionMode="Extended" local:GridViewSort.AutoSort="True">
+    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7"  VerticalAlignment="Stretch" ItemsSource="{Binding LoadedFiles}" SelectionMode="Extended" 
+              local:GridViewSort.AutoSort="True" AllowDrop="True">
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Scrobble?" local:GridViewSort.PropertyName="ToScrobble">
@@ -131,6 +132,14 @@
           <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
         </Style>
       </ListView.ItemContainerStyle>
+
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Drop">
+          <cal:ActionMessage MethodName="HandleDrop">
+            <cal:Parameter Value="$eventArgs"/>
+          </cal:ActionMessage>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
     </ListView>
 
     <local:ScrobbleButtonControl Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="5"/>

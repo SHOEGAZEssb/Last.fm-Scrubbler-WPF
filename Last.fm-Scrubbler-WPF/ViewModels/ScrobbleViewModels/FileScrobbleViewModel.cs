@@ -128,55 +128,79 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           ofd.Filter = "Music Files|*.flac;*.mp3;*.m4a;*.wma";
 
           if (ofd.ShowDialog() == DialogResult.OK)
-          {
-            OnStatusUpdated("Trying to parse selected files...");
-            List<string> errors = new List<string>();
-
-            await Task.Run(() =>
-            {
-              foreach (string file in ofd.FileNames)
-              {
-                try
-                {
-                  File audioFile = File.Create(file);
-
-                  if (audioFile.Tag.FirstPerformer == null || audioFile.Tag.Title == null)
-                    throw new Exception("No artist name or track title found!");
-
-                  LoadedFileViewModel vm = new LoadedFileViewModel(audioFile);
-                  vm.ToScrobbleChanged += ToScrobbleChanged;
-                  vm.IsSelectedChanged += IsSelectedChanged;
-                  _dispatcher.Invoke(() => LoadedFiles.Add(vm));
-                }
-                catch (Exception ex)
-                {
-                  errors.Add(file + " " + ex.Message);
-                }
-              }
-            });
-
-            if (errors.Count > 0)
-            {
-              OnStatusUpdated("Finished parsing selected files. " + errors.Count + " files could not be parsed");
-              if (MessageBox.Show("Some files could not be parsed. Do you want to save a text file with the files that could not be parsed?", "Error parsing files", MessageBoxButtons.YesNo) == DialogResult.Yes)
-              {
-                SaveFileDialog sfd = new SaveFileDialog()
-                {
-                  Filter = "Text Files|*.txt"
-                };
-
-                if (sfd.ShowDialog() == DialogResult.OK)
-                  System.IO.File.WriteAllLines(sfd.FileName, errors.ToArray());
-              }
-            }
-            else
-              OnStatusUpdated("Successfully parsed selected files. Parsed " + LoadedFiles.Count + " files");
-          }
+            await ParseFiles(ofd.FileNames);
         }
       }
       catch (Exception ex)
       {
         OnStatusUpdated("Fatal error while trying to add files: " + ex.Message);
+      }
+      finally
+      {
+        EnableControls = true;
+      }
+    }
+
+    private async Task ParseFiles(string[] files)
+    {
+      OnStatusUpdated("Trying to parse selected files...");
+      List<string> errors = new List<string>();
+
+      await Task.Run(() =>
+      {
+        foreach (string file in files)
+        {
+          try
+          {
+            File audioFile = File.Create(file);
+
+            if (audioFile.Tag.FirstPerformer == null || audioFile.Tag.Title == null)
+              throw new Exception("No artist name or track title found!");
+
+            LoadedFileViewModel vm = new LoadedFileViewModel(audioFile);
+            vm.ToScrobbleChanged += ToScrobbleChanged;
+            vm.IsSelectedChanged += IsSelectedChanged;
+            _dispatcher.Invoke(() => LoadedFiles.Add(vm));
+          }
+          catch (Exception ex)
+          {
+            errors.Add(file + " " + ex.Message);
+          }
+        }
+      });
+
+      if (errors.Count > 0)
+      {
+        OnStatusUpdated("Finished parsing selected files. " + errors.Count + " files could not be parsed");
+        if (MessageBox.Show("Some files could not be parsed. Do you want to save a text file with the files that could not be parsed?", "Error parsing files", MessageBoxButtons.YesNo) == DialogResult.Yes)
+        {
+          SaveFileDialog sfd = new SaveFileDialog()
+          {
+            Filter = "Text Files|*.txt"
+          };
+
+          if (sfd.ShowDialog() == DialogResult.OK)
+            System.IO.File.WriteAllLines(sfd.FileName, errors.ToArray());
+        }
+      }
+      else
+        OnStatusUpdated("Successfully parsed selected files. Parsed " + LoadedFiles.Count + " files");
+    }
+
+    public async void HandleDrop(System.Windows.DragEventArgs e)
+    {
+      EnableControls = false;
+
+      try
+      {
+        if (e.Data.GetDataPresent(DataFormats.FileDrop))
+          await ParseFiles((string[])e.Data.GetData(DataFormats.FileDrop, false));
+        else
+          OnStatusUpdated("Incorrect drop operation");
+      }
+      catch(Exception ex)
+      {
+        OnStatusUpdated("Fatal error while adding dropped files: " + ex.Message);
       }
       finally
       {
@@ -279,6 +303,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       NotifyOfPropertyChange(() => CanPreview);
       NotifyOfPropertyChange(() => CanSelectAll);
       NotifyOfPropertyChange(() => CanSelectNone);
+      NotifyOfPropertyChange(() => CanRemoveFiles);
     }
 
     /// <summary>
