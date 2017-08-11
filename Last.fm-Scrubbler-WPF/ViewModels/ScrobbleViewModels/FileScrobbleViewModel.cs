@@ -89,7 +89,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public bool CanRemoveFiles
     {
-      get { return LoadedFiles.Any(i => i.IsSelected) && EnableControls; }
+      get { return LoadedFiles.Any(i => i.ToScrobble) && EnableControls; }
     }
 
     #endregion Properties
