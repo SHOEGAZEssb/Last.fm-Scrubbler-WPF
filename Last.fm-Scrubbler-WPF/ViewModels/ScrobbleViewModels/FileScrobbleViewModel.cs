@@ -9,6 +9,7 @@ using TagLib;
 using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Views;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
+using System.IO;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
@@ -100,6 +101,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     private Dispatcher _dispatcher;
 
+    /// <summary>
+    /// Supported file formats.
+    /// </summary>
+    private string[] SUPPORTEDFILES = new string[] { ".flac", ".mp3", ".m4a", ".wma" };
+
     #endregion Private Member
 
     /// <summary>
@@ -141,6 +147,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       }
     }
 
+    /// <summary>
+    /// Parses the metadata of the given <paramref name="files"/>.
+    /// </summary>
+    /// <param name="files">Files whose metadata to parse.</param>
+    /// <returns>Task.</returns>
     private async Task ParseFiles(string[] files)
     {
       OnStatusUpdated("Trying to parse selected files...");
@@ -152,15 +163,18 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         {
           try
           {
-            File audioFile = File.Create(file);
+            if (SUPPORTEDFILES.Contains(Path.GetExtension(file).ToLower()))
+            {
+              TagLib.File audioFile = TagLib.File.Create(file);
 
-            if (audioFile.Tag.FirstPerformer == null || audioFile.Tag.Title == null)
-              throw new Exception("No artist name or track title found!");
+              if (audioFile.Tag.FirstPerformer == null || audioFile.Tag.Title == null)
+                throw new Exception("No artist name or track title found!");
 
-            LoadedFileViewModel vm = new LoadedFileViewModel(audioFile);
-            vm.ToScrobbleChanged += ToScrobbleChanged;
-            vm.IsSelectedChanged += IsSelectedChanged;
-            _dispatcher.Invoke(() => LoadedFiles.Add(vm));
+              LoadedFileViewModel vm = new LoadedFileViewModel(audioFile);
+              vm.ToScrobbleChanged += ToScrobbleChanged;
+              vm.IsSelectedChanged += IsSelectedChanged;
+              _dispatcher.Invoke(() => LoadedFiles.Add(vm));
+            }
           }
           catch (Exception ex)
           {
@@ -187,6 +201,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         OnStatusUpdated("Successfully parsed selected files. Parsed " + LoadedFiles.Count + " files");
     }
 
+    /// <summary>
+    /// Handles files that were dropped onto the GUI.
+    /// </summary>
+    /// <param name="e">Contains info about the dropped data.</param>
     public async void HandleDrop(System.Windows.DragEventArgs e)
     {
       EnableControls = false;
@@ -194,11 +212,18 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       try
       {
         if (e.Data.GetDataPresent(DataFormats.FileDrop))
-          await ParseFiles((string[])e.Data.GetData(DataFormats.FileDrop, false));
+        {
+          string[] files = ReadDroppedFiles((string[])e.Data.GetData(DataFormats.FileDrop));
+
+          if (files.Length > 0)
+            await ParseFiles(files);
+          else
+            OnStatusUpdated("No suitable files found");
+        }
         else
           OnStatusUpdated("Incorrect drop operation");
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         OnStatusUpdated("Fatal error while adding dropped files: " + ex.Message);
       }
@@ -206,6 +231,41 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         EnableControls = true;
       }
+    }
+
+    /// <summary>
+    /// Reads out all dropped files.
+    /// Resolves folders and subfolders.
+    /// </summary>
+    /// <param name="files">Files to "extract".</param>
+    /// <returns>Array containing all files.</returns>
+    private string[] ReadDroppedFiles(string[] files)
+    {
+      // todo: this can be way better.
+      while (files.Any(i => !Path.HasExtension(i)))
+      {
+        var tempList1 = files.Where(i => !Path.HasExtension(i)).ToList();
+        List<string> tempList2 = new List<string>();
+
+        foreach (var ex in tempList1)
+        {
+          try
+          {
+            var newFiles = Directory.GetFiles(ex, "*.*", SearchOption.AllDirectories);
+            foreach (string file in newFiles)
+            {
+              tempList2.Add(file);
+            }
+          }
+          catch (IOException)
+          {
+            // swallow, probably a file without extension.
+          }
+        }
+        files = files.Where(i => Path.HasExtension(i)).Concat(tempList2).ToArray();
+      }
+
+      return files;
     }
 
     /// <summary>
@@ -254,7 +314,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         else
           OnStatusUpdated("Error while scrobbling!");
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         OnStatusUpdated("An error occurred while trying to scrobble the selected tracks. Error: " + ex.Message);
       }
@@ -284,7 +344,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       foreach (var vm in LoadedFiles.Where(i => i.ToScrobble).Reverse())
       {
         scrobbles.Add(new Scrobble(vm.LoadedFile.Tag.FirstPerformer, vm.LoadedFile.Tag.Album, vm.LoadedFile.Tag.Title, timePlayed)
-                      { AlbumArtist = vm.LoadedFile.Tag.FirstAlbumArtist, Duration = vm.LoadedFile.Properties.Duration});
+        { AlbumArtist = vm.LoadedFile.Tag.FirstAlbumArtist, Duration = vm.LoadedFile.Properties.Duration });
         timePlayed = timePlayed.Subtract(vm.LoadedFile.Properties.Duration);
       }
 
