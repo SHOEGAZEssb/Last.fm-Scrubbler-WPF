@@ -103,7 +103,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Supported file formats.
     /// </summary>
-    private string[] SUPPORTEDFILES = new string[] { ".flac", ".mp3", ".m4a", ".wma" };
+    private static readonly string[] SUPPORTEDFILES = new string[] { ".flac", ".mp3", ".m4a", ".wma" };
 
     #endregion Private Member
 
