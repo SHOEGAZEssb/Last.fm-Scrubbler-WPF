@@ -81,7 +81,7 @@
 
     <CheckBox Grid.Row="0" Grid.Column="8" VerticalAlignment="Center" Content="Auto-Connect" IsChecked="{Binding AutoConnect}">
       <CheckBox.ToolTip>
-        <ToolTip>When checked, the program will try to connect to iTunes at startup.</ToolTip>
+        <ToolTip>When checked, the program will try to connect startup.</ToolTip>
       </CheckBox.ToolTip>
     </CheckBox>
 
