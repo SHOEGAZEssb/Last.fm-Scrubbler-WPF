@@ -149,7 +149,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       try
       {
         ITunesApp = new iTunesApp();
-        ITunesApp.OnAboutToPromptUserToQuitEvent += _app_AboutToQuitEvent;
+        //ITunesApp.OnAboutToPromptUserToQuitEvent += _app_AboutToQuitEvent;
       }
       catch (Exception ex)
       {
@@ -281,14 +281,19 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
           Scrobble s = new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now) { Duration = TimeSpan.FromSeconds(CurrentTrackLength),
                                                                                                            AlbumArtist = (ITunesApp.CurrentTrack as dynamic).AlbumArtist };
-          var response = await MainViewModel.Scrobbler.ScrobbleAsync(s);
-          if (response.Success)
+          var response = await MainViewModel.CachingScrobbler.ScrobbleAsync(s);
+          if (response.Success && response.Status == IF.Lastfm.Core.Api.Enums.LastResponseStatus.Successful)
           {
             OnStatusUpdated(string.Format("Successfully scrobbled {0}!", CurrentTrackName));
             CurrentTrackScrobbled = true;
           }
+          else if (response.Status == IF.Lastfm.Core.Api.Enums.LastResponseStatus.Cached)
+          {
+            OnStatusUpdated(string.Format("Scrobbling of track {0} failed. Scrobble has been cached", CurrentTrackName));
+            CurrentTrackScrobbled = true;
+          }
           else
-            OnStatusUpdated("Error while scrobbling!");
+            OnStatusUpdated("Error while scrobbling: " + response.Status);
         }
         catch (Exception ex)
         {

@@ -266,14 +266,19 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
             Duration = TimeSpan.FromSeconds(CurrentTrackLength),
           };
 
-          var response = await MainViewModel.Scrobbler.ScrobbleAsync(s);
-          if (response.Success)
+          var response = await MainViewModel.CachingScrobbler.ScrobbleAsync(s);
+          if (response.Success && response.Status == IF.Lastfm.Core.Api.Enums.LastResponseStatus.Successful)
           {
             OnStatusUpdated(string.Format("Successfully scrobbled {0}!", CurrentTrackName));
             CurrentTrackScrobbled = true;
           }
+          else if(response.Status == IF.Lastfm.Core.Api.Enums.LastResponseStatus.Cached)
+          {
+            OnStatusUpdated(string.Format("Scrobbling of track {0} failed. Scrobble has been cached", CurrentTrackName));
+            CurrentTrackScrobbled = true;
+          }
           else
-            OnStatusUpdated("Error while scrobbling!");
+            OnStatusUpdated("Error while scrobbling: " + response.Status);
         }
         catch (Exception ex)
         {

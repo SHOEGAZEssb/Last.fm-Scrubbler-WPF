@@ -1,12 +1,15 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Scrobblers;
+using IF.Lastfm.SQLite;
 using Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using Last.fm_Scrubbler_WPF.Views;
 using Last.fm_Scrubbler_WPF.Views.ExtraFunctions;
 using Last.fm_Scrubbler_WPF.Views.ScrobbleViews;
 using System;
+using System.IO;
+using System.Windows;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
@@ -33,7 +36,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Scrobbler used to scrobble tracks.
     /// </summary>
-    public static Scrobbler Scrobbler
+    public static IScrobbler Scrobbler
     {
       get { return _scrobbler; }
       private set
@@ -42,7 +45,21 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         ClientAuthChanged?.Invoke(null, EventArgs.Empty);
       }
     }
-    private static Scrobbler _scrobbler;
+    private static IScrobbler _scrobbler;
+
+    /// <summary>
+    /// Scrobbler used to scrobble tracks.
+    /// </summary>
+    public static IScrobbler CachingScrobbler
+    {
+      get { return _cachingScrobbler; }
+      private set
+      {
+        _cachingScrobbler = value;
+        ClientAuthChanged?.Invoke(null, EventArgs.Empty);
+      }
+    }
+    private static IScrobbler _cachingScrobbler;
 
     /// <summary>
     /// ViewModel for the <see cref="SelectUserView"/>.
@@ -193,6 +210,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private SetlistFMScrobbleViewModel _setlistFMScrobbleVM;
 
+    public CacheScrobblerViewModel CacheScrobblerVM
+    {
+      get { return _cacheScrobblerVM; }
+      private set
+      {
+        _cacheScrobblerVM = value;
+        NotifyOfPropertyChange(() => CacheScrobblerVM);
+      }
+    }
+    private CacheScrobblerViewModel _cacheScrobblerVM;
+
     #endregion ScrobbleViewModels
 
     #region ExtraViewModels
@@ -310,6 +338,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       SpotifyScrobbleVM.StatusUpdated += StatusUpdated;
       SetlistFMScrobbleVM = new SetlistFMScrobbleViewModel();
       SetlistFMScrobbleVM.StatusUpdated += StatusUpdated;
+      CacheScrobblerVM = new CacheScrobblerViewModel();
+      CacheScrobblerVM.StatusUpdated += StatusUpdated;
 
       PasteYourTasteVM = new PasteYourTasteViewModel();
       PasteYourTasteVM.StatusUpdated += StatusUpdated;
@@ -338,7 +368,21 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private void UserViewModel_ActiveUserChanged(object sender, EventArgs e)
     {
       NotifyOfPropertyChange(() => StatusBarUsername);
+
+      string dbFile = Client.Auth.UserSession.Username + ".db";
+
+      try
+      {
+        if (!File.Exists(dbFile))
+          File.Create(dbFile);
+      }
+      catch(Exception ex)
+      {
+        CurrentStatus = "Error creating cache database. Error: " + ex.Message;
+      }
+
       Scrobbler = new Scrobbler(Client.Auth);
+      CachingScrobbler = new SQLiteScrobbler(Client.Auth, dbFile);
     }
 
     /// <summary>
