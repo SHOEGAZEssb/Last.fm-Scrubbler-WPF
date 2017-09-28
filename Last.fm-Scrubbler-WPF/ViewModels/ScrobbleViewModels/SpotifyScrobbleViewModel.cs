@@ -141,6 +141,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
             _counterTimer.Stop();
 
           IsConnected = true;
+          OnStatusUpdated("Successfully connected to Spotify");
         }
       }
       catch (Exception ex)

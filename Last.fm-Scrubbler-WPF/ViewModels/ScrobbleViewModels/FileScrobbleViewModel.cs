@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Threading;
-using TagLib;
 using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Views;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
@@ -104,7 +103,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Supported file formats.
     /// </summary>
-    private string[] SUPPORTEDFILES = new string[] { ".flac", ".mp3", ".m4a", ".wma" };
+    private static readonly string[] SUPPORTEDFILES = new string[] { ".flac", ".mp3", ".m4a", ".wma" };
 
     #endregion Private Member
 
