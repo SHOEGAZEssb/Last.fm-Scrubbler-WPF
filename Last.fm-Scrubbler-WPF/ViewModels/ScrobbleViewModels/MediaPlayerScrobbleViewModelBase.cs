@@ -260,7 +260,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       if (CurrentArtistName != null && CurrentAlbumName != null)
       {
         var album = await MainViewModel.Client.Album.GetInfoAsync(CurrentArtistName, CurrentAlbumName);
-        CurrentAlbumArtwork = album?.Content.Images.Large;
+        CurrentAlbumArtwork = album?.Content?.Images?.Large;
       }
       else
         CurrentAlbumArtwork = null;
