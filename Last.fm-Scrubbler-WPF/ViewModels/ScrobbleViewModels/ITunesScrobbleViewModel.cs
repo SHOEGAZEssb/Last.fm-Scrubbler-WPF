@@ -150,11 +150,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         ITunesApp = new iTunesApp();
         //ITunesApp.OnAboutToPromptUserToQuitEvent += _app_AboutToQuitEvent;
+        IsConnected = true;
       }
       catch (Exception ex)
       {
         OnStatusUpdated("Error connecting to iTunes: " + ex.Message);
         AutoConnect = false;
+        IsConnected = false;
         return;
       }
 
@@ -185,6 +187,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       NotifyOfPropertyChange(() => CanDisconnect);
       CurrentAlbumArtwork = null;
       UpdateCurrentTrackInfo();
+      IsConnected = false;
     }
 
     /// <summary>
