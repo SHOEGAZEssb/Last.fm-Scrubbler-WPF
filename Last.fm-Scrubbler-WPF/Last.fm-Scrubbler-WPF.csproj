@@ -143,6 +143,7 @@
     <Compile Include="ViewModels\ExtraFunctions\CollageCreatorViewModel.cs" />
     <Compile Include="ViewModels\ExtraFunctions\CSVDownloaderViewModel.cs" />
     <Compile Include="ViewModels\ExtraFunctions\PasteYourTasteViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\CacheScrobblerViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ITunesScrobbleViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\MediaPlayerScrobbleViewModelBase.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobblePreviewViewModel.cs" />
@@ -150,6 +151,7 @@
     <Compile Include="ViewModels\ScrobbleViewModels\SetlistFMScrobbleViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\SpotifyScrobbleViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\ConfigureCSVParserViewModel.cs" />
+    <Compile Include="ViewModels\SubViewModels\DatedScrobbleViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\FetchedSetlistViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
@@ -182,6 +184,9 @@
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobbleViewModelBase.cs" />
     <Compile Include="Views\ExtraFunctions\PasteYourTasteView.xaml.cs">
       <DependentUpon>PasteYourTasteView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScrobbleViews\CacheScrobblerView.xaml.cs">
+      <DependentUpon>CacheScrobblerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScrobbleViews\ConfigureCSVParserView.xaml.cs">
       <DependentUpon>ConfigureCSVParserView.xaml</DependentUpon>
@@ -234,6 +239,9 @@
     <Compile Include="Views\SelectUserView.xaml.cs">
       <DependentUpon>SelectUserView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SubViews\ScrobbleListView.xaml.cs">
+      <DependentUpon>ScrobbleListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SubViews\SetlistResultView.xaml.cs">
       <DependentUpon>SetlistResultView.xaml</DependentUpon>
     </Compile>
@@ -249,6 +257,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ExtraFunctions\PasteYourTasteView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScrobbleViews\CacheScrobblerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -329,6 +341,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SelectUserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SubViews\ScrobbleListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

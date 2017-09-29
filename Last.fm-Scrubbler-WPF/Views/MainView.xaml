@@ -52,6 +52,9 @@
           <TabItem Header="SetlistFM Scrobble">
             <scrobbleViews:SetlistFMScrobbleView DataContext="{Binding SetlistFMScrobbleVM}"/>
           </TabItem>
+          <TabItem Header="Scrobble Cache">
+            <scrobbleViews:CacheScrobblerView DataContext="{Binding CacheScrobblerVM}"/>
+          </TabItem>
         </TabControl>
       </TabItem>
       <TabItem Header="Extra Functions">

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IF.Lastfm.Core.Objects;
+using System;
 
 namespace Last.fm_Scrubbler_WPF.Models
 {
@@ -30,6 +31,16 @@ namespace Last.fm_Scrubbler_WPF.Models
       : base(trackName, artistName, albumName, albumArtist, duration)
     {
       Played = played;
+    }
+
+    /// <summary>
+    /// Returns a new <see cref="Scrobble"/> with infos from
+    /// this <see cref="DatedScrobble"/>.
+    /// </summary>
+    /// <returns>New Scrobble.</returns>
+    public Scrobble ToLastFMScrobble()
+    {
+      return new Scrobble(ArtistName, AlbumName, TrackName, Played) { AlbumArtist = AlbumArtist, Duration = Duration };
     }
   }
 }

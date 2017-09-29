@@ -130,5 +130,17 @@ namespace Last.fm_Scrubbler_WPF.Properties {
                 this["SpotifyAutoConnect"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AutoScrobbleCache {
+            get {
+                return ((bool)(this["AutoScrobbleCache"]));
+            }
+            set {
+                this["AutoScrobbleCache"] = value;
+            }
+        }
     }
 }
