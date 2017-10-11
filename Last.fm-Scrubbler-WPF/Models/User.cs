@@ -13,7 +13,7 @@
     public string Username { get; set; }
 
     /// <summary>
-    /// Login token of this username.
+    /// Login token of this user.
     /// </summary>
     public string Token { get; set; }
 

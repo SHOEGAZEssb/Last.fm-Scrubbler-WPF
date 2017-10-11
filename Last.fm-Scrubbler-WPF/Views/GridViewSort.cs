@@ -7,150 +7,198 @@ using System.Windows.Documents;
 
 namespace Last.fm_Scrubbler_WPF.Views
 {
+  /// <summary>
+  /// Helper class to enable sorting on a WPF GridView.
+  /// </summary>
   public class GridViewSort
   {
     #region Public attached properties
 
+    /// <summary>
+    /// Gets the value of the <see cref="CommandProperty"/>.
+    /// </summary>
+    /// <param name="obj">DependencyObject to get the property from.</param>
+    /// <returns><see cref="CommandProperty"/> value of the given <paramref name="obj"/>.</returns>
     public static ICommand GetCommand(DependencyObject obj)
     {
       return (ICommand)obj.GetValue(CommandProperty);
     }
 
+    /// <summary>
+    /// Sets the value of the <see cref="CommandProperty"/>.
+    /// </summary>
+    /// <param name="obj">DependencyObject whose property to set.</param>
+    /// <param name="value">Value to set.</param>
     public static void SetCommand(DependencyObject obj, ICommand value)
     {
       obj.SetValue(CommandProperty, value);
     }
 
-    // Using a DependencyProperty as the backing store for Command.  This enables animation, styling, binding, etc...
-    public static readonly DependencyProperty CommandProperty =
-        DependencyProperty.RegisterAttached(
-            "Command",
-            typeof(ICommand),
-            typeof(GridViewSort),
-            new UIPropertyMetadata(
-                null,
+    /// <summary>
+    /// DependencyProperty for the command to execute when sorting.
+    /// </summary>
+    public static readonly DependencyProperty CommandProperty = DependencyProperty.RegisterAttached("Command", typeof(ICommand), typeof(GridViewSort),
+            new UIPropertyMetadata(null,
                 (o, e) =>
                 {
-                  ItemsControl listView = o as ItemsControl;
-                  if (listView != null)
+                  if (o is ItemsControl listView)
                   {
                     if (!GetAutoSort(listView)) // Don't change click handler if AutoSort enabled
                     {
                       if (e.OldValue != null && e.NewValue == null)
-                      {
                         listView.RemoveHandler(GridViewColumnHeader.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
-                      }
-                      if (e.OldValue == null && e.NewValue != null)
-                      {
+                      else if (e.OldValue == null && e.NewValue != null)
                         listView.AddHandler(GridViewColumnHeader.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
-                      }
                     }
                   }
                 }
             )
         );
 
+    /// <summary>
+    /// Gets the value of the <see cref="AutoSortProperty"/>.
+    /// </summary>
+    /// <param name="obj">DependencyObject to get the property from.</param>
+    /// <returns><see cref="AutoSortProperty"/> value of the given <paramref name="obj"/>.</returns>
     public static bool GetAutoSort(DependencyObject obj)
     {
       return (bool)obj.GetValue(AutoSortProperty);
     }
 
+    /// <summary>
+    /// Sets the value of the <see cref="AutoSortProperty"/>.
+    /// </summary>
+    /// <param name="obj">DependencyObject whose property to set.</param>
+    /// <param name="value">Value to set.</param>
     public static void SetAutoSort(DependencyObject obj, bool value)
     {
       obj.SetValue(AutoSortProperty, value);
     }
 
-    // Using a DependencyProperty as the backing store for AutoSort.  This enables animation, styling, binding, etc...
-    public static readonly DependencyProperty AutoSortProperty =
-        DependencyProperty.RegisterAttached(
-            "AutoSort",
-            typeof(bool),
-            typeof(GridViewSort),
-            new UIPropertyMetadata(
-                false,
+    /// <summary>
+    /// Dependency property for the auto sorting.
+    /// </summary>
+    public static readonly DependencyProperty AutoSortProperty = DependencyProperty.RegisterAttached("AutoSort", typeof(bool), typeof(GridViewSort),
+      new UIPropertyMetadata(false,
                 (o, e) =>
                 {
-                  ListView listView = o as ListView;
-                  if (listView != null)
+                  if (o is ListView listView)
                   {
                     if (GetCommand(listView) == null) // Don't change click handler if a command is set
                     {
                       bool oldValue = (bool)e.OldValue;
                       bool newValue = (bool)e.NewValue;
                       if (oldValue && !newValue)
-                      {
                         listView.RemoveHandler(GridViewColumnHeader.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
-                      }
-                      if (!oldValue && newValue)
-                      {
+                      else if (!oldValue && newValue)
                         listView.AddHandler(GridViewColumnHeader.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
-                      }
                     }
                   }
                 }
             )
         );
 
+    /// <summary>
+    /// Gets the value of the <see cref="PropertyNameProperty"/>.
+    /// </summary>
+    /// <param name="obj">DependencyObject to get the property from.</param>
+    /// <returns><see cref="PropertyNameProperty"/> value of the given <paramref name="obj"/>.</returns>
     public static string GetPropertyName(DependencyObject obj)
     {
       return (string)obj.GetValue(PropertyNameProperty);
     }
 
+    /// <summary>
+    /// Sets the value of the <see cref="PropertyNameProperty"/>.
+    /// </summary>
+    /// <param name="obj">DependencyObject whose property to set.</param>
+    /// <param name="value">Value to set.</param>
     public static void SetPropertyName(DependencyObject obj, string value)
     {
       obj.SetValue(PropertyNameProperty, value);
     }
 
-    // Using a DependencyProperty as the backing store for PropertyName.  This enables animation, styling, binding, etc...
-    public static readonly DependencyProperty PropertyNameProperty =
-        DependencyProperty.RegisterAttached(
-            "PropertyName",
-            typeof(string),
-            typeof(GridViewSort),
-            new UIPropertyMetadata(null)
-        );
+    /// <summary>
+    /// DependencyProperty for name of the property to sort after.
+    /// </summary>
+    public static readonly DependencyProperty PropertyNameProperty = DependencyProperty.RegisterAttached("PropertyName", typeof(string), typeof(GridViewSort), new UIPropertyMetadata(null));
 
+    /// <summary>
+    /// Gets the value of the <see cref="ShowSortGlyphProperty"/>.
+    /// </summary>
+    /// <param name="obj">DependencyObject to get the property from.</param>
+    /// <returns><see cref="ShowSortGlyphProperty"/> value of the given <paramref name="obj"/>.</returns>
     public static bool GetShowSortGlyph(DependencyObject obj)
     {
       return (bool)obj.GetValue(ShowSortGlyphProperty);
     }
 
+    /// <summary>
+    /// Sets the value of the <see cref="ShowSortGlyphProperty"/>.
+    /// </summary>
+    /// <param name="obj">DependencyObject whose property to set.</param>
+    /// <param name="value">Value to set.</param>
     public static void SetShowSortGlyph(DependencyObject obj, bool value)
     {
       obj.SetValue(ShowSortGlyphProperty, value);
     }
 
-    // Using a DependencyProperty as the backing store for ShowSortGlyph.  This enables animation, styling, binding, etc...
-    public static readonly DependencyProperty ShowSortGlyphProperty =
-        DependencyProperty.RegisterAttached("ShowSortGlyph", typeof(bool), typeof(GridViewSort), new UIPropertyMetadata(true));
+    /// <summary>
+    /// DependencyProperty for whether the sort glyph should be visible or not.
+    /// </summary>
+    public static readonly DependencyProperty ShowSortGlyphProperty = DependencyProperty.RegisterAttached("ShowSortGlyph", typeof(bool), typeof(GridViewSort), new UIPropertyMetadata(true));
 
+    /// <summary>
+    /// Gets the value of the <see cref="SortGlyphAscendingProperty"/>.
+    /// </summary>
+    /// <param name="obj">DependencyObject to get the property from.</param>
+    /// <returns><see cref="SortGlyphAscendingProperty"/> value of the given <paramref name="obj"/>.</returns>
     public static ImageSource GetSortGlyphAscending(DependencyObject obj)
     {
       return (ImageSource)obj.GetValue(SortGlyphAscendingProperty);
     }
 
+    /// <summary>
+    /// Sets the value of the <see cref="SortGlyphAscendingProperty"/>.
+    /// </summary>
+    /// <param name="obj">DependencyObject whose property to set.</param>
+    /// <param name="value">Value to set.</param>
     public static void SetSortGlyphAscending(DependencyObject obj, ImageSource value)
     {
       obj.SetValue(SortGlyphAscendingProperty, value);
     }
 
-    // Using a DependencyProperty as the backing store for SortGlyphAscending.  This enables animation, styling, binding, etc...
-    public static readonly DependencyProperty SortGlyphAscendingProperty =
-        DependencyProperty.RegisterAttached("SortGlyphAscending", typeof(ImageSource), typeof(GridViewSort), new UIPropertyMetadata(null));
+    /// <summary>
+    /// DependencyProperty for the ascending sort glyph image.
+    /// </summary>
+    public static readonly DependencyProperty SortGlyphAscendingProperty = DependencyProperty.RegisterAttached("SortGlyphAscending", typeof(ImageSource), typeof(GridViewSort),
+                                                                                                               new UIPropertyMetadata(null));
 
+    /// <summary>
+    /// Gets the value of the <see cref="SortGlyphDescendingProperty"/>.
+    /// </summary>
+    /// <param name="obj">DependencyObject to get the property from.</param>
+    /// <returns><see cref="SortGlyphDescendingProperty"/> value of the given <paramref name="obj"/>.</returns>
     public static ImageSource GetSortGlyphDescending(DependencyObject obj)
     {
       return (ImageSource)obj.GetValue(SortGlyphDescendingProperty);
     }
 
+    /// <summary>
+    /// Sets the value of the <see cref="SortGlyphDescendingProperty"/>.
+    /// </summary>
+    /// <param name="obj">DependencyObject whose property to set.</param>
+    /// <param name="value">Value to set.</param>
     public static void SetSortGlyphDescending(DependencyObject obj, ImageSource value)
     {
       obj.SetValue(SortGlyphDescendingProperty, value);
     }
 
-    // Using a DependencyProperty as the backing store for SortGlyphDescending.  This enables animation, styling, binding, etc...
-    public static readonly DependencyProperty SortGlyphDescendingProperty =
-        DependencyProperty.RegisterAttached("SortGlyphDescending", typeof(ImageSource), typeof(GridViewSort), new UIPropertyMetadata(null));
+    /// <summary>
+    /// DependencyProperty for the descending sort glyph image.
+    /// </summary>
+    public static readonly DependencyProperty SortGlyphDescendingProperty = DependencyProperty.RegisterAttached("SortGlyphDescending", typeof(ImageSource), typeof(GridViewSort), 
+                                                                                                                new UIPropertyMetadata(null));
 
     #endregion
 
@@ -188,9 +236,7 @@ namespace Last.fm_Scrubbler_WPF.Views
             if (command != null)
             {
               if (command.CanExecute(propertyName))
-              {
                 command.Execute(propertyName);
-              }
             }
             else if (GetAutoSort(listView))
             {
@@ -205,6 +251,13 @@ namespace Last.fm_Scrubbler_WPF.Views
 
     #region Helper methods
 
+    /// <summary>
+    /// Gets the visual tree ancestor of the given Type from
+    /// the given <paramref name="reference"/>.
+    /// </summary>
+    /// <typeparam name="T">Ancestor type</typeparam>
+    /// <param name="reference">Object to get ancestor from.</param>
+    /// <returns></returns>
     public static T GetAncestor<T>(DependencyObject reference) where T : DependencyObject
     {
       DependencyObject parent = VisualTreeHelper.GetParent(reference);
@@ -218,6 +271,13 @@ namespace Last.fm_Scrubbler_WPF.Views
         return null;
     }
 
+    /// <summary>
+    /// Does the actual sorting.
+    /// </summary>
+    /// <param name="view">Sortable view.</param>
+    /// <param name="propertyName">Property to sort after.</param>
+    /// <param name="listView">Actual view.</param>
+    /// <param name="sortedColumnHeader">Header of the column to sort.</param>
     public static void ApplySort(ICollectionView view, string propertyName, ListView listView, GridViewColumnHeader sortedColumnHeader)
     {
       ListSortDirection direction = ListSortDirection.Ascending;
@@ -235,31 +295,29 @@ namespace Last.fm_Scrubbler_WPF.Views
 
         GridViewColumnHeader currentSortedColumnHeader = GetSortedColumnHeader(listView);
         if (currentSortedColumnHeader != null)
-        {
           RemoveSortGlyph(currentSortedColumnHeader);
-        }
       }
+
       if (!string.IsNullOrEmpty(propertyName))
       {
         view.SortDescriptions.Add(new SortDescription(propertyName, direction));
         if (GetShowSortGlyph(listView))
-          AddSortGlyph(
-              sortedColumnHeader,
-              direction,
+          AddSortGlyph(sortedColumnHeader, direction,
               direction == ListSortDirection.Ascending ? GetSortGlyphAscending(listView) : GetSortGlyphDescending(listView));
         SetSortedColumnHeader(listView, sortedColumnHeader);
       }
     }
 
+    /// <summary>
+    /// Adds a sort glyph to the header.
+    /// </summary>
+    /// <param name="columnHeader">Header to add the glyph to.</param>
+    /// <param name="direction">Direction of the glyph.</param>
+    /// <param name="sortGlyph">Image representing the glyph.</param>
     private static void AddSortGlyph(GridViewColumnHeader columnHeader, ListSortDirection direction, ImageSource sortGlyph)
     {
       AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(columnHeader);
-      adornerLayer.Add(
-          new SortGlyphAdorner(
-              columnHeader,
-              direction,
-              sortGlyph
-              ));
+      adornerLayer.Add(new SortGlyphAdorner(columnHeader, direction, sortGlyph));
     }
 
     private static void RemoveSortGlyph(GridViewColumnHeader columnHeader)
@@ -315,10 +373,7 @@ namespace Last.fm_Scrubbler_WPF.Views
           new LineSegment(new Point(x3, y2), true)
         };
 
-        PathFigure pathFigure = new PathFigure(
-            new Point(x1, y1),
-            pathSegmentCollection,
-            true);
+        PathFigure pathFigure = new PathFigure(new Point(x1, y1), pathSegmentCollection, true);
 
         PathFigureCollection pathFigureCollection = new PathFigureCollection
         {
@@ -341,9 +396,7 @@ namespace Last.fm_Scrubbler_WPF.Views
           drawingContext.DrawImage(_sortGlyph, rect);
         }
         else
-        {
           drawingContext.DrawGeometry(Brushes.LightGray, new Pen(Brushes.Gray, 1.0), GetDefaultGlyph());
-        }
       }
     }
 

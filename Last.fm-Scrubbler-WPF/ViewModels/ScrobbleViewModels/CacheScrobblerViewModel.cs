@@ -1,13 +1,8 @@
 ﻿using IF.Lastfm.Core.Objects;
-using Last.fm_Scrubbler_WPF.Models;
 using Last.fm_Scrubbler_WPF.Properties;
-using Last.fm_Scrubbler_WPF.ViewModels.SubViewModels;
 using Last.fm_Scrubbler_WPF.Views;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels

@@ -7,6 +7,9 @@ namespace Last.fm_Scrubbler_WPF.Views.ScrobbleViews
   /// </summary>
   public partial class SelectScrobbleTimeControl : UserControl
   {
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public SelectScrobbleTimeControl()
     {
       InitializeComponent();

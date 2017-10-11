@@ -9,7 +9,6 @@ using Last.fm_Scrubbler_WPF.Views.ExtraFunctions;
 using Last.fm_Scrubbler_WPF.Views.ScrobbleViews;
 using System;
 using System.IO;
-using System.Windows;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
