@@ -171,7 +171,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
               LoadedFileViewModel vm = new LoadedFileViewModel(audioFile);
               vm.ToScrobbleChanged += ToScrobbleChanged;
-              vm.IsSelectedChanged += IsSelectedChanged;
               _dispatcher.Invoke(() => LoadedFiles.Add(vm));
             }
           }
@@ -193,7 +192,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           };
 
           if (sfd.ShowDialog() == DialogResult.OK)
-            System.IO.File.WriteAllLines(sfd.FileName, errors.ToArray());
+            File.WriteAllLines(sfd.FileName, errors.ToArray());
         }
       }
       else
@@ -261,6 +260,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
             // swallow, probably a file without extension.
           }
         }
+
         files = files.Where(i => Path.HasExtension(i)).Concat(tempList2).ToArray();
       }
 
@@ -268,32 +268,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
 
     /// <summary>
-    /// Notifies the UI that the IsSelected property of a
-    /// <see cref="LoadedFileViewModel"/> has changed.
-    /// </summary>
-    /// <param name="sender">Ignored.</param>
-    /// <param name="e">Ignored.</param>
-    private void IsSelectedChanged(object sender, EventArgs e)
-    {
-      NotifyOfPropertyChange(() => CanRemoveFiles);
-    }
-
-    /// <summary>
     /// Removes the selected files.
     /// </summary>
     public void RemoveFiles()
     {
-      List<LoadedFileViewModel> toRemove = LoadedFiles.Where(i => i.IsSelected).ToList();
-      for (int i = 0; i < toRemove.Count; i++)
-      {
-        LoadedFiles.RemoveAt(LoadedFiles.IndexOf(toRemove[i]));
-      }
-
-      NotifyOfPropertyChange(() => CanRemoveFiles);
-      NotifyOfPropertyChange(() => CanScrobble);
-      NotifyOfPropertyChange(() => CanPreview);
-      NotifyOfPropertyChange(() => CanSelectAll);
-      NotifyOfPropertyChange(() => CanSelectNone);
+      LoadedFiles = new ObservableCollection<LoadedFileViewModel>(LoadedFiles.Where(i => !i.ToScrobble).ToList());
+      NotifyCollectionChanged();
     }
 
     /// <summary>
@@ -343,7 +323,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       foreach (var vm in LoadedFiles.Where(i => i.ToScrobble).Reverse())
       {
         scrobbles.Add(new Scrobble(vm.LoadedFile.Tag.FirstPerformer, vm.LoadedFile.Tag.Album, vm.LoadedFile.Tag.Title, timePlayed)
-        { AlbumArtist = vm.LoadedFile.Tag.FirstAlbumArtist, Duration = vm.LoadedFile.Properties.Duration });
+                          { AlbumArtist = vm.LoadedFile.Tag.FirstAlbumArtist, Duration = vm.LoadedFile.Properties.Duration });
         timePlayed = timePlayed.Subtract(vm.LoadedFile.Properties.Duration);
       }
 
@@ -357,6 +337,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <param name="sender">Ignored.</param>
     /// <param name="e">Ignored.</param>
     private void ToScrobbleChanged(object sender, EventArgs e)
+    {
+      NotifyCollectionChanged();
+    }
+
+    /// <summary>
+    /// Notifies the UI that something of the collection changed.
+    /// </summary>
+    private void NotifyCollectionChanged()
     {
       NotifyOfPropertyChange(() => CanScrobble);
       NotifyOfPropertyChange(() => CanPreview);

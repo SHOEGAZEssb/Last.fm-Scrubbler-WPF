@@ -71,7 +71,7 @@
       </Button>
     </Grid>
 
-    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7"  VerticalAlignment="Stretch" ItemsSource="{Binding LoadedFiles}" SelectionMode="Extended" 
+    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7"  VerticalAlignment="Stretch" ItemsSource="{Binding LoadedFiles}"
               local:GridViewSort.AutoSort="True" AllowDrop="True">
       <ListView.View>
         <GridView>
@@ -126,12 +126,6 @@
           </GridViewColumn>
         </GridView>
       </ListView.View>
-
-      <ListView.ItemContainerStyle>
-        <Style TargetType="{x:Type ListViewItem}">
-          <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
-        </Style>
-      </ListView.ItemContainerStyle>
 
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Drop">
