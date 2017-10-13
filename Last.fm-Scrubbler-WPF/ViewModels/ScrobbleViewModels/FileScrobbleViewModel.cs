@@ -43,11 +43,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         _enableControls = value;
         NotifyOfPropertyChange(() => EnableControls);
-        NotifyOfPropertyChange(() => CanScrobble);
-        NotifyOfPropertyChange(() => CanPreview);
-        NotifyOfPropertyChange(() => CanSelectAll);
-        NotifyOfPropertyChange(() => CanSelectNone);
-        NotifyOfPropertyChange(() => CanRemoveFiles);
+        NotifyCanProperties();
       }
     }
 
@@ -273,7 +269,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public void RemoveFiles()
     {
       LoadedFiles = new ObservableCollection<LoadedFileViewModel>(LoadedFiles.Where(i => !i.ToScrobble).ToList());
-      NotifyCollectionChanged();
+      NotifyCanProperties();
     }
 
     /// <summary>
@@ -338,13 +334,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <param name="e">Ignored.</param>
     private void ToScrobbleChanged(object sender, EventArgs e)
     {
-      NotifyCollectionChanged();
+      NotifyCanProperties();
     }
 
     /// <summary>
     /// Notifies the UI that something of the collection changed.
     /// </summary>
-    private void NotifyCollectionChanged()
+    private void NotifyCanProperties()
     {
       NotifyOfPropertyChange(() => CanScrobble);
       NotifyOfPropertyChange(() => CanPreview);
