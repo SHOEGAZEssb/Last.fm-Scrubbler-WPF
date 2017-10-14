@@ -226,7 +226,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         {
           HasFieldsEnclosedInQuotes = true
         };
-        parser.SetDelimiters(Settings.Default.CSVDelimiters.Split(null));
+        parser.SetDelimiters(Settings.Default.CSVDelimiters.Select(x => new string(x, 1)).ToArray());
 
         string[] fields = new string[0];
         List<string> errors = new List<string>();
