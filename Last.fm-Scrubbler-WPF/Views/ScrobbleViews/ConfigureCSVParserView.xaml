@@ -7,9 +7,15 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Title="Configure CSV Parser" Height="200" Width="300" ResizeMode="NoResize" Loaded="Window_Loaded">
+        Title="Configure CSV Parser" Height="270" Width="300" ResizeMode="NoResize" Loaded="Window_Loaded">
   <Grid>
     <Grid.RowDefinitions>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="5"/>
@@ -44,7 +50,16 @@
     <TextBlock Grid.Row="7" Grid.Column="1" Text="Timestamp Field Index:"/>
     <xctk:IntegerUpDown Grid.Row="7" Grid.Column="3" Value="{Binding TimestampFieldIndex}" Minimum="0"/>
 
-    <Button Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="4" Content="Load Defaults" HorizontalAlignment="Right">
+    <TextBlock Grid.Row="9" Grid.Column="1" Text="Album Artist Field Index:"/>
+    <xctk:IntegerUpDown Grid.Row="9" Grid.Column="3" Value="{Binding AlbumArtistFieldIndex}" Minimum="0"/>
+
+    <TextBlock Grid.Row="11" Grid.Column="1" Text="Duration Field Index:"/>
+    <xctk:IntegerUpDown Grid.Row="11" Grid.Column="3" Value="{Binding DurationFieldIndex}" Minimum="0"/>
+
+    <TextBlock Grid.Row="13" Grid.Column="1" Text="Delimiters:"/>
+    <TextBox Grid.Row="13" Grid.Column="3" Text="{Binding Delimiters}"/>
+
+    <Button Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="4" Content="Load Defaults" HorizontalAlignment="Right">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="LoadDefaults"/>
@@ -52,7 +67,7 @@
       </i:Interaction.Triggers>
     </Button>
 
-    <StackPanel Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
+    <StackPanel Grid.Row="17" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
       <Button Content="Save &amp; Close" HorizontalAlignment="Right" Margin="0,0,5,0">
         <i:Interaction.Triggers>
           <i:EventTrigger EventName="Click">

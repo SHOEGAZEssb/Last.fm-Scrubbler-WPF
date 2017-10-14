@@ -91,6 +91,19 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
       }
     }
 
+    /// <summary>
+    /// Delimiters to use when parsing csv file.
+    /// </summary>
+    public string Delimiters
+    {
+      get { return Settings.Default.CSVDelimiters; }
+      set
+      {
+        Settings.Default.CSVDelimiters = value;
+        NotifyOfPropertyChange(() => Delimiters);
+      }
+    }
+
     #endregion Properties
 
     /// <summary>
@@ -99,24 +112,34 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
     /// <param name="vm">View to close.</param>
     public void SaveAndClose(ConfigureCSVParserView vm)
     {
-      SaveSettings();
-      vm.Close();
+      if(CheckAndSaveSettings())
+        vm.Close();
     }
 
     /// <summary>
     /// Saves the settings.
     /// </summary>
-    private void SaveSettings()
+    /// <returns>True if settings were saved, false if not.</returns>
+    private bool CheckAndSaveSettings()
     {
+      string errors = string.Empty;
+
       int[] vals = new int[] { ArtistFieldIndex, AlbumFieldIndex, TrackFieldIndex, TimestampFieldIndex };
       if (vals.Distinct().Count() != vals.Length)
+        errors += "Some of the indexes are equal!";
+
+      if (Delimiters == string.Empty)
+        errors += "\rThere are no delimiters defined!";
+
+      if(errors != string.Empty)
       {
-        if (MessageBox.Show("Some of the indexes are equal, are you sure you want to save these values?", "Equal Indexes",
+       if (MessageBox.Show("There are errors:\r" + errors + "\rAre you sure you want to save these values?", "Errors",
           MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
-          return;
+          return false;
       }
 
       Settings.Default.Save();
+      return true;
     }
 
     /// <summary>
@@ -138,7 +161,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
     }
 
     /// <summary>
-    /// Loads the default values for the field indexes.
+    /// Loads the default values for the settings.
     /// </summary>
     public void LoadDefaults()
     {
@@ -148,6 +171,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
       TimestampFieldIndex = int.Parse((string)Settings.Default.Properties["TimestampFieldIndex"].DefaultValue);
       AlbumArtistFieldIndex = int.Parse((string)Settings.Default.Properties["AlbumArtistFieldIndex"].DefaultValue);
       DurationFieldIndex = int.Parse((string)Settings.Default.Properties["DurationFieldIndex"].DefaultValue);
+      Delimiters = (string)Settings.Default.Properties["CSVDelimiters"].DefaultValue;
     }
   }
 }
