@@ -163,10 +163,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         _enableControls = value;
         NotifyOfPropertyChange(() => EnableControls);
-        NotifyOfPropertyChange(() => CanScrobble);
-        NotifyOfPropertyChange(() => CanPreview);
-        NotifyOfPropertyChange(() => CanSelectAll);
-        NotifyOfPropertyChange(() => CanSelectNone);
+        NotifyCanProperties();
       }
     }
 
@@ -246,11 +243,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
               if (dateString == "" && ScrobbleMode == CSVScrobbleMode.Normal)
                 continue;
 
-              if (DateTime.TryParse(dateString, out date))
-              {
-
-              }
-              else
+              if (!DateTime.TryParse(dateString, out date))
               {
                 bool parsed = false;
                 // try different formats until succeeded
@@ -337,6 +330,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <param name="sender">Ignored.</param>
     /// <param name="e">Ignored.</param>
     private void ToScrobbleChanged(object sender, EventArgs e)
+    {
+      NotifyCanProperties();
+    }
+
+    /// <summary>
+    /// Notifies the UI of possible "Can-Property" changes.
+    /// </summary>
+    private void NotifyCanProperties()
     {
       NotifyOfPropertyChange(() => CanScrobble);
       NotifyOfPropertyChange(() => CanPreview);
