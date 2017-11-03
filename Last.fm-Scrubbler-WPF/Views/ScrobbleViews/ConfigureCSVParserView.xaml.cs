@@ -11,17 +11,6 @@ namespace Last.fm_Scrubbler_WPF.Views.ScrobbleViews
   /// </summary>
   public partial class ConfigureCSVParserView : Window
   {
-    #region Remove 'X'
-
-    private const int GWL_STYLE = -16;
-    private const int WS_SYSMENU = 0x80000;
-    [DllImport("user32.dll", SetLastError = true)]
-    private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-    [DllImport("user32.dll")]
-    private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-
-    #endregion Remove 'X'
-
     /// <summary>
     /// Constructor.
     /// </summary>
@@ -39,7 +28,7 @@ namespace Last.fm_Scrubbler_WPF.Views.ScrobbleViews
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
       var hwnd = new WindowInteropHelper(this).Handle;
-      SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
+      NativeMethods.RemoveXFromWindow(hwnd);
     }
   }
 }

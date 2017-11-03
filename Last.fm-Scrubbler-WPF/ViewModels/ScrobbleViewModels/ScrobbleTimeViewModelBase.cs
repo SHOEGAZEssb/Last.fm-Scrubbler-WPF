@@ -78,8 +78,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Notifies the UI that the current time has changed.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    /// <param name="sender">Ignored.</param>
+    /// <param name="e">Ignored.</param>
     private void _currentTimeTimer_Elapsed(object sender, ElapsedEventArgs e)
     {
       NotifyOfPropertyChange(() => Time);

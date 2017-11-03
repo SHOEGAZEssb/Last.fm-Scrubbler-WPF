@@ -198,6 +198,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private SpotifyScrobbleViewModel _spotifyScrobbleVM;
 
+    /// <summary>
+    /// ViewModel for the <see cref="SetlistFMScrobbleViewModel"/>.
+    /// </summary>
     public SetlistFMScrobbleViewModel SetlistFMScrobbleVM
     {
       get { return _setlistFMScrobbleVM; }
@@ -209,6 +212,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private SetlistFMScrobbleViewModel _setlistFMScrobbleVM;
 
+    /// <summary>
+    /// ViewModel for the <see cref="CacheScrobblerViewModel"/>.
+    /// </summary>
     public CacheScrobblerViewModel CacheScrobblerVM
     {
       get { return _cacheScrobblerVM; }

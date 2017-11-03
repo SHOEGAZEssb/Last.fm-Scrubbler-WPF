@@ -167,9 +167,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           }
         }
         else
-        {
           OnStatusUpdated("Error while fetching user info.");
-        }
       }
       finally
       {
