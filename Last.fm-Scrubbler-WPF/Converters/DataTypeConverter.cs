@@ -13,7 +13,7 @@ namespace Last.fm_Scrubbler_WPF.Converters
     /// Converts the given <paramref name="value"/> to its type.
     /// </summary>
     /// <param name="value">Object to convert.</param>
-    /// <param name="targetType"></param>
+    /// <param name="targetType">Ignored.</param>
     /// <param name="parameter">Ignored.</param>
     /// <param name="culture">Ignored.</param>
     /// <returns>Type of the given <paramref name="value"/></returns>
@@ -32,7 +32,7 @@ namespace Last.fm_Scrubbler_WPF.Converters
     /// <param name="targetType">Ignored.</param>
     /// <param name="parameter">Ignored.</param>
     /// <param name="culture">Ignored.</param>
-    /// <returns></returns>
+    /// <returns>Nothing.</returns>
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
       throw new NotImplementedException();

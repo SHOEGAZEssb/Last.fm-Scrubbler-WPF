@@ -11,33 +11,48 @@ namespace Last.fm_Scrubbler_WPF.Converters
   /// </summary>
   public class EnumDescriptionConverter : IValueConverter
   {
+    /// <summary>
+    /// Gets the enum description of the given <paramref name="enumObj"/>.
+    /// </summary>
+    /// <param name="enumObj">Enum to get the description of.</param>
+    /// <returns>Description as string.</returns>
     private string GetEnumDescription(Enum enumObj)
     {
       FieldInfo fieldInfo = enumObj.GetType().GetField(enumObj.ToString());
-
       object[] attribArray = fieldInfo.GetCustomAttributes(false);
 
       if (attribArray.Length == 0)
-      {
         return enumObj.ToString();
-      }
       else
-      {
-        DescriptionAttribute attrib = attribArray[0] as DescriptionAttribute;
-        return attrib.Description;
-      }
+        return (attribArray[0] as DescriptionAttribute).Description;
     }
 
-    object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    /// <summary>
+    /// Converts the given <paramref name="value"/> to its enum description.
+    /// </summary>
+    /// <param name="value">Enum to convert.</param>
+    /// <param name="targetType">Ignored.</param>
+    /// <param name="parameter">Ignored.</param>
+    /// <param name="culture">Ignored.</param>
+    /// <returns></returns>
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
       Enum myEnum = (Enum)value;
       string description = GetEnumDescription(myEnum);
       return description;
     }
 
-    object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    /// <summary>
+    /// Not implemented.
+    /// </summary>
+    /// <param name="value">Ignored.</param>
+    /// <param name="targetType">Ignored.</param>
+    /// <param name="parameter">Ignored.</param>
+    /// <param name="culture">Ignored.</param>
+    /// <returns>Nothing.</returns>
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      return string.Empty;
+      throw new NotImplementedException();
     }
   }
 }
