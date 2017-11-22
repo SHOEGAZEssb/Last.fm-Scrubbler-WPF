@@ -9,6 +9,7 @@ using Last.fm_Scrubbler_WPF.Views.ExtraFunctions;
 using Last.fm_Scrubbler_WPF.Views.ScrobbleViews;
 using System;
 using System.IO;
+using System.Reflection;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
@@ -18,6 +19,20 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   class MainViewModel : PropertyChangedBase
   {
     #region Properties
+
+    /// <summary>
+    /// String containing application name and version.
+    /// </summary>
+    public string TitleString
+    {
+      get { return _titleString; }
+      private set
+      {
+        _titleString = value;
+        NotifyOfPropertyChange(() => TitleString);
+      }
+    }
+    private string _titleString;
 
     /// <summary>
     /// The client used for all last.fm actions.
@@ -321,6 +336,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public MainViewModel()
     {
+      TitleString = "Last.fm Scrubbler WPF " + Assembly.GetExecutingAssembly().GetName().Version;
       CreateNewClient();
       UserViewModel = new UserViewModel();
       UserViewModel.ActiveUserChanged += UserViewModel_ActiveUserChanged;

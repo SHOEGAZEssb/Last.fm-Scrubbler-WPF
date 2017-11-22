@@ -9,7 +9,7 @@
         xmlns:scrobbleViews="clr-namespace:Last.fm_Scrubbler_WPF.Views.ScrobbleViews"
         xmlns:extraViews="clr-namespace:Last.fm_Scrubbler_WPF.Views.ExtraFunctions"
         mc:Ignorable="d"
-        Title="Last.fm Scrubbler" Height="400" Width="650" Icon="..\scrubbler_64.ico">
+        Title="{Binding TitleString}" Height="400" Width="650" Icon="..\scrubbler_64.ico">
   <i:Interaction.Triggers>
     <i:EventTrigger EventName="Closing">
       <cal:ActionMessage MethodName="MainView_Closing"/>
