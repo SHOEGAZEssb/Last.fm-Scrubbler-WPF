@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Objects;
+﻿using IF.Lastfm.Core.Api.Enums;
+using IF.Lastfm.Core.Objects;
 using iTunesLib;
 using Last.fm_Scrubbler_WPF.Properties;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
@@ -141,13 +142,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public override async void Connect()
     {
       EnableControls = false;
-      CurrentTrackScrobbled = false;
-
-      if (ITunesApp != null)
-        Dispose();
 
       try
       {
+        if (ITunesApp != null)
+          Dispose();
+
         ITunesApp = new iTunesApp();
         //ITunesApp.OnAboutToPromptUserToQuitEvent += _app_AboutToQuitEvent;
         IsConnected = true;
@@ -207,16 +207,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <param name="e">Ignored.</param>
     private void _refreshTimer_Elapsed(object sender, ElapsedEventArgs e)
     {
-      lock (_lockAnchor)
+      if (ITunesApp?.CurrentTrack?.trackID != _currentTrackID || ITunesApp?.CurrentTrack?.PlayedCount > _currentTrackPlayCount)
       {
-        if (ITunesApp?.CurrentTrack?.trackID != _currentTrackID || ITunesApp?.CurrentTrack?.PlayedCount > _currentTrackPlayCount)
-        {
-          _currentTrackPlayCount = ITunesApp.CurrentTrack.PlayedCount;
-          CountedSeconds = 0;
-          CurrentTrackScrobbled = false;
-          UpdateCurrentTrackInfo();
-          FetchAlbumArtwork();
-        }
+        _currentTrackPlayCount = ITunesApp.CurrentTrack.PlayedCount;
+        CountedSeconds = 0;
+        _countTimer.Start();
+        UpdateCurrentTrackInfo();
+        FetchAlbumArtwork().Forget();
       }
     }
 
@@ -227,17 +224,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <param name="e">Ignored.</param>
     private void _countTimer_Elapsed(object sender, ElapsedEventArgs e)
     {
-      lock (_lockAnchor)
+      // we check the playerstate manually because the events dont work.
+      if (ITunesApp?.PlayerState == ITPlayerState.ITPlayerStatePlaying)
       {
-        if (ITunesApp?.PlayerState == ITPlayerState.ITPlayerStatePlaying)
+        if (++CountedSeconds == CurrentTrackLengthToScrobble)
         {
-          CountedSeconds++;
-          if (CountedSeconds >= CurrentTrackLengthToScrobble && !CurrentTrackScrobbled)
-          {
-            // stop count timer to not trigger scrobble multiple times
-            _countTimer.Stop();
-            Scrobble();
-          }
+          // stop count timer to not trigger scrobble multiple times
+          _countTimer.Stop();
+          Scrobble().Forget(); ;
         }
       }
     }
@@ -274,7 +268,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <returns>Task.</returns>
     public override async Task Scrobble()
     {
-      if (CanScrobble)
+      if (EnableControls && CanScrobble)
       {
         EnableControls = false;
 
@@ -282,19 +276,16 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         {
           OnStatusUpdated("Trying to scrobble currently playing track...");
 
-          Scrobble s = new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now) { Duration = TimeSpan.FromSeconds(CurrentTrackLength),
-                                                                                                           AlbumArtist = (ITunesApp.CurrentTrack as dynamic).AlbumArtist };
+          Scrobble s = new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now)
+          {
+            Duration = TimeSpan.FromSeconds(CurrentTrackLength),
+            AlbumArtist = (ITunesApp.CurrentTrack as dynamic).AlbumArtist
+          };
           var response = await MainViewModel.CachingScrobbler.ScrobbleAsync(s);
-          if (response.Success && response.Status == IF.Lastfm.Core.Api.Enums.LastResponseStatus.Successful)
-          {
+          if (response.Success && response.Status == LastResponseStatus.Successful)
             OnStatusUpdated(string.Format("Successfully scrobbled {0}!", CurrentTrackName));
-            CurrentTrackScrobbled = true;
-          }
-          else if (response.Status == IF.Lastfm.Core.Api.Enums.LastResponseStatus.Cached)
-          {
+          else if (response.Status == LastResponseStatus.Cached)
             OnStatusUpdated(string.Format("Scrobbling of track {0} failed. Scrobble has been cached", CurrentTrackName));
-            CurrentTrackScrobbled = true;
-          }
           else
             OnStatusUpdated("Error while scrobbling: " + response.Status);
         }
@@ -305,7 +296,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         finally
         {
           EnableControls = true;
-          _countTimer.Start();
         }
       }
     }

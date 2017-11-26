@@ -82,7 +82,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         if (Scrobbles.Count > 0)
         {
           if (MessageBox.Show("Do you want to switch the Scrobble Mode? The CSV file will be parsed again!", "Change Scrobble Mode", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            ParseCSVFile();
+            ParseCSVFile().Forget();
         }
 
         NotifyOfPropertyChange(() => ScrobbleMode);

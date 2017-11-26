@@ -205,18 +205,7 @@
 
       <Separator Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"/>
 
-      <Label Grid.Row="2" Grid.Column="0" Content="Scrobble-Meter:" HorizontalAlignment="Right" FontWeight="Bold">
-        <Label.Style>
-          <Style TargetType="{x:Type Label}">
-            <Setter Property="Foreground" Value="Black"/>
-            <Style.Triggers>
-              <DataTrigger Binding="{Binding CurrentTrackScrobbled}" Value="true">
-                <Setter Property="Foreground" Value="DarkGreen"/>
-              </DataTrigger>
-            </Style.Triggers>
-          </Style>
-        </Label.Style>
-      </Label>
+      <Label Grid.Row="2" Grid.Column="0" Content="Scrobble-Meter:" HorizontalAlignment="Right" FontWeight="Bold"/>
       <ProgressBar Grid.Row="2" Grid.Column="2" Value="{Binding CountedSeconds, Mode=OneWay}" Maximum="{Binding CurrentTrackLengthToScrobble}"/>
       <StackPanel Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" Orientation="Horizontal">
         <Label Content="{Binding CountedSeconds}"/>

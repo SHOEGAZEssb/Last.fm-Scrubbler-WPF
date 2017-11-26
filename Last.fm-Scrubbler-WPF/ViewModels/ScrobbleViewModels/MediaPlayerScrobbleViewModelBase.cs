@@ -33,20 +33,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     public abstract bool AutoConnect { get; set; }
 
     /// <summary>
-    /// If the current playing track has been successfully scrobbled.
-    /// </summary>
-    public bool CurrentTrackScrobbled
-    {
-      get { return _currentTrackScrobbled; }
-      protected set
-      {
-        _currentTrackScrobbled = value;
-        NotifyOfPropertyChange(() => CurrentTrackScrobbled);
-      }
-    }
-    private bool _currentTrackScrobbled;
-
-    /// <summary>
     /// If the current track is loved on Last.fm.
     /// </summary>
     public bool CurrentTrackLoved
@@ -196,8 +182,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       NotifyOfPropertyChange(() => CurrentAlbumName);
       NotifyOfPropertyChange(() => CurrentTrackLength);
       NotifyOfPropertyChange(() => CurrentTrackLengthToScrobble);
-      UpdateLovedInfo();
-      UpdateNowPlaying();
+      UpdateLovedInfo().Forget();
+      UpdateNowPlaying().Forget();
+      UpdatePlayCounts().Forget();
     }
 
     /// <summary>
