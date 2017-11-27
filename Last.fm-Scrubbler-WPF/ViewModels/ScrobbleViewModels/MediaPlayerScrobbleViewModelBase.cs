@@ -184,7 +184,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       NotifyOfPropertyChange(() => CurrentTrackLengthToScrobble);
       UpdateLovedInfo().Forget();
       UpdateNowPlaying().Forget();
-      UpdatePlayCounts().Forget();
     }
 
     /// <summary>
