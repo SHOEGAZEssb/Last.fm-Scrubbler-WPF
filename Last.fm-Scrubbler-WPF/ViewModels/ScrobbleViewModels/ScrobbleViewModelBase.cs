@@ -26,7 +26,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Constructor.
     /// </summary>
     public ScrobbleViewModelBase()
-      : base()
     {
       MainViewModel.ClientAuthChanged += MainViewModel_ClientAuthChanged;
     }
