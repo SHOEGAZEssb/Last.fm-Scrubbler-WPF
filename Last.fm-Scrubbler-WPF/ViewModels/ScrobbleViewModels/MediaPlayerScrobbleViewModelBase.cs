@@ -192,7 +192,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// <returns>Task.</returns>
     protected async Task UpdateLovedInfo()
     {
-      if (CurrentTrackName != null && CurrentArtistName != null && MainViewModel.Client.Auth.UserSession != null)
+      if (CurrentTrackName != null && CurrentArtistName != null && MainViewModel.Client.Auth.Authenticated)
       {
         var info = await MainViewModel.Client.Track.GetInfoAsync(CurrentTrackName, CurrentArtistName, MainViewModel.Client.Auth.UserSession.Username);
         if (info.Success)
