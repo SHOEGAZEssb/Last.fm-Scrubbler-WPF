@@ -390,20 +390,28 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       NotifyOfPropertyChange(() => StatusBarUsername);
 
-      string dbFile = Client.Auth.UserSession.Username + ".db";
-
-      try
+      if (Client.Auth.UserSession != null)
       {
-        if (!File.Exists(dbFile))
-          File.Create(dbFile);
-      }
-      catch(Exception ex)
-      {
-        CurrentStatus = "Error creating cache database. Error: " + ex.Message;
-      }
+        string dbFile = Client.Auth.UserSession.Username + ".db";
 
-      Scrobbler = new Scrobbler(Client.Auth);
-      CachingScrobbler = new SQLiteScrobbler(Client.Auth, dbFile);
+        try
+        {
+          if (!File.Exists(dbFile))
+            File.Create(dbFile);
+        }
+        catch (Exception ex)
+        {
+          CurrentStatus = "Error creating cache database. Error: " + ex.Message;
+        }
+
+        Scrobbler = new Scrobbler(Client.Auth);
+        CachingScrobbler = new SQLiteScrobbler(Client.Auth, dbFile);
+      }
+      else
+      {
+        Scrobbler = null;
+        CachingScrobbler = null;
+      }
     }
 
     /// <summary>
