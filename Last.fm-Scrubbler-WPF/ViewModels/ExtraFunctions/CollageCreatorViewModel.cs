@@ -155,6 +155,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
       try
       {
         int numCollageItems = (int)SelectedCollageSize * (int)SelectedCollageSize;
+        PngBitmapEncoder collage = null;
 
         if (SelectedCollageType == CollageType.Artists)
         {
@@ -164,10 +165,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
           {
             OnStatusUpdated("Getting artist images...");
 
-            await StitchImagesTogether(response.Content.Select(a => new Tuple<Uri, string>(a.MainImage.ExtraLarge,
+            collage = await StitchImagesTogether(response.Content.Select(a => new Tuple<Uri, string>(a.MainImage.ExtraLarge,
               string.Format("{0}{1}Plays: {2}", a.Name, Environment.NewLine, a.PlayCount))).ToList());
-
-            OnStatusUpdated("Successfully created collage");
           }
           else
             OnStatusUpdated("Error while fetching top artists");
@@ -180,14 +179,15 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
           {
             OnStatusUpdated("Getting album images...");
 
-            await StitchImagesTogether(response.Content.Select(a => new Tuple<Uri, string>(a.Images.ExtraLarge,
+            collage = await StitchImagesTogether(response.Content.Select(a => new Tuple<Uri, string>(a.Images.ExtraLarge,
               string.Format("{0}{1}{2}{3}Plays: {4}", a.ArtistName, Environment.NewLine, a.Name, Environment.NewLine, a.PlayCount))).ToList());
-
-            OnStatusUpdated("Successfully created collage");
           }
           else
             OnStatusUpdated("Error while fetching top albums");
         }
+
+        await UploadImage(collage);
+        OnStatusUpdated("Successfully created collage");
       }
       catch (Exception ex)
       {
@@ -205,7 +205,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
     /// <param name="infos">Tuple containing the image
     /// and text to stitch together.</param>
     /// <returns>Task.</returns>
-    private async Task StitchImagesTogether(List<Tuple<Uri, string>> infos)
+    private async Task<PngBitmapEncoder> StitchImagesTogether(List<Tuple<Uri, string>> infos)
     {
       BitmapFrame[] frames = new BitmapFrame[infos.Count];
       for (int i = 0; i < frames.Length; i++)
@@ -256,7 +256,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
       PngBitmapEncoder encoder = new PngBitmapEncoder();
       encoder.Frames.Add(BitmapFrame.Create(bmp));
 
-      await UploadImage(encoder);
+      return encoder;
     }
 
     /// <summary>
@@ -269,7 +269,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
       OnStatusUpdated("Uploading image...");
       using (var w = new WebClient())
       {
-
         w.Proxy = null;
         w.Headers.Add("Authorization", "Client-ID " + "80dfa34b8899ce5");
 
@@ -284,11 +283,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
           byte[] response = null;
           await Task.Run(() => response = w.UploadValues("https://api.imgur.com/3/upload.xml", values));
 
-          var doc = XDocument.Load(new MemoryStream(response));
-
-          string link = doc.Descendants().Where(i => i.Name == "link").FirstOrDefault().Value;
-
-          Process.Start(link);
+          using (MemoryStream xMs = new MemoryStream(response))
+          {
+            var doc = XDocument.Load(xMs);
+            string link = doc.Descendants().Where(i => i.Name == "link").FirstOrDefault().Value;
+            Process.Start(link);
+          }
         }
       }
     }
