@@ -49,7 +49,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
       var response = await MainViewModel.Client.Auth.GetSessionTokenAsync(username, password.Password);
 
-      if (MainViewModel.Client.Auth.Authenticated)
+      if (response.Success && MainViewModel.Client.Auth.Authenticated)
       {
         MessageBox.Show("Successfully logged in and authenticated!");
         win.DialogResult = true;
