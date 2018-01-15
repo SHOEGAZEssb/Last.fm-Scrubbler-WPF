@@ -253,8 +253,8 @@
     <Compile Include="Views\ScrobbleViews\SelectScrobblesControl.xaml.cs">
       <DependentUpon>SelectScrobblesControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SelectUserView.xaml.cs">
-      <DependentUpon>SelectUserView.xaml</DependentUpon>
+    <Compile Include="Views\UserView.xaml.cs">
+      <DependentUpon>UserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SubViews\ScrobbleListView.xaml.cs">
       <DependentUpon>ScrobbleListView.xaml</DependentUpon>
@@ -357,7 +357,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SelectUserView.xaml">
+    <Page Include="Views\UserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

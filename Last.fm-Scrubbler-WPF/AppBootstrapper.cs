@@ -1,5 +1,7 @@
 ﻿using Caliburn.Micro;
 using Last.fm_Scrubbler_WPF.ViewModels;
+using System;
+using System.Collections.Generic;
 
 namespace Last.fm_Scrubbler_WPF
 {
@@ -8,12 +10,38 @@ namespace Last.fm_Scrubbler_WPF
   /// </summary>
   internal class AppBootstrapper : BootstrapperBase
   {
+    private SimpleContainer _container;
+
     /// <summary>
     /// Constructor.
     /// </summary>
     public AppBootstrapper()
     {
       Initialize();
+    }
+
+    protected override void Configure()
+    {
+      _container = new SimpleContainer();
+      _container.Singleton<IWindowManager, WindowManager>();
+      _container.PerRequest<MainViewModel>();
+    }
+    protected override void BuildUp(object instance)
+    {
+      _container.BuildUp(instance);
+    }
+
+    protected override object GetInstance(Type service, string key)
+    {
+      var instance = _container.GetInstance(service, key);
+      if (instance != null)
+        return instance;
+      throw new InvalidOperationException("Could not locate any instances.");
+    }
+
+    protected override IEnumerable<object> GetAllInstances(Type service)
+    {
+      return _container.GetAllInstances(service);
     }
 
     /// <summary>

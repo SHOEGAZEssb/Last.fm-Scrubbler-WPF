@@ -76,7 +76,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private static IScrobbler _cachingScrobbler;
 
     /// <summary>
-    /// ViewModel for the <see cref="SelectUserView"/>.
+    /// ViewModel for the <see cref="UserView"/>.
     /// </summary>
     public UserViewModel UserViewModel
     {
@@ -329,15 +329,30 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     private const string APISECRET = "c779028b480f6c63449c380aeebbbd63";
 
+    /// <summary>
+    /// Window manager used to display dialogs etc.
+    /// </summary>
+    private IWindowManager _windowManager;
+
     #endregion Private Member
 
     /// <summary>
     /// Constructor.
     /// </summary>
-    public MainViewModel()
+    public MainViewModel(IWindowManager windowManager)
     {
+      _windowManager = windowManager;
       TitleString = "Last.fm Scrubbler WPF " + Assembly.GetExecutingAssembly().GetName().Version;
       CreateNewClient();
+      SetupViewModels();
+      CurrentStatus = "Waiting to scrobble...";
+    }
+
+    /// <summary>
+    /// Creates the ViewModels.
+    /// </summary>
+    private void SetupViewModels()
+    {
       UserViewModel = new UserViewModel();
       UserViewModel.ActiveUserChanged += UserViewModel_ActiveUserChanged;
       UserViewModel.LoadLastUser();
@@ -368,8 +383,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       CSVDownloaderVM.StatusUpdated += StatusUpdated;
       CollageCreatorVM = new CollageCreatorViewModel();
       CollageCreatorVM.StatusUpdated += StatusUpdated;
-
-      CurrentStatus = "Waiting to scrobble...";
     }
 
     /// <summary>
@@ -425,16 +438,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
 
     /// <summary>
-    /// Shows the <see cref="LoginView"/>.
+    /// Shows the <see cref="UserView"/>.
     /// </summary>
     public void HyperlinkClicked()
     {
-      SelectUserView suv = new SelectUserView()
-      {
-        DataContext = UserViewModel
-      };
-      suv.ShowDialog();
-
+      _windowManager.ShowDialog(UserViewModel);
       NotifyOfPropertyChange(() => StatusBarUsername);
     }
 
