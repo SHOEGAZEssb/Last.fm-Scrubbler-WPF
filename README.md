@@ -98,7 +98,6 @@ This basically works like the normal Last.fm desktop app. Once you connected to 
 
 ![iTunes Scrobbling](http://i.imgur.com/TukLKzB.png)
 
-
 ### Spotify Desktop Scrobbling
 With this you can scrobble a local desktop client just like iTunes. Scrobbling songs shorter than 30 seconds will work.
 Important note: scrobblings songs on repeat does NOT work currently.
@@ -131,6 +130,6 @@ This allows you to download the data of any Last.fm user as a csv file. The form
 ![CSV Downloader](http://i.imgur.com/P7uY6Py.png)
 
 ### Collage Creator
-This allows you to create collages of your top artists and album arranged in a grid with artist or album photo. Just pick a size, enter your username and the collage will be created and uploaded to imgur and then opened in your browser. 
+This allows you to create collages of your top artists and album arranged in a grid with artist or album photo. Just pick a size, enter your username and the collage will be created and uploaded to imgur (optional) and you can save it locally.
 
 ![Collage Creator](https://i.imgur.com/S142S21.png)
