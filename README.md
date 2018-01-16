@@ -18,6 +18,7 @@ This tool will always be free, but if it was helpful to you, consider donating t
 - [File Scrobbling](#file-scrobbling)
 - [Media Player Database Scrobbling](#media-player-database-scrobbling)
 - [iTunes Scrobbling](#itunes-scrobbling)
+- [Spotify Desktop Scrobbling](#spotify-desktop-scrobbling
 - [Setlist.fm Scrobbling](#setlistfm-scrobbling)
 
 **Extra Functions**
@@ -97,6 +98,13 @@ This basically works like the normal Last.fm desktop app. Once you connected to 
 
 ![iTunes Scrobbling](http://i.imgur.com/TukLKzB.png)
 
+
+### Spotify Desktop Scrobbling
+With this you can scrobble a local desktop client just like iTunes. Scrobbling songs shorter than 30 seconds will work.
+Important note: scrobblings songs on repeat does NOT work currently.
+
+![Spotify Desktop Scrobbling](https://i.imgur.com/Aa5ChxS.png)
+
 ### SetlistFM Scrobbling
 This feature allows you to search for artists on [Setlist.fm](https://setlist.fm) and scrobble their live sets. The search is still very basic. 
 
@@ -125,4 +133,4 @@ This allows you to download the data of any Last.fm user as a csv file. The form
 ### Collage Creator
 This allows you to create collages of your top artists and album arranged in a grid with artist or album photo. Just pick a size, enter your username and the collage will be created and uploaded to imgur and then opened in your browser. 
 
-![Collage Creator](http://i.imgur.com/uTQauQa.png)
+![Collage Creator](https://i.imgur.com/S142S21.png)
