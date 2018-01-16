@@ -10,7 +10,7 @@
              xmlns:extraFuncVMs="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions"
              xmlns:conv="clr-namespace:Last.fm_Scrubbler_WPF.Converters"
              mc:Ignorable="d"
-             d:DesignHeight="30" d:DesignWidth="500">
+             d:DesignHeight="60" d:DesignWidth="500">
 
   <UserControl.Resources>
     <ObjectDataProvider MethodName="GetValues"
@@ -41,53 +41,75 @@
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto"/>
-      <ColumnDefinition Width="5"/>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="5"/>
-      <ColumnDefinition Width="Auto"/>
-      <ColumnDefinition Width="5"/>
-      <ColumnDefinition Width="Auto"/>
-      <ColumnDefinition Width="5"/>
-      <ColumnDefinition Width="Auto"/>
-      <ColumnDefinition Width="5"/>
-      <ColumnDefinition Width="Auto"/>
-      <ColumnDefinition Width="5"/>
-      <ColumnDefinition Width="Auto"/>
-      <ColumnDefinition Width="5"/>
-      <ColumnDefinition Width="Auto"/>
-      <ColumnDefinition Width="5"/>
-      <ColumnDefinition Width="Auto"/>
-    </Grid.ColumnDefinitions>
 
-    <Label Grid.Row="0" Grid.Column="0" Content="Username:"/>
-    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Username}" Style="{StaticResource EnableControlsStyle}"/>
+    <Grid Grid.Row="0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
 
-    <Label Grid.Row="0" Grid.Column="4" Content="TimeSpan:"/>
-    <ComboBox Grid.Row="0" Grid.Column="6" ItemsSource="{Binding Source={StaticResource TimeSpanDataProvider}}" SelectedValue="{Binding TimeSpan}" Style="{StaticResource EnableControlsStyle}"/>
+      <Label Grid.Row="0" Grid.Column="0" Content="Username:"/>
+      <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Username}" Style="{StaticResource EnableControlsStyle}"/>
 
-    <Label Grid.Row="0" Grid.Column="8" Content="Type:"/>
-    <ComboBox Grid.Row="0" Grid.Column="10" ItemsSource="{Binding Source={StaticResource CollageTypeDataProvider}}" SelectedValue="{Binding SelectedCollageType}"
+      <Label Grid.Row="0" Grid.Column="4" Content="TimeSpan:"/>
+      <ComboBox Grid.Row="0" Grid.Column="6" ItemsSource="{Binding Source={StaticResource TimeSpanDataProvider}}" SelectedValue="{Binding TimeSpan}" Style="{StaticResource EnableControlsStyle}"/>
+
+      <Label Grid.Row="0" Grid.Column="8" Content="Type:"/>
+      <ComboBox Grid.Row="0" Grid.Column="10" ItemsSource="{Binding Source={StaticResource CollageTypeDataProvider}}" SelectedValue="{Binding SelectedCollageType}"
               Style="{StaticResource EnableControlsStyle}"/>
 
-    <Label Grid.Row="0" Grid.Column="12" Content="Collage Size:"/>
-    <ComboBox Grid.Row="0" Grid.Column="14" ItemsSource="{Binding Source={StaticResource CollageSizeDataProvider}}" SelectedValue="{Binding SelectedCollageSize}"
+      <Label Grid.Row="0" Grid.Column="12" Content="Collage Size:"/>
+      <ComboBox Grid.Row="0" Grid.Column="14" ItemsSource="{Binding Source={StaticResource CollageSizeDataProvider}}" SelectedValue="{Binding SelectedCollageSize}"
               Style="{StaticResource EnableControlsStyle}">
-      <ComboBox.ItemTemplate>
-        <DataTemplate>
-          <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConv}}"/>
-        </DataTemplate>
-      </ComboBox.ItemTemplate>
-    </ComboBox>
+        <ComboBox.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConv}}"/>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
 
-    <Button Grid.Row="0" Grid.Column="16" Content="Create" Style="{StaticResource EnableControlsStyle}">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="CreateCollage"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
+      <Button Grid.Row="0" Grid.Column="16" Content="Create" Style="{StaticResource EnableControlsStyle}">
+        <i:Interaction.Triggers>
+          <i:EventTrigger EventName="Click">
+            <cal:ActionMessage MethodName="CreateCollage"/>
+          </i:EventTrigger>
+        </i:Interaction.Triggers>
+      </Button>
+    </Grid>
+
+    <Grid Grid.Row="2">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+
+      <CheckBox Grid.Row="0" Grid.Column="0" Content="Show Names" IsChecked="{Binding ShowNames}" VerticalAlignment="Center"/>
+      <CheckBox Grid.Row="0" Grid.Column="2" Content="Show Playcounts" IsChecked="{Binding ShowPlaycounts}" VerticalAlignment="Center"/>
+    </Grid>
   </Grid>
 </UserControl>

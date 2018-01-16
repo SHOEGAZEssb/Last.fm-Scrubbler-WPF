@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Api.Enums;
+using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Views.ExtraFunctions;
 using System;
 using System.Collections.Generic;
@@ -121,6 +122,36 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
     private CollageType _selectedCollageType;
 
     /// <summary>
+    /// If enabled, prints the name of the artist or album
+    /// onto the image.
+    /// </summary>
+    public bool ShowNames
+    {
+      get { return _showNames; }
+      set
+      {
+        _showNames = value;
+        NotifyOfPropertyChange();
+      }
+    }
+    private bool _showNames;
+
+    /// <summary>
+    /// If enabled, prints the playcount of the
+    /// artist or album onto the image.
+    /// </summary>
+    public bool ShowPlaycounts
+    {
+      get { return _showPlaycounts; }
+      set
+      {
+        _showPlaycounts = value;
+        NotifyOfPropertyChange();
+      }
+    }
+    private bool _showPlaycounts;
+
+    /// <summary>
     /// Gets if certain controls on the ui are enabled.
     /// </summary>
     public override bool EnableControls
@@ -143,6 +174,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
       Username = "";
       TimeSpan = LastStatsTimeSpan.Overall;
       SelectedCollageSize = CollageSize.ThreeByThree;
+      ShowNames = true;
+      ShowPlaycounts = true;
     }
 
     /// <summary>
@@ -162,12 +195,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
           OnStatusUpdated("Fetching top artists...");
           var response = await MainViewModel.Client.User.GetTopArtists(Username, TimeSpan, 1, numCollageItems);
           if (response.Success)
-          {
-            OnStatusUpdated("Getting artist images...");
-
-            collage = await StitchImagesTogether(response.Content.Select(a => new Tuple<Uri, string>(a.MainImage.ExtraLarge,
-              string.Format("{0}{1}Plays: {2}", a.Name, Environment.NewLine, a.PlayCount))).ToList());
-          }
+            collage = await StitchImagesTogether(response.Content.Select(a => new Tuple<Uri, string>(a.MainImage.ExtraLarge, CreateArtistText(a))).ToList());
           else
             OnStatusUpdated("Error while fetching top artists");
         }
@@ -176,12 +204,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
           OnStatusUpdated("Fetching top albums...");
           var response = await MainViewModel.Client.User.GetTopAlbums(Username, TimeSpan, 1, numCollageItems);
           if(response.Success)
-          {
-            OnStatusUpdated("Getting album images...");
-
-            collage = await StitchImagesTogether(response.Content.Select(a => new Tuple<Uri, string>(a.Images.ExtraLarge,
-              string.Format("{0}{1}{2}{3}Plays: {4}", a.ArtistName, Environment.NewLine, a.Name, Environment.NewLine, a.PlayCount))).ToList());
-          }
+            collage = await StitchImagesTogether(response.Content.Select(a => new Tuple<Uri, string>(a.Images.ExtraLarge, CreateAlbumText(a))).ToList());
           else
             OnStatusUpdated("Error while fetching top albums");
         }
@@ -197,6 +220,40 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
       {
         EnableControls = true;
       }
+    }
+
+    /// <summary>
+    /// Creates the text for the <see cref="CollageType.Artists"/>.
+    /// </summary>
+    /// <param name="a">Downloaded artist info.</param>
+    /// <returns>String with info text.</returns>
+    private string CreateArtistText(LastArtist a)
+    {
+      if (ShowNames && ShowPlaycounts)
+        return string.Format("{0}{1}Plays: {2}", a.Name, Environment.NewLine, a.PlayCount);
+      else if (ShowNames)
+        return string.Format("{0}", a.Name);
+      else if (ShowPlaycounts)
+        return string.Format("Plays: {0}", a.PlayCount);
+      else
+        return string.Empty;
+    }
+
+    /// <summary>
+    /// Creates the text for the <see cref="CollageType.Albums"/>.
+    /// </summary>
+    /// <param name="a">Downloaded album info.</param>
+    /// <returns>String with info text.</returns>
+    private string CreateAlbumText(LastAlbum a)
+    {
+      if (ShowNames && ShowPlaycounts)
+        return string.Format("{0}{1}{2}{3}Plays: {4}", a.ArtistName, Environment.NewLine, a.Name, Environment.NewLine, a.PlayCount);
+      else if (ShowNames)
+        return string.Format("{0}{1}{2}", a.ArtistName, Environment.NewLine, a.Name);
+      else if (ShowPlaycounts)
+        return string.Format("Plays: {0}", a.PlayCount);
+      else
+        return string.Empty;
     }
 
     /// <summary>
@@ -233,16 +290,20 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
           {
             dc.DrawImage(frames[cnt], new Rect(x * imageWidth, y * imageHeight, imageWidth, imageHeight));
 
-            // create artist text
-            FormattedText extraText = new FormattedText(infos[cnt].Item2, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface("Verdana"), 14, Brushes.Black)
+            if (!string.IsNullOrEmpty(infos[cnt].Item2))
             {
-              MaxTextWidth = imageWidth,
-              MaxTextHeight = imageHeight
-            };
+              // create text
+              FormattedText extraText = new FormattedText(infos[cnt].Item2, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface("Verdana"), 14, Brushes.Black)
+              {
+                MaxTextWidth = imageWidth,
+                MaxTextHeight = imageHeight
+              };
 
-            dc.DrawText(extraText, new Point(x * imageWidth + 1, y * imageHeight + 1));
-            extraText.SetForegroundBrush(Brushes.White);
-            dc.DrawText(extraText, new Point(x * imageWidth, y * imageHeight));
+              dc.DrawText(extraText, new Point(x * imageWidth + 1, y * imageHeight + 1));
+              extraText.SetForegroundBrush(Brushes.White);
+              dc.DrawText(extraText, new Point(x * imageWidth, y * imageHeight));
+            }
+
             cnt++;
           }
         }
