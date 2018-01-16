@@ -18,7 +18,7 @@ This tool will always be free, but if it was helpful to you, consider donating t
 - [File Scrobbling](#file-scrobbling)
 - [Media Player Database Scrobbling](#media-player-database-scrobbling)
 - [iTunes Scrobbling](#itunes-scrobbling)
-- [Spotify Desktop Scrobbling](#spotify-desktop-scrobbling
+- [Spotify Desktop Scrobbling](#spotify-desktop-scrobbling)
 - [Setlist.fm Scrobbling](#setlistfm-scrobbling)
 
 **Extra Functions**
