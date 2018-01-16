@@ -384,7 +384,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
         {
-          scrobbles.Add(new Scrobble(vm.ParsedScrobble.ArtistName, vm.ParsedScrobble.AlbumName, vm.ParsedScrobble.TrackName, vm.ParsedScrobble.Played));
+          scrobbles.Add(new Scrobble(vm.ParsedScrobble.ArtistName, vm.ParsedScrobble.AlbumName, vm.ParsedScrobble.TrackName, vm.ParsedScrobble.Played)
+                                    { AlbumArtist = vm.ParsedScrobble.AlbumArtist, Duration = vm.ParsedScrobble.Duration });
         }
       }
       else if (ScrobbleMode == CSVScrobbleMode.ImportMode)
@@ -392,7 +393,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         DateTime time = Time;
         foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
         {
-          scrobbles.Add(new Scrobble(vm.ParsedScrobble.ArtistName, vm.ParsedScrobble.AlbumArtist, vm.ParsedScrobble.TrackName, time));
+          scrobbles.Add(new Scrobble(vm.ParsedScrobble.ArtistName, vm.ParsedScrobble.AlbumName, vm.ParsedScrobble.TrackName, time)
+                                    { AlbumArtist = vm.ParsedScrobble.AlbumArtist, Duration = vm.ParsedScrobble.Duration });
           time = time.Subtract(TimeSpan.FromSeconds(Duration));
         }
       }
