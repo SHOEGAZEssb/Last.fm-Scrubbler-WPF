@@ -10,7 +10,7 @@
              xmlns:extraFuncVMs="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions"
              xmlns:conv="clr-namespace:Last.fm_Scrubbler_WPF.Converters"
              mc:Ignorable="d"
-             d:DesignHeight="60" d:DesignWidth="500">
+             d:DesignHeight="100" d:DesignWidth="500">
 
   <UserControl.Resources>
     <ObjectDataProvider MethodName="GetValues"
@@ -41,6 +41,10 @@
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="*"/>
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
@@ -106,10 +110,33 @@
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="5"/>
         <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
       </Grid.ColumnDefinitions>
 
-      <CheckBox Grid.Row="0" Grid.Column="0" Content="Show Names" IsChecked="{Binding ShowNames}" VerticalAlignment="Center"/>
-      <CheckBox Grid.Row="0" Grid.Column="2" Content="Show Playcounts" IsChecked="{Binding ShowPlaycounts}" VerticalAlignment="Center"/>
+      <CheckBox Grid.Row="0" Grid.Column="0" Content="Show Names" IsChecked="{Binding ShowNames}" VerticalAlignment="Center" Style="{StaticResource EnableControlsStyle}"/>
+      <CheckBox Grid.Row="0" Grid.Column="2" Content="Show Playcounts" IsChecked="{Binding ShowPlaycounts}" VerticalAlignment="Center" Style="{StaticResource EnableControlsStyle}"/>
+      <CheckBox Grid.Row="0" Grid.Column="4" Content="Upload Image" IsChecked="{Binding UploadToWeb}" VerticalAlignment="Center" Style="{StaticResource EnableControlsStyle}"/>
     </Grid>
+
+    <Image Grid.Row="4" Grid.Column="0" Source="{Binding Collage}"/>
+    <Button Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" Content="Save Image">
+      <Button.Style>
+        <Style TargetType="Button" BasedOn="{StaticResource EnableControlsStyle}">
+          <Setter Property="Visibility" Value="Visible"/>
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding Collage}" Value="{x:Null}">
+              <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Button.Style>
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Click">
+          <cal:ActionMessage MethodName="SaveImage"/>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
+    </Button>
+
   </Grid>
 </UserControl>

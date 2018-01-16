@@ -1,6 +1,7 @@
 ﻿using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Views.ExtraFunctions;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -152,6 +153,35 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
     private bool _showPlaycounts;
 
     /// <summary>
+    /// If enabled, the image gets uploaded to an
+    /// image upload service after it is created.
+    /// </summary>
+    public bool UploadToWeb
+    {
+      get { return _uploadImage; }
+      set
+      {
+        _uploadImage = value;
+        NotifyOfPropertyChange();
+      }
+    }
+    private bool _uploadImage;
+
+    /// <summary>
+    /// The created collage.
+    /// </summary>
+    public BitmapSource Collage
+    {
+      get { return _collage; }
+      private set
+      {
+        _collage = value;
+        NotifyOfPropertyChange();
+      }
+    }
+    private BitmapSource _collage;
+
+    /// <summary>
     /// Gets if certain controls on the ui are enabled.
     /// </summary>
     public override bool EnableControls
@@ -176,6 +206,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
       SelectedCollageSize = CollageSize.ThreeByThree;
       ShowNames = true;
       ShowPlaycounts = true;
+      UploadToWeb = true;
     }
 
     /// <summary>
@@ -187,9 +218,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
 
       try
       {
+        Collage = null;
+
         int numCollageItems = (int)SelectedCollageSize * (int)SelectedCollageSize;
         PngBitmapEncoder collage = null;
-
         if (SelectedCollageType == CollageType.Artists)
         {
           OnStatusUpdated("Fetching top artists...");
@@ -199,17 +231,25 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
           else
             OnStatusUpdated("Error while fetching top artists");
         }
-        else if(SelectedCollageType == CollageType.Albums)
+        else if (SelectedCollageType == CollageType.Albums)
         {
           OnStatusUpdated("Fetching top albums...");
           var response = await MainViewModel.Client.User.GetTopAlbums(Username, TimeSpan, 1, numCollageItems);
-          if(response.Success)
+          if (response.Success)
             collage = await StitchImagesTogether(response.Content.Select(a => new Tuple<Uri, string>(a.Images.ExtraLarge, CreateAlbumText(a))).ToList());
           else
             OnStatusUpdated("Error while fetching top albums");
         }
 
-        await UploadImage(collage);
+        using (MemoryStream ms = new MemoryStream())
+        {
+          collage.Save(ms);
+          ConvertToBitmapImage(ms);
+
+          if(UploadToWeb)
+            await UploadImage(ms);
+        };
+
         OnStatusUpdated("Successfully created collage");
       }
       catch (Exception ex)
@@ -220,6 +260,47 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
       {
         EnableControls = true;
       }
+    }
+
+    /// <summary>
+    /// Shows a dialog to save the <see cref="Collage"/> to file.
+    /// </summary>
+    public void SaveImage()
+    {
+      try
+      {
+        SaveFileDialog sfd = new SaveFileDialog() { Filter = "Bitmap Image (.bmp) | *.bmp" };
+        if (sfd.ShowDialog().Value)
+        {
+          using (var fileStream = new FileStream(sfd.FileName, FileMode.Create))
+          {
+            BitmapEncoder encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(Collage));
+            encoder.Save(fileStream);
+          }
+        }
+      }
+      catch(Exception ex)
+      {
+        OnStatusUpdated("Fatal error while saving collage to file: " + ex.Message);
+      }
+    }
+
+    /// <summary>
+    /// Converts the collage to a display-able image.
+    /// </summary>
+    /// <param name="ms">MemoryStream containing the image.</param>
+    private void ConvertToBitmapImage(MemoryStream ms)
+    {
+      var bitmapImage = new BitmapImage();
+
+      ms.Seek(0, SeekOrigin.Begin);
+      bitmapImage.BeginInit();
+      bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+      bitmapImage.StreamSource = ms;
+      bitmapImage.EndInit();
+
+      Collage = bitmapImage;
     }
 
     /// <summary>
@@ -323,9 +404,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
     /// <summary>
     /// Uploads the image to imgur.
     /// </summary>
-    /// <param name="encoder">Encoder containing the stitched image.</param>
+    /// <param name="ms">MemoryStream containing the image.</param>
     /// <returns>Task.</returns>
-    private async Task UploadImage(PngBitmapEncoder encoder)
+    private async Task UploadImage(MemoryStream ms)
     {
       OnStatusUpdated("Uploading image...");
       using (var w = new WebClient())
@@ -333,24 +414,21 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
         w.Proxy = null;
         w.Headers.Add("Authorization", "Client-ID " + "80dfa34b8899ce5");
 
-        using (MemoryStream ms = new MemoryStream())
-        {
-          encoder.Save(ms);
-          var values = new NameValueCollection
+        var values = new NameValueCollection
           {
             { "image", Convert.ToBase64String(ms.ToArray()) },
           };
 
-          byte[] response = null;
-          await Task.Run(() => response = w.UploadValues("https://api.imgur.com/3/upload.xml", values));
+        byte[] response = null;
+        await Task.Run(() => response = w.UploadValues("https://api.imgur.com/3/upload.xml", values));
 
-          using (MemoryStream xMs = new MemoryStream(response))
-          {
-            var doc = XDocument.Load(xMs);
-            string link = doc.Descendants().Where(i => i.Name == "link").FirstOrDefault().Value;
-            Process.Start(link);
-          }
+        using (MemoryStream xMs = new MemoryStream(response))
+        {
+          var doc = XDocument.Load(xMs);
+          string link = doc.Descendants().Where(i => i.Name == "link").FirstOrDefault().Value;
+          Process.Start(link);
         }
+
       }
     }
   }
