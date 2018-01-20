@@ -1,7 +1,6 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Scrobblers;
-using IF.Lastfm.SQLite;
 using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
@@ -38,7 +37,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// The client used for all last.fm actions.
     /// </summary>
-    public static LastfmClient Client
+    public static ILastFMClient Client
     {
       get { return _client; }
       private set
@@ -46,7 +45,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         _client = value;
       }
     }
-    private static LastfmClient _client;
+    private static ILastFMClient _client;
 
     /// <summary>
     /// Scrobbler used to scrobble tracks.
@@ -336,6 +335,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private IWindowManager _windowManager;
 
     /// <summary>
+    /// Factory used for creating clients.
+    /// </summary>
+    private static ILastFMClientFactory _lastFMClientFactory;
+
+    /// <summary>
     /// Factory used for creating scrobblers.
     /// </summary>
     private IScrobblerFactory _scrobblerFactory;
@@ -345,9 +349,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public MainViewModel(IWindowManager windowManager, IScrobblerFactory scrobblerFactory)
+    public MainViewModel(IWindowManager windowManager, ILastFMClientFactory clientFactory, IScrobblerFactory scrobblerFactory)
     {
       _windowManager = windowManager;
+      _lastFMClientFactory = clientFactory;
       _scrobblerFactory = scrobblerFactory;
       TitleString = "Last.fm Scrubbler WPF " + Assembly.GetExecutingAssembly().GetName().Version;
       CreateNewClient();
@@ -397,7 +402,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     internal static void CreateNewClient()
     {
-      Client = new LastfmClient(APIKEY, APISECRET);
+      Client = _lastFMClientFactory.CreateClient(APIKEY, APISECRET);
       ClientAuthChanged?.Invoke(null, EventArgs.Empty);
     }
 

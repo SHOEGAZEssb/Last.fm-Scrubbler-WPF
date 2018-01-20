@@ -26,6 +26,7 @@ namespace Last.fm_Scrubbler_WPF
     {
       _container = new SimpleContainer();
       _container.Singleton<IWindowManager, WindowManager>();
+      _container.Singleton<ILastFMClientFactory, LastFMClientFactory>();
       _container.Singleton<IScrobblerFactory, ScrobblerFactory>();
       _container.PerRequest<MainViewModel>();
     }

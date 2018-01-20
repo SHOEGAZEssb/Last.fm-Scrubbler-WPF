@@ -152,8 +152,13 @@
     <Compile Include="Converters\DataTypeConverter.cs" />
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Interfaces\ILastFMApiBase.cs" />
+    <Compile Include="Interfaces\ILastFMClient.cs" />
+    <Compile Include="Interfaces\ILastFMClientFactory.cs" />
     <Compile Include="Interfaces\IScrobblerFactory.cs" />
     <Compile Include="Models\Artist.cs" />
+    <Compile Include="Models\LastFMClient.cs" />
+    <Compile Include="Models\LastFMClientFactory.cs" />
     <Compile Include="Models\Release.cs" />
     <Compile Include="Models\ScrobbleBase.cs" />
     <Compile Include="Models\ScrobblerFactory.cs" />
