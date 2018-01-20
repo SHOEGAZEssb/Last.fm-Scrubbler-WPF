@@ -2,6 +2,7 @@
 using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Scrobblers;
 using IF.Lastfm.SQLite;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using Last.fm_Scrubbler_WPF.Views;
@@ -334,14 +335,20 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     private IWindowManager _windowManager;
 
+    /// <summary>
+    /// Factory used for creating scrobblers.
+    /// </summary>
+    private IScrobblerFactory _scrobblerFactory;
+
     #endregion Private Member
 
     /// <summary>
     /// Constructor.
     /// </summary>
-    public MainViewModel(IWindowManager windowManager)
+    public MainViewModel(IWindowManager windowManager, IScrobblerFactory scrobblerFactory)
     {
       _windowManager = windowManager;
+      _scrobblerFactory = scrobblerFactory;
       TitleString = "Last.fm Scrubbler WPF " + Assembly.GetExecutingAssembly().GetName().Version;
       CreateNewClient();
       SetupViewModels();
@@ -417,8 +424,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           CurrentStatus = "Error creating cache database. Error: " + ex.Message;
         }
 
-        Scrobbler = new Scrobbler(Client.Auth);
-        CachingScrobbler = new SQLiteScrobbler(Client.Auth, dbFile);
+        Scrobbler = _scrobblerFactory.CreateScrobbler(Client.Auth);
+        CachingScrobbler = _scrobblerFactory.CreateSQLiteScrobbler(Client.Auth, dbFile);
       }
       else
       {

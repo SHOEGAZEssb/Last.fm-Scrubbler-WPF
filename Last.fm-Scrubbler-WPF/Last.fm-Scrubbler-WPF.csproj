@@ -152,9 +152,11 @@
     <Compile Include="Converters\DataTypeConverter.cs" />
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Interfaces\IScrobblerFactory.cs" />
     <Compile Include="Models\Artist.cs" />
     <Compile Include="Models\Release.cs" />
     <Compile Include="Models\ScrobbleBase.cs" />
+    <Compile Include="Models\ScrobblerFactory.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="ViewModels\ExtraFunctions\CollageCreatorViewModel.cs" />
@@ -448,9 +450,7 @@
   <ItemGroup>
     <Resource Include="Resources\copy.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
