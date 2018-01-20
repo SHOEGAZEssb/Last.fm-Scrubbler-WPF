@@ -6,7 +6,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// Base class for all scrobblers.
   /// </summary>
-  abstract class ScrobbleViewModelBase : ViewModelBase
+  public abstract class ScrobbleViewModelBase : ViewModelBase
   {
     #region Properties
 

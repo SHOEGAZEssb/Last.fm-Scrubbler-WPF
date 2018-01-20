@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
 {
-  class CacheScrobblerViewModel : ScrobbleViewModelBase
+  public class CacheScrobblerViewModel : ScrobbleViewModelBase
   {
     #region Properties
 

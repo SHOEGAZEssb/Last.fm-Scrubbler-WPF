@@ -14,7 +14,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="MediaPlayerScrobbleControl"/>.
   /// </summary>
-  class ITunesScrobbleViewModel : MediaPlayerScrobbleViewModelBase, IDisposable
+  public class ITunesScrobbleViewModel : MediaPlayerScrobbleViewModelBase, IDisposable
   {
     #region Properties
 

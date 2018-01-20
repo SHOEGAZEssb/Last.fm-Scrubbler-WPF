@@ -8,7 +8,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
   /// <summary>
   /// Base class for all scrobblers that scrobble a media player.
   /// </summary>
-  abstract class MediaPlayerScrobbleViewModelBase : ScrobbleViewModelBase
+  public abstract class MediaPlayerScrobbleViewModelBase : ScrobbleViewModelBase
   {
     #region Properties
 

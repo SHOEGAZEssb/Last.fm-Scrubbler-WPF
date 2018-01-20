@@ -16,7 +16,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="MainView"/>.
   /// </summary>
-  class MainViewModel : PropertyChangedBase
+  public class MainViewModel : PropertyChangedBase
   {
     #region Properties
 

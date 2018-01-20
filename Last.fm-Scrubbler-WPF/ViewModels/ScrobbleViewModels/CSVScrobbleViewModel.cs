@@ -36,7 +36,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.CSVScrobbleView"/>.
   /// </summary>
-  class CSVScrobbleViewModel : ScrobbleTimeViewModelBase
+  public class CSVScrobbleViewModel : ScrobbleTimeViewModelBase
   {
     #region Properties
 

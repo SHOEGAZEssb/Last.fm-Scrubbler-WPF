@@ -42,7 +42,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="DatabaseScrobbleView"/>.
   /// </summary>
-  class DatabaseScrobbleViewModel : ScrobbleTimeViewModelBase
+  public class DatabaseScrobbleViewModel : ScrobbleTimeViewModelBase
   {
     #region Properties
 

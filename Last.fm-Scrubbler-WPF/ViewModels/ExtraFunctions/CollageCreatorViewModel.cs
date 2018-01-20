@@ -60,7 +60,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
   /// <summary>
   /// ViewModel for the <see cref="CollageCreatorView"/>
   /// </summary>
-  class CollageCreatorViewModel : ViewModelBase
+  public class CollageCreatorViewModel : ViewModelBase
   {
     #region Properties
 

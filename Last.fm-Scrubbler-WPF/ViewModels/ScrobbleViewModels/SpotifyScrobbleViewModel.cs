@@ -13,7 +13,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
   /// <summary>
   /// ViewModel for the Spotify <see cref="MediaPlayerScrobbleControl"/>
   /// </summary>
-  class SpotifyScrobbleViewModel : MediaPlayerScrobbleViewModelBase
+  public class SpotifyScrobbleViewModel : MediaPlayerScrobbleViewModelBase
   {
     #region Properties
 

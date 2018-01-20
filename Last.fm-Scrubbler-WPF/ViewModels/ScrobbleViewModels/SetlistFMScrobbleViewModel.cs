@@ -29,7 +29,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
   /// <summary>
   /// Viewmodel for the <see cref="Views.ScrobbleViews.SetlistFMScrobbleView"/>
   /// </summary>
-  class SetlistFMScrobbleViewModel : ScrobbleTimeViewModelBase
+  public class SetlistFMScrobbleViewModel : ScrobbleTimeViewModelBase
   {
     #region Properties
 

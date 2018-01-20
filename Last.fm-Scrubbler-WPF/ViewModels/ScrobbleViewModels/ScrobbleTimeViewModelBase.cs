@@ -6,7 +6,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
   /// <summary>
   /// Base class for ViewModels that need to use a "Starting" or "Finishing" time.
   /// </summary>
-  abstract class ScrobbleTimeViewModelBase : ScrobbleViewModelBase
+  public abstract class ScrobbleTimeViewModelBase : ScrobbleViewModelBase
   {
     #region Properties
 

@@ -7,7 +7,7 @@ namespace Last.fm_Scrubbler_WPF.Models
   /// A scrobble with a date that represents the
   /// time it was scrobbled or last played.
   /// </summary>
-  class DatedScrobble : ScrobbleBase
+  public class DatedScrobble : ScrobbleBase
   {
     #region Properties
 

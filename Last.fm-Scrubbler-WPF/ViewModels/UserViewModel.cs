@@ -17,7 +17,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for adding / removing / logging in users.
   /// </summary>
-  class UserViewModel : PropertyChangedBase
+  public class UserViewModel : PropertyChangedBase
   {
     #region Properties
 

@@ -9,7 +9,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="ManualScrobbleView"/>.
   /// </summary>
-  class ManualScrobbleViewModel : ScrobbleTimeViewModelBase
+  public class ManualScrobbleViewModel : ScrobbleTimeViewModelBase
   {
     #region Properties
 

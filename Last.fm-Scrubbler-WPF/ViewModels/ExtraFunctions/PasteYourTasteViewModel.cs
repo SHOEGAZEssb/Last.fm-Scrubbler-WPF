@@ -7,7 +7,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.PasteYourTasteView"/>.
   /// </summary>
-  class PasteYourTasteViewModel : ViewModelBase
+  public class PasteYourTasteViewModel : ViewModelBase
   {
     #region Properties
 

@@ -30,7 +30,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="MediaPlayerDatabaseScrobbleView"/>.
   /// </summary>
-  class MediaPlayerDatabaseScrobbleViewModel : ScrobbleViewModelBase
+  public class MediaPlayerDatabaseScrobbleViewModel : ScrobbleViewModelBase
   {
     #region Properties
 

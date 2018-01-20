@@ -5,7 +5,7 @@ namespace Last.fm_Scrubbler_WPF.Models
   /// <summary>
   /// Album.
   /// </summary>
-  class Release
+  public class Release
   {
     #region Properties
 
