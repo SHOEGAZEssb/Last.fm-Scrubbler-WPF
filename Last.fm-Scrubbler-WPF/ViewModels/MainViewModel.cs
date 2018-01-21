@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Api;
 using Last.fm_Scrubbler_WPF.Interfaces;
+using Last.fm_Scrubbler_WPF.Properties;
 using Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using Last.fm_Scrubbler_WPF.Views;
@@ -471,6 +472,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public void MainView_Closing()
     {
       ITunesScrobbleVM.Dispose();
+      Settings.Default.Save();
     }
   }
 }

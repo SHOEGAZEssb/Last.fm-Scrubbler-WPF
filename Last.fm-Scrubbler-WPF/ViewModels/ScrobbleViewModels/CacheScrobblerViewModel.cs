@@ -67,7 +67,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       set
       {
         Settings.Default.AutoScrobbleCache = value;
-        Settings.Default.Save();
         NotifyOfPropertyChange(() => AutoScrobble);
       }
     }

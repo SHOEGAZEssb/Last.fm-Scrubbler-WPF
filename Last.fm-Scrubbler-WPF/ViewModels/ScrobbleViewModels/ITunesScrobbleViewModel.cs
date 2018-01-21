@@ -20,8 +20,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   {
     #region Properties
 
-    #region iTunes
-
     /// <summary>
     /// Connection to iTunes.
     /// </summary>
@@ -77,7 +75,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       set
       {
         Settings.Default.ITunesAutoConnect = value;
-        Settings.Default.Save();
         NotifyOfPropertyChange(() => AutoConnect);
       }
     }
@@ -89,8 +86,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       get { return ITunesApp != null; }
     }
-
-    #endregion iTunes
 
     #endregion Properties
 

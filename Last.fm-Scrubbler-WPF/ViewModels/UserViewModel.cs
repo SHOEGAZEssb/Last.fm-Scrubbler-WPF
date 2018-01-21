@@ -50,7 +50,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           MainViewModel.CreateNewClient();
         }
 
-        Settings.Default.Save();
         ActiveUserChanged?.Invoke(this, EventArgs.Empty);
       }
     }

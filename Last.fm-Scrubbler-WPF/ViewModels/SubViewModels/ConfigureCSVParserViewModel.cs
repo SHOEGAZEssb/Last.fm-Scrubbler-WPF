@@ -18,93 +18,116 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
     /// </summary>
     public int ArtistFieldIndex
     {
-      get { return Settings.Default.ArtistFieldIndex; }
+      get { return _artistFieldIndex; }
       set
       {
-        Settings.Default.ArtistFieldIndex = value;
+        _artistFieldIndex = value;
         NotifyOfPropertyChange(() => ArtistFieldIndex);
       }
     }
+    private int _artistFieldIndex;
 
     /// <summary>
     /// Index of the album field in the csv file.
     /// </summary>
     public int AlbumFieldIndex
     {
-      get { return Settings.Default.AlbumFieldIndex; }
+      get { return _albumFieldIndex; }
       set
       {
-        Settings.Default.AlbumFieldIndex = value;
+        _albumFieldIndex = value;
         NotifyOfPropertyChange(() => AlbumFieldIndex);
       }
     }
+    private int _albumFieldIndex;
 
     /// <summary>
     /// Index of the artist field in the csv file.
     /// </summary>
     public int TrackFieldIndex
     {
-      get { return Settings.Default.TrackFieldIndex; }
+      get { return _trackFieldIndex; }
       set
       {
-        Settings.Default.TrackFieldIndex = value;
+        _trackFieldIndex = value;
         NotifyOfPropertyChange(() => TrackFieldIndex);
       }
     }
+    private int _trackFieldIndex;
 
     /// <summary>
     /// Index of the artist field in the csv file.
     /// </summary>
     public int TimestampFieldIndex
     {
-      get { return Settings.Default.TimestampFieldIndex; }
+      get { return _timestampFieldIndex; }
       set
       {
-        Settings.Default.TimestampFieldIndex = value;
+        _timestampFieldIndex = value;
         NotifyOfPropertyChange(() => TimestampFieldIndex);
       }
     }
+    private int _timestampFieldIndex;
 
     /// <summary>
     /// Index of the album artist field in the csv file.
     /// </summary>
     public int AlbumArtistFieldIndex
     {
-      get { return Settings.Default.AlbumArtistFieldIndex; }
+      get { return _albumArtistFieldIndex; }
       set
       {
-        Settings.Default.AlbumArtistFieldIndex = value;
+        _albumArtistFieldIndex = value;
         NotifyOfPropertyChange(() => AlbumArtistFieldIndex);
       }
     }
+    private int _albumArtistFieldIndex;
 
     /// <summary>
     /// Index of the duration field in the csv file.
     /// </summary>
     public int DurationFieldIndex
     {
-      get { return Settings.Default.DurationFieldIndex; }
+      get { return _durationFieldIndex; }
       set
       {
-        Settings.Default.DurationFieldIndex = value;
+        _durationFieldIndex = value;
         NotifyOfPropertyChange(() => DurationFieldIndex);
       }
     }
+    private int _durationFieldIndex;
 
     /// <summary>
     /// Delimiters to use when parsing csv file.
     /// </summary>
     public string Delimiters
     {
-      get { return Settings.Default.CSVDelimiters; }
+      get { return _delimiters; }
       set
       {
-        Settings.Default.CSVDelimiters = value;
+        _delimiters = value;
         NotifyOfPropertyChange(() => Delimiters);
       }
     }
+    private string _delimiters;
 
     #endregion Properties
+
+    public ConfigureCSVParserViewModel()
+    {
+      ReadSettings();
+    }
+
+    private void ReadSettings()
+    {
+      ArtistFieldIndex = Settings.Default.ArtistFieldIndex;
+      AlbumFieldIndex = Settings.Default.AlbumFieldIndex;
+      TrackFieldIndex = Settings.Default.TrackFieldIndex;
+      TimestampFieldIndex = Settings.Default.TimestampFieldIndex;
+      AlbumArtistFieldIndex = Settings.Default.AlbumArtistFieldIndex;
+      DurationFieldIndex = Settings.Default.DurationFieldIndex;
+      Delimiters = Settings.Default.CSVDelimiters;
+    }
 
     /// <summary>
     /// Saves the settings and closes the view.
@@ -112,15 +135,24 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
     /// <param name="vm">View to close.</param>
     public void SaveAndClose(ConfigureCSVParserView vm)
     {
-      if(CheckAndSaveSettings())
+      if (CheckSettings())
+      {
+        Settings.Default.ArtistFieldIndex = ArtistFieldIndex;
+        Settings.Default.AlbumFieldIndex = AlbumFieldIndex;
+        Settings.Default.TrackFieldIndex = TrackFieldIndex;
+        Settings.Default.TimestampFieldIndex = TimestampFieldIndex;
+        Settings.Default.AlbumArtistFieldIndex = AlbumArtistFieldIndex;
+        Settings.Default.DurationFieldIndex = DurationFieldIndex;
+        Settings.Default.CSVDelimiters = Delimiters;
         vm.Close();
+      }
     }
 
     /// <summary>
-    /// Saves the settings.
+    /// Checks the settings for errors.
     /// </summary>
-    /// <returns>True if settings were saved, false if not.</returns>
-    private bool CheckAndSaveSettings()
+    /// <returns>True if user wants to use these settings, false if not.</returns>
+    private bool CheckSettings()
     {
       string errors = string.Empty;
 
@@ -138,16 +170,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
           return false;
       }
 
-      Settings.Default.Save();
       return true;
-    }
-
-    /// <summary>
-    /// Reloads the saved values of the settings.
-    /// </summary>
-    private void ReloadSettings()
-    {
-      Settings.Default.Reload();
     }
 
     /// <summary>
@@ -156,7 +179,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
     /// <param name="vm">View to close.</param>
     public void Cancel(ConfigureCSVParserView vm)
     {
-      ReloadSettings();
       vm.Close();
     }
 

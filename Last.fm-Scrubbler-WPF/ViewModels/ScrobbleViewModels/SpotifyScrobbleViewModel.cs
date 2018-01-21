@@ -28,7 +28,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       set
       {
         Settings.Default.SpotifyAutoConnect = value;
-        Settings.Default.Save();
         NotifyOfPropertyChange(() => AutoConnect);
       }
     }
