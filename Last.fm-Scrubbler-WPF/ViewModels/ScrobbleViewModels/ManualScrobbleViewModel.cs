@@ -76,6 +76,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private string _albumArtist;
 
+    /// <summary>
+    /// Length of the track.
+    /// </summary>
     public TimeSpan Duration
     {
       get { return _duration; }
@@ -124,6 +127,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
+    /// <param name="windowManager">WindowManager used to display dialogs.</param>
+    /// <param name="scrobbler">Scrobbler used to scrobble.</param>
     public ManualScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
       : base(windowManager, scrobbler)
     {
@@ -163,6 +168,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       }
     }
 
+    /// <summary>
+    /// Creates a list with scrobbles that will be scrobbled
+    /// with the current configuration.
+    /// </summary>
+    /// <returns>List with scrobbles.</returns>
     protected override IEnumerable<Scrobble> CreateScrobbles()
     {
       return new Scrobble[] { new Scrobble(Artist, Album, Track, Time) { AlbumArtist = AlbumArtist, Duration = Duration } };

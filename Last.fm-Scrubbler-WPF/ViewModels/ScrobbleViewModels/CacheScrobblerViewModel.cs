@@ -9,14 +9,27 @@ using System.Threading.Tasks;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
 {
+  /// <summary>
+  /// ViewModel for the <see cref="Views.ScrobbleViews.CacheScrobblerView"/>
+  /// </summary>
   public class CacheScrobblerViewModel : ScrobbleViewModelBase
   {
     #region Properties
 
-    public override bool CanScrobble => MainViewModel.Client.Auth.Authenticated && CachedScrobbles.Count > 0 && EnableControls;
+    /// <summary>
+    /// Gets if the scrobble button is enabled.
+    /// </summary>
+    public override bool CanScrobble => Scrobbler.Auth.Authenticated && CachedScrobbles.Count > 0 && EnableControls;
 
+    /// <summary>
+    /// Gets if the preview button is enabled.
+    /// </summary>
     public override bool CanPreview => CachedScrobbles.Count > 0 && EnableControls;
 
+    /// <summary>
+    /// Gets if certain controls that modify the
+    /// scrobbling data are enabled.
+    /// </summary>
     public override bool EnableControls
     {
       get { return _enableControls; }
@@ -64,6 +77,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
+    /// <param name="windowManager">WindowManager used to display dialogs.</param>
+    /// <param name="scrobbler">Scrobbler used to scrobble.</param>
     public CacheScrobblerViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
       : base(windowManager, scrobbler)
     {
@@ -84,11 +99,20 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       }
     }
 
+    /// <summary>
+    /// Creates a list with scrobbles that will be scrobbles
+    /// with the current configuration.
+    /// </summary>
+    /// <returns>List with scrobbles.</returns>
     protected override IEnumerable<Scrobble> CreateScrobbles()
     {
       return CachedScrobbles;
     }
 
+    /// <summary>
+    /// Scrobbles the selected tracks.
+    /// </summary>
+    /// <returns>Task.</returns>
     public override async Task Scrobble()
     {
       try

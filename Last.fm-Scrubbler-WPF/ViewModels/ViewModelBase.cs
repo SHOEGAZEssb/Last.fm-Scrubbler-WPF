@@ -20,6 +20,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// scrobbling data are enabled.
     /// </summary>
     public abstract bool EnableControls { get; protected set; }
+
+    /// <summary>
+    /// Gets if certain controls that modify the
+    /// scrobbling data are enabled.
+    /// </summary>
     protected bool _enableControls;
 
     #endregion Properties

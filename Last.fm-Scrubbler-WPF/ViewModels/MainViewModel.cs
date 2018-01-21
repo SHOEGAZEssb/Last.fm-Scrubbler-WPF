@@ -341,6 +341,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       UserViewModel.LoadLastUser();
     }
 
+    /// <summary>
+    /// Creates the ViewModels used to scrobble.
+    /// </summary>
     private void SetupScrobbleViewModels()
     {
       ManualScrobbleViewModel = new ManualScrobbleViewModel(_windowManager, null);
@@ -367,6 +370,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       CreateScrobblers();
     }
 
+    /// <summary>
+    /// Creates the ViewModel for extra functions.
+    /// </summary>
     private void SetupExtraViewModels()
     {
       PasteYourTasteVM = new PasteYourTasteViewModel();
@@ -398,6 +404,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       CreateScrobblers();
     }
 
+    /// <summary>
+    /// Recreates the scrobblers of the ScrobbleViewModels.
+    /// </summary>
     private void CreateScrobblers()
     {
       IAuthScrobbler scrobbler;

@@ -86,7 +86,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public abstract Task Scrobble();
 
     /// <summary>
-    /// Creates a list with scrobbles that will be scrobbles
+    /// Creates a list with scrobbles that will be scrobbled
     /// with the current configuration.
     /// </summary>
     /// <returns>List with scrobbles.</returns>

@@ -4,6 +4,9 @@ using System;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
+  /// <summary>
+  /// ViewModel for a parsed scrobble from a csv file.
+  /// </summary>
   public class ParsedCSVScrobbleViewModel : PropertyChangedBase
   {
     #region Properties

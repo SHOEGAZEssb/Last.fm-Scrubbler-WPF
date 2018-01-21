@@ -187,6 +187,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
+    /// <param name="windowManager">WindowManager used to display dialogs.</param>
+    /// <param name="scrobbler">Scrobbler used to scrobble.</param>
     public CSVScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
       : base(windowManager, scrobbler)
     {
