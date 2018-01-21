@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Api.Enums;
+﻿using Caliburn.Micro;
+using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using iTunesLib;
 using Last.fm_Scrubbler_WPF.Interfaces;
@@ -129,8 +130,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public ITunesScrobbleViewModel(IAuthScrobbler scrobbler)
-      : base(scrobbler)
+    public ITunesScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
+      : base(windowManager, scrobbler)
     {
       PercentageToScrobble = 0.5;
 

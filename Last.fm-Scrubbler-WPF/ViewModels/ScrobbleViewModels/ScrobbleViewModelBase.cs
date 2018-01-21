@@ -1,6 +1,8 @@
-﻿using IF.Lastfm.Core.Scrobblers;
+﻿using Caliburn.Micro;
+using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
@@ -47,12 +49,23 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
     #endregion Properties
 
+    #region Member
+
+    /// <summary>
+    /// WindowManager used to display dialogs.
+    /// </summary>
+    protected IWindowManager _windowManager;
+
+    #endregion Member
+
     /// <summary>
     /// Constructor.
     /// </summary>
+    /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="scrobbler">Scrobbler used to scrobble.</param>
-    public ScrobbleViewModelBase(IAuthScrobbler scrobbler)
+    public ScrobbleViewModelBase(IWindowManager windowManager, IAuthScrobbler scrobbler)
     {
+      _windowManager = windowManager;
       Scrobbler = scrobbler;
       MainViewModel.ClientAuthChanged += MainViewModel_ClientAuthChanged;
     }
@@ -74,8 +87,18 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public abstract Task Scrobble();
 
     /// <summary>
+    /// Creates a list with scrobbles that will be scrobbles
+    /// with the current configuration.
+    /// </summary>
+    /// <returns>List with scrobbles.</returns>
+    protected abstract IEnumerable<Scrobble> CreateScrobbles();
+
+    /// <summary>
     /// Shows a preview of the tracks that will be scrobbled.
     /// </summary>
-    public abstract void Preview();
+    public virtual void Preview()
+    {
+      _windowManager.ShowWindow(new ScrobblePreviewViewModel(CreateScrobbles()));
+    }
   }
 }

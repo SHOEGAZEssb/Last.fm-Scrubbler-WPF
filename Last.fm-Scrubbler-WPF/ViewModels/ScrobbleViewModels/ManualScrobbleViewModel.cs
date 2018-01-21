@@ -1,8 +1,10 @@
-﻿using IF.Lastfm.Core.Objects;
+﻿using Caliburn.Micro;
+using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using Last.fm_Scrubbler_WPF.Views;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
@@ -122,8 +124,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public ManualScrobbleViewModel(IAuthScrobbler scrobbler)
-      : base(scrobbler)
+    public ManualScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
+      : base(windowManager, scrobbler)
     {
       Artist = "";
       Track = "";
@@ -161,14 +163,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       }
     }
 
-    /// <summary>
-    /// Preview the track that will be scrobbled.
-    /// </summary>
-    public override void Preview()
+    protected override IEnumerable<Scrobble> CreateScrobbles()
     {
-      ScrobblePreviewView spv = new ScrobblePreviewView(new ScrobblePreviewViewModel(
-        new Scrobble[] { new Scrobble(Artist, Album, Track, Time) { AlbumArtist = AlbumArtist, Duration = Duration } }));
-      spv.ShowDialog();
+      return new Scrobble[] { new Scrobble(Artist, Album, Track, Time) { AlbumArtist = AlbumArtist, Duration = Duration } };
     }
   }
 }

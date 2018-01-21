@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Objects;
+﻿using Caliburn.Micro;
+using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Views;
 using System;
@@ -122,8 +123,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public FriendScrobbleViewModel(IAuthScrobbler scrobbler)
-      : base(scrobbler)
+    public FriendScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
+      : base(windowManager, scrobbler)
     {
       Username = "";
       FetchedScrobbles = new ObservableCollection<FetchedFriendTrackViewModel>();
@@ -175,7 +176,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Creates a list with scrobbles that will be scrobbled.
     /// </summary>
     /// <returns>List with scrobbles.</returns>
-    private List<Scrobble> CreateScrobbles()
+    protected override IEnumerable<Scrobble> CreateScrobbles()
     {
       List<Scrobble> scrobbles = new List<Scrobble>();
       foreach (var vm in FetchedScrobbles.Where(i => i.ToScrobble))
@@ -211,15 +212,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         EnableControls = true;
       }
-    }
-
-    /// <summary>
-    /// Previews the tracks that will be scrobbled.
-    /// </summary>
-    public override void Preview()
-    {
-      ScrobblePreviewView spv = new ScrobblePreviewView(new ScrobblePreviewViewModel(CreateScrobbles()));
-      spv.ShowDialog();
     }
 
     /// <summary>

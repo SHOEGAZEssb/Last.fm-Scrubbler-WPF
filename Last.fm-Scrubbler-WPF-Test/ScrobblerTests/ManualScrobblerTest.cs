@@ -1,13 +1,9 @@
 ﻿using IF.Lastfm.Core.Objects;
-using IF.Lastfm.Core.Scrobblers;
 using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.ViewModels;
 using Moq;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Last.fm_Scrubbler_WPF_Test.ScrobblerTests
@@ -25,7 +21,7 @@ namespace Last.fm_Scrubbler_WPF_Test.ScrobblerTests
       Scrobble actual = null;
       scrobblerMock.Setup(i => i.ScrobbleAsync(It.IsAny<Scrobble>())).Callback<Scrobble>(s => actual = s);
 
-      ManualScrobbleViewModel vm = new ManualScrobbleViewModel(scrobblerMock.Object)
+      ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null, scrobblerMock.Object)
       {
         UseCurrentTime = false,
 

@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Api.Helpers;
+﻿using Caliburn.Micro;
+using IF.Lastfm.Core.Api.Helpers;
 using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Models;
@@ -247,8 +248,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public DatabaseScrobbleViewModel(IAuthScrobbler scrobbler)
-      : base(scrobbler)
+    public DatabaseScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
+      : base(windowManager, scrobbler)
     {
       SearchText = "";
       DatabaseToSearch = Database.LastFm;
@@ -577,7 +578,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Creates the list of scrobbles.
     /// </summary>
     /// <returns>List with scrobbles.</returns>
-    private List<Scrobble> CreateScrobbles()
+    protected override IEnumerable<Scrobble> CreateScrobbles()
     {
       DateTime finishingTime = Time;
       List<Scrobble> scrobbles = new List<Scrobble>();
@@ -591,15 +592,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       }
 
       return scrobbles;
-    }
-
-    /// <summary>
-    /// Previews the scrobbles.
-    /// </summary>
-    public override void Preview()
-    {
-      ScrobblePreviewView spv = new ScrobblePreviewView(new ScrobblePreviewViewModel(CreateScrobbles()));
-      spv.ShowDialog();
     }
 
     /// <summary>

@@ -10,6 +10,7 @@ using Last.fm_Scrubbler_WPF.Views;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using System.IO;
 using Last.fm_Scrubbler_WPF.Interfaces;
+using Caliburn.Micro;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
@@ -107,8 +108,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public FileScrobbleViewModel(IAuthScrobbler scrobbler)
-      : base(scrobbler)
+    public FileScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
+      : base(windowManager, scrobbler)
     {
       LoadedFiles = new ObservableCollection<LoadedFileViewModel>();
       _dispatcher = Dispatcher.CurrentDispatcher;
@@ -302,19 +303,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
 
     /// <summary>
-    /// Shows a preview of the tracks that will be scrobbled.
-    /// </summary>
-    public override void Preview()
-    {
-      ScrobblePreviewView spv = new ScrobblePreviewView(new ScrobblePreviewViewModel(CreateScrobbles()));
-      spv.ShowDialog();
-    }
-
-    /// <summary>
     /// Creates the list of the tracks that will be scrobbled.
     /// </summary>
     /// <returns>List with scrobbles.</returns>
-    private List<Scrobble> CreateScrobbles()
+    protected override IEnumerable<Scrobble> CreateScrobbles()
     {
       DateTime timePlayed = Time;
       List<Scrobble> scrobbles = new List<Scrobble>();
