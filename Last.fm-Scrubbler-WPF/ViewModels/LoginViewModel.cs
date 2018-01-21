@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,7 +10,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.LoginView"/>
   /// </summary>
-  class LoginViewModel : PropertyChangedBase
+  class LoginViewModel : Screen
   {
     #region Properties
 
@@ -40,24 +41,30 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Tries to log the user in with the given credentials.
     /// </summary>
-    /// <param name="win">The calling <see cref="Views.LoginView"/>.</param>
     /// <param name="username">The username.</param>
     /// <param name="password">The <see cref="PasswordBox"/> containing the password.</param>
-    public async Task Login(Window win, string username, PasswordBox password)
+    public async Task Login(string username, PasswordBox password)
     {
       EnableControls = false;
 
-      var response = await MainViewModel.Client.Auth.GetSessionTokenAsync(username, password.Password);
+      try
+      {
+        var response = await MainViewModel.Client.Auth.GetSessionTokenAsync(username, password.Password);
 
-      if (response.Success && MainViewModel.Client.Auth.Authenticated)
-      {
-        MessageBox.Show("Successfully logged in and authenticated!");
-        win.DialogResult = true;
-        win.Close();
+        if (response.Success && MainViewModel.Client.Auth.Authenticated)
+        {
+          MessageBox.Show("Successfully logged in and authenticated!");
+          TryClose(true);
+        }
+        else
+          MessageBox.Show("Failed to log in or authenticate!");
       }
-      else
+      catch(Exception ex)
       {
-        MessageBox.Show("Failed to log in or authenticate!");
+        MessageBox.Show("Fatal error while trying to log in: " + ex.Message);
+      }
+      finally
+      {
         EnableControls = true;
       }
     }
@@ -66,13 +73,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Logs the user in if the enter key is pressed.
     /// </summary>
     /// <param name="e">EventArgs containing the pressed key.</param>
-    /// <param name="win">The calling <see cref="Views.LoginView"/>.</param>
     /// <param name="username">The username.</param>
     /// <param name="password">The <see cref="PasswordBox"/> containing the password.</param>
-    public async void ButtonPressed(KeyEventArgs e, Window win, string username, PasswordBox password)
+    public async void ButtonPressed(KeyEventArgs e, string username, PasswordBox password)
     {
       if (e.Key == Key.Enter)
-        await Login(win, username, password);
+        await Login(username, password);
     }
   }
 }

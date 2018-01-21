@@ -38,7 +38,6 @@
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="Login">
-            <cal:Parameter Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
             <cal:Parameter Value="{Binding Path=Text, ElementName=usernameTextBox}"/>
             <cal:Parameter Value="{Binding ElementName=passwordBox}"/>
           </cal:ActionMessage>

@@ -85,12 +85,23 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
     #endregion Properties
 
+    #region Member
+
+    /// <summary>
+    /// WindowManager used to display dialogs.
+    /// </summary>
+    private IWindowManager _windowManager;
+
+    #endregion Member
+
     /// <summary>
     /// Constructor.
     /// Deserializes the users.
     /// </summary>
-    public UserViewModel()
+    /// <param name="windowManager">WindowManager used to display dialogs.</param>
+    public UserViewModel(IWindowManager windowManager)
     {
+      _windowManager = windowManager;
       AvailableUsers = new ObservableCollection<User>();
 
       if (!Directory.Exists(USERSFOLDER))
@@ -104,12 +115,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public void AddUser()
     {
-      LoginView lv = new LoginView()
-      {
-        DataContext = new LoginViewModel()
-      };
-
-      if (lv.ShowDialog().Value)
+      if (_windowManager.ShowDialog(new LoginViewModel()).Value)
       {
         User usr = new User(MainViewModel.Client.Auth.UserSession.Username, MainViewModel.Client.Auth.UserSession.Token, MainViewModel.Client.Auth.UserSession.IsSubscriber);
         AvailableUsers.Add(usr);

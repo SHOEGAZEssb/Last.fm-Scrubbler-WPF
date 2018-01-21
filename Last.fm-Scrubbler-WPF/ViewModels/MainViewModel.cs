@@ -337,7 +337,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       SetupScrobbleViewModels();
       SetupExtraViewModels();
 
-      UserViewModel = new UserViewModel();
+      UserViewModel = new UserViewModel(_windowManager);
       UserViewModel.ActiveUserChanged += UserViewModel_ActiveUserChanged;
       UserViewModel.LoadLastUser();
     }
