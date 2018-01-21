@@ -46,34 +46,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
     private static ILastFMClient _client;
 
-    ///// <summary>
-    ///// Scrobbler used to scrobble tracks.
-    ///// </summary>
-    //public static IAuthScrobbler Scrobbler
-    //{
-    //  get { return _scrobbler; }
-    //  private set
-    //  {
-    //    _scrobbler = value;
-    //    ClientAuthChanged?.Invoke(null, EventArgs.Empty);
-    //  }
-    //}
-    //private static IAuthScrobbler _scrobbler;
-
-    ///// <summary>
-    ///// Scrobbler used to scrobble tracks.
-    ///// </summary>
-    //public static IAuthScrobbler CachingScrobbler
-    //{
-    //  get { return _cachingScrobbler; }
-    //  private set
-    //  {
-    //    _cachingScrobbler = value;
-    //    ClientAuthChanged?.Invoke(null, EventArgs.Empty);
-    //  }
-    //}
-    //private static IAuthScrobbler _cachingScrobbler;
-
     /// <summary>
     /// ViewModel for the <see cref="UserView"/>.
     /// </summary>
@@ -87,11 +59,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       }
     }
     private UserViewModel _userViewModel;
-
-    /// <summary>
-    /// Event that triggers when the client authentication changes.
-    /// </summary>
-    public static EventHandler<EventArgs> ClientAuthChanged;
 
     /// <summary>
     /// The minimum DateTime for all DateTimePickers.
@@ -418,7 +385,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     internal static void CreateNewClient()
     {
       Client = _lastFMClientFactory.CreateClient(APIKEY, APISECRET);
-      ClientAuthChanged?.Invoke(null, EventArgs.Empty);
     }
 
     /// <summary>

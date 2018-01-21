@@ -67,7 +67,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       _windowManager = windowManager;
       Scrobbler = scrobbler;
-      MainViewModel.ClientAuthChanged += MainViewModel_ClientAuthChanged;
     }
 
     /// <summary>
