@@ -15,7 +15,7 @@ namespace Last.fm_Scrubbler_WPF.Interfaces
     /// <param name="auth">Authentication.</param>
     /// <param name="httpClient">HttpClient used for requests.</param>
     /// <returns>Newly created scrobbler.</returns>
-    IScrobbler CreateScrobbler(ILastAuth auth, HttpClient httpClient = null);
+    IAuthScrobbler CreateScrobbler(ILastAuth auth, HttpClient httpClient = null);
 
     /// <summary>
     /// Creates a scrobbler that caches into a sqlite database.
@@ -24,6 +24,6 @@ namespace Last.fm_Scrubbler_WPF.Interfaces
     /// <param name="dbFile">Database file to write cached scrobbles to.</param>
     /// <param name="httpClient">HttpClient used for requests.</param>
     /// <returns>Newly created scrobbler.</returns>
-    IScrobbler CreateSQLiteScrobbler(ILastAuth auth, string dbFile, HttpClient httpClient = null);
+    IAuthScrobbler CreateSQLiteScrobbler(ILastAuth auth, string dbFile, HttpClient httpClient = null);
   }
 }

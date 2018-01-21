@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using Last.fm_Scrubbler_WPF.Views;
 using System;
@@ -105,7 +106,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public override bool CanScrobble
     {
-      get { return MainViewModel.Client.Auth.Authenticated && Artist.Length > 0 && Track.Length > 0 && EnableControls; }
+      get { return base.CanScrobble && Artist.Length > 0 && Track.Length > 0 && EnableControls; }
     }
 
     /// <summary>
@@ -121,7 +122,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public ManualScrobbleViewModel()
+    public ManualScrobbleViewModel(IAuthScrobbler scrobbler)
+      : base(scrobbler)
     {
       Artist = "";
       Track = "";
@@ -143,7 +145,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         OnStatusUpdated("Trying to scrobble...");
 
         Scrobble s = new Scrobble(Artist, Album, Track, Time) { AlbumArtist = AlbumArtist, Duration = Duration };
-        var response = await MainViewModel.Scrobbler.ScrobbleAsync(s);
+        var response = await Scrobbler.ScrobbleAsync(s);
         if (response.Success)
           OnStatusUpdated("Successfully scrobbled!");
         else

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IF.Lastfm.Core.Scrobblers;
+using Last.fm_Scrubbler_WPF.Interfaces;
+using System;
 using System.Threading.Tasks;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
@@ -13,20 +15,45 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Gets if the scrobble button is enabled.
     /// </summary>
-    public abstract bool CanScrobble { get; }
+    public virtual bool CanScrobble
+    {
+      get
+      {
+        if (Scrobbler != null && Scrobbler.Auth != null)
+          return Scrobbler.Auth.Authenticated;
+        return false;
+      }
+    }
 
     /// <summary>
     /// Gets if the preview button is enabled.
     /// </summary>
     public abstract bool CanPreview { get; }
 
+    /// <summary>
+    /// Scrobbler used to scrobble.
+    /// </summary>
+    public IAuthScrobbler Scrobbler
+    {
+      get { return _scrobbler; }
+      set
+      {
+        _scrobbler = value;
+        NotifyOfPropertyChange();
+        NotifyOfPropertyChange(() => CanScrobble);
+      }
+    }
+    private IAuthScrobbler _scrobbler;
+
     #endregion Properties
 
     /// <summary>
     /// Constructor.
     /// </summary>
-    public ScrobbleViewModelBase()
+    /// <param name="scrobbler">Scrobbler used to scrobble.</param>
+    public ScrobbleViewModelBase(IAuthScrobbler scrobbler)
     {
+      Scrobbler = scrobbler;
       MainViewModel.ClientAuthChanged += MainViewModel_ClientAuthChanged;
     }
 

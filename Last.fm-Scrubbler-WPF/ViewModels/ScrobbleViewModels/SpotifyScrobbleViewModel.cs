@@ -1,5 +1,6 @@
 ﻿using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Properties;
 using Last.fm_Scrubbler_WPF.Views.ScrobbleViews;
 using SpotifyAPI.Local;
@@ -85,7 +86,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public SpotifyScrobbleViewModel()
+    public SpotifyScrobbleViewModel(IAuthScrobbler scrobbler)
+      : base(scrobbler)
     {
       PercentageToScrobble = 0.5;
       _spotify = new SpotifyLocalAPI();
@@ -269,7 +271,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
             Duration = TimeSpan.FromSeconds(CurrentTrackLength),
           };
 
-          var response = await MainViewModel.CachingScrobbler.ScrobbleAsync(s);
+          var response = await Scrobbler.ScrobbleAsync(s);
           if (response.Success && response.Status == LastResponseStatus.Successful)
             OnStatusUpdated(string.Format("Successfully scrobbled {0}!", CurrentTrackName));
           else if(response.Status == LastResponseStatus.Cached)

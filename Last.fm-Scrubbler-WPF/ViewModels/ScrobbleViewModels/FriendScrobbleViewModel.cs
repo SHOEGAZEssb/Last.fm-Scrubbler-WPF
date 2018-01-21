@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Views;
 using System;
 using System.Collections.Generic;
@@ -121,7 +122,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public FriendScrobbleViewModel()
+    public FriendScrobbleViewModel(IAuthScrobbler scrobbler)
+      : base(scrobbler)
     {
       Username = "";
       FetchedScrobbles = new ObservableCollection<FetchedFriendTrackViewModel>();
@@ -195,7 +197,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         OnStatusUpdated("Trying to scrobble selected tracks");
 
-        var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
+        var response = await Scrobbler.ScrobbleAsync(CreateScrobbles());
         if (response.Success)
           OnStatusUpdated("Successfully scrobbled!");
         else

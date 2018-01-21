@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Models;
 using Last.fm_Scrubbler_WPF.ViewModels.SubViewModels;
 using Last.fm_Scrubbler_WPF.Views;
@@ -265,7 +266,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public SetlistFMScrobbleViewModel()
+    public SetlistFMScrobbleViewModel(IAuthScrobbler scrobbler)
+      : base(scrobbler)
     {
       _setlistFMClient = new SetlistFmApi.SetlistFmApi("23b3fd98-f5c7-49c6-a7d2-28498c0c2283");
       _artistResultView = new ArtistResultView() { DataContext = this };
@@ -485,7 +487,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       {
         OnStatusUpdated("Trying to scrobble selected tracks...");
 
-        var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
+        var response = await Scrobbler.ScrobbleAsync(CreateScrobbles());
         if (response.Success)
           OnStatusUpdated("Successfully scrobbled!");
         else

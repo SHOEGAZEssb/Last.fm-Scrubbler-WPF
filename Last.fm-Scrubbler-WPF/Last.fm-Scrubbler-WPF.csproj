@@ -70,7 +70,7 @@
       <HintPath>Libs\SetlistFmApi.dll</HintPath>
     </Reference>
     <Reference Include="SpotifyAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SpotifyAPI-NET.2.17.0\lib\SpotifyAPI.dll</HintPath>
+      <HintPath>..\packages\SpotifyAPI-NET.2.17.1\lib\SpotifyAPI.dll</HintPath>
     </Reference>
     <Reference Include="SQLite-net, Version=1.5.166.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\sqlite-net-pcl.1.5.166-beta\lib\netstandard1.1\SQLite-net.dll</HintPath>
@@ -152,11 +152,14 @@
     <Compile Include="Converters\DataTypeConverter.cs" />
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Interfaces\IAuthScrobbler.cs" />
     <Compile Include="Interfaces\ILastFMApiBase.cs" />
     <Compile Include="Interfaces\ILastFMClient.cs" />
     <Compile Include="Interfaces\ILastFMClientFactory.cs" />
     <Compile Include="Interfaces\IScrobblerFactory.cs" />
     <Compile Include="Models\Artist.cs" />
+    <Compile Include="Models\AuthScrobbler.cs" />
+    <Compile Include="Models\AuthSQLiteScrobbler.cs" />
     <Compile Include="Models\LastFMClient.cs" />
     <Compile Include="Models\LastFMClientFactory.cs" />
     <Compile Include="Models\Release.cs" />

@@ -1,3 +1,5 @@
+using System;
+
 namespace NUnitLite.Tests
 {
   public class Program

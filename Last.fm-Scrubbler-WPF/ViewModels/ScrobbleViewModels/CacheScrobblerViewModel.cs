@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Properties;
 using Last.fm_Scrubbler_WPF.Views;
 using System;
@@ -62,7 +63,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public CacheScrobblerViewModel()
+    public CacheScrobblerViewModel(IAuthScrobbler scrobbler)
+      : base(scrobbler)
     {
       CachedScrobbles = new ObservableCollection<Scrobble>();
       StartupHandling();
@@ -96,7 +98,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       {
         EnableControls = false;
         OnStatusUpdated("Trying to scrobble cached tracks...");
-        var response = await MainViewModel.CachingScrobbler.SendCachedScrobblesAsync();
+        var response = await Scrobbler.SendCachedScrobblesAsync();
 
         if (response.Success && response.Status == IF.Lastfm.Core.Api.Enums.LastResponseStatus.Successful)
           OnStatusUpdated("Successfully scrobbled cached tracks");
@@ -122,7 +124,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       try
       {
         EnableControls = false;
-        CachedScrobbles = new ObservableCollection<Scrobble>(await MainViewModel.CachingScrobbler.GetCachedAsync());
+        CachedScrobbles = new ObservableCollection<Scrobble>(await Scrobbler.GetCachedAsync());
       }
       catch(Exception ex)
       {

@@ -8,14 +8,14 @@ namespace Last.fm_Scrubbler_WPF.Models
 {
   class ScrobblerFactory : IScrobblerFactory
   {
-    public IScrobbler CreateScrobbler(ILastAuth auth, HttpClient httpClient = null)
+    public IAuthScrobbler CreateScrobbler(ILastAuth auth, HttpClient httpClient = null)
     {
-      return new Scrobbler(auth);
+      return new AuthScrobbler(auth);
     }
 
-    public IScrobbler CreateSQLiteScrobbler(ILastAuth auth, string dbFile, HttpClient httpClient = null)
+    public IAuthScrobbler CreateSQLiteScrobbler(ILastAuth auth, string dbFile, HttpClient httpClient = null)
     {
-      return new SQLiteScrobbler(auth, dbFile, httpClient);
+      return new AuthSQLiteScrobbler(auth, dbFile, httpClient);
     }
   }
 }

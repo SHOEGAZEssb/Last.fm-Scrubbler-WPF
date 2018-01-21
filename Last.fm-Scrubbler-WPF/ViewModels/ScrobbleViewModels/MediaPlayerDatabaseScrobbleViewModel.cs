@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Models;
 using Last.fm_Scrubbler_WPF.Views;
 using System;
@@ -139,7 +140,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public MediaPlayerDatabaseScrobbleViewModel()
+    public MediaPlayerDatabaseScrobbleViewModel(IAuthScrobbler scrobbler)
+      : base(scrobbler)
     {
       ParsedScrobbles = new ObservableCollection<MediaDBScrobbleViewModel>();
     }
@@ -321,7 +323,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         OnStatusUpdated("Trying to scrobble selected tracks...");
 
-        var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
+        var response = await Scrobbler.ScrobbleAsync(CreateScrobbles());
         if (response.Success)
           OnStatusUpdated("Successfully scrobbled!");
         else
