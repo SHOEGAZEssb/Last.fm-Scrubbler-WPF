@@ -1,4 +1,5 @@
-﻿using Last.fm_Scrubbler_WPF.Interfaces;
+﻿using Caliburn.Micro;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using System;
 using System.Timers;
 
@@ -69,8 +70,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public ScrobbleTimeViewModelBase(IAuthScrobbler scrobbler)
-      : base(scrobbler)
+    public ScrobbleTimeViewModelBase(IWindowManager windowManager, IAuthScrobbler scrobbler)
+      : base(windowManager, scrobbler)
     {
       _currentTimeTimer = new Timer(1000);
       _currentTimeTimer.Elapsed += _currentTimeTimer_Elapsed;

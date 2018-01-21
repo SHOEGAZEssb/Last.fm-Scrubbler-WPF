@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Api;
-using IF.Lastfm.Core.Scrobblers;
 using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
@@ -8,7 +7,6 @@ using Last.fm_Scrubbler_WPF.Views;
 using Last.fm_Scrubbler_WPF.Views.ExtraFunctions;
 using Last.fm_Scrubbler_WPF.Views.ScrobbleViews;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
@@ -378,25 +376,25 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
     private void SetupScrobbleViewModels()
     {
-      ManualScrobbleViewModel = new ManualScrobbleViewModel(null);
+      ManualScrobbleViewModel = new ManualScrobbleViewModel(_windowManager, null);
       ManualScrobbleViewModel.StatusUpdated += StatusUpdated;
-      FriendScrobbleViewModel = new FriendScrobbleViewModel(null);
+      FriendScrobbleViewModel = new FriendScrobbleViewModel(_windowManager, null);
       FriendScrobbleViewModel.StatusUpdated += StatusUpdated;
-      DatabaseScrobbleViewModel = new DatabaseScrobbleViewModel(null);
+      DatabaseScrobbleViewModel = new DatabaseScrobbleViewModel(_windowManager, null);
       DatabaseScrobbleViewModel.StatusUpdated += StatusUpdated;
-      CSVScrobbleViewModel = new CSVScrobbleViewModel(null);
+      CSVScrobbleViewModel = new CSVScrobbleViewModel(_windowManager, null);
       CSVScrobbleViewModel.StatusUpdated += StatusUpdated;
-      FileScrobbleViewModel = new FileScrobbleViewModel(null);
+      FileScrobbleViewModel = new FileScrobbleViewModel(_windowManager, null);
       FileScrobbleViewModel.StatusUpdated += StatusUpdated;
-      MediaPlayerDatabaseScrobbleViewModel = new MediaPlayerDatabaseScrobbleViewModel(null);
+      MediaPlayerDatabaseScrobbleViewModel = new MediaPlayerDatabaseScrobbleViewModel(_windowManager, null);
       MediaPlayerDatabaseScrobbleViewModel.StatusUpdated += StatusUpdated;
-      ITunesScrobbleVM = new ITunesScrobbleViewModel(null);
+      ITunesScrobbleVM = new ITunesScrobbleViewModel(_windowManager, null);
       ITunesScrobbleVM.StatusUpdated += StatusUpdated;
-      SpotifyScrobbleVM = new SpotifyScrobbleViewModel(null);
+      SpotifyScrobbleVM = new SpotifyScrobbleViewModel(_windowManager, null);
       SpotifyScrobbleVM.StatusUpdated += StatusUpdated;
-      SetlistFMScrobbleVM = new SetlistFMScrobbleViewModel(null);
+      SetlistFMScrobbleVM = new SetlistFMScrobbleViewModel(_windowManager, null);
       SetlistFMScrobbleVM.StatusUpdated += StatusUpdated;
-      CacheScrobblerVM = new CacheScrobblerViewModel(null);
+      CacheScrobblerVM = new CacheScrobblerViewModel(_windowManager, null);
       CacheScrobblerVM.StatusUpdated += StatusUpdated;
 
       CreateScrobblers();

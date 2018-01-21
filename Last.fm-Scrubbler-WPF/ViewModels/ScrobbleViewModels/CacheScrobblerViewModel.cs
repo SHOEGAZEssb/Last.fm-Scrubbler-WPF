@@ -1,8 +1,9 @@
-﻿using IF.Lastfm.Core.Objects;
+﻿using Caliburn.Micro;
+using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Properties;
-using Last.fm_Scrubbler_WPF.Views;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
@@ -63,8 +64,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public CacheScrobblerViewModel(IAuthScrobbler scrobbler)
-      : base(scrobbler)
+    public CacheScrobblerViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
+      : base(windowManager, scrobbler)
     {
       CachedScrobbles = new ObservableCollection<Scrobble>();
       StartupHandling();
@@ -83,13 +84,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       }
     }
 
-    /// <summary>
-    /// Shows an overview of tracks that will be scrobbled.
-    /// </summary>
-    public override void Preview()
+    protected override IEnumerable<Scrobble> CreateScrobbles()
     {
-      ScrobblePreviewView view = new ScrobblePreviewView(new ScrobblePreviewViewModel(CachedScrobbles));
-      view.ShowDialog();
+      return CachedScrobbles;
     }
 
     public override async Task Scrobble()

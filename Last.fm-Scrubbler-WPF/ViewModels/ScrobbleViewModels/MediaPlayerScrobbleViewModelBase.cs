@@ -1,6 +1,8 @@
-﻿using IF.Lastfm.Core.Objects;
+﻿using Caliburn.Micro;
+using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -163,8 +165,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
 
     #endregion Member
 
-    public MediaPlayerScrobbleViewModelBase(IAuthScrobbler scrobbler)
-      : base(scrobbler)
+    public MediaPlayerScrobbleViewModelBase(IWindowManager windowManager, IAuthScrobbler scrobbler)
+      : base(windowManager, scrobbler)
     { }
 
     /// <summary>
@@ -284,9 +286,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Does nothing here.
     /// </summary>
-    public override void Preview()
+    /// <returns></returns>
+    protected override IEnumerable<Scrobble> CreateScrobbles()
     {
-      throw new NotImplementedException();
+      return new List<Scrobble>();
     }
   }
 }

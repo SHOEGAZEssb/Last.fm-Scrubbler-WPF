@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Objects;
+﻿using Caliburn.Micro;
+using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Models;
 using Last.fm_Scrubbler_WPF.Views;
@@ -140,8 +141,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public MediaPlayerDatabaseScrobbleViewModel(IAuthScrobbler scrobbler)
-      : base(scrobbler)
+    public MediaPlayerDatabaseScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
+      : base(windowManager, scrobbler)
     {
       ParsedScrobbles = new ObservableCollection<MediaDBScrobbleViewModel>();
     }
@@ -340,19 +341,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
 
     /// <summary>
-    /// Previews the tracks that will be scrobbled.
-    /// </summary>
-    public override void Preview()
-    {
-      ScrobblePreviewView spv = new ScrobblePreviewView(new ScrobblePreviewViewModel(CreateScrobbles()));
-      spv.ShowDialog();
-    }
-
-    /// <summary>
     /// Creates a list with scrobbles that will be scrobbled.
     /// </summary>
     /// <returns>List with scrobbles.</returns>
-    private List<Scrobble> CreateScrobbles()
+    protected override IEnumerable<Scrobble> CreateScrobbles()
     {
       List<Scrobble> scrobbles = new List<Scrobble>();
 

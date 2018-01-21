@@ -1,5 +1,4 @@
-﻿using Last.fm_Scrubbler_WPF.ViewModels;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Last.fm_Scrubbler_WPF.Views
 {
@@ -11,11 +10,9 @@ namespace Last.fm_Scrubbler_WPF.Views
     /// <summary>
     /// Constructor.
     /// </summary>
-    /// <param name="vm">ViewModel to use as DataContext.</param>
-    public ScrobblePreviewView(ScrobblePreviewViewModel vm)
+    public ScrobblePreviewView()
     {
       InitializeComponent();
-      DataContext = vm;
     }
   }
 }

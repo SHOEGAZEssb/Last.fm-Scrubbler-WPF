@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Api.Enums;
+﻿using Caliburn.Micro;
+using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Properties;
@@ -86,8 +87,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public SpotifyScrobbleViewModel(IAuthScrobbler scrobbler)
-      : base(scrobbler)
+    public SpotifyScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
+      : base(windowManager, scrobbler)
     {
       PercentageToScrobble = 0.5;
       _spotify = new SpotifyLocalAPI();

@@ -1,5 +1,4 @@
 ﻿using IF.Lastfm.Core.Api;
-using IF.Lastfm.Core.Scrobblers;
 using System.Net.Http;
 
 namespace Last.fm_Scrubbler_WPF.Interfaces

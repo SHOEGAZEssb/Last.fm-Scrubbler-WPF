@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Objects;
+﻿using Caliburn.Micro;
+using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Models;
 using Last.fm_Scrubbler_WPF.ViewModels.SubViewModels;
@@ -266,8 +267,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public SetlistFMScrobbleViewModel(IAuthScrobbler scrobbler)
-      : base(scrobbler)
+    public SetlistFMScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
+      : base(windowManager, scrobbler)
     {
       _setlistFMClient = new SetlistFmApi.SetlistFmApi("23b3fd98-f5c7-49c6-a7d2-28498c0c2283");
       _artistResultView = new ArtistResultView() { DataContext = this };
@@ -504,20 +505,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     }
 
     /// <summary>
-    /// Preview the scrobbles that will be scrobbled.
-    /// </summary>
-    public override void Preview()
-    {
-      ScrobblePreviewView spv = new ScrobblePreviewView(new ScrobblePreviewViewModel(CreateScrobbles()));
-      spv.ShowDialog();
-    }
-
-    /// <summary>
     /// Creates a list with scrobbles.
     /// </summary>
     /// <returns>List with scrobbles that would be
     /// scrobbled with the current settings.</returns>
-    private List<Scrobble> CreateScrobbles()
+    protected override IEnumerable<Scrobble> CreateScrobbles()
     {
       DateTime finishingTime = Time;
       List<Scrobble> scrobbles = new List<Scrobble>();
