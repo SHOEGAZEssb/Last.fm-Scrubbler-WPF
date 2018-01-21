@@ -7,7 +7,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for a <see cref="MediaDBScrobble"/>.
   /// </summary>
-  class MediaDBScrobbleViewModel : PropertyChangedBase
+  public class MediaDBScrobbleViewModel : PropertyChangedBase
   {
     #region Properties
 

@@ -7,7 +7,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.TrackResultView"/>.
   /// </summary>
-  class FetchedTrackViewModel : PropertyChangedBase
+  public class FetchedTrackViewModel : PropertyChangedBase
   {
     #region Properties
 

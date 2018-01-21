@@ -4,7 +4,7 @@ using TagLib;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
-  class LoadedFileViewModel : PropertyChangedBase
+  public class LoadedFileViewModel : PropertyChangedBase
   {
     #region Properties
 

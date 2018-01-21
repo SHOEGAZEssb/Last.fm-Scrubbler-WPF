@@ -8,7 +8,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// ViewModel for a single fetched track of a friend.
   /// Used in the <see cref="FriendScrobbleViewModel"/>.
   /// </summary>
-  class FetchedFriendTrackViewModel : PropertyChangedBase
+  public class FetchedFriendTrackViewModel : PropertyChangedBase
   {
     #region Properties
 

@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
   /// <summary>
   /// Base class for all scrobblers that scrobble a media player.
   /// </summary>
-  abstract class MediaPlayerScrobbleViewModelBase : ScrobbleViewModelBase
+  public abstract class MediaPlayerScrobbleViewModelBase : ScrobbleViewModelBase
   {
     #region Properties
 
@@ -161,6 +162,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     protected const string LASTFMURL = "https://www.last.fm/music/";
 
     #endregion Member
+
+    public MediaPlayerScrobbleViewModelBase(IAuthScrobbler scrobbler)
+      : base(scrobbler)
+    { }
 
     /// <summary>
     /// Connects to the client.

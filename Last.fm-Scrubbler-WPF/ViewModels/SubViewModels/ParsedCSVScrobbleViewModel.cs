@@ -4,7 +4,7 @@ using System;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
-  class ParsedCSVScrobbleViewModel : PropertyChangedBase
+  public class ParsedCSVScrobbleViewModel : PropertyChangedBase
   {
     #region Properties
 

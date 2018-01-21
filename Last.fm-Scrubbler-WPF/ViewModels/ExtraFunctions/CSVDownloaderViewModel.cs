@@ -12,7 +12,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.CSVDownloaderView"/>
   /// </summary>
-  class CSVDownloaderViewModel : ViewModelBase
+  public class CSVDownloaderViewModel : ViewModelBase
   {
     #region Properties
 

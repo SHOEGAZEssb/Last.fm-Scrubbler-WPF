@@ -9,13 +9,14 @@ using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Views;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using System.IO;
+using Last.fm_Scrubbler_WPF.Interfaces;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
   /// <summary>
   /// ViewModel for the <see cref="FileScrobbleView"/>.
   /// </summary>
-  class FileScrobbleViewModel : ScrobbleTimeViewModelBase
+  public class FileScrobbleViewModel : ScrobbleTimeViewModelBase
   {
     #region Properties
 
@@ -106,7 +107,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public FileScrobbleViewModel()
+    public FileScrobbleViewModel(IAuthScrobbler scrobbler)
+      : base(scrobbler)
     {
       LoadedFiles = new ObservableCollection<LoadedFileViewModel>();
       _dispatcher = Dispatcher.CurrentDispatcher;
@@ -283,7 +285,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         OnStatusUpdated("Trying to scrobble selected tracks...");
 
-        var response = await MainViewModel.Scrobbler.ScrobbleAsync(CreateScrobbles());
+        var response = await Scrobbler.ScrobbleAsync(CreateScrobbles());
         if (response.Success)
           OnStatusUpdated("Successfully scrobbled!");
         else

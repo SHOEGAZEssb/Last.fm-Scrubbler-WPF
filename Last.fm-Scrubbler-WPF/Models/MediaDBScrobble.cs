@@ -5,7 +5,7 @@ namespace Last.fm_Scrubbler_WPF.Models
   /// <summary>
   /// Scrobble parsed from a media player library.
   /// </summary>
-  class MediaDBScrobble : DatedScrobble
+  public class MediaDBScrobble : DatedScrobble
   {
     #region Properties
 

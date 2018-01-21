@@ -7,7 +7,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.ReleaseResultView"/>.
   /// </summary>
-  class FetchedReleaseViewModel : PropertyChangedBase
+  public class FetchedReleaseViewModel : PropertyChangedBase
   {
     #region Properties
 

@@ -7,7 +7,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.ArtistResultView"/>.
   /// </summary>
-  class FetchedArtistViewModel : PropertyChangedBase
+  public class FetchedArtistViewModel : PropertyChangedBase
   {
     #region Properties
 

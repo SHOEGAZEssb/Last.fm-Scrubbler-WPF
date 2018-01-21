@@ -5,7 +5,7 @@ namespace Last.fm_Scrubbler_WPF.Models
   /// <summary>
   /// Basic information about a track / scrobble.
   /// </summary>
-  class ScrobbleBase
+  public class ScrobbleBase
   {
     #region Properties
 

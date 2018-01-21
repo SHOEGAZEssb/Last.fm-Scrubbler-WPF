@@ -4,7 +4,7 @@ using System;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
 {
-  class FetchedSetlistViewModel : PropertyChangedBase
+  public class FetchedSetlistViewModel : PropertyChangedBase
   {
     #region Properties
 

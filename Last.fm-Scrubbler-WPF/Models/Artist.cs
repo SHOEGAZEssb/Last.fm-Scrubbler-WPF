@@ -5,7 +5,7 @@ namespace Last.fm_Scrubbler_WPF.Models
   /// <summary>
   /// Interpret.
   /// </summary>
-  class Artist
+  public class Artist
   {
     #region Properties
 

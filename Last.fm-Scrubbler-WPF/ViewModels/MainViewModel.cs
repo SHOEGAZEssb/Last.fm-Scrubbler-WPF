@@ -1,13 +1,14 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Scrobblers;
-using IF.Lastfm.SQLite;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using Last.fm_Scrubbler_WPF.Views;
 using Last.fm_Scrubbler_WPF.Views.ExtraFunctions;
 using Last.fm_Scrubbler_WPF.Views.ScrobbleViews;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
@@ -16,7 +17,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="MainView"/>.
   /// </summary>
-  class MainViewModel : PropertyChangedBase
+  public class MainViewModel : PropertyChangedBase
   {
     #region Properties
 
@@ -37,7 +38,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// The client used for all last.fm actions.
     /// </summary>
-    public static LastfmClient Client
+    public static ILastFMClient Client
     {
       get { return _client; }
       private set
@@ -45,35 +46,35 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         _client = value;
       }
     }
-    private static LastfmClient _client;
+    private static ILastFMClient _client;
 
-    /// <summary>
-    /// Scrobbler used to scrobble tracks.
-    /// </summary>
-    public static IScrobbler Scrobbler
-    {
-      get { return _scrobbler; }
-      private set
-      {
-        _scrobbler = value;
-        ClientAuthChanged?.Invoke(null, EventArgs.Empty);
-      }
-    }
-    private static IScrobbler _scrobbler;
+    ///// <summary>
+    ///// Scrobbler used to scrobble tracks.
+    ///// </summary>
+    //public static IAuthScrobbler Scrobbler
+    //{
+    //  get { return _scrobbler; }
+    //  private set
+    //  {
+    //    _scrobbler = value;
+    //    ClientAuthChanged?.Invoke(null, EventArgs.Empty);
+    //  }
+    //}
+    //private static IAuthScrobbler _scrobbler;
 
-    /// <summary>
-    /// Scrobbler used to scrobble tracks.
-    /// </summary>
-    public static IScrobbler CachingScrobbler
-    {
-      get { return _cachingScrobbler; }
-      private set
-      {
-        _cachingScrobbler = value;
-        ClientAuthChanged?.Invoke(null, EventArgs.Empty);
-      }
-    }
-    private static IScrobbler _cachingScrobbler;
+    ///// <summary>
+    ///// Scrobbler used to scrobble tracks.
+    ///// </summary>
+    //public static IAuthScrobbler CachingScrobbler
+    //{
+    //  get { return _cachingScrobbler; }
+    //  private set
+    //  {
+    //    _cachingScrobbler = value;
+    //    ClientAuthChanged?.Invoke(null, EventArgs.Empty);
+    //  }
+    //}
+    //private static IAuthScrobbler _cachingScrobbler;
 
     /// <summary>
     /// ViewModel for the <see cref="UserView"/>.
@@ -334,49 +335,75 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     private IWindowManager _windowManager;
 
+    /// <summary>
+    /// Factory used for creating clients.
+    /// </summary>
+    private static ILastFMClientFactory _lastFMClientFactory;
+
+    /// <summary>
+    /// Factory used for creating scrobblers.
+    /// </summary>
+    private IScrobblerFactory _scrobblerFactory;
+
     #endregion Private Member
 
     /// <summary>
     /// Constructor.
     /// </summary>
-    public MainViewModel(IWindowManager windowManager)
+    public MainViewModel(IWindowManager windowManager, ILastFMClientFactory clientFactory, IScrobblerFactory scrobblerFactory)
     {
       _windowManager = windowManager;
+      _lastFMClientFactory = clientFactory;
+      _scrobblerFactory = scrobblerFactory;
       TitleString = "Last.fm Scrubbler WPF " + Assembly.GetExecutingAssembly().GetName().Version;
       CreateNewClient();
       SetupViewModels();
       CurrentStatus = "Waiting to scrobble...";
     }
 
+    #region Setup
+
     /// <summary>
     /// Creates the ViewModels.
     /// </summary>
     private void SetupViewModels()
     {
+      SetupScrobbleViewModels();
+      SetupExtraViewModels();
+
       UserViewModel = new UserViewModel();
       UserViewModel.ActiveUserChanged += UserViewModel_ActiveUserChanged;
       UserViewModel.LoadLastUser();
-      ManualScrobbleViewModel = new ManualScrobbleViewModel();
+    }
+
+    private void SetupScrobbleViewModels()
+    {
+      ManualScrobbleViewModel = new ManualScrobbleViewModel(null);
       ManualScrobbleViewModel.StatusUpdated += StatusUpdated;
-      FriendScrobbleViewModel = new FriendScrobbleViewModel();
+      FriendScrobbleViewModel = new FriendScrobbleViewModel(null);
       FriendScrobbleViewModel.StatusUpdated += StatusUpdated;
-      DatabaseScrobbleViewModel = new DatabaseScrobbleViewModel();
+      DatabaseScrobbleViewModel = new DatabaseScrobbleViewModel(null);
       DatabaseScrobbleViewModel.StatusUpdated += StatusUpdated;
-      CSVScrobbleViewModel = new CSVScrobbleViewModel();
+      CSVScrobbleViewModel = new CSVScrobbleViewModel(null);
       CSVScrobbleViewModel.StatusUpdated += StatusUpdated;
-      FileScrobbleViewModel = new FileScrobbleViewModel();
+      FileScrobbleViewModel = new FileScrobbleViewModel(null);
       FileScrobbleViewModel.StatusUpdated += StatusUpdated;
-      MediaPlayerDatabaseScrobbleViewModel = new MediaPlayerDatabaseScrobbleViewModel();
+      MediaPlayerDatabaseScrobbleViewModel = new MediaPlayerDatabaseScrobbleViewModel(null);
       MediaPlayerDatabaseScrobbleViewModel.StatusUpdated += StatusUpdated;
-      ITunesScrobbleVM = new ITunesScrobbleViewModel();
+      ITunesScrobbleVM = new ITunesScrobbleViewModel(null);
       ITunesScrobbleVM.StatusUpdated += StatusUpdated;
-      SpotifyScrobbleVM = new SpotifyScrobbleViewModel();
+      SpotifyScrobbleVM = new SpotifyScrobbleViewModel(null);
       SpotifyScrobbleVM.StatusUpdated += StatusUpdated;
-      SetlistFMScrobbleVM = new SetlistFMScrobbleViewModel();
+      SetlistFMScrobbleVM = new SetlistFMScrobbleViewModel(null);
       SetlistFMScrobbleVM.StatusUpdated += StatusUpdated;
-      CacheScrobblerVM = new CacheScrobblerViewModel();
+      CacheScrobblerVM = new CacheScrobblerViewModel(null);
       CacheScrobblerVM.StatusUpdated += StatusUpdated;
 
+      CreateScrobblers();
+    }
+
+    private void SetupExtraViewModels()
+    {
       PasteYourTasteVM = new PasteYourTasteViewModel();
       PasteYourTasteVM.StatusUpdated += StatusUpdated;
       CSVDownloaderVM = new CSVDownloaderViewModel();
@@ -385,12 +412,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       CollageCreatorVM.StatusUpdated += StatusUpdated;
     }
 
+    #endregion Setup
+
     /// <summary>
     /// Creates a new <see cref="LastfmClient"/>.
     /// </summary>
     internal static void CreateNewClient()
     {
-      Client = new LastfmClient(APIKEY, APISECRET);
+      Client = _lastFMClientFactory.CreateClient(APIKEY, APISECRET);
       ClientAuthChanged?.Invoke(null, EventArgs.Empty);
     }
 
@@ -402,7 +431,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private void UserViewModel_ActiveUserChanged(object sender, EventArgs e)
     {
       NotifyOfPropertyChange(() => StatusBarUsername);
+      CreateScrobblers();
+    }
 
+    private void CreateScrobblers()
+    {
+      IAuthScrobbler scrobbler;
+      IAuthScrobbler cachingScrobbler;
       if (Client.Auth.UserSession != null)
       {
         string dbFile = Client.Auth.UserSession.Username + ".db";
@@ -417,14 +452,25 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           CurrentStatus = "Error creating cache database. Error: " + ex.Message;
         }
 
-        Scrobbler = new Scrobbler(Client.Auth);
-        CachingScrobbler = new SQLiteScrobbler(Client.Auth, dbFile);
+        scrobbler = _scrobblerFactory.CreateScrobbler(Client.Auth);
+        cachingScrobbler = _scrobblerFactory.CreateSQLiteScrobbler(Client.Auth, dbFile);
       }
       else
       {
-        Scrobbler = null;
-        CachingScrobbler = null;
+        scrobbler = null;
+        cachingScrobbler = null;
       }
+
+      ManualScrobbleViewModel.Scrobbler = scrobbler;
+      FriendScrobbleViewModel.Scrobbler = scrobbler;
+      DatabaseScrobbleViewModel.Scrobbler = scrobbler;
+      CSVScrobbleViewModel.Scrobbler = scrobbler;
+      FileScrobbleViewModel.Scrobbler = scrobbler;
+      MediaPlayerDatabaseScrobbleViewModel.Scrobbler = scrobbler;
+      ITunesScrobbleVM.Scrobbler = cachingScrobbler;
+      SpotifyScrobbleVM.Scrobbler = cachingScrobbler;
+      SetlistFMScrobbleVM.Scrobbler = scrobbler;
+      CacheScrobblerVM.Scrobbler = cachingScrobbler;
     }
 
     /// <summary>

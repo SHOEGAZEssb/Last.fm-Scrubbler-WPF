@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Last.fm_Scrubbler_WPF.Interfaces;
+using System;
 using System.Timers;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
@@ -6,7 +7,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
   /// <summary>
   /// Base class for ViewModels that need to use a "Starting" or "Finishing" time.
   /// </summary>
-  abstract class ScrobbleTimeViewModelBase : ScrobbleViewModelBase
+  public abstract class ScrobbleTimeViewModelBase : ScrobbleViewModelBase
   {
     #region Properties
 
@@ -68,7 +69,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public ScrobbleTimeViewModelBase()
+    public ScrobbleTimeViewModelBase(IAuthScrobbler scrobbler)
+      : base(scrobbler)
     {
       _currentTimeTimer = new Timer(1000);
       _currentTimeTimer.Elapsed += _currentTimeTimer_Elapsed;
