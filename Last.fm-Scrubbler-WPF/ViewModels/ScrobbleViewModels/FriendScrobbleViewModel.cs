@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Views;
@@ -120,14 +121,25 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
     #endregion Properties
 
+    #region Member
+
+    /// <summary>
+    /// The last.fm api object to get the scrobbles of an user.
+    /// </summary>
+    private IUserApi _userApi;
+
+    #endregion Member
+
     /// <summary>
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="scrobbler">Scrobbler used to scrobble.</param>
-    public FriendScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
+    /// <param name="userApi">The last.fm api object to get the scrobbles of an user.</param>
+    public FriendScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler, IUserApi userApi)
       : base(windowManager, scrobbler)
     {
+      _userApi = userApi;
       Username = "";
       FetchedScrobbles = new ObservableCollection<FetchedFriendTrackViewModel>();
       Amount = 20;
@@ -136,12 +148,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Fetches the recent scrobbles of the user with the given <see cref="Username"/>.
     /// </summary>
-    public async void FetchScrobbles()
+    public async Task FetchScrobbles()
     {
       EnableControls = false;
       OnStatusUpdated("Trying to fetch scrobbles of user " + Username + "...");
       FetchedScrobbles.Clear();
-      var response = await MainViewModel.Client.User.GetRecentScrobbles(Username, null, 1, Amount);
+      var response = await _userApi.GetRecentScrobbles(Username, null, 1, Amount);
       if (response.Success)
       {
         OnStatusUpdated("Successfully fetched scrobbles of user " + Username);

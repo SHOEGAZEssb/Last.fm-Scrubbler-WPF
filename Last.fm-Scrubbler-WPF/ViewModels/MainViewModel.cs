@@ -349,7 +349,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       ManualScrobbleViewModel = new ManualScrobbleViewModel(_windowManager, null);
       ManualScrobbleViewModel.StatusUpdated += StatusUpdated;
-      FriendScrobbleViewModel = new FriendScrobbleViewModel(_windowManager, null);
+      FriendScrobbleViewModel = new FriendScrobbleViewModel(_windowManager, null, Client.User);
       FriendScrobbleViewModel.StatusUpdated += StatusUpdated;
       DatabaseScrobbleViewModel = new DatabaseScrobbleViewModel(_windowManager, null);
       DatabaseScrobbleViewModel.StatusUpdated += StatusUpdated;

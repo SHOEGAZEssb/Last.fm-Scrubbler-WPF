@@ -1,7 +1,12 @@
 ﻿using IF.Lastfm.Core.Objects;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Last.fm_Scrubbler_WPF_Test
 {
+  /// <summary>
+  /// Helper methods for tests.
+  /// </summary>
   static class TestHelper
   {
     /// <summary>
@@ -18,6 +23,47 @@ namespace Last.fm_Scrubbler_WPF_Test
         actual.TimePlayed == expected.TimePlayed &&
         actual.AlbumArtist == expected.AlbumArtist &&
         actual.Duration == expected.Duration;
+    }
+
+    public static bool IsEqualScrobble(this IEnumerable<Scrobble> actual, IEnumerable<Scrobble> expected)
+    {
+      for(int i = 0; i < actual.Count(); i++)
+      {
+        if (!actual.ElementAt(i).IsEqualScrobble(expected.ElementAt(i)))
+          return false;
+      }
+
+      return true;
+    }
+
+    /// <summary>
+    /// Creates <see cref="LastTrack"/>s with the same values as the
+    /// given <paramref name="scrobbles"/>.
+    /// </summary>
+    /// <param name="scrobbles">Scrobbles to create <see cref="LastTrack"/>s for.</param>
+    /// <returns>List with <see cref="LastTrack"/>s.</returns>
+    public static IEnumerable<LastTrack> ToLastTracks(this IEnumerable<Scrobble> scrobbles)
+    {
+      List<LastTrack> tracks = new List<LastTrack>();
+      foreach(var s in scrobbles)
+      {
+        tracks.Add(new LastTrack() { ArtistName = s.Artist, AlbumName = s.Album, Name = s.Track, TimePlayed = s.TimePlayed, Duration = s.Duration });
+      }
+
+      return tracks;
+    }
+
+    /// <summary>
+    /// Clones the given <paramref name="scrobble"/> with an added
+    /// second to the <see cref="Scrobble.TimePlayed"/>. This is used
+    /// because some scrobblers add an extra second to be able
+    /// to scrobble duplicates.
+    /// </summary>
+    /// <param name="scrobble">The scrobble to clone with an additional second.</param>
+    /// <returns>Cloned scrobble.</returns>
+    public static Scrobble CloneWithAddedSecond(this Scrobble scrobble)
+    {
+      return new Scrobble(scrobble.Artist, scrobble.Album, scrobble.Track, scrobble.TimePlayed.AddSeconds(1)) { AlbumArtist = scrobble.AlbumArtist, Duration = scrobble.Duration };
     }
   }
 }

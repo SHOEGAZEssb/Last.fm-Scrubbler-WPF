@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Last.fm_Scrubbler_WPF_Test.ScrobblerTests
 {
+  /// <summary>
+  /// Tests for the <see cref="ManualScrobbleViewModel"/>.
+  /// </summary>
   [TestFixture]
   class ManualScrobblerTest
   {
@@ -18,8 +21,7 @@ namespace Last.fm_Scrubbler_WPF_Test.ScrobblerTests
     [Test]
     public async Task ScrobbleTest()
     {
-      DateTime expectedTime = DateTime.Now;
-      Scrobble expected = new Scrobble("TestArtist", "TestAlbum", "TestTrack", expectedTime) { AlbumArtist = "TestAlbumArtist", Duration = TimeSpan.FromSeconds(30) };
+      Scrobble expected = new Scrobble("TestArtist", "TestAlbum", "TestTrack", DateTime.Now) { AlbumArtist = "TestAlbumArtist", Duration = TimeSpan.FromSeconds(30) };
 
       Mock<IAuthScrobbler> scrobblerMock = new Mock<IAuthScrobbler>();
       Scrobble actual = null;
@@ -32,7 +34,7 @@ namespace Last.fm_Scrubbler_WPF_Test.ScrobblerTests
         Artist = expected.Artist,
         Album = expected.Album,
         Track = expected.Track,
-        Time = expectedTime,
+        Time = expected.TimePlayed.DateTime,
         AlbumArtist = expected.AlbumArtist,
         Duration = expected.Duration.Value
       };
