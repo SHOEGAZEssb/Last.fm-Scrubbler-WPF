@@ -58,7 +58,7 @@ namespace Last.fm_Scrubbler_WPF_Test.ScrobblerTests
       for(int i = 0; i < expected.Count; i++)
         expected[i] = expected[i].CloneWithAddedSecond();
 
-      // then:
+      // then: scrobbled tracks should be equal to the given tracks.
       Assert.That(actual.IsEqualScrobble(expected), Is.True);
     }
   }

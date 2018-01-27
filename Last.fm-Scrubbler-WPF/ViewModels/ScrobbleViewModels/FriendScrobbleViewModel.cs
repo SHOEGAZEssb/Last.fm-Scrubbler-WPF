@@ -151,26 +151,37 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public async Task FetchScrobbles()
     {
       EnableControls = false;
-      OnStatusUpdated("Trying to fetch scrobbles of user " + Username + "...");
-      FetchedScrobbles.Clear();
-      var response = await _userApi.GetRecentScrobbles(Username, null, 1, Amount);
-      if (response.Success)
-      {
-        OnStatusUpdated("Successfully fetched scrobbles of user " + Username);
-        foreach (var s in response)
-        {
-          if (!s.IsNowPlaying.HasValue || !s.IsNowPlaying.Value)
-          {
-            FetchedFriendTrackViewModel vm = new FetchedFriendTrackViewModel(s);
-            vm.ToScrobbleChanged += ToScrobbleChanged;
-            FetchedScrobbles.Add(vm);
-          }
-        }
-      }
-      else
-        OnStatusUpdated("Failed to fetch scrobbles of user " + Username);
 
-      EnableControls = true;
+      try
+      {
+        OnStatusUpdated("Trying to fetch scrobbles of user " + Username + "...");
+        FetchedScrobbles.Clear();
+        var response = await _userApi.GetRecentScrobbles(Username, null, 1, Amount);
+        if (response.Success)
+        {
+          foreach (var s in response)
+          {
+            if (!s.IsNowPlaying.HasValue || !s.IsNowPlaying.Value)
+            {
+              FetchedFriendTrackViewModel vm = new FetchedFriendTrackViewModel(s);
+              vm.ToScrobbleChanged += ToScrobbleChanged;
+              FetchedScrobbles.Add(vm);
+            }
+          }
+
+          OnStatusUpdated("Successfully fetched scrobbles of user " + Username);
+        }
+        else
+          OnStatusUpdated("Failed to fetch scrobbles of user " + Username);
+      }
+      catch (Exception ex)
+      {
+        OnStatusUpdated("Fatal error while fetching scrobbles of user " + Username + ": " + ex.Message);
+      }
+      finally
+      {
+        EnableControls = true;
+      }
     }
 
     /// <summary>
