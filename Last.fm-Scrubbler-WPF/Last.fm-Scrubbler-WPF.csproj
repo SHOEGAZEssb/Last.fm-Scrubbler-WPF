@@ -157,9 +157,13 @@
     <Compile Include="Interfaces\ILastFMClient.cs" />
     <Compile Include="Interfaces\ILastFMClientFactory.cs" />
     <Compile Include="Interfaces\IScrobblerFactory.cs" />
+    <Compile Include="Interfaces\ITextFieldParser.cs" />
+    <Compile Include="Interfaces\ITextFieldParserFactory.cs" />
     <Compile Include="Models\Artist.cs" />
     <Compile Include="Models\AuthScrobbler.cs" />
     <Compile Include="Models\AuthSQLiteScrobbler.cs" />
+    <Compile Include="Models\CSVTextFieldParser.cs" />
+    <Compile Include="Models\CSVTextFieldParserFactory.cs" />
     <Compile Include="Models\LastFMClient.cs" />
     <Compile Include="Models\LastFMClientFactory.cs" />
     <Compile Include="Models\Release.cs" />

@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Api;
 using Last.fm_Scrubbler_WPF.Interfaces;
+using Last.fm_Scrubbler_WPF.Models;
 using Last.fm_Scrubbler_WPF.Properties;
 using Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
@@ -347,13 +348,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     private void SetupScrobbleViewModels()
     {
+      // we initalize all viewmodels with no scrobbler, as that will be set later.
       ManualScrobbleViewModel = new ManualScrobbleViewModel(_windowManager, null);
       ManualScrobbleViewModel.StatusUpdated += StatusUpdated;
       FriendScrobbleViewModel = new FriendScrobbleViewModel(_windowManager, null, Client.User);
       FriendScrobbleViewModel.StatusUpdated += StatusUpdated;
       DatabaseScrobbleViewModel = new DatabaseScrobbleViewModel(_windowManager, null);
       DatabaseScrobbleViewModel.StatusUpdated += StatusUpdated;
-      CSVScrobbleViewModel = new CSVScrobbleViewModel(_windowManager, null);
+      CSVScrobbleViewModel = new CSVScrobbleViewModel(_windowManager, null, new CSVTextFieldParserFactory());
       CSVScrobbleViewModel.StatusUpdated += StatusUpdated;
       FileScrobbleViewModel = new FileScrobbleViewModel(_windowManager, null);
       FileScrobbleViewModel.StatusUpdated += StatusUpdated;

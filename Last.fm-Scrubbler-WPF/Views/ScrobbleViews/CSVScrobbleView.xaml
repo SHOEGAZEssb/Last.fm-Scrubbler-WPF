@@ -47,7 +47,7 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="CSV File:"/>
-    <TextBox Grid.Row="0" Grid.Column="2" IsReadOnly="True" Text="{Binding CSVFilePath, Mode=OneWay}"/>
+    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding CSVFilePath, UpdateSourceTrigger=PropertyChanged}"/>
     <Button Grid.Row="0" Grid.Column="4" Content=" ... " Style="{StaticResource EnableControlsStyle}">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">

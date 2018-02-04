@@ -20,11 +20,17 @@ namespace Last.fm_Scrubbler_WPF_Test
       return actual.Artist == expected.Artist &&
         actual.Album == expected.Album &&
         actual.Track == expected.Track &&
-        actual.TimePlayed == expected.TimePlayed &&
+        actual.TimePlayed.ToString() == expected.TimePlayed.ToString() &&
         actual.AlbumArtist == expected.AlbumArtist &&
         actual.Duration == expected.Duration;
     }
 
+    /// <summary>
+    /// Checks if this scrobble list is equal to the given <paramref name="expected"/>.
+    /// </summary>
+    /// <param name="actual">Actual scrobble list.</param>
+    /// <param name="expected">Expected scrobble list.</param>
+    /// <returns>True if scrobbles are equal, false if not.</returns>
     public static bool IsEqualScrobble(this IEnumerable<Scrobble> actual, IEnumerable<Scrobble> expected)
     {
       for(int i = 0; i < actual.Count(); i++)

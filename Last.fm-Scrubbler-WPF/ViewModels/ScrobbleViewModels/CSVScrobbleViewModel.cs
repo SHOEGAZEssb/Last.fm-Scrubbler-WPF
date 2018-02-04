@@ -47,7 +47,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public string CSVFilePath
     {
       get { return _csvFilePath; }
-      private set
+      set
       {
         _csvFilePath = value;
         NotifyOfPropertyChange(() => CSVFilePath);
@@ -143,7 +143,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public bool CanParse
     {
-      get { return CSVFilePath != null && CSVFilePath != string.Empty; }
+      get { return !string.IsNullOrEmpty(CSVFilePath); }
     }
 
     /// <summary>
@@ -178,9 +178,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private static string[] _formats = new string[] { "M/dd/yyyy h:mm" };
 
     /// <summary>
-    /// Dispatcher used to invoke from another thread.
+    /// The factory used to create <see cref="ITextFieldParser"/>.
     /// </summary>
-    private Dispatcher _dispatcher;
+    private ITextFieldParserFactory _parserFactory;
 
     #endregion Private Member
 
@@ -189,13 +189,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="scrobbler">Scrobbler used to scrobble.</param>
-    public CSVScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
+    /// <param name="parserFactory">The factory used to create <see cref="ITextFieldParser"/>.</param>
+    public CSVScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler, ITextFieldParserFactory parserFactory)
       : base(windowManager, scrobbler)
     {
+      _parserFactory = parserFactory;
       Scrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>();
       Duration = 1;
       UseCurrentTime = true;
-      _dispatcher = Dispatcher.CurrentDispatcher;
       ScrobbleMode = CSVScrobbleMode.ImportMode;
     }
 
@@ -223,98 +224,90 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         OnStatusUpdated("Reading CSV file...");
         Scrobbles.Clear();
 
-        TextFieldParser parser = new TextFieldParser(CSVFilePath)
+        using (ITextFieldParser parser = _parserFactory.CreateParser(CSVFilePath))
         {
-          HasFieldsEnclosedInQuotes = true
-        };
-        parser.SetDelimiters(Settings.Default.CSVDelimiters.Select(x => new string(x, 1)).ToArray());
 
-        string[] fields = new string[0];
-        List<string> errors = new List<string>();
+          parser.SetDelimiters(Settings.Default.CSVDelimiters.Select(x => new string(x, 1)).ToArray());
 
-        await Task.Run(() =>
-        {
-          while (!parser.EndOfData)
+          string[] fields = null;
+          List<string> errors = new List<string>();
+          ObservableCollection<ParsedCSVScrobbleViewModel> parsedScrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>();
+
+          await Task.Run(() =>
           {
-            try
+            while (!parser.EndOfData)
             {
-              fields = parser.ReadFields();
-
-              DateTime date = DateTime.Now;
-              string dateString = fields[Settings.Default.TimestampFieldIndex];
-
-              // check for 'now playing'
-              if (dateString == "" && ScrobbleMode == CSVScrobbleMode.Normal)
-                continue;
-
-              if (!DateTime.TryParse(dateString, out date))
+              try
               {
-                bool parsed = false;
-                // try different formats until succeeded
-                foreach (string format in _formats)
+                fields = parser.ReadFields();
+
+                string dateString = fields[Settings.Default.TimestampFieldIndex];
+
+                // check for 'now playing'
+                if (dateString == "" && ScrobbleMode == CSVScrobbleMode.Normal)
+                  continue;
+
+                DateTime date = DateTime.Now;
+                if (!DateTime.TryParse(dateString, out date))
                 {
-                  parsed = DateTime.TryParseExact(dateString, format, CultureInfo.CurrentCulture, DateTimeStyles.None, out date);
-                  if (parsed)
-                    break;
+                  bool parsed = false;
+                  // try different formats until succeeded
+                  foreach (string format in _formats)
+                  {
+                    parsed = DateTime.TryParseExact(dateString, format, CultureInfo.CurrentCulture, DateTimeStyles.None, out date);
+                    if (parsed)
+                      break;
+                  }
+
+                  if (!parsed && ScrobbleMode == CSVScrobbleMode.Normal)
+                    throw new Exception("Timestamp could not be parsed!");
                 }
 
-                if (!parsed && ScrobbleMode == CSVScrobbleMode.Normal)
-                  throw new Exception("Timestamp could not be parsed!");
+                // try to get optional parameters first
+                string album = fields.ElementAtOrDefault(Settings.Default.AlbumFieldIndex);
+                string albumArtist = fields.ElementAtOrDefault(Settings.Default.AlbumArtistFieldIndex);
+                string duration = fields.ElementAtOrDefault(Settings.Default.DurationFieldIndex);
+                TimeSpan time = TimeSpan.FromSeconds(0);
+                TimeSpan.TryParse(duration, out time);
+
+                DatedScrobble parsedScrobble = new DatedScrobble(date.AddSeconds(1), fields[Settings.Default.TrackFieldIndex],
+                                                                fields[Settings.Default.ArtistFieldIndex], album,
+                                                                albumArtist, time);
+                ParsedCSVScrobbleViewModel vm = new ParsedCSVScrobbleViewModel(parsedScrobble, ScrobbleMode);
+                vm.ToScrobbleChanged += ToScrobbleChanged;
+                parsedScrobbles.Add(vm);
               }
-
-              // try to get optional parameters first
-              string album = fields.ElementAtOrDefault(Settings.Default.AlbumFieldIndex);
-              string albumArtist = fields.ElementAtOrDefault(Settings.Default.AlbumArtistFieldIndex);
-              string duration = fields.ElementAtOrDefault(Settings.Default.DurationFieldIndex);
-              TimeSpan time = TimeSpan.FromSeconds(0);
-
-              if (!string.IsNullOrEmpty(duration))
+              catch (Exception ex)
               {
-                try
+                string errorString = "CSV line number: " + parser.LineNumber + ",";
+                foreach (string s in fields)
                 {
-                  time = TimeSpan.Parse(duration);
+                  errorString += s + ",";
                 }
-                catch
-                {
-                  // swallow
-                }
-              }
 
-              DatedScrobble parsedScrobble = new DatedScrobble(date.AddSeconds(1), fields[Settings.Default.TrackFieldIndex],
-                                                              fields[Settings.Default.ArtistFieldIndex], album,
-                                                              albumArtist, time);
-              ParsedCSVScrobbleViewModel vm = new ParsedCSVScrobbleViewModel(parsedScrobble, ScrobbleMode);
-              vm.ToScrobbleChanged += ToScrobbleChanged;
-              _dispatcher.Invoke(() => Scrobbles.Add(vm));
+                errorString += ex.Message;
+                errors.Add(errorString);
+              }
             }
-            catch (Exception ex)
-            {
-              string errorString = "CSV line number: " + parser.LineNumber + ",";
-              foreach (string s in fields)
-              {
-                errorString += s + ",";
-              }
+          });
 
-              errorString += ex.Message;
-              errors.Add(errorString);
+          if (errors.Count == 0)
+            OnStatusUpdated("Successfully parsed CSV file. Parsed " + parsedScrobbles.Count + " rows");
+          else
+          {
+            OnStatusUpdated("Partially parsed CSV file. " + errors.Count + " rows could not be parsed");
+            if (MessageBox.Show("Some rows could not be parsed. Do you want to save a text file with the rows that could not be parsed?", "Error parsing rows", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+              SaveFileDialog sfd = new SaveFileDialog()
+              {
+                Filter = "Text Files|*.txt"
+              };
+              if (sfd.ShowDialog() == DialogResult.OK)
+                File.WriteAllLines(sfd.FileName, errors.ToArray());
             }
           }
-        });
 
-        if (errors.Count == 0)
-          OnStatusUpdated("Successfully parsed CSV file. Parsed " + Scrobbles.Count + " rows");
-        else
-        {
-          OnStatusUpdated("Partially parsed CSV file. " + errors.Count + " rows could not be parsed");
-          if (MessageBox.Show("Some rows could not be parsed. Do you want to save a text file with the rows that could not be parsed?", "Error parsing rows", MessageBoxButtons.YesNo) == DialogResult.Yes)
-          {
-            SaveFileDialog sfd = new SaveFileDialog()
-            {
-              Filter = "Text Files|*.txt"
-            };
-            if (sfd.ShowDialog() == DialogResult.OK)
-              File.WriteAllLines(sfd.FileName, errors.ToArray());
-          }
+          Scrobbles = parsedScrobbles;
         }
       }
       catch (Exception ex)
@@ -380,7 +373,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
         {
           scrobbles.Add(new Scrobble(vm.ParsedScrobble.ArtistName, vm.ParsedScrobble.AlbumName, vm.ParsedScrobble.TrackName, vm.ParsedScrobble.Played)
-                                    { AlbumArtist = vm.ParsedScrobble.AlbumArtist, Duration = vm.ParsedScrobble.Duration });
+          { AlbumArtist = vm.ParsedScrobble.AlbumArtist, Duration = vm.ParsedScrobble.Duration });
         }
       }
       else if (ScrobbleMode == CSVScrobbleMode.ImportMode)
@@ -389,7 +382,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
         {
           scrobbles.Add(new Scrobble(vm.ParsedScrobble.ArtistName, vm.ParsedScrobble.AlbumName, vm.ParsedScrobble.TrackName, time)
-                                    { AlbumArtist = vm.ParsedScrobble.AlbumArtist, Duration = vm.ParsedScrobble.Duration });
+          {
+            AlbumArtist = vm.ParsedScrobble.AlbumArtist,
+            Duration = vm.ParsedScrobble.Duration
+          });
+
           time = time.Subtract(TimeSpan.FromSeconds(Duration));
         }
       }
