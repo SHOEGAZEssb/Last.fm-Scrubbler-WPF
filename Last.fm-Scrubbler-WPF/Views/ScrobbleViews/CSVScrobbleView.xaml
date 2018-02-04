@@ -135,8 +135,6 @@
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="5"/>
         <RowDefinition Height="Auto"/>
-        <RowDefinition Height="5"/>
-        <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto"/>
@@ -144,19 +142,40 @@
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
 
-      <local:ScrobbleButtonControl Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="7"/>
-
       <Label Grid.Column="0" Grid.Row="0" Content="Scrobble Mode:"/>
       <ComboBox Grid.Column="2" Grid.Row="0" SelectedValue="{Binding ScrobbleMode}" ItemsSource="{Binding Source={StaticResource ScrobbleModeKeyDataProvider}}"
                 Style="{StaticResource EnableControlsStyle}"/>
 
-      <Label Grid.Column="0" Grid.Row="2" Content="Finishing time:" Visibility="{Binding ShowImportModeSettings, Converter={StaticResource boolToVis}}"/>
-      <scrobbleViews:SelectScrobbleTimeControl Grid.Row="2" Grid.Column="2" Visibility="{Binding ShowImportModeSettings, Converter={StaticResource boolToVis}}"/>
+      <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3">
+        <Grid.Style>
+          <Style TargetType="Grid">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding ScrobbleMode}" Value="{x:Static viewModels:CSVScrobbleMode.ImportMode}">
+                <Setter Property="Visibility" Value="Visible"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Grid.Style>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="5"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-      <Label Grid.Column="0" Grid.Row="4" Content="Duration per Song (sec):" Visibility="{Binding ShowImportModeSettings, Converter={StaticResource boolToVis}}"/>
-      <xctk:IntegerUpDown Grid.Column="2" Grid.Row="4" Minimum="1" Value="{Binding Duration}"
-                          Visibility="{Binding ShowImportModeSettings, Converter={StaticResource boolToVis}}" Style="{StaticResource EnableControlsStyle}"/>
+        <Label Grid.Column="0" Grid.Row="0" Content="Finishing time:"/>
+        <scrobbleViews:SelectScrobbleTimeControl Grid.Row="0" Grid.Column="2"/>
+
+        <Label Grid.Column="0" Grid.Row="2" Content="Default Duration per Song (sec):"/>
+        <xctk:IntegerUpDown Grid.Column="2" Grid.Row="2" Minimum="1" Value="{Binding Duration}" Style="{StaticResource EnableControlsStyle}"/>
+      </Grid>
+
+      <local:ScrobbleButtonControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="7"/>
     </Grid>
-
   </Grid>
 </UserControl>

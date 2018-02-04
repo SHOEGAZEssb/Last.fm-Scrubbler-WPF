@@ -87,7 +87,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         }
 
         NotifyOfPropertyChange(() => ScrobbleMode);
-        NotifyOfPropertyChange(() => ShowImportModeSettings);
       }
     }
     private CSVScrobbleMode _scrobbleMode;
@@ -144,14 +143,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public bool CanParse
     {
       get { return !string.IsNullOrEmpty(CSVFilePath); }
-    }
-
-    /// <summary>
-    /// Gets if the import mode settings should be visible on the UI.
-    /// </summary>
-    public bool ShowImportModeSettings
-    {
-      get { return ScrobbleMode == CSVScrobbleMode.ImportMode; }
     }
 
     /// <summary>
@@ -267,7 +258,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
                 string album = fields.ElementAtOrDefault(Settings.Default.AlbumFieldIndex);
                 string albumArtist = fields.ElementAtOrDefault(Settings.Default.AlbumArtistFieldIndex);
                 string duration = fields.ElementAtOrDefault(Settings.Default.DurationFieldIndex);
-                TimeSpan time = TimeSpan.FromSeconds(0);
+                TimeSpan time = TimeSpan.FromSeconds(Duration);
                 TimeSpan.TryParse(duration, out time);
 
                 DatedScrobble parsedScrobble = new DatedScrobble(date.AddSeconds(1), fields[Settings.Default.TrackFieldIndex],
