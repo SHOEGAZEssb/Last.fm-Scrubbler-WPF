@@ -84,7 +84,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public override bool CanScrobble
     {
-      get { return MainViewModel.Client.Auth.Authenticated && FetchedScrobbles.Any(i => i.ToScrobble) && EnableControls; }
+      get { return base.CanScrobble && FetchedScrobbles.Any(i => i.ToScrobble) && EnableControls; }
     }
 
     /// <summary>
@@ -176,7 +176,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       }
       catch (Exception ex)
       {
-        OnStatusUpdated("Fatal error while fetching scrobbles of user " + Username + ": " + ex.Message);
+        OnStatusUpdated(string.Format("Fatal error while fetching scrobbles of user {0}. Error: {1}", Username, ex.Message));
       }
       finally
       {

@@ -90,7 +90,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// </summary>
     private async void StartupHandling()
     {
-      if (MainViewModel.Client.Auth.Authenticated)
+      if (base.CanScrobble)
       {
         await GetCachedScrobbles();
         if (AutoScrobble && CanScrobble)

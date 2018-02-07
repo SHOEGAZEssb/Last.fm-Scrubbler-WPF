@@ -206,7 +206,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// </summary>
     public override bool CanScrobble
     {
-      get { return MainViewModel.Client.Auth.Authenticated && EnableControls; }
+      get { return base.CanScrobble && EnableControls; }
     }
 
     /// <summary>

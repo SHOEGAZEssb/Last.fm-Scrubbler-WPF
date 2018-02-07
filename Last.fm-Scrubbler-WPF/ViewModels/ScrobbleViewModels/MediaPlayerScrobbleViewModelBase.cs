@@ -142,7 +142,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// </summary>
     public override bool CanScrobble
     {
-      get { return MainViewModel.Client.Auth.Authenticated; }
+      get { return base.CanScrobble; }
     }
 
     /// <summary>
@@ -204,7 +204,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// <returns>Task.</returns>
     protected async Task UpdateLovedInfo()
     {
-      if (CurrentTrackName != null && CurrentArtistName != null && MainViewModel.Client.Auth.Authenticated)
+      if (CurrentTrackName != null && CurrentArtistName != null && base.CanScrobble)
       {
         var info = await MainViewModel.Client.Track.GetInfoAsync(CurrentTrackName, CurrentArtistName, MainViewModel.Client.Auth.UserSession.Username);
         if (info.Success)

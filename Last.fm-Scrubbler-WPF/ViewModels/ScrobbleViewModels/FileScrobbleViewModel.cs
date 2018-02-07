@@ -54,7 +54,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public override bool CanScrobble
     {
-      get { return MainViewModel.Client.Auth.Authenticated && LoadedFiles.Any(i => i.ToScrobble) && EnableControls; }
+      get { return base.CanScrobble && LoadedFiles.Any(i => i.ToScrobble) && EnableControls; }
     }
 
     /// <summary>
