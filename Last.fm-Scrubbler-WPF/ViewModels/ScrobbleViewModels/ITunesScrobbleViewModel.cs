@@ -6,6 +6,7 @@ using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Properties;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using Last.fm_Scrubbler_WPF.Views.ScrobbleViews;
+using Microsoft.CSharp.RuntimeBinder;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -276,10 +277,21 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         {
           OnStatusUpdated("Trying to scrobble currently playing track...");
 
+          // try to get AlbumArtist
+          string albumArtist = string.Empty;
+          try
+          {
+            albumArtist = (ITunesApp.CurrentTrack as dynamic).AlbumArtist;
+          }
+          catch(RuntimeBinderException)
+          {
+            // swallow, AlbumArtist doesn't exist for some reason.
+          }
+
           Scrobble s = new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now)
           {
             Duration = TimeSpan.FromSeconds(CurrentTrackLength),
-            AlbumArtist = (ITunesApp.CurrentTrack as dynamic).AlbumArtist
+            AlbumArtist = albumArtist
           };
           var response = await Scrobbler.ScrobbleAsync(s);
           if (response.Success && response.Status == LastResponseStatus.Successful)
