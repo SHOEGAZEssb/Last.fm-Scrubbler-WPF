@@ -134,10 +134,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    /// <param name="scrobbler">Scrobbler used to scrobble.</param>
     /// <param name="userApi">The last.fm api object to get the scrobbles of an user.</param>
-    public FriendScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler, IUserApi userApi)
-      : base(windowManager, scrobbler)
+    public FriendScrobbleViewModel(IWindowManager windowManager, IUserApi userApi)
+      : base(windowManager, "Friend Scrobbler")
     {
       _userApi = userApi;
       Username = "";

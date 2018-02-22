@@ -7,12 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels
+namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
 {
   /// <summary>
-  /// ViewModel for the <see cref="Views.CSVDownloaderView"/>
+  /// ViewModel for the <see cref="Views.ExtraFunctions.CSVDownloaderView"/>
   /// </summary>
-  public class CSVDownloaderViewModel : ViewModelBase
+  public class CSVDownloaderViewModel : ExtraFunctionViewModelBase
   {
     #region Properties
 
@@ -84,6 +84,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Constructor.
     /// </summary>
     public CSVDownloaderViewModel()
+      : base("CSV Downloader")
     {
       Username = string.Empty;
       FilePath = string.Empty;

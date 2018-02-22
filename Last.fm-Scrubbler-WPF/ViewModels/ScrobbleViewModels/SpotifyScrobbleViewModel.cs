@@ -87,9 +87,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    /// <param name="scrobbler">Scrobbler used to scrobble.</param>
-    public SpotifyScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
-      : base(windowManager, scrobbler)
+    public SpotifyScrobbleViewModel(IWindowManager windowManager)
+      : base(windowManager, "Spotify Scrobbler")
     {
       PercentageToScrobble = 0.5;
       _spotify = new SpotifyLocalAPI();

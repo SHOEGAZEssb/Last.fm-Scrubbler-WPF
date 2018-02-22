@@ -6,7 +6,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// Base class for all ViewModels.
   /// </summary>
-  public abstract class ViewModelBase : PropertyChangedBase
+  public abstract class ViewModelBase : Screen
   {
     #region Properties
 

@@ -249,9 +249,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    /// <param name="scrobbler">Scrobbler used to scrobble.</param>
-    public DatabaseScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
-      : base(windowManager, scrobbler)
+    public DatabaseScrobbleViewModel(IWindowManager windowManager)
+      : base(windowManager, "Database Scrobbler")
     {
       SearchText = "";
       DatabaseToSearch = Database.LastFm;

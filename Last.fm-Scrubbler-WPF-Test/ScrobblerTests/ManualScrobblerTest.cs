@@ -27,8 +27,9 @@ namespace Last.fm_Scrubbler_WPF_Test.ScrobblerTests
       Scrobble actual = null;
       scrobblerMock.Setup(i => i.ScrobbleAsync(It.IsAny<Scrobble>())).Callback<Scrobble>(s => actual = s);
 
-      ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null, scrobblerMock.Object)
+      ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null)
       {
+        Scrobbler = scrobblerMock.Object,
         UseCurrentTime = false,
 
         Artist = expected.Artist,
@@ -55,9 +56,9 @@ namespace Last.fm_Scrubbler_WPF_Test.ScrobblerTests
       Mock<IAuthScrobbler> scrobblerMock = new Mock<IAuthScrobbler>();
       scrobblerMock.Setup(s => s.Auth.Authenticated).Returns(false);
 
-      ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null, scrobblerMock.Object)
+      ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null)
       {
-        // set artist and track
+        Scrobbler = scrobblerMock.Object,
         Artist = "TestArtist",
         Track = "TestTrack"
       };
@@ -81,9 +82,9 @@ namespace Last.fm_Scrubbler_WPF_Test.ScrobblerTests
       Mock<IAuthScrobbler> scrobblerMock = new Mock<IAuthScrobbler>();
       scrobblerMock.Setup(s => s.Auth.Authenticated).Returns(true);
 
-      ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null, scrobblerMock.Object)
+      ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null)
       {
-        // set track
+        Scrobbler = scrobblerMock.Object,
         Track = "TestTrack"
       };
 
@@ -106,9 +107,9 @@ namespace Last.fm_Scrubbler_WPF_Test.ScrobblerTests
       Mock<IAuthScrobbler> scrobblerMock = new Mock<IAuthScrobbler>();
       scrobblerMock.Setup(s => s.Auth.Authenticated).Returns(true);
 
-      ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null, scrobblerMock.Object)
+      ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null)
       {
-        // set artist
+        Scrobbler = scrobblerMock.Object,
         Artist = "TestArtist"
       };
 

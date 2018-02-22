@@ -1,13 +1,11 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Api;
 using Last.fm_Scrubbler_WPF.Interfaces;
-using Last.fm_Scrubbler_WPF.Models;
 using Last.fm_Scrubbler_WPF.Properties;
 using Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using Last.fm_Scrubbler_WPF.Views;
 using Last.fm_Scrubbler_WPF.Views.ExtraFunctions;
-using Last.fm_Scrubbler_WPF.Views.ScrobbleViews;
 using System;
 using System.IO;
 using System.Reflection;
@@ -17,7 +15,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="MainView"/>.
   /// </summary>
-  public class MainViewModel : PropertyChangedBase
+  public class MainViewModel : Conductor<Screen>.Collection.OneActive
   {
     #region Properties
 
@@ -67,196 +65,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public static DateTime MinimumDateTime = DateTime.Now.Subtract(TimeSpan.FromDays(14));
 
-    #region ScrobbleViewModels
-
-    /// <summary>
-    /// The ViewModel for the <see cref="ManualScrobbleView"/>.
-    /// </summary>
-    public ManualScrobbleViewModel ManualScrobbleViewModel
-    {
-      get { return _manualScrobbleViewModel; }
-      private set
-      {
-        _manualScrobbleViewModel = value;
-        NotifyOfPropertyChange(() => ManualScrobbleViewModel);
-      }
-    }
-    private ManualScrobbleViewModel _manualScrobbleViewModel;
-
-    /// <summary>
-    /// The ViewModel for the <see cref="FriendScrobbleView"/>.
-    /// </summary>
-    public FriendScrobbleViewModel FriendScrobbleViewModel
-    {
-      get { return _friendScrobbleViewModel; }
-      private set
-      {
-        _friendScrobbleViewModel = value;
-        NotifyOfPropertyChange(() => FriendScrobbleViewModel);
-      }
-    }
-    private FriendScrobbleViewModel _friendScrobbleViewModel;
-
-    /// <summary>
-    /// The ViewModel for the <see cref="DatabaseScrobbleView"/>.
-    /// </summary>
-    public DatabaseScrobbleViewModel DatabaseScrobbleViewModel
-    {
-      get { return _databaseScrobbleViewModel; }
-      private set
-      {
-        _databaseScrobbleViewModel = value;
-        NotifyOfPropertyChange(() => DatabaseScrobbleViewModel);
-      }
-    }
-    private DatabaseScrobbleViewModel _databaseScrobbleViewModel;
-
-    /// <summary>
-    /// The ViewModel for the <see cref="CSVScrobbleView"/>.
-    /// </summary>
-    public CSVScrobbleViewModel CSVScrobbleViewModel
-    {
-      get { return _csvScrobbleViewModel; }
-      private set
-      {
-        _csvScrobbleViewModel = value;
-        NotifyOfPropertyChange(() => CSVScrobbleViewModel);
-      }
-    }
-    private CSVScrobbleViewModel _csvScrobbleViewModel;
-
-    /// <summary>
-    /// ViewModel for the <see cref="FileScrobbleView"/>.
-    /// </summary>
-    public FileScrobbleViewModel FileScrobbleViewModel
-    {
-      get { return _fileScrobbleViewModel; }
-      private set
-      {
-        _fileScrobbleViewModel = value;
-        NotifyOfPropertyChange(() => FileScrobbleViewModel);
-      }
-    }
-    private FileScrobbleViewModel _fileScrobbleViewModel;
-
-    /// <summary>
-    /// ViewModel for the <see cref="MediaPlayerDatabaseScrobbleView"/>.
-    /// </summary>
-    public MediaPlayerDatabaseScrobbleViewModel MediaPlayerDatabaseScrobbleViewModel
-    {
-      get { return _mediaPlayerDatabaseScrobbleViewModel; }
-      private set
-      {
-        _mediaPlayerDatabaseScrobbleViewModel = value;
-        NotifyOfPropertyChange(() => MediaPlayerDatabaseScrobbleViewModel);
-      }
-    }
-    private MediaPlayerDatabaseScrobbleViewModel _mediaPlayerDatabaseScrobbleViewModel;
-
-    /// <summary>
-    /// ViewModel for the iTunes <see cref="MediaPlayerScrobbleControl"/>.
-    /// </summary>
-    public ITunesScrobbleViewModel ITunesScrobbleVM
-    {
-      get { return _iTunesScrobbleVM; }
-      private set
-      {
-        _iTunesScrobbleVM = value;
-        NotifyOfPropertyChange(() => ITunesScrobbleVM);
-      }
-    }
-    private ITunesScrobbleViewModel _iTunesScrobbleVM;
-
-    /// <summary>
-    /// ViewModel for the Spotify <see cref="MediaPlayerScrobbleControl"/>.
-    /// </summary>
-    public SpotifyScrobbleViewModel SpotifyScrobbleVM
-    {
-      get { return _spotifyScrobbleVM; }
-      private set
-      {
-        _spotifyScrobbleVM = value;
-        NotifyOfPropertyChange(() => SpotifyScrobbleVM);
-      }
-    }
-    private SpotifyScrobbleViewModel _spotifyScrobbleVM;
-
-    /// <summary>
-    /// ViewModel for the <see cref="SetlistFMScrobbleViewModel"/>.
-    /// </summary>
-    public SetlistFMScrobbleViewModel SetlistFMScrobbleVM
-    {
-      get { return _setlistFMScrobbleVM; }
-      private set
-      {
-        _setlistFMScrobbleVM = value;
-        NotifyOfPropertyChange(() => SetlistFMScrobbleVM);
-      }
-    }
-    private SetlistFMScrobbleViewModel _setlistFMScrobbleVM;
-
-    /// <summary>
-    /// ViewModel for the <see cref="CacheScrobblerViewModel"/>.
-    /// </summary>
-    public CacheScrobblerViewModel CacheScrobblerVM
-    {
-      get { return _cacheScrobblerVM; }
-      private set
-      {
-        _cacheScrobblerVM = value;
-        NotifyOfPropertyChange(() => CacheScrobblerVM);
-      }
-    }
-    private CacheScrobblerViewModel _cacheScrobblerVM;
-
-    #endregion ScrobbleViewModels
-
-    #region ExtraViewModels
-
-    /// <summary>
-    /// ViewModel for the <see cref="PasteYourTasteView"/>.
-    /// </summary>
-    public PasteYourTasteViewModel PasteYourTasteVM
-    {
-      get { return _pasteYourTasteVM; }
-      private set
-      {
-        _pasteYourTasteVM = value;
-        NotifyOfPropertyChange(() => PasteYourTasteVM);
-      }
-    }
-    private PasteYourTasteViewModel _pasteYourTasteVM;
-
-    /// <summary>
-    /// ViewModel for the <see cref="CSVDownloaderView"/>.
-    /// </summary>
-    public CSVDownloaderViewModel CSVDownloaderVM
-    {
-      get { return _csvDownloaderVM; }
-      private set
-      {
-        _csvDownloaderVM = value;
-        NotifyOfPropertyChange(() => CSVDownloaderVM);
-      }
-    }
-    private CSVDownloaderViewModel _csvDownloaderVM;
-
-    /// <summary>
-    /// ViewModel for the <see cref="CollageCreatorView"/>
-    /// </summary>
-    public CollageCreatorViewModel CollageCreatorVM
-    {
-      get { return _collageCreatorVM; }
-      private set
-      {
-        _collageCreatorVM = value;
-        NotifyOfPropertyChange(() => CollageCreatorVM);
-      }
-    }
-    private CollageCreatorViewModel _collageCreatorVM;
-
-    #endregion ExtraViewModels
-
     #region StatusBar Properties
 
     /// <summary>
@@ -298,6 +106,16 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private const string APISECRET = "c779028b480f6c63449c380aeebbbd63";
 
     /// <summary>
+    /// ViewModel managing all scrobble ViewModels.
+    /// </summary>
+    private ScrobblerViewModel _scrobblerVM;
+
+    /// <summary>
+    /// ViewModel managing all extra function ViewModels.
+    /// </summary>
+    private ExtraFunctionsViewModel _extraFunctionsVM;
+
+    /// <summary>
     /// Window manager used to display dialogs etc.
     /// </summary>
     private IWindowManager _windowManager;
@@ -335,55 +153,21 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     private void SetupViewModels()
     {
-      SetupScrobbleViewModels();
-      SetupExtraViewModels();
+      _scrobblerVM = new ScrobblerViewModel(_windowManager);
+      _scrobblerVM.StatusUpdated += StatusUpdated;
+      CreateScrobblers();
+      ActivateItem(_scrobblerVM);
+
+      _extraFunctionsVM = new ExtraFunctionsViewModel();
+      _extraFunctionsVM.StatusUpdated += StatusUpdated;
+      ActivateItem(_extraFunctionsVM);
+
+      // should be active
+      ActivateItem(_scrobblerVM);
 
       UserViewModel = new UserViewModel(_windowManager);
       UserViewModel.ActiveUserChanged += UserViewModel_ActiveUserChanged;
       UserViewModel.LoadLastUser();
-    }
-
-    /// <summary>
-    /// Creates the ViewModels used to scrobble.
-    /// </summary>
-    private void SetupScrobbleViewModels()
-    {
-      // we initalize all viewmodels with no scrobbler, as that will be set later.
-      ManualScrobbleViewModel = new ManualScrobbleViewModel(_windowManager, null);
-      ManualScrobbleViewModel.StatusUpdated += StatusUpdated;
-      FriendScrobbleViewModel = new FriendScrobbleViewModel(_windowManager, null, Client.User);
-      FriendScrobbleViewModel.StatusUpdated += StatusUpdated;
-      DatabaseScrobbleViewModel = new DatabaseScrobbleViewModel(_windowManager, null);
-      DatabaseScrobbleViewModel.StatusUpdated += StatusUpdated;
-      CSVScrobbleViewModel = new CSVScrobbleViewModel(_windowManager, null, new CSVTextFieldParserFactory());
-      CSVScrobbleViewModel.StatusUpdated += StatusUpdated;
-      FileScrobbleViewModel = new FileScrobbleViewModel(_windowManager, null);
-      FileScrobbleViewModel.StatusUpdated += StatusUpdated;
-      MediaPlayerDatabaseScrobbleViewModel = new MediaPlayerDatabaseScrobbleViewModel(_windowManager, null);
-      MediaPlayerDatabaseScrobbleViewModel.StatusUpdated += StatusUpdated;
-      ITunesScrobbleVM = new ITunesScrobbleViewModel(_windowManager, null);
-      ITunesScrobbleVM.StatusUpdated += StatusUpdated;
-      SpotifyScrobbleVM = new SpotifyScrobbleViewModel(_windowManager, null);
-      SpotifyScrobbleVM.StatusUpdated += StatusUpdated;
-      SetlistFMScrobbleVM = new SetlistFMScrobbleViewModel(_windowManager, null);
-      SetlistFMScrobbleVM.StatusUpdated += StatusUpdated;
-      CacheScrobblerVM = new CacheScrobblerViewModel(_windowManager, null);
-      CacheScrobblerVM.StatusUpdated += StatusUpdated;
-
-      CreateScrobblers();
-    }
-
-    /// <summary>
-    /// Creates the ViewModel for extra functions.
-    /// </summary>
-    private void SetupExtraViewModels()
-    {
-      PasteYourTasteVM = new PasteYourTasteViewModel();
-      PasteYourTasteVM.StatusUpdated += StatusUpdated;
-      CSVDownloaderVM = new CSVDownloaderViewModel();
-      CSVDownloaderVM.StatusUpdated += StatusUpdated;
-      CollageCreatorVM = new CollageCreatorViewModel();
-      CollageCreatorVM.StatusUpdated += StatusUpdated;
     }
 
     #endregion Setup
@@ -437,16 +221,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
         cachingScrobbler = null;
       }
 
-      ManualScrobbleViewModel.Scrobbler = scrobbler;
-      FriendScrobbleViewModel.Scrobbler = scrobbler;
-      DatabaseScrobbleViewModel.Scrobbler = scrobbler;
-      CSVScrobbleViewModel.Scrobbler = scrobbler;
-      FileScrobbleViewModel.Scrobbler = scrobbler;
-      MediaPlayerDatabaseScrobbleViewModel.Scrobbler = scrobbler;
-      ITunesScrobbleVM.Scrobbler = cachingScrobbler;
-      SpotifyScrobbleVM.Scrobbler = cachingScrobbler;
-      SetlistFMScrobbleVM.Scrobbler = scrobbler;
-      CacheScrobblerVM.Scrobbler = cachingScrobbler;
+      _scrobblerVM.UpdateScrobblers(scrobbler, cachingScrobbler);
     }
 
     /// <summary>
@@ -473,7 +248,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public void MainView_Closing()
     {
-      ITunesScrobbleVM.Dispose();
+      //ITunesScrobbleVM.Dispose();
       Settings.Default.Save();
     }
   }

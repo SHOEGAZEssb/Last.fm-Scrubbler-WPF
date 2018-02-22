@@ -11,7 +11,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
   /// <summary>
   /// Base class for all scrobblers that scrobble a media player.
   /// </summary>
-  public abstract class MediaPlayerScrobbleViewModelBase : ScrobbleViewModelBase
+  public abstract class MediaPlayerScrobbleViewModelBase : ScrobbleViewModelBase, INeedCachingScrobbler
   {
     #region Properties
 
@@ -169,9 +169,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    /// <param name="scrobbler">Scrobbler used to scrobble.</param>
-    public MediaPlayerScrobbleViewModelBase(IWindowManager windowManager, IAuthScrobbler scrobbler)
-      : base(windowManager, scrobbler)
+    /// <param name="displayName">Display name.</param>
+    public MediaPlayerScrobbleViewModelBase(IWindowManager windowManager, string displayName)
+      : base(windowManager, displayName)
     { }
 
     /// <summary>

@@ -62,7 +62,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
   /// <summary>
   /// ViewModel for the <see cref="CollageCreatorView"/>
   /// </summary>
-  public class CollageCreatorViewModel : ViewModelBase
+  public class CollageCreatorViewModel : ExtraFunctionViewModelBase
   {
     #region Properties
 
@@ -200,6 +200,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
     /// Constructor.
     /// </summary>
     public CollageCreatorViewModel()
+      : base("Collage Creator")
     {
       Username = "";
       TimeSpan = LastStatsTimeSpan.Overall;

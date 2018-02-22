@@ -54,8 +54,9 @@ namespace Last.fm_Scrubbler_WPF_Test.ScrobblerTests
       Mock<ITextFieldParserFactory> factoryMock = new Mock<ITextFieldParserFactory>();
       factoryMock.Setup(f => f.CreateParser(It.IsAny<string>())).Returns(parserMock.Object);
 
-      CSVScrobbleViewModel vm = new CSVScrobbleViewModel(null, scrobblerMock.Object, factoryMock.Object)
+      CSVScrobbleViewModel vm = new CSVScrobbleViewModel(null, factoryMock.Object)
       {
+        Scrobbler = scrobblerMock.Object,
         CSVFilePath = "C:\\TestFile.csv",
         ScrobbleMode = CSVScrobbleMode.Normal
       };

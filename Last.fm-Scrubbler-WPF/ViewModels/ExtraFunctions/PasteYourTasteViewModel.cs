@@ -2,12 +2,12 @@
 using System;
 using System.Windows;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels
+namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
 {
   /// <summary>
-  /// ViewModel for the <see cref="Views.PasteYourTasteView"/>.
+  /// ViewModel for the <see cref="Views.ExtraFunctions.PasteYourTasteView"/>.
   /// </summary>
-  public class PasteYourTasteViewModel : ViewModelBase
+  public class PasteYourTasteViewModel : ExtraFunctionViewModelBase
   {
     #region Properties
 
@@ -130,6 +130,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Constructor.
     /// </summary>
     public PasteYourTasteViewModel()
+      : base("Paste Your Taste")
     {
       Amount = 20;
       TimeSpan = LastStatsTimeSpan.Overall;

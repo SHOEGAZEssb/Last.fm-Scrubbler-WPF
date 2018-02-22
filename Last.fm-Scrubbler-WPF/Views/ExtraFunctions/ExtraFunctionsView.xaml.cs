@@ -3,14 +3,14 @@
 namespace Last.fm_Scrubbler_WPF.Views.ExtraFunctions
 {
   /// <summary>
-  /// Interaction logic for PasteYourTasteView.xaml
+  /// Interaction logic for ExtraFunctionsView.xaml
   /// </summary>
-  public partial class PasteYourTasteView : UserControl
+  public partial class ExtraFunctionsView : UserControl
   {
     /// <summary>
     /// Constructor.
     /// </summary>
-    public PasteYourTasteView()
+    public ExtraFunctionsView()
     {
       InitializeComponent();
     }

@@ -268,9 +268,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    /// <param name="scrobbler">Scrobbler used to scrobble.</param>
-    public SetlistFMScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
-      : base(windowManager, scrobbler)
+    public SetlistFMScrobbleViewModel(IWindowManager windowManager)
+      : base(windowManager, "Setlist.fm Scrobbler")
     {
       _setlistFMClient = new SetlistFmApi.SetlistFmApi("23b3fd98-f5c7-49c6-a7d2-28498c0c2283");
       _artistResultView = new ArtistResultView() { DataContext = this };

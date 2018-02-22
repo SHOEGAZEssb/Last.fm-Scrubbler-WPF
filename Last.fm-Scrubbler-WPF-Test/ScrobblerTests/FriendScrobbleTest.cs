@@ -43,8 +43,9 @@ namespace Last.fm_Scrubbler_WPF_Test.ScrobblerTests
       userApiMock.Setup(i => i.GetRecentScrobbles(It.IsAny<string>(), It.IsAny<DateTimeOffset?>(), It.IsAny<int>(), It.IsAny<int>())).Returns(()
                                                   => Task.Run(() => PageResponse<LastTrack>.CreateSuccessResponse(expected.ToLastTracks())));
 
-      FriendScrobbleViewModel vm = new FriendScrobbleViewModel(null, scrobblerMock.Object, userApiMock.Object)
+      FriendScrobbleViewModel vm = new FriendScrobbleViewModel(null, userApiMock.Object)
       {
+        Scrobbler = scrobblerMock.Object,
         Username = "TestUser"
       };
 

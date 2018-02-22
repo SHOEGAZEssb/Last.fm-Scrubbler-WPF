@@ -173,8 +173,13 @@
     <Compile Include="NativeMethods.cs" />
     <Compile Include="ViewModels\ExtraFunctions\CollageCreatorViewModel.cs" />
     <Compile Include="ViewModels\ExtraFunctions\CSVDownloaderViewModel.cs" />
+    <Compile Include="ViewModels\ExtraFunctions\ExtraFunctionsViewModel.cs" />
+    <Compile Include="ViewModels\ExtraFunctions\ExtraFunctionViewModelBase.cs" />
     <Compile Include="ViewModels\ExtraFunctions\PasteYourTasteViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\ScrobblerViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\CacheScrobblerViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\INeedCachingScrobbler.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\INeedScrobbler.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ITunesScrobbleViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\MediaPlayerScrobbleViewModelBase.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobblePreviewViewModel.cs" />
@@ -191,6 +196,9 @@
     </Compile>
     <Compile Include="Views\ExtraFunctions\CSVDownloaderView.xaml.cs">
       <DependentUpon>CSVDownloaderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExtraFunctions\ExtraFunctionsView.xaml.cs">
+      <DependentUpon>ExtraFunctionsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GridViewSort.cs" />
     <Compile Include="Models\DatedScrobble.cs" />
@@ -222,14 +230,23 @@
     <Compile Include="Views\ScrobbleViews\ConfigureCSVParserView.xaml.cs">
       <DependentUpon>ConfigureCSVParserView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ScrobbleViews\ITunesScrobbleView.xaml.cs">
+      <DependentUpon>ITunesScrobbleView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ScrobbleViews\MediaPlayerScrobbleControl.xaml.cs">
       <DependentUpon>MediaPlayerScrobbleControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScrobbleViews\ScrobblerView.xaml.cs">
+      <DependentUpon>ScrobblerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScrobbleViews\SelectScrobbleTimeControl.xaml.cs">
       <DependentUpon>SelectScrobbleTimeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScrobbleViews\SetlistFMScrobbleView.xaml.cs">
       <DependentUpon>SetlistFMScrobbleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScrobbleViews\SpotifyScrobbleView.xaml.cs">
+      <DependentUpon>SpotifyScrobbleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SubViews\ArtistResultView.xaml.cs">
       <DependentUpon>ArtistResultView.xaml</DependentUpon>
@@ -287,6 +304,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ExtraFunctions\ExtraFunctionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ExtraFunctions\PasteYourTasteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -299,7 +320,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ScrobbleViews\ITunesScrobbleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ScrobbleViews\MediaPlayerScrobbleControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScrobbleViews\ScrobblerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -308,6 +337,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ScrobbleViews\SetlistFMScrobbleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScrobbleViews\SpotifyScrobbleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

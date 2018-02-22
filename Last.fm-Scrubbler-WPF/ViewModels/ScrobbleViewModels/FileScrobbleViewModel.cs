@@ -109,9 +109,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    /// <param name="scrobbler">Scrobbler used to scrobble.</param>
-    public FileScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
-      : base(windowManager, scrobbler)
+    public FileScrobbleViewModel(IWindowManager windowManager)
+      : base(windowManager, "File Scrobbler")
     {
       LoadedFiles = new ObservableCollection<LoadedFileViewModel>();
       _dispatcher = Dispatcher.CurrentDispatcher;

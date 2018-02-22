@@ -128,9 +128,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    /// <param name="scrobbler">Scrobbler used to scrobble.</param>
-    public ManualScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
-      : base(windowManager, scrobbler)
+    public ManualScrobbleViewModel(IWindowManager windowManager)
+      : base(windowManager, "Manual Scrobbler")
     {
       Artist = "";
       Track = "";

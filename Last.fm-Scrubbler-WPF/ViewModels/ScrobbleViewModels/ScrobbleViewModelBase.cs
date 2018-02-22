@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Interfaces;
+using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
   /// <summary>
   /// Base class for all scrobblers.
   /// </summary>
-  public abstract class ScrobbleViewModelBase : ViewModelBase
+  public abstract class ScrobbleViewModelBase : ViewModelBase, INeedScrobbler
   {
     #region Properties
 
@@ -62,11 +63,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    /// <param name="scrobbler">Scrobbler used to scrobble.</param>
-    public ScrobbleViewModelBase(IWindowManager windowManager, IAuthScrobbler scrobbler)
+    /// <param name="displayName">Display name.</param>
+    public ScrobbleViewModelBase(IWindowManager windowManager, string displayName)
     {
+      DisplayName = displayName;
       _windowManager = windowManager;
-      Scrobbler = scrobbler;
     }
 
     /// <summary>

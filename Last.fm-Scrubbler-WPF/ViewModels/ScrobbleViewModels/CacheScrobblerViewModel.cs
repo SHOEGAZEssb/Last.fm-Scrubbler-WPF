@@ -12,7 +12,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.ScrobbleViews.CacheScrobblerView"/>
   /// </summary>
-  public class CacheScrobblerViewModel : ScrobbleViewModelBase
+  public class CacheScrobblerViewModel : ScrobbleViewModelBase, INeedCachingScrobbler
   {
     #region Properties
 
@@ -77,9 +77,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    /// <param name="scrobbler">Scrobbler used to scrobble.</param>
-    public CacheScrobblerViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
-      : base(windowManager, scrobbler)
+    public CacheScrobblerViewModel(IWindowManager windowManager)
+      : base(windowManager, "Cache Scrobbler")
     {
       CachedScrobbles = new ObservableCollection<Scrobble>();
       StartupHandling();

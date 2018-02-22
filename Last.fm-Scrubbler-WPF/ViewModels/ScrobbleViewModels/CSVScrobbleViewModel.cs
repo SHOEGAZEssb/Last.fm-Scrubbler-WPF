@@ -179,10 +179,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    /// <param name="scrobbler">Scrobbler used to scrobble.</param>
     /// <param name="parserFactory">The factory used to create <see cref="ITextFieldParser"/>.</param>
-    public CSVScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler, ITextFieldParserFactory parserFactory)
-      : base(windowManager, scrobbler)
+    public CSVScrobbleViewModel(IWindowManager windowManager, ITextFieldParserFactory parserFactory)
+      : base(windowManager, "CSV Scrobbler")
     {
       _parserFactory = parserFactory;
       Scrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>();

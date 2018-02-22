@@ -24,6 +24,16 @@ namespace Last.fm_Scrubbler_WPF
 
     protected override void Configure()
     {
+      TypeMappingConfiguration map = new TypeMappingConfiguration()
+      {
+        DefaultSubNamespaceForViewModels = "Last.fm_Scrubbler_WPF.ViewModels",
+        DefaultSubNamespaceForViews = "Last.fm_Scrubbler_WPF.Views"
+      };
+
+      ViewLocator.ConfigureTypeMappings(map);
+      ViewLocator.AddSubNamespaceMapping("fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels", "fm_Scrubbler_WPF.Views.ScrobbleViews");
+      ViewModelLocator.ConfigureTypeMappings(map);
+
       _container = new SimpleContainer();
       _container.Singleton<IWindowManager, WindowManager>();
       _container.Singleton<ILastFMClientFactory, LastFMClientFactory>();

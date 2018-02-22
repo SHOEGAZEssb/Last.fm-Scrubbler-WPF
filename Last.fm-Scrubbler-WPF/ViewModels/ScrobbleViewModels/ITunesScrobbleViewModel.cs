@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels
+namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
 {
   /// <summary>
   /// ViewModel for the <see cref="MediaPlayerScrobbleControl"/>.
@@ -127,9 +127,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    /// <param name="scrobbler">Scrobbler used to scrobble.</param>
-    public ITunesScrobbleViewModel(IWindowManager windowManager, IAuthScrobbler scrobbler)
-      : base(windowManager, scrobbler)
+    public ITunesScrobbleViewModel(IWindowManager windowManager)
+      : base(windowManager, "ITunes Scrobbler")
     {
       PercentageToScrobble = 0.5;
 

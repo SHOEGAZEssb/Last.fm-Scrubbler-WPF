@@ -22,8 +22,21 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
-    <TabControl Grid.Row="0">
-      <TabItem Header="Scrobble Functions">
+    <TabControl Grid.Row="0" x:Name="Items">
+      <TabControl.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding DisplayName}">
+            <!--<TabControl ItemsSource="{Binding Items}">
+              <TabControl.ItemTemplate>
+                <DataTemplate>
+                  <TabItem Header="{Binding DisplayName}"/>
+                </DataTemplate>
+              </TabControl.ItemTemplate>
+            </TabControl>-->
+          </TextBlock>
+        </DataTemplate>
+      </TabControl.ItemTemplate>
+      <!--<TabItem Header="Scrobble Functions">
         <TabControl>
           <TabItem Header="Manual Scrobble">
             <views:ManualScrobbleView DataContext="{Binding ManualScrobbleViewModel}"/>
@@ -69,7 +82,7 @@
             <extraViews:CollageCreatorView DataContext="{Binding CollageCreatorVM}"/>
           </TabItem>
         </TabControl>
-      </TabItem>
+      </TabItem>-->
     </TabControl>
 
     <StatusBar Grid.Row="1">
