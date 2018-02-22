@@ -5,11 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cal="http://www.caliburnproject.org"
-        xmlns:views="clr-namespace:Last.fm_Scrubbler_WPF.Views"
-        xmlns:scrobbleViews="clr-namespace:Last.fm_Scrubbler_WPF.Views.ScrobbleViews"
-        xmlns:extraViews="clr-namespace:Last.fm_Scrubbler_WPF.Views.ExtraFunctions"
         mc:Ignorable="d"
         Title="{Binding TitleString}" Height="400" Width="650" Icon="..\scrubbler_64.ico">
+
   <i:Interaction.Triggers>
     <i:EventTrigger EventName="Closing">
       <cal:ActionMessage MethodName="MainView_Closing"/>
@@ -25,64 +23,9 @@
     <TabControl Grid.Row="0" x:Name="Items">
       <TabControl.ItemTemplate>
         <DataTemplate>
-          <TextBlock Text="{Binding DisplayName}">
-            <!--<TabControl ItemsSource="{Binding Items}">
-              <TabControl.ItemTemplate>
-                <DataTemplate>
-                  <TabItem Header="{Binding DisplayName}"/>
-                </DataTemplate>
-              </TabControl.ItemTemplate>
-            </TabControl>-->
-          </TextBlock>
+          <TextBlock Text="{Binding DisplayName}"/>
         </DataTemplate>
       </TabControl.ItemTemplate>
-      <!--<TabItem Header="Scrobble Functions">
-        <TabControl>
-          <TabItem Header="Manual Scrobble">
-            <views:ManualScrobbleView DataContext="{Binding ManualScrobbleViewModel}"/>
-          </TabItem>
-          <TabItem Header="Friend Scrobble">
-            <views:FriendScrobbleView DataContext="{Binding FriendScrobbleViewModel}"/>
-          </TabItem>
-          <TabItem Header="Database Scrobble">
-            <views:DatabaseScrobbleView DataContext="{Binding DatabaseScrobbleViewModel}"/>
-          </TabItem>
-          <TabItem Header="CSV Scrobble">
-            <views:CSVScrobbleView DataContext="{Binding CSVScrobbleViewModel}"/>
-          </TabItem>
-          <TabItem Header="File Scrobble">
-            <views:FileScrobbleView DataContext="{Binding FileScrobbleViewModel}"/>
-          </TabItem>
-          <TabItem Header="Media Player DB Scrobble">
-            <views:MediaPlayerDatabaseScrobbleView DataContext="{Binding MediaPlayerDatabaseScrobbleViewModel}"/>
-          </TabItem>
-          <TabItem Header="iTunes Scrobble">
-            <scrobbleViews:MediaPlayerScrobbleControl DataContext="{Binding ITunesScrobbleVM}"/>
-          </TabItem>
-          <TabItem Header="Spotify Scrobble">
-            <scrobbleViews:MediaPlayerScrobbleControl DataContext="{Binding SpotifyScrobbleVM}"/>
-          </TabItem>
-          <TabItem Header="SetlistFM Scrobble">
-            <scrobbleViews:SetlistFMScrobbleView DataContext="{Binding SetlistFMScrobbleVM}"/>
-          </TabItem>
-          <TabItem Header="Scrobble Cache">
-            <scrobbleViews:CacheScrobblerView DataContext="{Binding CacheScrobblerVM}"/>
-          </TabItem>
-        </TabControl>
-      </TabItem>
-      <TabItem Header="Extra Functions">
-        <TabControl>
-          <TabItem Header="Paste Your Taste">
-            <views:PasteYourTasteView DataContext="{Binding PasteYourTasteVM}"/>
-          </TabItem>
-          <TabItem Header="CSV Downloader">
-            <views:CSVDownloaderView DataContext="{Binding CSVDownloaderVM}"/>
-          </TabItem>
-          <TabItem Header="Collage Creator">
-            <extraViews:CollageCreatorView DataContext="{Binding CollageCreatorVM}"/>
-          </TabItem>
-        </TabControl>
-      </TabItem>-->
     </TabControl>
 
     <StatusBar Grid.Row="1">

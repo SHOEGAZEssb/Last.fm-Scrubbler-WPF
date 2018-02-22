@@ -5,9 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
+
   <UserControl.Resources>
     <BitmapImage x:Key="noalbumimage" UriSource="/Resources/noalbumimage.png"/>
     <BooleanToVisibilityConverter x:Key="boolToVis"/>
@@ -55,11 +55,6 @@
                   <Image.Style>
                     <Style TargetType="{x:Type Image}">
                       <Setter Property="Source" Value="{Binding FetchedRelease.Image, TargetNullValue={StaticResource noalbumimage}}"/>
-                      <!--<Style.Triggers>
-                        <DataTrigger Binding="{Binding FetchedRelease.Images.Large}" Value="{x:Null}">
-                          <Setter Property="Source" Value="{StaticResource noalbumimage}"/>
-                        </DataTrigger>
-                      </Style.Triggers>-->
                     </Style>
                   </Image.Style>
                   <i:Interaction.Triggers>

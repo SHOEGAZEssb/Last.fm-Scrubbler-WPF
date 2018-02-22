@@ -8,6 +8,7 @@
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
         Title="Configure CSV Parser" Height="270" Width="300" ResizeMode="NoResize" Loaded="Window_Loaded">
+
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="5"/>

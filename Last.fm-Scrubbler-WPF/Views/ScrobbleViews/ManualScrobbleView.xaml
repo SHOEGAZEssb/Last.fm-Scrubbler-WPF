@@ -4,11 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             xmlns:viewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels"
              xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              xmlns:scrobbleViews="clr-namespace:Last.fm_Scrubbler_WPF.Views.ScrobbleViews"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
+
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>

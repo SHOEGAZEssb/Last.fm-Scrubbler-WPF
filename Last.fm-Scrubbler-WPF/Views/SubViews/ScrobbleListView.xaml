@@ -6,6 +6,7 @@
              xmlns:views="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
+
   <Grid>
     <ListView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="9" ItemsSource="{Binding}" views:GridViewSort.AutoSort="True">
       <ListView.View>

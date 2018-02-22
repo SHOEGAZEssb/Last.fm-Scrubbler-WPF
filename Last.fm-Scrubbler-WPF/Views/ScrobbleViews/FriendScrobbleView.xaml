@@ -9,6 +9,7 @@
              xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
+
   <UserControl.Resources>
     <BitmapImage x:Key="noalbumimage_small" UriSource="/Resources/noalbumimage_small.png"/>
   </UserControl.Resources>
@@ -86,12 +87,7 @@
                 <Image Grid.Column="2" VerticalAlignment="Center">
                   <Image.Style>
                     <Style TargetType="{x:Type Image}">
-                      <Setter Property="Source" Value="{Binding Track.Images.Small}"/>
-                      <Style.Triggers>
-                        <DataTrigger Binding="{Binding Track.Images.Small}" Value="{x:Null}">
-                          <Setter Property="Source" Value="{StaticResource noalbumimage_small}"/>
-                        </DataTrigger>
-                      </Style.Triggers>
+                      <Setter Property="Source" Value="{Binding Track.Images.Small, TargetNullValue={StaticResource noalbumimage_small}}"/>
                     </Style>
                   </Image.Style>
                 </Image>

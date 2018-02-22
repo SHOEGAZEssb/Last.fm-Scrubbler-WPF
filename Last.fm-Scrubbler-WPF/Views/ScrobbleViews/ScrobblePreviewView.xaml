@@ -8,6 +8,7 @@
         xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
         mc:Ignorable="d"
         Title="Scrobble Preview" Height="300" Width="500">
+
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="5"/>

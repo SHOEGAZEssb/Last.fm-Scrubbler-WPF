@@ -9,6 +9,7 @@
              xmlns:scrobbleViews="clr-namespace:Last.fm_Scrubbler_WPF.Views.ScrobbleViews"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
+
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
