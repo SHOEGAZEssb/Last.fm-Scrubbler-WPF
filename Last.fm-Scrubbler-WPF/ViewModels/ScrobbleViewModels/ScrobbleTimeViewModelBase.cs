@@ -1,5 +1,4 @@
 ﻿using Caliburn.Micro;
-using Last.fm_Scrubbler_WPF.Interfaces;
 using System;
 using System.Timers;
 

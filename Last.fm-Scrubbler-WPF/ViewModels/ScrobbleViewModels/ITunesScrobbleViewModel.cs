@@ -2,9 +2,7 @@
 using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using iTunesLib;
-using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Properties;
-using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using Last.fm_Scrubbler_WPF.Views.ScrobbleViews;
 using Microsoft.CSharp.RuntimeBinder;
 using System;

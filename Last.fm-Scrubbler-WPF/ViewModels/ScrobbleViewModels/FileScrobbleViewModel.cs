@@ -9,7 +9,6 @@ using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Views;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using System.IO;
-using Last.fm_Scrubbler_WPF.Interfaces;
 using Caliburn.Micro;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels

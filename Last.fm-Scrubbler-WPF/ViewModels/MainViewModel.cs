@@ -5,7 +5,6 @@ using Last.fm_Scrubbler_WPF.Properties;
 using Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using Last.fm_Scrubbler_WPF.Views;
-using Last.fm_Scrubbler_WPF.Views.ExtraFunctions;
 using System;
 using System.IO;
 using System.Reflection;

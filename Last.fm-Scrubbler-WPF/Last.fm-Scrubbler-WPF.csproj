@@ -229,7 +229,7 @@
     <Compile Include="Views\ScrobbleViews\CacheScrobblerView.xaml.cs">
       <DependentUpon>CacheScrobblerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ScrobbleViews\ConfigureCSVParserView.xaml.cs">
+    <Compile Include="Views\SubViews\ConfigureCSVParserView.xaml.cs">
       <DependentUpon>ConfigureCSVParserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScrobbleViews\ITunesScrobbleView.xaml.cs">
@@ -318,7 +318,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ScrobbleViews\ConfigureCSVParserView.xaml">
+    <Page Include="Views\SubViews\ConfigureCSVParserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

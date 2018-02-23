@@ -4,8 +4,7 @@ using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Models;
 using Last.fm_Scrubbler_WPF.Properties;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
-using Last.fm_Scrubbler_WPF.Views.ScrobbleViews;
-using Microsoft.VisualBasic.FileIO;
+using Last.fm_Scrubbler_WPF.ViewModels.SubViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,7 +13,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Threading;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
@@ -385,12 +383,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
 
     /// <summary>
-    /// Opens the <see cref="ConfigureCSVParserView"/>
+    /// Opens the <see cref="Views.SubViews.ConfigureCSVParserView"/>
     /// </summary>
     public void OpenCSVParserSettings()
     {
-      ConfigureCSVParserView view = new ConfigureCSVParserView();
-      view.ShowDialog();
+      _windowManager.ShowDialog(new ConfigureCSVParserViewModel());
     }
 
     /// <summary>

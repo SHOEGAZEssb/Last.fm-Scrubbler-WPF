@@ -32,6 +32,7 @@ namespace Last.fm_Scrubbler_WPF
 
       ViewLocator.ConfigureTypeMappings(map);
       ViewLocator.AddSubNamespaceMapping("fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels", "fm_Scrubbler_WPF.Views.ScrobbleViews");
+      ViewLocator.AddSubNamespaceMapping("fm_Scrubbler_WPF.ViewModels.SubViewModels", "fm_Scrubbler_WPF.Views.SubViews");
       ViewModelLocator.ConfigureTypeMappings(map);
 
       _container = new SimpleContainer();

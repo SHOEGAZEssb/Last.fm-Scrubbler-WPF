@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Objects;
-using Last.fm_Scrubbler_WPF.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Objects;
-using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using Last.fm_Scrubbler_WPF.Views;
 using System;

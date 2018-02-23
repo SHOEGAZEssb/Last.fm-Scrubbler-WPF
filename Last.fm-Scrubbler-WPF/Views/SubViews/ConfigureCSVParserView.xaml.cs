@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Interop;
 
-namespace Last.fm_Scrubbler_WPF.Views.ScrobbleViews
+namespace Last.fm_Scrubbler_WPF.Views.SubViews
 {
   /// <summary>
   /// Interaction logic for ConfigureCSVParserView.xaml
