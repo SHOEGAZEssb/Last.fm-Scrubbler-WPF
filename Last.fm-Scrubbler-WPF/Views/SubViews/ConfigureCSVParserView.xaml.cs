@@ -1,5 +1,4 @@
-﻿using Last.fm_Scrubbler_WPF.ViewModels.SubViewModels;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Interop;
 
 namespace Last.fm_Scrubbler_WPF.Views.SubViews
@@ -15,7 +14,6 @@ namespace Last.fm_Scrubbler_WPF.Views.SubViews
     public ConfigureCSVParserView()
     {
       InitializeComponent();
-      DataContext = new ConfigureCSVParserViewModel();
     }
 
     /// <summary>
@@ -25,8 +23,7 @@ namespace Last.fm_Scrubbler_WPF.Views.SubViews
     /// <param name="e">Ignored.</param>
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-      var hwnd = new WindowInteropHelper(this).Handle;
-      NativeMethods.RemoveXFromWindow(hwnd);
+      NativeMethods.RemoveXFromWindow(new WindowInteropHelper(this).Handle);
     }
   }
 }

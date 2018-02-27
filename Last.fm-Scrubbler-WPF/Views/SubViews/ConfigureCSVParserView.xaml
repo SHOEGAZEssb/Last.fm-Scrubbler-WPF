@@ -4,10 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Title="Configure CSV Parser" Height="270" Width="300" ResizeMode="NoResize" Loaded="Window_Loaded">
+        Title="Configure CSV Parser" Height="270" Width="300" ResizeMode="NoResize" Loaded="Window_Loaded" >
 
   <Grid>
     <Grid.RowDefinitions>
@@ -60,33 +58,11 @@
     <TextBlock Grid.Row="13" Grid.Column="1" Text="Delimiters:"/>
     <TextBox Grid.Row="13" Grid.Column="3" Text="{Binding Delimiters}"/>
 
-    <Button Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="4" Content="Load Defaults" HorizontalAlignment="Right">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="LoadDefaults"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
+    <Button x:Name="LoadDefaults" Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="4" Content="Load Defaults" HorizontalAlignment="Right"/>
 
     <StackPanel Grid.Row="17" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
-      <Button Content="Save &amp; Close" HorizontalAlignment="Right" Margin="0,0,5,0">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="Click">
-            <cal:ActionMessage MethodName="SaveAndClose">
-              <cal:Parameter Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
-            </cal:ActionMessage>
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </Button>
-      <Button Content="Cancel" HorizontalAlignment="Right">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="Click">
-            <cal:ActionMessage MethodName="Cancel">
-              <cal:Parameter Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
-            </cal:ActionMessage>
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </Button>
+      <Button x:Name="SaveAndClose" Content="Save &amp; Close" HorizontalAlignment="Right" Margin="0,0,5,0"/>
+      <Button x:Name="Cancel" Content="Cancel" HorizontalAlignment="Right"/>
     </StackPanel>
   </Grid>
 </Window>

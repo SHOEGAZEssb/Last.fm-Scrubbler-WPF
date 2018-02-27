@@ -1,15 +1,14 @@
 ﻿using Caliburn.Micro;
 using Last.fm_Scrubbler_WPF.Properties;
-using Last.fm_Scrubbler_WPF.Views.SubViews;
 using System.Linq;
 using System.Windows;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
 {
   /// <summary>
-  /// ViewModel for the <see cref="ConfigureCSVParserView"/>
+  /// ViewModel for the <see cref="Views.SubViews.ConfigureCSVParserView"/>
   /// </summary>
-  class ConfigureCSVParserViewModel : PropertyChangedBase
+  class ConfigureCSVParserViewModel : Screen
   {
     #region Properties
 
@@ -112,12 +111,18 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
     private string _delimiters;
 
     #endregion Properties
-
+    
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public ConfigureCSVParserViewModel()
     {
       ReadSettings();
     }
 
+    /// <summary>
+    /// Reads the settings.
+    /// </summary>
     private void ReadSettings()
     {
       ArtistFieldIndex = Settings.Default.ArtistFieldIndex;
@@ -132,8 +137,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
     /// <summary>
     /// Saves the settings and closes the view.
     /// </summary>
-    /// <param name="vm">View to close.</param>
-    public void SaveAndClose(ConfigureCSVParserView vm)
+    public void SaveAndClose()
     {
       if (CheckSettings())
       {
@@ -144,7 +148,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
         Settings.Default.AlbumArtistFieldIndex = AlbumArtistFieldIndex;
         Settings.Default.DurationFieldIndex = DurationFieldIndex;
         Settings.Default.CSVDelimiters = Delimiters;
-        vm.Close();
+        TryClose(true);
       }
     }
 
@@ -174,12 +178,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
     }
 
     /// <summary>
-    /// Reloads the original settings and closes the view.
+    /// Cancels the edit.
     /// </summary>
-    /// <param name="vm">View to close.</param>
-    public void Cancel(ConfigureCSVParserView vm)
+    public void Cancel()
     {
-      vm.Close();
+      TryClose(false);
     }
 
     /// <summary>
@@ -187,13 +190,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
     /// </summary>
     public void LoadDefaults()
     {
-      ArtistFieldIndex = int.Parse((string)Settings.Default.Properties["ArtistFieldIndex"].DefaultValue);
-      AlbumFieldIndex = int.Parse((string)Settings.Default.Properties["AlbumFieldIndex"].DefaultValue);
-      TrackFieldIndex = int.Parse((string)Settings.Default.Properties["TrackFieldIndex"].DefaultValue);
-      TimestampFieldIndex = int.Parse((string)Settings.Default.Properties["TimestampFieldIndex"].DefaultValue);
-      AlbumArtistFieldIndex = int.Parse((string)Settings.Default.Properties["AlbumArtistFieldIndex"].DefaultValue);
-      DurationFieldIndex = int.Parse((string)Settings.Default.Properties["DurationFieldIndex"].DefaultValue);
-      Delimiters = (string)Settings.Default.Properties["CSVDelimiters"].DefaultValue;
+      ArtistFieldIndex = int.Parse(Settings.Default.Properties["ArtistFieldIndex"].DefaultValue.ToString());
+      AlbumFieldIndex = int.Parse(Settings.Default.Properties["AlbumFieldIndex"].DefaultValue.ToString());
+      TrackFieldIndex = int.Parse(Settings.Default.Properties["TrackFieldIndex"].DefaultValue.ToString());
+      TimestampFieldIndex = int.Parse(Settings.Default.Properties["TimestampFieldIndex"].DefaultValue.ToString());
+      AlbumArtistFieldIndex = int.Parse(Settings.Default.Properties["AlbumArtistFieldIndex"].DefaultValue.ToString());
+      DurationFieldIndex = int.Parse(Settings.Default.Properties["DurationFieldIndex"].DefaultValue.ToString());
+      Delimiters = Settings.Default.Properties["CSVDelimiters"].DefaultValue.ToString();
     }
   }
 }
