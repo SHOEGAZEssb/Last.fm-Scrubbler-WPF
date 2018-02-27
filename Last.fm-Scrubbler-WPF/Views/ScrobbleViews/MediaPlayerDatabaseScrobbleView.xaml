@@ -4,8 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:cal="http://www.caliburnproject.org"
              xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              xmlns:viewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels"
              mc:Ignorable="d"
@@ -45,23 +43,11 @@
 
     <Label Grid.Row="0" Grid.Column="0" Content="DB File Path:"/>
     <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding DBFilePath}" IsEnabled="{Binding CanSelectFile}"/>
-    <Button Grid.Row="0" Grid.Column="4" Content="..." MinWidth="25" IsEnabled="{Binding CanSelectFile}">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="SelectFile"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
+    <Button x:Name="SelectFile" Grid.Row="0" Grid.Column="4" Content="..." MinWidth="25" IsEnabled="{Binding CanSelectFile}"/>
 
     <ComboBox Grid.Row="0" Grid.Column="6" ItemsSource="{Binding Source={StaticResource MPDDataProvider}}"
               SelectedValue="{Binding MediaPlayerDatabaseType}" Style="{StaticResource EnableControlsStyle}"/>
-    <Button Grid.Row="0" Grid.Column="8" Content="Parse" Style="{StaticResource EnableControlsStyle}">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="ParseFile"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
+    <Button x:Name="ParseFile" Grid.Row="0" Grid.Column="8" Content="Parse" Style="{StaticResource EnableControlsStyle}"/>
 
     <local:SelectScrobblesControl Grid.Row="2" Grid.ColumnSpan="9"/>
 

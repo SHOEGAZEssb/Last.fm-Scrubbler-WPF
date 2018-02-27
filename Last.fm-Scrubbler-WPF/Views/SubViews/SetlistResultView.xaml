@@ -7,7 +7,7 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:views="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" cal:Bind.Model="{Binding}">
 
   <Grid>
     <Grid.RowDefinitions>
@@ -20,13 +20,7 @@
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
-    <Button Grid.Row="0" Grid.Column="0" Content="Back To Artists">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="BackToArtists"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
+    <Button x:Name="BackToArtists" Grid.Row="0" Grid.Column="0" Content="Back To Artists"/>
 
     <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding FetchedSetlists}" views:GridViewSort.AutoSort="True" SelectionMode="Single">
       <ListView.View>

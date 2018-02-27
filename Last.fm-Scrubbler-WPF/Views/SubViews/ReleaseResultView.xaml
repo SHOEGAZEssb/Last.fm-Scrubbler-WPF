@@ -6,7 +6,7 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" cal:Bind.Model="{Binding}">
 
   <UserControl.Resources>
     <BitmapImage x:Key="noalbumimage" UriSource="/Resources/noalbumimage.png"/>
@@ -20,14 +20,8 @@
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
-    <Button Grid.Row="0" Content="Back To Artists" HorizontalAlignment="Left"
-            Visibility="{Binding FetchedReleaseThroughArtist, Converter={StaticResource boolToVis}}">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="BackToArtist"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
+    <Button x:Name="BackToArtist" Grid.Row="0" Content="Back To Artists" HorizontalAlignment="Left"
+            Visibility="{Binding FetchedReleaseThroughArtist, Converter={StaticResource boolToVis}}"/>
 
     <ScrollViewer Grid.Row="2">
       <ItemsControl  ItemsSource="{Binding FetchedReleases}">

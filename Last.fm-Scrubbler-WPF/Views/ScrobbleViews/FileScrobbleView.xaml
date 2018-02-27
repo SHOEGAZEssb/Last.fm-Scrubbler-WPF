@@ -3,12 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              xmlns:scrobbleViews="clr-namespace:Last.fm_Scrubbler_WPF.Views.ScrobbleViews"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="325">
 
   <Grid>
     <Grid.RowDefinitions>
@@ -35,45 +34,17 @@
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="5"/>
         <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition Width="5"/>
-        <ColumnDefinition Width="Auto"/>
       </Grid.ColumnDefinitions>
 
-      <Button Grid.Row="0" Grid.Column="0" Content="Add Files..." HorizontalAlignment="Left">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="Click">
-            <cal:ActionMessage MethodName="AddFiles"/>
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </Button>
+      <Button x:Name="AddFiles" Grid.Row="0" Grid.Column="0" Content="Add Files..." HorizontalAlignment="Left"/>
 
-      <Button Grid.Row="0" Grid.Column="2" Content="Remove Selected Files" HorizontalAlignment="Left" IsEnabled="{Binding CanRemoveFiles}">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="Click">
-            <cal:ActionMessage MethodName="RemoveFiles"/>
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </Button>
+      <Button x:Name="RemoveFiles" Grid.Row="0" Grid.Column="2" Content="Remove Selected Files" HorizontalAlignment="Left" IsEnabled="{Binding CanRemoveFiles}"/>
 
-      <Button Grid.Row="0" Grid.Column="4" Content="Select ALL" IsEnabled="{Binding CanSelectAll}" HorizontalAlignment="Left">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="Click">
-            <cal:ActionMessage MethodName="SelectAll"/>
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </Button>
-
-      <Button Grid.Row="0" Grid.Column="6" Content="Select None..." IsEnabled="{Binding CanSelectNone}" HorizontalAlignment="Left">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="Click">
-            <cal:ActionMessage MethodName="SelectNone"/>
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </Button>
+      <local:SelectScrobblesControl Grid.Row="0" Grid.Column="4"/>
     </Grid>
 
-    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7"  VerticalAlignment="Stretch" ItemsSource="{Binding LoadedFiles}"
-              local:GridViewSort.AutoSort="True" AllowDrop="True">
+    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"  VerticalAlignment="Stretch" ItemsSource="{Binding LoadedFiles}"
+              local:GridViewSort.AutoSort="True" AllowDrop="True" cal:Message.Attach="[Event Drop] = [Action HandleDrop($eventArgs)]">
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Scrobble?" local:GridViewSort.PropertyName="ToScrobble">
@@ -127,14 +98,6 @@
           </GridViewColumn>
         </GridView>
       </ListView.View>
-
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Drop">
-          <cal:ActionMessage MethodName="HandleDrop">
-            <cal:Parameter Value="$eventArgs"/>
-          </cal:ActionMessage>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
     </ListView>
 
     <local:ScrobbleButtonControl Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="5"/>

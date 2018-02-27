@@ -1,14 +1,13 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Objects;
-using Last.fm_Scrubbler_WPF.Views;
 using System.Collections.Generic;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels
+namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
 {
   /// <summary>
-  /// ViewModel for the <see cref="ScrobblePreviewView"/>.
+  /// ViewModel for the <see cref="Views.ScrobbleViews.ScrobblePreviewView"/>.
   /// </summary>
-  public class ScrobblePreviewViewModel : PropertyChangedBase
+  public class ScrobblePreviewViewModel : Screen
   {
     #region Properties
 
@@ -38,12 +37,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     }
 
     /// <summary>
-    /// Closes the <paramref name="view"/>.
+    /// Closes the screen.
     /// </summary>
-    /// <param name="view">View to close.</param>
-    public void OK(ScrobblePreviewView view)
+    public void OK()
     {
-      view.Close();
+      TryClose(true);
     }
   }
 }

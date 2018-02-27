@@ -6,7 +6,7 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="700">
+             d:DesignHeight="300" d:DesignWidth="700" cal:Bind.Model="{Binding}">
 
   <UserControl.Resources>
     <BitmapImage x:Key="noalbumimage" UriSource="/Resources/noalbumimage.png"/>
@@ -43,7 +43,7 @@
         </Style>
       </Label.Style>
     </Label>
-    <Button Grid.Row="0" Grid.Column="4">
+    <Button x:Name="Connect" Grid.Row="0" Grid.Column="4">
       <Button.Style>
         <Style TargetType="Button">
           <Setter Property="Content" Value="Reconnect"/>
@@ -54,14 +54,9 @@
           </Style.Triggers>
         </Style>
       </Button.Style>
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="Connect"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
     </Button>
 
-    <Button Grid.Row="0" Grid.Column="6" Content="Disconnect">
+    <Button x:Name="Disconnect" Grid.Row="0" Grid.Column="6" Content="Disconnect">
       <Button.Style>
         <Style TargetType="Button">
           <Setter Property="IsEnabled" Value="False"/>
@@ -72,12 +67,6 @@
           </Style.Triggers>
         </Style>
       </Button.Style>
-
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="Disconnect"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
     </Button>
 
     <CheckBox Grid.Row="0" Grid.Column="8" VerticalAlignment="Center" Content="Auto-Connect" IsChecked="{Binding AutoConnect}">
@@ -167,7 +156,7 @@
 
         <Separator Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3"/>
 
-        <Button Grid.Row="6" Grid.Column="0">
+        <Button x:Name="SwitchLoveState" Grid.Row="6" Grid.Column="0">
           <Button.Style>
             <Style TargetType="Button">
               <Setter Property="Content" Value="Love"/>
@@ -191,11 +180,6 @@
               </Style.Triggers>
             </Style>
           </Button.Style>
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="Click">
-              <cal:ActionMessage MethodName="SwitchLoveState"/>
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
         </Button>
       </Grid>
 

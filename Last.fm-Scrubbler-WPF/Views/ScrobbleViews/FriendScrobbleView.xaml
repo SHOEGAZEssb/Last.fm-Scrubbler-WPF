@@ -3,8 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:cal="http://www.caliburnproject.org"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              mc:Ignorable="d"
@@ -40,36 +38,9 @@
     <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
     <Label Grid.Row="0" Grid.Column="4" Content="Amount:"/>
     <xctk:IntegerUpDown Grid.Row="0" Grid.Column="6" Value="{Binding Amount}" Minimum="1" Maximum="1000"/>
-    <Button Grid.Row="0" Grid.Column="8" Content="Fetch" IsEnabled="{Binding CanFetch}">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="FetchScrobbles"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
+    <Button x:Name="FetchScrobbles" Grid.Row="0" Grid.Column="8" Content="Fetch" IsEnabled="{Binding CanFetch}"/>
 
-    <Grid Grid.Row="2" Grid.ColumnSpan="9">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition Width="5"/>
-        <ColumnDefinition Width="Auto"/>
-      </Grid.ColumnDefinitions>
-
-      <Button Grid.Column="0" Content="Select ALL">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="Click">
-            <cal:ActionMessage MethodName="SelectAll"/>
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </Button>
-      <Button Grid.Column="2" Content="Select NONE">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="Click">
-            <cal:ActionMessage MethodName="SelectNone"/>
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </Button>
-    </Grid>
+    <local:SelectScrobblesControl Grid.Row="2" Grid.ColumnSpan="9"/>
 
     <ListView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="9" VerticalAlignment="Stretch" ItemsSource="{Binding FetchedScrobbles}" local:GridViewSort.AutoSort="True">
       <ListView.View>

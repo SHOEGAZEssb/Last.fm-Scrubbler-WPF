@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Last.fm_Scrubbler_WPF.Views
+namespace Last.fm_Scrubbler_WPF.Views.ScrobbleViews
 {
   /// <summary>
   /// Interaction logic for ScrobblePreviewView.xaml

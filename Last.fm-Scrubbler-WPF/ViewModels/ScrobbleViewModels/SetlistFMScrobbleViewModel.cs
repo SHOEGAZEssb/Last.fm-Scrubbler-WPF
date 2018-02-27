@@ -286,7 +286,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Searches for info.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Task.</returns>
     public async Task Search()
     {
       if (SelectedSearchType == SetlistSearchType.Artist)

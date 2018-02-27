@@ -98,7 +98,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public virtual void Preview()
     {
-      _windowManager.ShowWindow(new ScrobblePreviewViewModel(CreateScrobbles()));
+      _windowManager.ShowDialog(new ScrobblePreviewViewModel(CreateScrobbles()));
     }
   }
 }

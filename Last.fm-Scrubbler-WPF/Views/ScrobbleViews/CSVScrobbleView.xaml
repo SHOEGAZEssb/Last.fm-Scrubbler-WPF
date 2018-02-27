@@ -4,8 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:cal="http://www.caliburnproject.org"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              xmlns:viewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels"
@@ -48,27 +46,9 @@
 
     <Label Grid.Row="0" Grid.Column="0" Content="CSV File:"/>
     <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding CSVFilePath, UpdateSourceTrigger=PropertyChanged}"/>
-    <Button Grid.Row="0" Grid.Column="4" Content=" ... " Style="{StaticResource EnableControlsStyle}">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="LoadCSVFileDialog"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
-    <Button Grid.Row="0" Grid.Column="6" Content="Parse" IsEnabled="{Binding CanParse}">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="ParseCSVFile"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
-    <Button Grid.Row="0" Grid.Column="8" Content="Settings">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="OpenCSVParserSettings"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
+    <Button x:Name="LoadCSVFileDialog" Grid.Row="0" Grid.Column="4" Content=" ... " Style="{StaticResource EnableControlsStyle}"/>
+    <Button x:Name="ParseCSVFile" Grid.Row="0" Grid.Column="6" Content="Parse" IsEnabled="{Binding CanParse}"/>
+    <Button x:Name="OpenCSVParserSettings" Grid.Row="0" Grid.Column="8" Content="Settings"/>
 
     <local:SelectScrobblesControl Grid.Row="2" Grid.ColumnSpan="9"/>
 

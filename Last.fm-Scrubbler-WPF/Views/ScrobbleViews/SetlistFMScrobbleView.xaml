@@ -4,8 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:cal="http://www.caliburnproject.org"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:views="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              xmlns:subViews="clr-namespace:Last.fm_Scrubbler_WPF.Views.SubViews"
@@ -71,13 +69,7 @@
     <Label Grid.Row="0" Grid.Column="8" Content="Artist Result Page:" Style="{StaticResource EnableControlsStyle}"/>
     <xctk:IntegerUpDown Grid.Row="0" Grid.Column="10" HorizontalAlignment="Left" Value="{Binding ArtistResultPage}" Minimum="1" Style="{StaticResource EnableControlsStyle}"/>
 
-    <Button Grid.Row="0" Grid.Column="12" Content="Search" Style="{StaticResource EnableControlsStyle}">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="Search"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
+    <Button x:Name="Search" Grid.Row="0" Grid.Column="12" Content="Search" Style="{StaticResource EnableControlsStyle}"/>
 
     <Label Grid.Row="2" Grid.Column="0" Content="Setlist Result Page:" Style="{StaticResource SetlistResultPageVisibilityStyle}"/>
     <xctk:IntegerUpDown Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Value="{Binding SetlistResultPage}" Minimum="1" Style="{StaticResource SetlistResultPageVisibilityStyle}"/>
