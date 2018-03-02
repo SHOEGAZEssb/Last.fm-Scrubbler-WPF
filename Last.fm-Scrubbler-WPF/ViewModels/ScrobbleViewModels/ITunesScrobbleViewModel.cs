@@ -28,7 +28,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       private set
       {
         _iTunesApp = value;
-        NotifyOfPropertyChange(() => ITunesApp);
+        NotifyOfPropertyChange();
       }
     }
     private iTunesApp _iTunesApp;
@@ -74,7 +74,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       set
       {
         Settings.Default.ITunesAutoConnect = value;
-        NotifyOfPropertyChange(() => AutoConnect);
+        NotifyOfPropertyChange();
       }
     }
 

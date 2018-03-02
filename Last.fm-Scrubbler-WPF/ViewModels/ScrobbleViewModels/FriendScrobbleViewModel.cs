@@ -26,7 +26,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       set
       {
         _username = value;
-        NotifyOfPropertyChange(() => Username);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanFetch);
       }
     }
@@ -41,7 +41,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       set
       {
         _amount = value;
-        NotifyOfPropertyChange(() => Amount);
+        NotifyOfPropertyChange();
       }
     }
     private int _amount;
@@ -55,7 +55,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       private set
       {
         _fetchedScrobbles = value;
-        NotifyOfPropertyChange(() => FetchedScrobbles);
+        NotifyOfPropertyChange();
       }
     }
     private ObservableCollection<FetchedFriendTrackViewModel> _fetchedScrobbles;
@@ -69,7 +69,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       protected set
       {
         _enableControls = value;
-        NotifyOfPropertyChange(() => EnableControls);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanScrobble);
         NotifyOfPropertyChange(() => CanPreview);
         NotifyOfPropertyChange(() => CanFetch);

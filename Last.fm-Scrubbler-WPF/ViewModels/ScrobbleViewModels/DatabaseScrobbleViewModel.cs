@@ -56,7 +56,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       set
       {
         _searchText = value;
-        NotifyOfPropertyChange(() => SearchText);
+        NotifyOfPropertyChange();
       }
     }
     private string _searchText;
@@ -70,7 +70,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       set
       {
         _databaseToSearch = value;
-        NotifyOfPropertyChange(() => DatabaseToSearch);
+        NotifyOfPropertyChange();
       }
     }
     private Database _databaseToSearch;
@@ -84,7 +84,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       set
       {
         _searchType = value;
-        NotifyOfPropertyChange(() => SearchType);
+        NotifyOfPropertyChange();
       }
     }
     private SearchType _searchType;
@@ -98,7 +98,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       set
       {
         _maxResults = value;
-        NotifyOfPropertyChange(() => MaxResults);
+        NotifyOfPropertyChange();
       }
     }
     private int _maxResults;
@@ -112,7 +112,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       private set
       {
         _currentView = value;
-        NotifyOfPropertyChange(() => CurrentView);
+        NotifyOfPropertyChange();
       }
     }
     private UserControl _currentView;
@@ -126,7 +126,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       private set
       {
         _fetchedArtists = value;
-        NotifyOfPropertyChange(() => FetchedArtists);
+        NotifyOfPropertyChange();
       }
     }
     private ObservableCollection<FetchedArtistViewModel> _fetchedArtists;
@@ -140,7 +140,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       private set
       {
         _fetchedAlbums = value;
-        NotifyOfPropertyChange(() => FetchedReleases);
+        NotifyOfPropertyChange();
       }
     }
     private ObservableCollection<FetchedReleaseViewModel> _fetchedAlbums;
@@ -154,7 +154,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       private set
       {
         _fetchedTracks = value;
-        NotifyOfPropertyChange(() => FetchedTracks);
+        NotifyOfPropertyChange();
       }
     }
     private ObservableCollection<FetchedTrackViewModel> _fetchedTracks;
@@ -168,7 +168,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       protected set
       {
         _enableControls = value;
-        NotifyOfPropertyChange(() => EnableControls);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanScrobble);
         NotifyOfPropertyChange(() => CanPreview);
         NotifyOfPropertyChange(() => CanSelectAll);
@@ -186,7 +186,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       private set
       {
         _fetchedReleaseThroughArtist = value;
-        NotifyOfPropertyChange(() => FetchedReleaseThroughArtist);
+        NotifyOfPropertyChange();
       }
     }
     private bool _fetchedReleaseThroughArtist;

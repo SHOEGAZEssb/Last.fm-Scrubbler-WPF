@@ -24,7 +24,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       set
       {
         _artist = value;
-        NotifyOfPropertyChange(() => Artist);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanScrobble);
         NotifyOfPropertyChange(() => CanPreview);
       }
@@ -40,7 +40,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       set
       {
         _track = value;
-        NotifyOfPropertyChange(() => Track);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanScrobble);
         NotifyOfPropertyChange(() => CanPreview);
       }
@@ -56,7 +56,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       set
       {
         _album = value;
-        NotifyOfPropertyChange(() => Album);
+        NotifyOfPropertyChange();
       }
     }
     private string _album;
@@ -70,7 +70,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       set
       {
         _albumArtist = value;
-        NotifyOfPropertyChange(() => AlbumArtist);
+        NotifyOfPropertyChange();
       }
     }
     private string _albumArtist;
@@ -84,7 +84,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       set
       {
         _duration = value;
-        NotifyOfPropertyChange(() => Duration);
+        NotifyOfPropertyChange();
       }
     }
     private TimeSpan _duration;
@@ -99,7 +99,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       protected set
       {
         _enableControls = value;
-        NotifyOfPropertyChange(() => EnableControls);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanScrobble);
         NotifyOfPropertyChange(() => CanPreview);
       }

@@ -29,7 +29,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       private set
       {
         _loadedFiles = value;
-        NotifyOfPropertyChange(() => LoadedFiles);
+        NotifyOfPropertyChange();
       }
     }
     private ObservableCollection<LoadedFileViewModel> _loadedFiles;
@@ -43,7 +43,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       protected set
       {
         _enableControls = value;
-        NotifyOfPropertyChange(() => EnableControls);
+        NotifyOfPropertyChange();
         NotifyCanProperties();
       }
     }

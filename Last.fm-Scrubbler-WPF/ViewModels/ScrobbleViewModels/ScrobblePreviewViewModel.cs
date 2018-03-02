@@ -20,7 +20,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       private set
       {
         _scrobbles = value;
-        NotifyOfPropertyChange(() => Scrobbles);
+        NotifyOfPropertyChange();
       }
     }
     private IEnumerable<Scrobble> _scrobbles;

@@ -26,7 +26,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       set
       {
         _time = value;
-        NotifyOfPropertyChange(() => Time);
+        NotifyOfPropertyChange();
       }
     }
     private DateTime _time;
@@ -49,7 +49,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
           _currentTimeTimer.Start();
 
         _useCurrentTime = value;
-        NotifyOfPropertyChange(() => UseCurrentTime);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => Time);
       }
     }

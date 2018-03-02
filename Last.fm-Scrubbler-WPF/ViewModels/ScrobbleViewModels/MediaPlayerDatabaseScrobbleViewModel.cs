@@ -44,7 +44,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       set
       {
         _dbFilePath = value;
-        NotifyOfPropertyChange(() => DBFilePath);
+        NotifyOfPropertyChange();
       }
     }
     private string _dbFilePath;
@@ -58,7 +58,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       set
       {
         _mediaPlayerDatabaseType = value;
-        NotifyOfPropertyChange(() => MediaPlayerDatabaseType);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanSelectFile);
       }
     }
@@ -73,7 +73,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       private set
       {
         _parsedScrobbles = value;
-        NotifyOfPropertyChange(() => ParsedScrobbles);
+        NotifyOfPropertyChange();
       }
     }
     private ObservableCollection<MediaDBScrobbleViewModel> _parsedScrobbles;
@@ -87,7 +87,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       protected set
       {
         _enableControls = value;
-        NotifyOfPropertyChange(() => EnableControls);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanScrobble);
         NotifyOfPropertyChange(() => CanPreview);
         NotifyOfPropertyChange(() => CanSelectAll);

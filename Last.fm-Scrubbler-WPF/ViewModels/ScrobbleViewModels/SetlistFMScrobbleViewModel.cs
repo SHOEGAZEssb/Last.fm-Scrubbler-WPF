@@ -43,7 +43,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       set
       {
         _searchText = value;
-        NotifyOfPropertyChange(() => SearchText);
+        NotifyOfPropertyChange();
       }
     }
     private string _searchText;
@@ -57,7 +57,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       set
       {
         _selectedSearchType = value;
-        NotifyOfPropertyChange(() => SelectedSearchType);
+        NotifyOfPropertyChange();
       }
     }
     private SetlistSearchType _selectedSearchType;
@@ -73,7 +73,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       set
       {
         _albumString = value;
-        NotifyOfPropertyChange(() => AlbumString);
+        NotifyOfPropertyChange();
       }
     }
     private string _albumString;
@@ -89,6 +89,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
         _customAlbumString = value;
         if (!value)
           AlbumString = "";
+
+        NotifyOfPropertyChange();
       }
     }
     private bool _customAlbumString;
@@ -102,7 +104,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       set
       {
         _setlistResultPage = value;
-        NotifyOfPropertyChange(() => SetlistResultPage);
+        NotifyOfPropertyChange();
 
         // todo: if we ever fetch setlists other than by clicking an
         // artist we need to change this I guess.
@@ -121,7 +123,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       set
       {
         _artistResultPage = value;
-        NotifyOfPropertyChange(() => ArtistResultPage);
+        NotifyOfPropertyChange();
       }
     }
     private int _artistResultPage;
@@ -135,7 +137,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       private set
       {
         _fetchedArtists = value;
-        NotifyOfPropertyChange(() => FetchedArtists);
+        NotifyOfPropertyChange();
       }
     }
     private ObservableCollection<FetchedArtistViewModel> _fetchedArtists;
@@ -149,7 +151,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       private set
       {
         _fetchedSetlists = value;
-        NotifyOfPropertyChange(() => FetchedSetlists);
+        NotifyOfPropertyChange();
       }
     }
     private ObservableCollection<FetchedSetlistViewModel> _fetchedSetlists;
@@ -163,7 +165,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       private set
       {
         _fetchedTracks = value;
-        NotifyOfPropertyChange(() => FetchedTracks);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanSelectAll);
         NotifyOfPropertyChange(() => CanSelectNone);
         NotifyOfPropertyChange(() => CanScrobble);
@@ -180,7 +182,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       private set
       {
         _currentView = value;
-        NotifyOfPropertyChange(() => CurrentView);
+        NotifyOfPropertyChange();
       }
     }
     private UserControl _currentView;
@@ -195,7 +197,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       protected set
       {
         _enableControls = value;
-        NotifyOfPropertyChange(() => EnableControls);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanPreview);
       }
     }

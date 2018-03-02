@@ -48,7 +48,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       set
       {
         _csvFilePath = value;
-        NotifyOfPropertyChange(() => CSVFilePath);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanParse);
       }
     }
@@ -63,7 +63,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       private set
       {
         _scrobbles = value;
-        NotifyOfPropertyChange(() => Scrobbles);
+        NotifyOfPropertyChange();
       }
     }
     private ObservableCollection<ParsedCSVScrobbleViewModel> _scrobbles;
@@ -84,7 +84,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
             ParseCSVFile().Forget();
         }
 
-        NotifyOfPropertyChange(() => ScrobbleMode);
+        NotifyOfPropertyChange();
       }
     }
     private CSVScrobbleMode _scrobbleMode;

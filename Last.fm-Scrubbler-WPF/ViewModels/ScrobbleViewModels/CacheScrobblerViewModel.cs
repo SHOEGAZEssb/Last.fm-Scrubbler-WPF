@@ -35,7 +35,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       protected set
       {
         _enableControls = value;
-        NotifyOfPropertyChange(() => EnableControls);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanScrobble);
         NotifyOfPropertyChange(() => CanPreview);
       }
@@ -50,7 +50,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       private set
       {
         _cachedScrobbles = value;
-        NotifyOfPropertyChange(() => CachedScrobbles);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanScrobble);
         NotifyOfPropertyChange(() => CanPreview);
       }
@@ -66,7 +66,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       set
       {
         Settings.Default.AutoScrobbleCache = value;
-        NotifyOfPropertyChange(() => AutoScrobble);
+        NotifyOfPropertyChange();
       }
     }
 

@@ -24,7 +24,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       protected set
       {
         _isConnected = value;
-        NotifyOfPropertyChange(() => IsConnected);
+        NotifyOfPropertyChange();
       }
     }
     private bool _isConnected;
@@ -43,7 +43,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       protected set
       {
         _currentTrackLoved = value;
-        NotifyOfPropertyChange(() => CurrentTrackLoved);
+        NotifyOfPropertyChange();
       }
     }
     private bool _currentTrackLoved;
@@ -77,7 +77,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       protected set
       {
         _currentAlbumArtwork = value;
-        NotifyOfPropertyChange(() => CurrentAlbumArtwork);
+        NotifyOfPropertyChange();
       }
     }
     private Uri _currentAlbumArtwork;
@@ -91,7 +91,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       protected set
       {
         _countedSeconds = value;
-        NotifyOfPropertyChange(() => CountedSeconds);
+        NotifyOfPropertyChange();
       }
     }
     private int _countedSeconds;
@@ -111,6 +111,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
           throw new ArgumentOutOfRangeException(nameof(value), "Percentage to scrobble must be greater or equal 50% and smaller or equal 100%");
 
         _percentageToScrobble = rounded;
+        NotifyOfPropertyChange();
       }
     }
     private double _percentageToScrobble;
@@ -132,7 +133,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       protected set
       {
         _enableControls = value;
-        NotifyOfPropertyChange(() => EnableControls);
+        NotifyOfPropertyChange();
       }
     }
 
