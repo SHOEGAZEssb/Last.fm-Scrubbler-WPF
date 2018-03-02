@@ -93,11 +93,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     #region Private Member
 
     /// <summary>
-    /// Current dispatcher.
-    /// </summary>
-    private Dispatcher _dispatcher;
-
-    /// <summary>
     /// Supported file formats.
     /// </summary>
     private static readonly string[] SUPPORTEDFILES = new string[] { ".flac", ".mp3", ".m4a", ".wma" };
@@ -112,7 +107,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       : base(windowManager, "File Scrobbler")
     {
       LoadedFiles = new ObservableCollection<LoadedFileViewModel>();
-      _dispatcher = Dispatcher.CurrentDispatcher;
     }
 
     /// <summary>
@@ -154,6 +148,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       OnStatusUpdated("Trying to parse selected files...");
       List<string> errors = new List<string>();
 
+      var newFiles = new List<LoadedFileViewModel>();
       await Task.Run(() =>
       {
         foreach (string file in files)
@@ -169,7 +164,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
               LoadedFileViewModel vm = new LoadedFileViewModel(audioFile);
               vm.ToScrobbleChanged += ToScrobbleChanged;
-              _dispatcher.Invoke(() => LoadedFiles.Add(vm));
+              newFiles.Add(vm);
             }
           }
           catch (Exception ex)
@@ -178,6 +173,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           }
         }
       });
+
+      LoadedFiles = new ObservableCollection<LoadedFileViewModel>(LoadedFiles.Concat(newFiles));
 
       if (errors.Count > 0)
       {
