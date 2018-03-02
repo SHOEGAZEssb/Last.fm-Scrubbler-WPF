@@ -99,7 +99,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public bool CanFetch
     {
-      get { return Username.Length > 0 && EnableControls; }
+      get { return !string.IsNullOrEmpty(Username) && EnableControls; }
     }
 
     /// <summary>
@@ -138,7 +138,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       : base(windowManager, "Friend Scrobbler")
     {
       _userApi = userApi;
-      Username = "";
       FetchedScrobbles = new ObservableCollection<FetchedFriendTrackViewModel>();
       Amount = 20;
     }

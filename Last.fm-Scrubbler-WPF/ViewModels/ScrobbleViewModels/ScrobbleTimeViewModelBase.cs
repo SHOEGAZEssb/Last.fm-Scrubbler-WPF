@@ -42,8 +42,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       {
         if (!value)
         {
-          Time = DateTime.Now;
           _currentTimeTimer.Stop();
+          Time = DateTime.Now;
         }
         else
           _currentTimeTimer.Start();

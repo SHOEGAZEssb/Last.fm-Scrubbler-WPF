@@ -113,7 +113,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     {
       LoadedFiles = new ObservableCollection<LoadedFileViewModel>();
       _dispatcher = Dispatcher.CurrentDispatcher;
-      UseCurrentTime = true;
     }
 
     /// <summary>

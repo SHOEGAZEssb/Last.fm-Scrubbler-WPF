@@ -64,7 +64,7 @@
               Style="{StaticResource EnableControlsStyle}"/>
     <Label Grid.Row="0" Grid.Column="8" Content="Max Results:"/>
     <xctk:IntegerUpDown Grid.Row="0" Grid.Column="10" Minimum="1" Maximum="1000" Value="{Binding MaxResults}" Style="{StaticResource EnableControlsStyle}"/>
-    <Button x:Name="Search" Grid.Row="0" Grid.Column="12" Content="Search" Style="{StaticResource EnableControlsStyle}"/>
+    <Button x:Name="Search" Grid.Row="0" Grid.Column="12" Content="Search" IsEnabled="{Binding CanSearch}"/>
 
     <ContentPresenter Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="14" Content="{Binding CurrentView}"/>
 

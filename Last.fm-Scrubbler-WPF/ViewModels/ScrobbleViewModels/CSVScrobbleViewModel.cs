@@ -184,7 +184,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       _parserFactory = parserFactory;
       Scrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>();
       Duration = 1;
-      UseCurrentTime = true;
       ScrobbleMode = CSVScrobbleMode.ImportMode;
     }
 

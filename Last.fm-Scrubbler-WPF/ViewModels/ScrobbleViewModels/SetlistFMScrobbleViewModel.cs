@@ -280,7 +280,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       FetchedArtists = new ObservableCollection<FetchedArtistViewModel>();
       FetchedSetlists = new ObservableCollection<FetchedSetlistViewModel>();
       FetchedTracks = new ObservableCollection<FetchedTrackViewModel>();
-      UseCurrentTime = true;
       SetlistResultPage = 1;
       ArtistResultPage = 1;
     }

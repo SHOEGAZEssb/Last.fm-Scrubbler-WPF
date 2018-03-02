@@ -57,6 +57,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         _searchText = value;
         NotifyOfPropertyChange();
+        NotifyOfPropertyChange(() => CanSearch);
       }
     }
     private string _searchText;
@@ -192,6 +193,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     private bool _fetchedReleaseThroughArtist;
 
     /// <summary>
+    /// Gets if the search button is enabled on the UI.
+    /// </summary>
+    public bool CanSearch
+    {
+      get { return EnableControls && !string.IsNullOrEmpty(SearchText); }
+    }
+
+    /// <summary>
     /// Gets if the scrobble button is enabled on the UI.
     /// </summary>
     public override bool CanScrobble
@@ -251,7 +260,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public DatabaseScrobbleViewModel(IWindowManager windowManager)
       : base(windowManager, "Database Scrobbler")
     {
-      SearchText = "";
       DatabaseToSearch = Database.LastFm;
       SearchType = SearchType.Artist;
       MaxResults = 25;
@@ -261,7 +269,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       _artistResultView = new ArtistResultView() { DataContext = this };
       _releaseResultView = new ReleaseResultView() { DataContext = this };
       _trackResultView = new TrackResultView() { DataContext = this };
-      UseCurrentTime = true;
     }
 
     /// <summary>
