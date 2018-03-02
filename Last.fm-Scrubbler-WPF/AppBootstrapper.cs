@@ -39,6 +39,7 @@ namespace Last.fm_Scrubbler_WPF
       _container.Singleton<IWindowManager, WindowManager>();
       _container.Singleton<ILastFMClientFactory, LastFMClientFactory>();
       _container.Singleton<IScrobblerFactory, ScrobblerFactory>();
+      _container.Singleton<ILocalFileFactory, LocalFileFactory>();
       _container.PerRequest<MainViewModel>();
     }
     protected override void BuildUp(object instance)

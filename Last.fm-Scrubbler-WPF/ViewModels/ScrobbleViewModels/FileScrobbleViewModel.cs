@@ -10,6 +10,7 @@ using Last.fm_Scrubbler_WPF.Views;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using System.IO;
 using Caliburn.Micro;
+using Last.fm_Scrubbler_WPF.Interfaces;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
@@ -97,16 +98,23 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     private static readonly string[] SUPPORTEDFILES = new string[] { ".flac", ".mp3", ".m4a", ".wma" };
 
+    /// <summary>
+    /// Factory used to create <see cref="ILocalFile"/>s.
+    /// </summary>
+    private ILocalFileFactory _localFileFactory;
+
     #endregion Private Member
 
     /// <summary>
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    public FileScrobbleViewModel(IWindowManager windowManager)
+    /// <param name="localFileFactory">Factory used to create <see cref="ILocalFile"/>s.</param>
+    public FileScrobbleViewModel(IWindowManager windowManager, ILocalFileFactory localFileFactory)
       : base(windowManager, "File Scrobbler")
     {
       LoadedFiles = new ObservableCollection<LoadedFileViewModel>();
+      _localFileFactory = localFileFactory;
     }
 
     /// <summary>
@@ -157,10 +165,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           {
             if (SUPPORTEDFILES.Contains(Path.GetExtension(file).ToLower()))
             {
-              TagLib.File audioFile = TagLib.File.Create(file);
+              ILocalFile audioFile = _localFileFactory.CreateFile(file);
 
-              if (audioFile.Tag.FirstPerformer == null || audioFile.Tag.Title == null)
-                throw new Exception("No artist name or track title found!");
+              if (string.IsNullOrEmpty(audioFile.Artist))
+                throw new Exception("No artist name found");
+              if (string.IsNullOrEmpty(audioFile.Track))
+                throw new Exception("No track name found");
 
               LoadedFileViewModel vm = new LoadedFileViewModel(audioFile);
               vm.ToScrobbleChanged += ToScrobbleChanged;
@@ -308,9 +318,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       List<Scrobble> scrobbles = new List<Scrobble>();
       foreach (var vm in LoadedFiles.Where(i => i.ToScrobble).Reverse())
       {
-        scrobbles.Add(new Scrobble(vm.LoadedFile.Tag.FirstPerformer, vm.LoadedFile.Tag.Album, vm.LoadedFile.Tag.Title, timePlayed)
-                          { AlbumArtist = vm.LoadedFile.Tag.FirstAlbumArtist, Duration = vm.LoadedFile.Properties.Duration });
-        timePlayed = timePlayed.Subtract(vm.LoadedFile.Properties.Duration);
+        scrobbles.Add(new Scrobble(vm.Artist, vm.Album, vm.Track, timePlayed)
+                          { AlbumArtist = vm.AlbumArtist, Duration = vm.Duration });
+        timePlayed = timePlayed.Subtract(vm.Duration);
       }
 
       return scrobbles;

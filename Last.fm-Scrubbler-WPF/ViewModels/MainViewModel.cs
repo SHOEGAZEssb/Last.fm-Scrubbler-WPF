@@ -134,14 +134,14 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public MainViewModel(IWindowManager windowManager, ILastFMClientFactory clientFactory, IScrobblerFactory scrobblerFactory)
+    public MainViewModel(IWindowManager windowManager, ILastFMClientFactory clientFactory, IScrobblerFactory scrobblerFactory, ILocalFileFactory localFileFactory)
     {
       _windowManager = windowManager;
       _lastFMClientFactory = clientFactory;
       _scrobblerFactory = scrobblerFactory;
       TitleString = "Last.fm Scrubbler WPF " + Assembly.GetExecutingAssembly().GetName().Version;
       CreateNewClient();
-      SetupViewModels();
+      SetupViewModels(localFileFactory);
       CurrentStatus = "Waiting to scrobble...";
     }
 
@@ -150,9 +150,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Creates the ViewModels.
     /// </summary>
-    private void SetupViewModels()
+    private void SetupViewModels(ILocalFileFactory localFileFactory)
     {
-      _scrobblerVM = new ScrobblerViewModel(_windowManager);
+      _scrobblerVM = new ScrobblerViewModel(_windowManager, localFileFactory);
       _scrobblerVM.StatusUpdated += StatusUpdated;
       CreateScrobblers();
       ActivateItem(_scrobblerVM);

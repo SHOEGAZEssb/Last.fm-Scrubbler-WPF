@@ -1,11 +1,11 @@
 ﻿using Caliburn.Micro;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using System;
-using TagLib;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
   /// <summary>
-  /// ViewModel for a <see cref="File"/>.
+  /// ViewModel for a <see cref="ILocalFile"/>.
   /// </summary>
   public class LoadedFileViewModel : PropertyChangedBase
   {
@@ -17,18 +17,34 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     public event EventHandler ToScrobbleChanged;
 
     /// <summary>
-    /// The loaded file.
+    /// The artist name.
     /// </summary>
-    public File LoadedFile
-    {
-      get { return _loadedFile; }
-      private set
-      {
-        _loadedFile = value;
-        NotifyOfPropertyChange(() => LoadedFile);
-      }
-    }
-    private File _loadedFile;
+    public string Artist => _file.Artist;
+
+    /// <summary>
+    /// The album name.
+    /// </summary>
+    public string Album => _file.Album;
+
+    /// <summary>
+    /// The track name.
+    /// </summary>
+    public string Track => _file.Track;
+
+    /// <summary>
+    /// The album artist name.
+    /// </summary>
+    public string AlbumArtist => _file.AlbumArtist;
+
+    /// <summary>
+    /// The duration of the track.
+    /// </summary>
+    public TimeSpan Duration => _file.Duration;
+
+    /// <summary>
+    /// The number of the track.
+    /// </summary>
+    public int TrackNumber => _file.TrackNumber;
 
     /// <summary>
     /// Indicates if this file should be scrobbled.
@@ -47,13 +63,22 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
     #endregion Properties
 
+    #region Member
+
+    /// <summary>
+    /// The file.
+    /// </summary>
+    private ILocalFile _file;
+
+    #endregion Member
+
     /// <summary>
     /// Constructor.
     /// </summary>
     /// <param name="file">The loaded file.</param>
-    public LoadedFileViewModel(File file)
+    public LoadedFileViewModel(ILocalFile file)
     {
-      LoadedFile = file;
+      _file = file;
     }
   }
 }
