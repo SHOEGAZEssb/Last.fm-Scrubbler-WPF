@@ -25,8 +25,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         _artist = value;
         NotifyOfPropertyChange();
-        NotifyOfPropertyChange(() => CanScrobble);
-        NotifyOfPropertyChange(() => CanPreview);
+        NotifyCanProperties();
       }
     }
     private string _artist;
@@ -41,8 +40,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         _track = value;
         NotifyOfPropertyChange();
-        NotifyOfPropertyChange(() => CanScrobble);
-        NotifyOfPropertyChange(() => CanPreview);
+        NotifyCanProperties();
       }
     }
     private string _track;
@@ -100,8 +98,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         _enableControls = value;
         NotifyOfPropertyChange();
-        NotifyOfPropertyChange(() => CanScrobble);
-        NotifyOfPropertyChange(() => CanPreview);
+        NotifyCanProperties();
       }
     }
 
@@ -110,7 +107,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public override bool CanScrobble
     {
-      get { return base.CanScrobble && Artist.Length > 0 && Track.Length > 0 && EnableControls; }
+      get { return base.CanScrobble && !string.IsNullOrEmpty(Artist) && !string.IsNullOrEmpty(Track) && EnableControls; }
     }
 
     /// <summary>
@@ -118,7 +115,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public override bool CanPreview
     {
-      get { return Artist.Length > 0 && Track.Length > 0 && EnableControls; }
+      get { return !string.IsNullOrEmpty(Artist) && !string.IsNullOrEmpty(Track) && EnableControls; }
     }
 
     #endregion Properties
@@ -129,14 +126,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     public ManualScrobbleViewModel(IWindowManager windowManager)
       : base(windowManager, "Manual Scrobbler")
-    {
-      Artist = "";
-      Track = "";
-      Album = "";
-      AlbumArtist = "";
-      Duration = TimeSpan.FromSeconds(0);
-      UseCurrentTime = true;
-    }
+    { }
 
     /// <summary>
     /// Scrobbles the track with the given info.
@@ -173,7 +163,16 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <returns>List with scrobbles.</returns>
     protected override IEnumerable<Scrobble> CreateScrobbles()
     {
-      return new Scrobble[] { new Scrobble(Artist, Album, Track, Time) { AlbumArtist = AlbumArtist, Duration = Duration } };
+      return new[] { new Scrobble(Artist, Album, Track, Time) { AlbumArtist = AlbumArtist, Duration = Duration } };
+    }
+
+    /// <summary>
+    /// Notifies the UI that 'Can' properties changed.
+    /// </summary>
+    private void NotifyCanProperties()
+    {
+      NotifyOfPropertyChange(() => CanScrobble);
+      NotifyOfPropertyChange(() => CanPreview);
     }
   }
 }
