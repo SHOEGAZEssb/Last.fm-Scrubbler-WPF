@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using System;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
@@ -20,20 +21,20 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
     /// <summary>
     /// Constructor.
     /// </summary>
-    public ExtraFunctionsViewModel()
+    public ExtraFunctionsViewModel(IExtendedWindowManager windowManager)
     {
       DisplayName = "Extra Functions";
-      CreateViewModels();
+      CreateViewModels(windowManager);
     }
 
     /// <summary>
     /// Creates the ViewModels.
     /// </summary>
-    private void CreateViewModels()
+    private void CreateViewModels(IExtendedWindowManager windowManager)
     {
       var pasteYourTasteVM = new PasteYourTasteViewModel();
       pasteYourTasteVM.StatusUpdated += VM_StatusUpdated; ;
-      var csvDownloaderVM = new CSVDownloaderViewModel();
+      var csvDownloaderVM = new CSVDownloaderViewModel(windowManager);
       csvDownloaderVM.StatusUpdated += VM_StatusUpdated;
       var collageCreatorVM = new CollageCreatorViewModel();
       collageCreatorVM.StatusUpdated += VM_StatusUpdated;

@@ -24,7 +24,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="localFileFactory">Factory used to create <see cref="ILocalFile"/>s.</param>
-    public ScrobblerViewModel(IWindowManager windowManager, ILocalFileFactory localFileFactory)
+    public ScrobblerViewModel(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory)
     {
       DisplayName = "Scrobbler";
       CreateViewModels(windowManager, localFileFactory);
@@ -51,7 +51,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="localFileFactory">Factory used to create <see cref="ILocalFile"/>s.</param>
-    private void CreateViewModels(IWindowManager windowManager, ILocalFileFactory localFileFactory)
+    private void CreateViewModels(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory)
     {
       var manualScrobbleViewModel = new ManualScrobbleViewModel(windowManager);
       manualScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;

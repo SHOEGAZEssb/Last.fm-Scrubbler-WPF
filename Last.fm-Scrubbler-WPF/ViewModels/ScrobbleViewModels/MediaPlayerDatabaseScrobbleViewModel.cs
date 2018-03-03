@@ -1,5 +1,5 @@
-﻿using Caliburn.Micro;
-using IF.Lastfm.Core.Objects;
+﻿using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Models;
 using Last.fm_Scrubbler_WPF.Views;
 using System;
@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Xml;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
@@ -141,27 +140,25 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    public MediaPlayerDatabaseScrobbleViewModel(IWindowManager windowManager)
+    public MediaPlayerDatabaseScrobbleViewModel(IExtendedWindowManager windowManager)
       : base(windowManager, "Media Player Database Scrobbler")
     {
       ParsedScrobbles = new ObservableCollection<MediaDBScrobbleViewModel>();
     }
 
     /// <summary>
-    /// Shows an <see cref="OpenFileDialog"/> and lets the user
+    /// Shows a file dialog and lets the user
     /// select a database file.
     /// Filter will be applied depending on selected <see cref="MediaPlayerDatabaseType"/>.
     /// </summary>
     public void SelectFile()
     {
-      using (OpenFileDialog ofd = new OpenFileDialog())
-      {
-        if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.iTunes_Or_Winamp)
-          ofd.Filter = "iTunes/Winamp Database XML (*.xml) | *.xml";
+      IOpenFileDialog ofd = _windowManager.CreateOpenFileDialog();
+      if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.iTunes_Or_Winamp)
+        ofd.Filter = "iTunes/Winamp Database XML (*.xml) | *.xml";
 
-        if (ofd.ShowDialog() == DialogResult.OK)
-          DBFilePath = ofd.FileName;
-      }
+      if (ofd.ShowDialog())
+        DBFilePath = ofd.FileName;
     }
 
     /// <summary>
@@ -353,7 +350,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       {
         for (int i = 0; i < vm.Scrobble.PlayCount; i++)
         {
-          scrobbles.Add(new Scrobble(vm.Scrobble.ArtistName, vm.Scrobble.AlbumName, vm.Scrobble.TrackName, time) { AlbumArtist = vm.Scrobble.AlbumArtist, Duration = vm.Scrobble.Duration});
+          scrobbles.Add(new Scrobble(vm.Scrobble.ArtistName, vm.Scrobble.AlbumName, vm.Scrobble.TrackName, time) { AlbumArtist = vm.Scrobble.AlbumArtist, Duration = vm.Scrobble.Duration });
           time = time.Subtract(TimeSpan.FromSeconds(1));
         }
       }

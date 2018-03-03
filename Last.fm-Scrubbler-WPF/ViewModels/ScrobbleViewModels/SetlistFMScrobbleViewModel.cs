@@ -1,5 +1,5 @@
-﻿using Caliburn.Micro;
-using IF.Lastfm.Core.Objects;
+﻿using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Models;
 using Last.fm_Scrubbler_WPF.ViewModels.SubViewModels;
 using Last.fm_Scrubbler_WPF.Views;
@@ -269,7 +269,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    public SetlistFMScrobbleViewModel(IWindowManager windowManager)
+    public SetlistFMScrobbleViewModel(IExtendedWindowManager windowManager)
       : base(windowManager, "Setlist.fm Scrobbler")
     {
       _setlistFMClient = new SetlistFmApi.SetlistFmApi("23b3fd98-f5c7-49c6-a7d2-28498c0c2283");

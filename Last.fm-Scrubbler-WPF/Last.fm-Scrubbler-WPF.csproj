@@ -122,7 +122,6 @@
       <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.4.0.0-alpha.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -155,23 +154,31 @@
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Interfaces\IAuthScrobbler.cs" />
+    <Compile Include="Interfaces\IMessageBoxService.cs" />
+    <Compile Include="Interfaces\IExtendedWindowManager.cs" />
+    <Compile Include="Interfaces\IFileDialog.cs" />
     <Compile Include="Interfaces\ILastFMApiBase.cs" />
     <Compile Include="Interfaces\ILastFMClient.cs" />
     <Compile Include="Interfaces\ILastFMClientFactory.cs" />
     <Compile Include="Interfaces\ILocalFileFactory.cs" />
+    <Compile Include="Interfaces\IOpenFileDialog.cs" />
     <Compile Include="Interfaces\IScrobblerFactory.cs" />
     <Compile Include="Interfaces\ITextFieldParser.cs" />
     <Compile Include="Interfaces\ITextFieldParserFactory.cs" />
+    <Compile Include="Models\OpenFileDialogService.cs" />
+    <Compile Include="Models\SaveFileDialogService.cs" />
     <Compile Include="Models\Artist.cs" />
     <Compile Include="Models\AuthScrobbler.cs" />
     <Compile Include="Models\AuthSQLiteScrobbler.cs" />
     <Compile Include="Models\CSVTextFieldParser.cs" />
     <Compile Include="Models\CSVTextFieldParserFactory.cs" />
     <Compile Include="Interfaces\ILocalFile.cs" />
+    <Compile Include="Models\ExtendedWindowManager.cs" />
     <Compile Include="Models\LastFMClient.cs" />
     <Compile Include="Models\LastFMClientFactory.cs" />
     <Compile Include="Models\LocalFile.cs" />
     <Compile Include="Models\LocalFileFactory.cs" />
+    <Compile Include="Models\MessageBoxService.cs" />
     <Compile Include="Models\Release.cs" />
     <Compile Include="Models\ScrobbleBase.cs" />
     <Compile Include="Models\ScrobblerFactory.cs" />

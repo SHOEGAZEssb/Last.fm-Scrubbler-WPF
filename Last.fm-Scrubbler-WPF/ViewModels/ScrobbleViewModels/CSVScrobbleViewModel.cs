@@ -1,5 +1,4 @@
-﻿using Caliburn.Micro;
-using IF.Lastfm.Core.Objects;
+﻿using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Models;
 using Last.fm_Scrubbler_WPF.Properties;
@@ -12,7 +11,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
@@ -80,7 +78,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
         if (Scrobbles.Count > 0)
         {
-          if (MessageBox.Show("Do you want to switch the Scrobble Mode? The CSV file will be parsed again!", "Change Scrobble Mode", MessageBoxButtons.YesNo) == DialogResult.Yes)
+          if (_windowManager.MessageBoxService.ShowDialog("Do you want to switch the Scrobble Mode? The CSV file will be parsed again!",
+                                                          "Change Scrobble Mode", IMessageBoxServiceButtons.YesNo) == IMessageBoxServiceResult.Yes)
             ParseCSVFile().Forget();
         }
 
@@ -178,7 +177,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="parserFactory">The factory used to create <see cref="ITextFieldParser"/>.</param>
-    public CSVScrobbleViewModel(IWindowManager windowManager, ITextFieldParserFactory parserFactory)
+    public CSVScrobbleViewModel(IExtendedWindowManager windowManager, ITextFieldParserFactory parserFactory)
       : base(windowManager, "CSV Scrobbler")
     {
       _parserFactory = parserFactory;
@@ -192,11 +191,10 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     public void LoadCSVFileDialog()
     {
-      using (OpenFileDialog ofd = new OpenFileDialog() { Filter = "CSV Files|*.csv" })
-      {
-        if (ofd.ShowDialog() == DialogResult.OK)
-          CSVFilePath = ofd.FileName;
-      }
+      IOpenFileDialog ofd = _windowManager.CreateOpenFileDialog();
+      ofd.Filter = "CSV Files|*.csv";
+      if(ofd.ShowDialog())
+        CSVFilePath = ofd.FileName;
     }
 
     /// <summary>
@@ -283,13 +281,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
           else
           {
             OnStatusUpdated("Partially parsed CSV file. " + errors.Count + " rows could not be parsed");
-            if (MessageBox.Show("Some rows could not be parsed. Do you want to save a text file with the rows that could not be parsed?", "Error parsing rows", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (_windowManager.MessageBoxService.ShowDialog("Some rows could not be parsed. Do you want to save a text file with the rows that could not be parsed?",
+                                                            "Error parsing rows", IMessageBoxServiceButtons.YesNo) == IMessageBoxServiceResult.Yes)
             {
-              SaveFileDialog sfd = new SaveFileDialog()
-              {
-                Filter = "Text Files|*.txt"
-              };
-              if (sfd.ShowDialog() == DialogResult.OK)
+              IFileDialog sfd = _windowManager.CreateSaveFileDialog();
+              sfd.Filter = "Text Files|*.txt";
+              if (sfd.ShowDialog())
                 File.WriteAllLines(sfd.FileName, errors.ToArray());
             }
           }

@@ -1,5 +1,5 @@
-﻿using Caliburn.Micro;
-using IF.Lastfm.Core.Objects;
+﻿using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using Last.fm_Scrubbler_WPF.Views;
 using System;
@@ -124,7 +124,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    public ManualScrobbleViewModel(IWindowManager windowManager)
+    public ManualScrobbleViewModel(IExtendedWindowManager windowManager)
       : base(windowManager, "Manual Scrobbler")
     { }
 

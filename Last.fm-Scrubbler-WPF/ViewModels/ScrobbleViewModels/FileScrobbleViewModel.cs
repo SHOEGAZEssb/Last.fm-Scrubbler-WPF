@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Windows.Threading;
 using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Views;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using System.IO;
-using Caliburn.Micro;
 using Last.fm_Scrubbler_WPF.Interfaces;
+using System.Windows;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels
 {
@@ -110,7 +108,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="localFileFactory">Factory used to create <see cref="ILocalFile"/>s.</param>
-    public FileScrobbleViewModel(IWindowManager windowManager, ILocalFileFactory localFileFactory)
+    public FileScrobbleViewModel(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory)
       : base(windowManager, "File Scrobbler")
     {
       LoadedFiles = new ObservableCollection<LoadedFileViewModel>();
@@ -127,14 +125,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
       try
       {
-        using (OpenFileDialog ofd = new OpenFileDialog())
-        {
-          ofd.Multiselect = true;
-          ofd.Filter = "Music Files|*.flac;*.mp3;*.m4a;*.wma";
+        IOpenFileDialog ofd = _windowManager.CreateOpenFileDialog();
+        ofd.Multiselect = true;
+        ofd.Filter = "Music Files|*.flac;*.mp3;*.m4a;*.wma";
 
-          if (ofd.ShowDialog() == DialogResult.OK)
-            await ParseFiles(ofd.FileNames);
-        }
+        if (ofd.ShowDialog())
+          await ParseFiles(ofd.FileNames);
       }
       catch (Exception ex)
       {
@@ -189,14 +185,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       if (errors.Count > 0)
       {
         OnStatusUpdated("Finished parsing selected files. " + errors.Count + " files could not be parsed");
-        if (MessageBox.Show("Some files could not be parsed. Do you want to save a text file with the files that could not be parsed?", "Error parsing files", MessageBoxButtons.YesNo) == DialogResult.Yes)
+        if (_windowManager.MessageBoxService.ShowDialog("Some files could not be parsed. Do you want to save a text file with the files that could not be parsed?",
+                                                        "Error parsing files", IMessageBoxServiceButtons.YesNo) == IMessageBoxServiceResult.Yes)
         {
-          SaveFileDialog sfd = new SaveFileDialog()
-          {
-            Filter = "Text Files|*.txt"
-          };
-
-          if (sfd.ShowDialog() == DialogResult.OK)
+          IFileDialog sfd = _windowManager.CreateSaveFileDialog();
+          sfd.Filter = "Text Files|*.txt";
+          if (sfd.ShowDialog())
             File.WriteAllLines(sfd.FileName, errors.ToArray());
         }
       }
@@ -208,7 +202,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Handles files that were dropped onto the GUI.
     /// </summary>
     /// <param name="e">Contains info about the dropped data.</param>
-    public async void HandleDrop(System.Windows.DragEventArgs e)
+    public async void HandleDrop(DragEventArgs e)
     {
       EnableControls = false;
 
@@ -319,7 +313,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       foreach (var vm in LoadedFiles.Where(i => i.ToScrobble).Reverse())
       {
         scrobbles.Add(new Scrobble(vm.Artist, vm.Album, vm.Track, timePlayed)
-                          { AlbumArtist = vm.AlbumArtist, Duration = vm.Duration });
+        { AlbumArtist = vm.AlbumArtist, Duration = vm.Duration });
         timePlayed = timePlayed.Subtract(vm.Duration);
       }
 

@@ -1,6 +1,6 @@
-﻿using Caliburn.Micro;
-using IF.Lastfm.Core.Api;
+﻿using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Views;
 using System;
 using System.Collections.Generic;
@@ -134,7 +134,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="userApi">The last.fm api object to get the scrobbles of an user.</param>
-    public FriendScrobbleViewModel(IWindowManager windowManager, IUserApi userApi)
+    public FriendScrobbleViewModel(IExtendedWindowManager windowManager, IUserApi userApi)
       : base(windowManager, "Friend Scrobbler")
     {
       _userApi = userApi;

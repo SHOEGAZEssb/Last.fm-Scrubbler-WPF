@@ -1,5 +1,5 @@
-﻿using Caliburn.Micro;
-using IF.Lastfm.Core.Objects;
+﻿using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Properties;
 using System;
 using System.Collections.Generic;
@@ -76,7 +76,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    public CacheScrobblerViewModel(IWindowManager windowManager)
+    public CacheScrobblerViewModel(IExtendedWindowManager windowManager)
       : base(windowManager, "Cache Scrobbler")
     {
       CachedScrobbles = new ObservableCollection<Scrobble>();

@@ -1,6 +1,6 @@
-﻿using Caliburn.Micro;
-using IF.Lastfm.Core.Api.Helpers;
+﻿using IF.Lastfm.Core.Api.Helpers;
 using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Models;
 using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
 using Last.fm_Scrubbler_WPF.Views;
@@ -257,7 +257,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    public DatabaseScrobbleViewModel(IWindowManager windowManager)
+    public DatabaseScrobbleViewModel(IExtendedWindowManager windowManager)
       : base(windowManager, "Database Scrobbler")
     {
       DatabaseToSearch = Database.LastFm;

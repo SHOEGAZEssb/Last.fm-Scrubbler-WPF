@@ -1,5 +1,5 @@
-﻿using Caliburn.Micro;
-using IF.Lastfm.Core.Objects;
+﻿using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -170,7 +170,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="displayName">Display name.</param>
-    public MediaPlayerScrobbleViewModelBase(IWindowManager windowManager, string displayName)
+    public MediaPlayerScrobbleViewModelBase(IExtendedWindowManager windowManager, string displayName)
       : base(windowManager, displayName)
     { }
 

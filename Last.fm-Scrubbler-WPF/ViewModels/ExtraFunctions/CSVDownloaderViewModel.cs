@@ -1,11 +1,11 @@
 ﻿using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
 {
@@ -78,14 +78,21 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
     /// </summary>
     private const int TRACKSPERPAGE = 1000;
 
+    /// <summary>
+    /// WindowManager used to display dialogs.
+    /// </summary>
+    private IExtendedWindowManager _windowManager;
+
     #endregion Private Member
 
     /// <summary>
     /// Constructor.
     /// </summary>
-    public CSVDownloaderViewModel()
+    /// <param name="windowManager">WindowManager used to display dialogs.</param>
+    public CSVDownloaderViewModel(IExtendedWindowManager windowManager)
       : base("CSV Downloader")
     {
+      _windowManager = windowManager;
       Username = string.Empty;
       FilePath = string.Empty;
     }
@@ -96,11 +103,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
     /// </summary>
     public void SelectFilePath()
     {
-      SaveFileDialog sfd = new SaveFileDialog()
-      {
-        Filter = "CSV Files (*.csv) | *.csv"
-      };
-      if (sfd.ShowDialog() == DialogResult.OK)
+      IFileDialog sfd = _windowManager.CreateSaveFileDialog();
+      sfd.Filter = "CSV Files (*.csv) | *.csv";
+      if (sfd.ShowDialog())
         FilePath = sfd.FileName;
     }
 
