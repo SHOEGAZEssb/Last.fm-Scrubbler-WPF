@@ -119,7 +119,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// Shows a dialog to select music files.
     /// Parses the selected files.
     /// </summary>
-    public async void AddFiles()
+    public async Task AddFiles()
     {
       EnableControls = false;
 
