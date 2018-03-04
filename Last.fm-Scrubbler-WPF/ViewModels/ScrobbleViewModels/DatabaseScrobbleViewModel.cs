@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Api.Helpers;
+﻿using IF.Lastfm.Core.Api;
+using IF.Lastfm.Core.Api.Helpers;
 using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Models;
@@ -251,15 +252,31 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// </summary>
     private TrackResultView _trackResultView;
 
+    /// <summary>
+    /// Last.fm artist api used to search for artists.
+    /// </summary>
+    private IArtistApi _lastfmArtistAPI;
+
+    /// <summary>
+    /// Last.fm album api used to search for albums.
+    /// </summary>
+    private IAlbumApi _lastfmAlbumAPI;
+
     #endregion Private Member
+
+    #region Construction
 
     /// <summary>
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    public DatabaseScrobbleViewModel(IExtendedWindowManager windowManager)
+    /// <param name="lastfmArtistAPI">Last.fm artist api used to search for artists.</param>
+    /// <param name="lastfmAlbumAPI">Last.fm album api used to search for albums.</param>
+    public DatabaseScrobbleViewModel(IExtendedWindowManager windowManager, IArtistApi lastfmArtistAPI, IAlbumApi lastfmAlbumAPI)
       : base(windowManager, "Database Scrobbler")
     {
+      _lastfmArtistAPI = lastfmArtistAPI;
+      _lastfmAlbumAPI = lastfmAlbumAPI;
       DatabaseToSearch = Database.LastFm;
       SearchType = SearchType.Artist;
       MaxResults = 25;
@@ -270,6 +287,8 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       _releaseResultView = new ReleaseResultView() { DataContext = this };
       _trackResultView = new TrackResultView() { DataContext = this };
     }
+
+    #endregion Construction
 
     /// <summary>
     /// Searches the entered <see cref="SearchText"/>.
@@ -328,7 +347,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <returns>Task.</returns>
     private async Task SearchArtistLastFm()
     {
-      var response = await MainViewModel.Client.Artist.SearchAsync(SearchText, 1, MaxResults);
+      var response = await _lastfmArtistAPI.SearchAsync(SearchText, 1, MaxResults);
       if (response.Success)
       {
         foreach (var s in response.Content)
@@ -390,7 +409,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <returns>Task.</returns>
     private async Task SearchReleaseLastFm()
     {
-      var response = await MainViewModel.Client.Album.SearchAsync(SearchText, 1, MaxResults);
+      var response = await _lastfmAlbumAPI.SearchAsync(SearchText, 1, MaxResults);
       if (response.Success)
       {
         foreach (var s in response.Content)
@@ -454,7 +473,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <returns>Task.</returns>
     private async Task ArtistClickedLastFm(Artist artist)
     {
-      var response = await MainViewModel.Client.Artist.GetTopAlbumsAsync(artist.Name, false, 1, MaxResults);
+      var response = await _lastfmArtistAPI.GetTopAlbumsAsync(artist.Name, false, 1, MaxResults);
       if (response.Success)
       {
         FetchedReleases.Clear();
@@ -497,9 +516,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
 
           LastResponse<LastAlbum> detailedRelease = null;
           if (release.Mbid != null && release.Mbid != "")
-            detailedRelease = await MainViewModel.Client.Album.GetInfoByMbidAsync(release.Mbid);
+            detailedRelease = await _lastfmAlbumAPI.GetInfoByMbidAsync(release.Mbid);
           else
-            detailedRelease = await MainViewModel.Client.Album.GetInfoAsync(release.ArtistName, release.Name);
+            detailedRelease = await _lastfmAlbumAPI.GetInfoAsync(release.ArtistName, release.Name);
 
           if (detailedRelease.Success)
           {

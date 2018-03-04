@@ -57,7 +57,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
       manualScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
       var friendScrobbleViewModel = new FriendScrobbleViewModel(windowManager, MainViewModel.Client.User);
       friendScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
-      var databaseScrobbleViewModel = new DatabaseScrobbleViewModel(windowManager);
+      var databaseScrobbleViewModel = new DatabaseScrobbleViewModel(windowManager, MainViewModel.Client.Artist, MainViewModel.Client.Album);
       databaseScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
       var csvScrobbleViewModel = new CSVScrobbleViewModel(windowManager, new CSVTextFieldParserFactory());
       csvScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
