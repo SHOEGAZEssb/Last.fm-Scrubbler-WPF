@@ -36,7 +36,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
       pasteYourTasteVM.StatusUpdated += VM_StatusUpdated; ;
       var csvDownloaderVM = new CSVDownloaderViewModel(windowManager);
       csvDownloaderVM.StatusUpdated += VM_StatusUpdated;
-      var collageCreatorVM = new CollageCreatorViewModel();
+      var collageCreatorVM = new CollageCreatorViewModel(MainViewModel.Client.User);
       collageCreatorVM.StatusUpdated += VM_StatusUpdated;
 
       ActivateItem(pasteYourTasteVM);

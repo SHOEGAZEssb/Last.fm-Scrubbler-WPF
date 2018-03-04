@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Api.Enums;
+﻿using IF.Lastfm.Core.Api;
+using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using Last.fm_Scrubbler_WPF.Views.ExtraFunctions;
 using Microsoft.Win32;
@@ -41,6 +42,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
     /// </summary>
     [Description("5x5")]
     FiveByFive = 5,
+
+    /// <summary>
+    /// Create a custom-sized collage.
+    /// </summary>
+    [Description("Custom")]
+    Custom
   }
 
   /// <summary>
@@ -104,9 +111,29 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
       {
         _selectedCollageSize = value;
         NotifyOfPropertyChange(() => SelectedCollageSize);
+
+        if (SelectedCollageSize == CollageSize.Custom)
+          UploadToWeb = false;
       }
     }
     private CollageSize _selectedCollageSize;
+
+    /// <summary>
+    /// The size that the custom collage should be.
+    /// </summary>
+    public int CustomCollageSize
+    {
+      get { return _customCollageSize; }
+      set
+      {
+        if (value <= 0)
+          throw new ArgumentOutOfRangeException(nameof(CustomCollageSize));
+
+        _customCollageSize = value;
+        NotifyOfPropertyChange();
+      }
+    }
+    private int _customCollageSize;
 
     /// <summary>
     /// Selected type of the collage to be created.
@@ -158,14 +185,17 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
     /// </summary>
     public bool UploadToWeb
     {
-      get { return _uploadImage; }
+      get { return _uploadToWeb; }
       set
       {
-        _uploadImage = value;
+        if (value && SelectedCollageSize == CollageSize.Custom)
+          throw new InvalidOperationException("A custom-size collage can't be uploaded to the web.");
+
+        _uploadToWeb = value;
         NotifyOfPropertyChange();
       }
     }
-    private bool _uploadImage;
+    private bool _uploadToWeb;
 
     /// <summary>
     /// The created collage.
@@ -196,15 +226,26 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
 
     #endregion Properties
 
+    #region Member
+
+    /// <summary>
+    /// Last.fm user api used to fetch top artists and albums.
+    /// </summary>
+    private IUserApi _userAPI;
+
+    #endregion Member
+
     /// <summary>
     /// Constructor.
     /// </summary>
-    public CollageCreatorViewModel()
+    /// <param name="userAPI">Last.fm user api used to fetch top artists and albums.</param>
+    public CollageCreatorViewModel(IUserApi userAPI)
       : base("Collage Creator")
     {
-      Username = "";
+      _userAPI = userAPI;
       TimeSpan = LastStatsTimeSpan.Overall;
       SelectedCollageSize = CollageSize.ThreeByThree;
+      CustomCollageSize = 10;
       ShowNames = true;
       ShowPlaycounts = true;
       UploadToWeb = true;
@@ -221,12 +262,16 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
       {
         Collage = null;
 
-        int numCollageItems = (int)SelectedCollageSize * (int)SelectedCollageSize;
+        int numCollageItems = 0;
+        if (SelectedCollageSize == CollageSize.Custom)
+          numCollageItems = CustomCollageSize * CustomCollageSize;
+        else
+          numCollageItems = (int)SelectedCollageSize * (int)SelectedCollageSize;
         PngBitmapEncoder collage = null;
         if (SelectedCollageType == CollageType.Artists)
         {
           OnStatusUpdated("Fetching top artists...");
-          var response = await MainViewModel.Client.User.GetTopArtists(Username, TimeSpan, 1, numCollageItems);
+          var response = await _userAPI.GetTopArtists(Username, TimeSpan, 1, numCollageItems);
           if (response.Success)
             collage = await StitchImagesTogether(response.Content.Select(a => new Tuple<Uri, string>(a.MainImage.ExtraLarge, CreateArtistText(a))).ToList());
           else
@@ -235,7 +280,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
         else if (SelectedCollageType == CollageType.Albums)
         {
           OnStatusUpdated("Fetching top albums...");
-          var response = await MainViewModel.Client.User.GetTopAlbums(Username, TimeSpan, 1, numCollageItems);
+          var response = await _userAPI.GetTopAlbums(Username, TimeSpan, 1, numCollageItems);
           if (response.Success)
             collage = await StitchImagesTogether(response.Content.Select(a => new Tuple<Uri, string>(a.Images.ExtraLarge, CreateAlbumText(a))).ToList());
           else
@@ -247,7 +292,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
           collage.Save(ms);
           ConvertToBitmapImage(ms);
 
-          if(UploadToWeb)
+          if (UploadToWeb)
             await UploadImage(ms);
         };
 
@@ -281,7 +326,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
           }
         }
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         OnStatusUpdated("Fatal error while saving collage to file: " + ex.Message);
       }
@@ -361,14 +406,19 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
       int imageWidth = frames[0].PixelWidth;
       int imageHeight = frames[0].PixelHeight;
 
-      int col = (int)SelectedCollageSize;
+      int collageSize = 0;
+      if (SelectedCollageSize == CollageSize.Custom)
+        collageSize = CustomCollageSize;
+      else
+        collageSize = (int)SelectedCollageSize;
+
       DrawingVisual dv = new DrawingVisual();
       using (DrawingContext dc = dv.RenderOpen())
       {
         int cnt = 0;
-        for (int y = 0; y < col; y++)
+        for (int y = 0; y < collageSize; y++)
         {
-          for (int x = 0; x < col; x++)
+          for (int x = 0; x < collageSize; x++)
           {
             dc.DrawImage(frames[cnt], new Rect(x * imageWidth, y * imageHeight, imageWidth, imageHeight));
 
@@ -392,7 +442,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
       }
 
       // Converts the Visual (DrawingVisual) into a BitmapSource
-      RenderTargetBitmap bmp = new RenderTargetBitmap(imageWidth * col, imageHeight * col, 96, 96, PixelFormats.Pbgra32);
+      RenderTargetBitmap bmp = new RenderTargetBitmap(imageWidth * collageSize, imageHeight * collageSize, 96, 96, PixelFormats.Pbgra32);
       bmp.Render(dv);
 
       // Creates a PngBitmapEncoder and adds the BitmapSource to the frames of the encoder

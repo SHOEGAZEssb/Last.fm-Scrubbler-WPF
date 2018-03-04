@@ -9,6 +9,7 @@
              xmlns:lastEnums="clr-namespace:IF.Lastfm.Core.Api.Enums;assembly=IF.Lastfm.Core"
              xmlns:extraFuncVMs="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions"
              xmlns:conv="clr-namespace:Last.fm_Scrubbler_WPF.Converters"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d"
              d:DesignHeight="100" d:DesignWidth="500">
 
@@ -74,7 +75,7 @@
       </Grid.ColumnDefinitions>
 
       <Label Grid.Row="0" Grid.Column="0" Content="Username:"/>
-      <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Username}" Style="{StaticResource EnableControlsStyle}"/>
+      <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource EnableControlsStyle}"/>
 
       <Label Grid.Row="0" Grid.Column="4" Content="TimeSpan:"/>
       <ComboBox Grid.Row="0" Grid.Column="6" ItemsSource="{Binding Source={StaticResource TimeSpanDataProvider}}" SelectedValue="{Binding TimeSpan}" Style="{StaticResource EnableControlsStyle}"/>
@@ -93,12 +94,16 @@
         </ComboBox.ItemTemplate>
       </ComboBox>
 
-      <Button Grid.Row="0" Grid.Column="16" Content="Create" Style="{StaticResource EnableControlsStyle}">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="Click">
-            <cal:ActionMessage MethodName="CreateCollage"/>
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
+      <Button x:Name="CreateCollage" Grid.Row="0" Grid.Column="16" Content="Create">
+        <Button.Style>
+          <Style TargetType="Button" BasedOn="{StaticResource EnableControlsStyle}">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding Username}" Value="{x:Null}">
+                <Setter Property="IsEnabled" Value="False"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Button.Style>
       </Button>
     </Grid>
 
@@ -112,11 +117,44 @@
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="5"/>
         <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
 
       <CheckBox Grid.Row="0" Grid.Column="0" Content="Show Names" IsChecked="{Binding ShowNames}" VerticalAlignment="Center" Style="{StaticResource EnableControlsStyle}"/>
       <CheckBox Grid.Row="0" Grid.Column="2" Content="Show Playcounts" IsChecked="{Binding ShowPlaycounts}" VerticalAlignment="Center" Style="{StaticResource EnableControlsStyle}"/>
-      <CheckBox Grid.Row="0" Grid.Column="4" Content="Upload Image" IsChecked="{Binding UploadToWeb}" VerticalAlignment="Center" Style="{StaticResource EnableControlsStyle}"/>
+      <CheckBox Grid.Row="0" Grid.Column="4" Content="Upload Image" IsChecked="{Binding UploadToWeb}" VerticalAlignment="Center">
+        <CheckBox.Style>
+          <Style TargetType="CheckBox" BasedOn="{StaticResource EnableControlsStyle}">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding SelectedCollageSize}" Value="{x:Static extraFuncVMs:CollageSize.Custom}">
+                <Setter Property="IsEnabled" Value="False"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </CheckBox.Style>
+      </CheckBox>
+
+      <Grid Grid.Column="6" VerticalAlignment="Center">
+        <Grid.Style>
+          <Style TargetType="Grid" BasedOn="{StaticResource EnableControlsStyle}">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding SelectedCollageSize}" Value="{x:Static extraFuncVMs:CollageSize.Custom}">
+                <Setter Property="Visibility" Value="Visible"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Grid.Style>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="5"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Column="0" Text="Custom Size:"/>
+        <xctk:IntegerUpDown Grid.Column="2" Value="{Binding CustomCollageSize}" Minimum="1"/>
+      </Grid>
     </Grid>
 
     <Image Grid.Row="4" Grid.Column="0" Source="{Binding Collage}"/>
