@@ -6,6 +6,7 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
              xmlns:viewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels"
+             xmlns:conv="clr-namespace:Last.fm_Scrubbler_WPF.Converters"
              mc:Ignorable="d"
              d:DesignHeight="330" d:DesignWidth="350">
 
@@ -17,6 +18,8 @@
         <x:Type TypeName="viewModels:MediaPlayerDatabaseType"/>
       </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
+
+    <conv:EnumDescriptionConverter x:Key="EnumDescriptionConv"/>
   </UserControl.Resources>
 
   <Grid>
@@ -46,7 +49,13 @@
     <Button x:Name="SelectFile" Grid.Row="0" Grid.Column="4" Content="..." MinWidth="25" IsEnabled="{Binding CanSelectFile}"/>
 
     <ComboBox Grid.Row="0" Grid.Column="6" ItemsSource="{Binding Source={StaticResource MPDDataProvider}}"
-              SelectedValue="{Binding MediaPlayerDatabaseType}" Style="{StaticResource EnableControlsStyle}"/>
+              SelectedValue="{Binding MediaPlayerDatabaseType}" Style="{StaticResource EnableControlsStyle}">
+      <ComboBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConv}}"/>
+        </DataTemplate>
+      </ComboBox.ItemTemplate>
+    </ComboBox>
     <Button x:Name="ParseFile" Grid.Row="0" Grid.Column="8" Content="Parse" Style="{StaticResource EnableControlsStyle}"/>
 
     <local:SelectScrobblesControl Grid.Row="2" Grid.ColumnSpan="9"/>

@@ -5,6 +5,7 @@ using Last.fm_Scrubbler_WPF.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
@@ -19,11 +20,13 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
     /// <summary>
     /// Scrobble from iTunes database (.xml).
     /// </summary>
+    [Description("iTunes / Winamp")]
     iTunes_Or_Winamp,
 
     /// <summary>
     /// Scrobble from Windows Media Player.
     /// </summary>
+    [Description("Windows Media Player")]
     WMP
   }
 
