@@ -1,6 +1,7 @@
 ﻿using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
+using Last.fm_Scrubbler_WPF.Interfaces;
 using Last.fm_Scrubbler_WPF.Views.ExtraFunctions;
 using Microsoft.Win32;
 using System;
@@ -229,6 +230,11 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
     #region Member
 
     /// <summary>
+    /// WindowManager used to display dialogs.
+    /// </summary>
+    private IExtendedWindowManager _windowManager;
+
+    /// <summary>
     /// Last.fm user api used to fetch top artists and albums.
     /// </summary>
     private IUserApi _userAPI;
@@ -238,10 +244,12 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
     /// <summary>
     /// Constructor.
     /// </summary>
+    /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="userAPI">Last.fm user api used to fetch top artists and albums.</param>
-    public CollageCreatorViewModel(IUserApi userAPI)
+    public CollageCreatorViewModel(IExtendedWindowManager windowManager, IUserApi userAPI)
       : base("Collage Creator")
     {
+      _windowManager = windowManager;
       _userAPI = userAPI;
       TimeSpan = LastStatsTimeSpan.Overall;
       SelectedCollageSize = CollageSize.ThreeByThree;
@@ -315,8 +323,9 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
     {
       try
       {
-        SaveFileDialog sfd = new SaveFileDialog() { Filter = "Bitmap Image (.bmp) | *.bmp" };
-        if (sfd.ShowDialog().Value)
+        IFileDialog sfd = _windowManager.CreateSaveFileDialog();
+        sfd.Filter = "Bitmap Image (.bmp) | *.bmp";
+        if (sfd.ShowDialog())
         {
           using (var fileStream = new FileStream(sfd.FileName, FileMode.Create))
           {
@@ -479,7 +488,6 @@ namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
           string link = doc.Descendants().Where(i => i.Name == "link").FirstOrDefault().Value;
           Process.Start(link);
         }
-
       }
     }
   }

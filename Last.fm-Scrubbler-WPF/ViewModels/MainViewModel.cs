@@ -157,7 +157,7 @@ namespace Last.fm_Scrubbler_WPF.ViewModels
       CreateScrobblers();
       ActivateItem(_scrobblerVM);
 
-      _extraFunctionsVM = new ExtraFunctionsViewModel(_windowManager);
+      _extraFunctionsVM = new ExtraFunctionsViewModel(_windowManager, Client.User);
       _extraFunctionsVM.StatusUpdated += StatusUpdated;
       ActivateItem(_extraFunctionsVM);
 
