@@ -3,8 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
 
@@ -29,20 +27,8 @@
 
     <Label Grid.Row="2" Grid.Column="0" Content="File Path:"/>
     <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource EnableControlsStyle}"/>
-    <Button Grid.Row="2" Grid.Column="4" Content="..." Width="25" Style="{StaticResource EnableControlsStyle}">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="SelectFilePath"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
+    <Button x:Name="SelectFilePath" Grid.Row="2" Grid.Column="4" Content="..." Width="25" Style="{StaticResource EnableControlsStyle}"/>
 
-    <Button Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" HorizontalAlignment="Right" Content="Download Scrobbles" IsEnabled="{Binding CanDownload}">
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="Download"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
-    </Button>
+    <Button x:Name="Download" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" HorizontalAlignment="Right" Content="Download Scrobbles" IsEnabled="{Binding CanDownload}"/>
   </Grid>
 </UserControl>

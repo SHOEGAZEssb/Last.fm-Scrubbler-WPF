@@ -4,8 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:cal="http://www.caliburnproject.org"
              xmlns:lastEnums="clr-namespace:IF.Lastfm.Core.Api.Enums;assembly=IF.Lastfm.Core"
              xmlns:extraFuncVMs="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions"
              xmlns:conv="clr-namespace:Last.fm_Scrubbler_WPF.Converters"
@@ -158,7 +156,7 @@
     </Grid>
 
     <Image Grid.Row="4" Grid.Column="0" Source="{Binding Collage}"/>
-    <Button Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" Content="Save Image">
+    <Button x:Name="SaveImage" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" Content="Save Image">
       <Button.Style>
         <Style TargetType="Button" BasedOn="{StaticResource EnableControlsStyle}">
           <Setter Property="Visibility" Value="Visible"/>
@@ -169,12 +167,6 @@
           </Style.Triggers>
         </Style>
       </Button.Style>
-      <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Click">
-          <cal:ActionMessage MethodName="SaveImage"/>
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
     </Button>
-
   </Grid>
 </UserControl>
