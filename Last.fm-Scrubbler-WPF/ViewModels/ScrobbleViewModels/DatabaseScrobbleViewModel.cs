@@ -3,7 +3,6 @@ using IF.Lastfm.Core.Api.Helpers;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
 using Scrubbler.Models;
-using Scrubbler.ViewModels.ScrobbleViewModels;
 using Scrubbler.Views;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace Scrubbler.ViewModels
+namespace Scrubbler.ViewModels.ScrobbleViewModels
 {
   /// <summary>
   /// Available databases to search.
@@ -42,7 +41,7 @@ namespace Scrubbler.ViewModels
   }
 
   /// <summary>
-  /// ViewModel for the <see cref="DatabaseScrobbleView"/>.
+  /// ViewModel for the <see cref="Views.ScrobbleViews.DatabaseScrobbleView"/>.
   /// </summary>
   public class DatabaseScrobbleViewModel : ScrobbleTimeViewModelBase
   {

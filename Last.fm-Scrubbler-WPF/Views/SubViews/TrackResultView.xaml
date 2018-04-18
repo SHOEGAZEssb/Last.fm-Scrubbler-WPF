@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:local="clr-namespace:Scrubbler.Views"
+             xmlns:subViews="clr-namespace:Scrubbler.Views.SubViews"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300" cal:Bind.Model="{Binding}">
 
@@ -28,7 +29,7 @@
 
       <Button x:Name="BackFromTrackResult" Grid.Row="0" Content="Back"/>
 
-      <local:SelectScrobblesControl Grid.Row="0" Grid.Column="2"/>
+      <subViews:SelectScrobblesControl Grid.Row="0" Grid.Column="2"/>
     </Grid>
 
 

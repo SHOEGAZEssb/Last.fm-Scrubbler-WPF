@@ -1,15 +1,13 @@
 ﻿using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
-using Scrubbler.ViewModels.ScrobbleViewModels;
-using Scrubbler.Views;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Scrubbler.ViewModels
+namespace Scrubbler.ViewModels.ScrobbleViewModels
 {
   /// <summary>
-  /// ViewModel for the <see cref="ManualScrobbleView"/>.
+  /// ViewModel for the <see cref="Views.ScrobbleViews.ManualScrobbleView"/>.
   /// </summary>
   public class ManualScrobbleViewModel : ScrobbleTimeViewModelBase
   {

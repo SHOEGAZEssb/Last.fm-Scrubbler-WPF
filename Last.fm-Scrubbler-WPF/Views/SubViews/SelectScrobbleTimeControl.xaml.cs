@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Scrubbler.Views.ScrobbleViews
+namespace Scrubbler.Views.SubViews
 {
   /// <summary>
   /// Interaction logic for SelectScrobbleTimeControl.xaml

@@ -1,7 +1,6 @@
 ﻿using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
 using Scrubbler.Models;
-using Scrubbler.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,7 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace Scrubbler.ViewModels
+namespace Scrubbler.ViewModels.ScrobbleViewModels
 {
   /// <summary>
   /// Media player database to scrobble tracks from.
@@ -31,7 +30,7 @@ namespace Scrubbler.ViewModels
   }
 
   /// <summary>
-  /// ViewModel for the <see cref="MediaPlayerDatabaseScrobbleView"/>.
+  /// ViewModel for the <see cref="Views.ScrobbleViews.MediaPlayerDatabaseScrobbleView"/>.
   /// </summary>
   public class MediaPlayerDatabaseScrobbleViewModel : ScrobbleViewModelBase
   {

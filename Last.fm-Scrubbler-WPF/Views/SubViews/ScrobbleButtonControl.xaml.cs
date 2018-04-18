@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Scrubbler.Views
+namespace Scrubbler.Views.SubViews
 {
   /// <summary>
   /// Interaction logic for ScrobbleButtonControl.xaml

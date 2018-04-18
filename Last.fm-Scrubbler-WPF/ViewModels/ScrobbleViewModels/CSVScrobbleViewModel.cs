@@ -2,7 +2,6 @@
 using Scrubbler.Interfaces;
 using Scrubbler.Models;
 using Scrubbler.Properties;
-using Scrubbler.ViewModels.ScrobbleViewModels;
 using Scrubbler.ViewModels.SubViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Scrubbler.ViewModels
+namespace Scrubbler.ViewModels.ScrobbleViewModels
 {
   /// <summary>
   /// Scrobble mode.
@@ -31,7 +30,7 @@ namespace Scrubbler.ViewModels
   }
 
   /// <summary>
-  /// ViewModel for the <see cref="Views.CSVScrobbleView"/>.
+  /// ViewModel for the <see cref="Views.ScrobbleViews.CSVScrobbleView"/>.
   /// </summary>
   public class CSVScrobbleViewModel : ScrobbleTimeViewModelBase
   {

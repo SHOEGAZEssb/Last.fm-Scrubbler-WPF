@@ -4,16 +4,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using IF.Lastfm.Core.Objects;
-using Scrubbler.Views;
-using Scrubbler.ViewModels.ScrobbleViewModels;
 using System.IO;
 using Scrubbler.Interfaces;
 using System.Windows;
 
-namespace Scrubbler.ViewModels
+namespace Scrubbler.ViewModels.ScrobbleViewModels
 {
   /// <summary>
-  /// ViewModel for the <see cref="FileScrobbleView"/>.
+  /// ViewModel for the <see cref="Views.ScrobbleViews.FileScrobbleView"/>.
   /// </summary>
   public class FileScrobbleViewModel : ScrobbleTimeViewModelBase
   {

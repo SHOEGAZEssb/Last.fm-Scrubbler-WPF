@@ -3,12 +3,12 @@ using IF.Lastfm.Core.Api.Helpers;
 using IF.Lastfm.Core.Objects;
 using IF.Lastfm.Core.Scrobblers;
 using Scrubbler.Interfaces;
-using Scrubbler.ViewModels;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Scrubbler.ViewModels.ScrobbleViewModels;
 
 namespace Scrubbler.Test.ScrobblerTests
 {

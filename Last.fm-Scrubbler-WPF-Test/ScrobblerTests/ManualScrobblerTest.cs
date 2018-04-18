@@ -1,10 +1,10 @@
 ﻿using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
-using Scrubbler.ViewModels;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
+using Scrubbler.ViewModels.ScrobbleViewModels;
 
 namespace Scrubbler.Test.ScrobblerTests
 {

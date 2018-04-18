@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Scrubbler.Models;
+using Scrubbler.ViewModels.ScrobbleViewModels;
 using System;
 
 namespace Scrubbler.ViewModels

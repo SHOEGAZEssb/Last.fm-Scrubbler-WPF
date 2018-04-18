@@ -1,17 +1,16 @@
 ﻿using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
-using Scrubbler.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Scrubbler.ViewModels
+namespace Scrubbler.ViewModels.ScrobbleViewModels
 {
   /// <summary>
-  /// ViewModel for the <see cref="FriendScrobbleView"/>.
+  /// ViewModel for the <see cref="Views.ScrobbleViews.FriendScrobbleView"/>.
   /// </summary>
   public class FriendScrobbleViewModel : ScrobbleViewModelBase
   {

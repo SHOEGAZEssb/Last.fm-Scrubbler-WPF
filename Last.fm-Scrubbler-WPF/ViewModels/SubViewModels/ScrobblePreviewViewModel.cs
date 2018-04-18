@@ -2,10 +2,10 @@
 using IF.Lastfm.Core.Objects;
 using System.Collections.Generic;
 
-namespace Scrubbler.ViewModels.ScrobbleViewModels
+namespace Scrubbler.ViewModels.SubViewModels
 {
   /// <summary>
-  /// ViewModel for the <see cref="Views.ScrobbleViews.ScrobblePreviewView"/>.
+  /// ViewModel for the <see cref="Views.SubViews.ScrobblePreviewView"/>.
   /// </summary>
   public class ScrobblePreviewViewModel : Screen
   {

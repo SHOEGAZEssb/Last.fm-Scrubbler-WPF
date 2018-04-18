@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Scrubbler.Views
+namespace Scrubbler.Views.ScrobbleViews
 {
   /// <summary>
   /// Interaction logic for MediaPlayerDatabaseScrobbleView.xaml

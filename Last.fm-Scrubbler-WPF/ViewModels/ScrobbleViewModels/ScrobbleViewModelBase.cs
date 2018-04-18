@@ -1,11 +1,11 @@
 ﻿using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
-using Scrubbler.ViewModels.ScrobbleViewModels;
+using Scrubbler.ViewModels.SubViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Scrubbler.ViewModels
+namespace Scrubbler.ViewModels.ScrobbleViewModels
 {
   /// <summary>
   /// Base class for all scrobblers.

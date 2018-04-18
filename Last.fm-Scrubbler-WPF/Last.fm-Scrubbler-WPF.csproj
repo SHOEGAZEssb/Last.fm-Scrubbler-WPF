@@ -206,11 +206,11 @@
     <Compile Include="ViewModels\ExtraFunctions\PasteYourTasteViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobblerViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\CacheScrobblerViewModel.cs" />
-    <Compile Include="ViewModels\ScrobbleViewModels\INeedCachingScrobbler.cs" />
-    <Compile Include="ViewModels\ScrobbleViewModels\INeedScrobbler.cs" />
+    <Compile Include="Interfaces\INeedCachingScrobbler.cs" />
+    <Compile Include="Interfaces\INeedScrobbler.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ITunesScrobbleViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\MediaPlayerScrobbleViewModelBase.cs" />
-    <Compile Include="ViewModels\ScrobbleViewModels\ScrobblePreviewViewModel.cs" />
+    <Compile Include="ViewModels\SubViewModels\ScrobblePreviewViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobbleTimeViewModelBase.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\SetlistFMScrobbleViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\SpotifyScrobbleViewModel.cs" />
@@ -267,7 +267,7 @@
     <Compile Include="Views\ScrobbleViews\ScrobblerView.xaml.cs">
       <DependentUpon>ScrobblerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ScrobbleViews\SelectScrobbleTimeControl.xaml.cs">
+    <Compile Include="Views\SubViews\SelectScrobbleTimeControl.xaml.cs">
       <DependentUpon>SelectScrobbleTimeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScrobbleViews\SetlistFMScrobbleView.xaml.cs">
@@ -303,13 +303,13 @@
     <Compile Include="Views\SubViews\ReleaseResultView.xaml.cs">
       <DependentUpon>ReleaseResultView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ScrobbleViews\ScrobbleButtonControl.xaml.cs">
+    <Compile Include="Views\SubViews\ScrobbleButtonControl.xaml.cs">
       <DependentUpon>ScrobbleButtonControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ScrobbleViews\ScrobblePreviewView.xaml.cs">
+    <Compile Include="Views\SubViews\ScrobblePreviewView.xaml.cs">
       <DependentUpon>ScrobblePreviewView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ScrobbleViews\SelectScrobblesControl.xaml.cs">
+    <Compile Include="Views\SubViews\SelectScrobblesControl.xaml.cs">
       <DependentUpon>SelectScrobblesControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserView.xaml.cs">
@@ -360,7 +360,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ScrobbleViews\SelectScrobbleTimeControl.xaml">
+    <Page Include="Views\SubViews\SelectScrobbleTimeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -420,15 +420,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ScrobbleViews\ScrobbleButtonControl.xaml">
+    <Page Include="Views\SubViews\ScrobbleButtonControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ScrobbleViews\ScrobblePreviewView.xaml">
+    <Page Include="Views\SubViews\ScrobblePreviewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ScrobbleViews\SelectScrobblesControl.xaml">
+    <Page Include="Views\SubViews\SelectScrobblesControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
