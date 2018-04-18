@@ -1,7 +1,7 @@
 ﻿using IF.Lastfm.Core.Objects;
 using System;
 
-namespace Last.fm_Scrubbler_WPF.Models
+namespace Scrubbler.Models
 {
   /// <summary>
   /// A scrobble with a date that represents the

@@ -2,7 +2,7 @@
 using System;
 using System.Net.Http;
 
-namespace Last.fm_Scrubbler_WPF.Interfaces
+namespace Scrubbler.Interfaces
 {
   /// <summary>
   /// Interface for basic last.fm api functions.

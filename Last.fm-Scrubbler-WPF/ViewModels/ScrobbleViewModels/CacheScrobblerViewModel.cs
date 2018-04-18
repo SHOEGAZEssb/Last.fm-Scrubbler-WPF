@@ -1,12 +1,12 @@
 ﻿using IF.Lastfm.Core.Objects;
-using Last.fm_Scrubbler_WPF.Interfaces;
-using Last.fm_Scrubbler_WPF.Properties;
+using Scrubbler.Interfaces;
+using Scrubbler.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
+namespace Scrubbler.ViewModels.ScrobbleViewModels
 {
   /// <summary>
   /// ViewModel for the <see cref="Views.ScrobbleViews.CacheScrobblerView"/>

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Last.fm_Scrubbler_WPF.Views.ScrobbleViews
+namespace Scrubbler.Views.ScrobbleViews
 {
   /// <summary>
   /// Interaction logic for SpotifyScrobbleView.xaml

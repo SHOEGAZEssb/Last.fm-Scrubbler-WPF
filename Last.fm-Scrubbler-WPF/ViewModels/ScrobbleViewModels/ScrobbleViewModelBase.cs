@@ -1,11 +1,11 @@
 ﻿using IF.Lastfm.Core.Objects;
-using Last.fm_Scrubbler_WPF.Interfaces;
-using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
+using Scrubbler.Interfaces;
+using Scrubbler.ViewModels.ScrobbleViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels
+namespace Scrubbler.ViewModels
 {
   /// <summary>
   /// Base class for all scrobblers.

@@ -1,4 +1,4 @@
-﻿namespace Last.fm_Scrubbler_WPF.Interfaces
+﻿namespace Scrubbler.Interfaces
 {
   /// <summary>
   /// Possible result values of a <see cref="IMessageBoxService"/> dialog.

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Last.fm_Scrubbler_WPF.Models
+namespace Scrubbler.Models
 {
   /// <summary>
   /// Scrobble parsed from a media player library.

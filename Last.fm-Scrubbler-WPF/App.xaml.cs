@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Last.fm_Scrubbler_WPF
+namespace Scrubbler
 {
   /// <summary>
   /// Interaction logic for App.xaml

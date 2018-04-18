@@ -1,11 +1,11 @@
 ﻿using IF.Lastfm.Core.Objects;
-using Last.fm_Scrubbler_WPF.Interfaces;
+using Scrubbler.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
+namespace Scrubbler.ViewModels.ScrobbleViewModels
 {
   /// <summary>
   /// Base class for all scrobblers that scrobble a media player.

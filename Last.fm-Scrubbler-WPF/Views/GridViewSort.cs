@@ -5,7 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Documents;
 
-namespace Last.fm_Scrubbler_WPF.Views
+namespace Scrubbler.Views
 {
   /// <summary>
   /// Helper class to enable sorting on a WPF GridView.

@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Windows.Data;
 
-namespace Last.fm_Scrubbler_WPF.Converters
+namespace Scrubbler.Converters
 {
   /// <summary>
   /// Converter to convert the description attribute of an enum to a string.

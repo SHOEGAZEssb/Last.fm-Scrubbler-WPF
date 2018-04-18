@@ -2,12 +2,12 @@
 using IF.Lastfm.Core.Objects;
 using IF.Lastfm.Core.Scrobblers;
 using IF.Lastfm.SQLite;
-using Last.fm_Scrubbler_WPF.Interfaces;
+using Scrubbler.Interfaces;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Last.fm_Scrubbler_WPF.Models
+namespace Scrubbler.Models
 {
   class AuthSQLiteScrobbler : IAuthScrobbler
   {

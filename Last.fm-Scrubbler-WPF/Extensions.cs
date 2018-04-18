@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Last.fm_Scrubbler_WPF
+namespace Scrubbler
 {
   /// <summary>
   /// Extension methods for <see cref="Task"/>s.

@@ -2,7 +2,7 @@
 using System;
 using System.Windows;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
+namespace Scrubbler.ViewModels.ExtraFunctions
 {
   /// <summary>
   /// ViewModel for the <see cref="Views.ExtraFunctions.PasteYourTasteView"/>.

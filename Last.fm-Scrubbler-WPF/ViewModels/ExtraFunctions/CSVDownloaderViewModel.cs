@@ -1,5 +1,5 @@
 ﻿using IF.Lastfm.Core.Objects;
-using Last.fm_Scrubbler_WPF.Interfaces;
+using Scrubbler.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
+namespace Scrubbler.ViewModels.ExtraFunctions
 {
   /// <summary>
   /// ViewModel for the <see cref="Views.ExtraFunctions.CSVDownloaderView"/>

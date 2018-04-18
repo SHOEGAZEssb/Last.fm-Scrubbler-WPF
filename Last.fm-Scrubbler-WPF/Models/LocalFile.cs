@@ -1,8 +1,8 @@
-﻿using Last.fm_Scrubbler_WPF.Interfaces;
+﻿using Scrubbler.Interfaces;
 using System;
 using TagLib;
 
-namespace Last.fm_Scrubbler_WPF.Models
+namespace Scrubbler.Models
 {
   class LocalFile : ILocalFile
   {

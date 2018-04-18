@@ -1,4 +1,6 @@
-namespace NUnitLite.Tests
+using NUnitLite;
+
+namespace Scrubbler.Test
 {
   public class Program
   {

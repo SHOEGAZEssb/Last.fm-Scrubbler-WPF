@@ -1,9 +1,9 @@
 ﻿using IF.Lastfm.Core.Objects;
-using Last.fm_Scrubbler_WPF.Interfaces;
-using Last.fm_Scrubbler_WPF.Models;
-using Last.fm_Scrubbler_WPF.ViewModels.SubViewModels;
-using Last.fm_Scrubbler_WPF.Views;
-using Last.fm_Scrubbler_WPF.Views.SubViews;
+using Scrubbler.Interfaces;
+using Scrubbler.Models;
+using Scrubbler.ViewModels.SubViewModels;
+using Scrubbler.Views;
+using Scrubbler.Views.SubViews;
 using SetlistFmApi.Model.Music;
 using SetlistFmApi.SearchOptions.Music;
 using SetlistFmApi.SearchResults.Music;
@@ -14,7 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
+namespace Scrubbler.ViewModels.ScrobbleViewModels
 {
   /// <summary>
   /// Search type.

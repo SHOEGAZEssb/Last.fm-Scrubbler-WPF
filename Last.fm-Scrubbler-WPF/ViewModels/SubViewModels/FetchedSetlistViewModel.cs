@@ -2,7 +2,7 @@
 using SetlistFmApi.Model.Music;
 using System;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
+namespace Scrubbler.ViewModels.SubViewModels
 {
   /// <summary>
   /// ViewModel for a <see cref="Setlist"/>.

@@ -1,8 +1,8 @@
 ﻿using Caliburn.Micro;
-using Last.fm_Scrubbler_WPF.Interfaces;
+using Scrubbler.Interfaces;
 using System;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels
+namespace Scrubbler.ViewModels
 {
   /// <summary>
   /// ViewModel for a <see cref="ILocalFile"/>.

@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro;
 
-namespace Last.fm_Scrubbler_WPF.Interfaces
+namespace Scrubbler.Interfaces
 {
   /// <summary>
   /// Service that manages windows and dialogs.

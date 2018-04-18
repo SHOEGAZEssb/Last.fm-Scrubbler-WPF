@@ -1,11 +1,11 @@
 ﻿using Caliburn.Micro;
-using Last.fm_Scrubbler_WPF.Interfaces;
-using Last.fm_Scrubbler_WPF.Models;
-using Last.fm_Scrubbler_WPF.ViewModels;
+using Scrubbler.Interfaces;
+using Scrubbler.Models;
+using Scrubbler.ViewModels;
 using System;
 using System.Collections.Generic;
 
-namespace Last.fm_Scrubbler_WPF
+namespace Scrubbler
 {
   /// <summary>
   /// Bootstrapper used to connect View and ViewModel on startup.
@@ -26,13 +26,13 @@ namespace Last.fm_Scrubbler_WPF
     {
       TypeMappingConfiguration map = new TypeMappingConfiguration()
       {
-        DefaultSubNamespaceForViewModels = "Last.fm_Scrubbler_WPF.ViewModels",
-        DefaultSubNamespaceForViews = "Last.fm_Scrubbler_WPF.Views"
+        DefaultSubNamespaceForViewModels = "Scrubbler.ViewModels",
+        DefaultSubNamespaceForViews = "Scrubbler.Views"
       };
 
       ViewLocator.ConfigureTypeMappings(map);
-      ViewLocator.AddSubNamespaceMapping("fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels", "fm_Scrubbler_WPF.Views.ScrobbleViews");
-      ViewLocator.AddSubNamespaceMapping("fm_Scrubbler_WPF.ViewModels.SubViewModels", "fm_Scrubbler_WPF.Views.SubViews");
+      ViewLocator.AddSubNamespaceMapping("Scrubbler.ViewModels.ScrobbleViewModels", "Scrubbler.Views.ScrobbleViews");
+      ViewLocator.AddSubNamespaceMapping("Scrubbler.ViewModels.SubViewModels", "Scrubbler.Views.SubViews");
       ViewModelLocator.ConfigureTypeMappings(map);
 
       _container = new SimpleContainer();

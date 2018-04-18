@@ -1,7 +1,7 @@
-﻿using Last.fm_Scrubbler_WPF.Interfaces;
+﻿using Scrubbler.Interfaces;
 using System.Windows;
 
-namespace Last.fm_Scrubbler_WPF.Models
+namespace Scrubbler.Models
 {
   /// <summary>
   /// Wrapper class for the <see cref="MessageBox"/>.

@@ -1,7 +1,7 @@
-﻿using Last.fm_Scrubbler_WPF.Interfaces;
+﻿using Scrubbler.Interfaces;
 using Microsoft.VisualBasic.FileIO;
 
-namespace Last.fm_Scrubbler_WPF.Models
+namespace Scrubbler.Models
 {
   /// <summary>
   /// Text field parser that parses a csv file.

@@ -1,16 +1,16 @@
 ﻿using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using iTunesLib;
-using Last.fm_Scrubbler_WPF.Interfaces;
-using Last.fm_Scrubbler_WPF.Properties;
-using Last.fm_Scrubbler_WPF.Views.ScrobbleViews;
+using Scrubbler.Interfaces;
+using Scrubbler.Properties;
+using Scrubbler.Views.ScrobbleViews;
 using Microsoft.CSharp.RuntimeBinder;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
+namespace Scrubbler.ViewModels.ScrobbleViewModels
 {
   /// <summary>
   /// ViewModel for the <see cref="MediaPlayerScrobbleControl"/>.

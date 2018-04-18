@@ -2,7 +2,7 @@
 using IF.Lastfm.Core.Objects;
 using System;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels
+namespace Scrubbler.ViewModels
 {
   /// <summary>
   /// ViewModel for a single fetched track of a friend.

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Last.fm_Scrubbler_WPF
+namespace Scrubbler
 {
   /// <summary>
   /// Static class for native methods.

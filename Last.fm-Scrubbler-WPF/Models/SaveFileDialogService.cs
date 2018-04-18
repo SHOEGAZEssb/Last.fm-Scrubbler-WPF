@@ -1,7 +1,7 @@
-﻿using Last.fm_Scrubbler_WPF.Interfaces;
+﻿using Scrubbler.Interfaces;
 using Microsoft.Win32;
 
-namespace Last.fm_Scrubbler_WPF.Models
+namespace Scrubbler.Models
 {
   /// <summary>
   /// Service for showing a <see cref="SaveFileDialog"/>.

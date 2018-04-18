@@ -1,12 +1,12 @@
-﻿<UserControl x:Class="Last.fm_Scrubbler_WPF.Views.MediaPlayerDatabaseScrobbleView"
+﻿<UserControl x:Class="Scrubbler.Views.MediaPlayerDatabaseScrobbleView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:local="clr-namespace:Last.fm_Scrubbler_WPF.Views"
-             xmlns:viewModels="clr-namespace:Last.fm_Scrubbler_WPF.ViewModels"
-             xmlns:conv="clr-namespace:Last.fm_Scrubbler_WPF.Converters"
+             xmlns:local="clr-namespace:Scrubbler.Views"
+             xmlns:viewModels="clr-namespace:Scrubbler.ViewModels"
+             xmlns:conv="clr-namespace:Scrubbler.Converters"
              mc:Ignorable="d"
              d:DesignHeight="330" d:DesignWidth="350">
 

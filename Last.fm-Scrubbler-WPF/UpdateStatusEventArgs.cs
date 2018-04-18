@@ -1,4 +1,4 @@
-﻿namespace Last.fm_Scrubbler_WPF
+﻿namespace Scrubbler
 {
   /// <summary>
   /// EventArgs that contain a new status for the status bar.

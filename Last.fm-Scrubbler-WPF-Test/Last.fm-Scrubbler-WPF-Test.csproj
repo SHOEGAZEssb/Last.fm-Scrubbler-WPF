@@ -7,7 +7,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8528C039-46C3-43FF-A6B1-69423B7C0F8F}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Last.fm_Scrubbler_WPF_Test</RootNamespace>
+    <RootNamespace>Scrubbler.Test</RootNamespace>
     <AssemblyName>Last.fm-Scrubbler-WPF-Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

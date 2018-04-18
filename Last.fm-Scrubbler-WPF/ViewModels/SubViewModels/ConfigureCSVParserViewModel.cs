@@ -1,9 +1,9 @@
 ﻿using Caliburn.Micro;
-using Last.fm_Scrubbler_WPF.Properties;
+using Scrubbler.Properties;
 using System.Linq;
 using System.Windows;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
+namespace Scrubbler.ViewModels.SubViewModels
 {
   /// <summary>
   /// ViewModel for the <see cref="Views.SubViews.ConfigureCSVParserView"/>

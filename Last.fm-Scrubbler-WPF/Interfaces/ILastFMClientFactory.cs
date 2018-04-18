@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-namespace Last.fm_Scrubbler_WPF.Interfaces
+namespace Scrubbler.Interfaces
 {
   /// <summary>
   /// Factory creating a LastFMClient.

@@ -1,6 +1,6 @@
-﻿using Last.fm_Scrubbler_WPF.Interfaces;
+﻿using Scrubbler.Interfaces;
 
-namespace Last.fm_Scrubbler_WPF.Models
+namespace Scrubbler.Models
 {
   /// <summary>
   /// Factory creating <see cref="LocalFile"/>s.

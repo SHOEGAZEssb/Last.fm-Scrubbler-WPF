@@ -1,8 +1,8 @@
-﻿using Last.fm_Scrubbler_WPF.Interfaces;
+﻿using Scrubbler.Interfaces;
 using System;
 using System.Timers;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
+namespace Scrubbler.ViewModels.ScrobbleViewModels
 {
   /// <summary>
   /// Base class for ViewModels that need to use a "Starting" or "Finishing" time.

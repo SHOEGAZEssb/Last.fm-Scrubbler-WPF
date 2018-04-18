@@ -1,8 +1,8 @@
 ﻿using Caliburn.Micro;
-using Last.fm_Scrubbler_WPF.Models;
+using Scrubbler.Models;
 using System;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels
+namespace Scrubbler.ViewModels
 {
   /// <summary>
   /// ViewModel for a parsed scrobble from a csv file.

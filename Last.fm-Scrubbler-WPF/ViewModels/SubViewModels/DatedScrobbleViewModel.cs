@@ -1,8 +1,8 @@
 ﻿using Caliburn.Micro;
-using Last.fm_Scrubbler_WPF.Models;
+using Scrubbler.Models;
 using System;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels.SubViewModels
+namespace Scrubbler.ViewModels.SubViewModels
 {
   /// <summary>
   /// ViewModel for a <see cref="DatedScrobble"/> that has been

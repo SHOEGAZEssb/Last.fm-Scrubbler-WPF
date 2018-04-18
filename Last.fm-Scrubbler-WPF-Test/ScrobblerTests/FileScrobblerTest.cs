@@ -1,14 +1,14 @@
 ﻿using IF.Lastfm.Core.Objects;
 using IF.Lastfm.Core.Scrobblers;
-using Last.fm_Scrubbler_WPF.Interfaces;
-using Last.fm_Scrubbler_WPF.ViewModels;
+using Scrubbler.Interfaces;
+using Scrubbler.ViewModels;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Last.fm_Scrubbler_WPF_Test.ScrobblerTests
+namespace Scrubbler.Test.ScrobblerTests
 {
   /// <summary>
   /// Tests if scrobbling via the <see cref="FileScrobbleViewModel"/> works.

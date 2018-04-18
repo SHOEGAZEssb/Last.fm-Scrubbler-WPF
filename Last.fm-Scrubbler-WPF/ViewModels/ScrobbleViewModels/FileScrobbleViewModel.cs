@@ -4,13 +4,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using IF.Lastfm.Core.Objects;
-using Last.fm_Scrubbler_WPF.Views;
-using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
+using Scrubbler.Views;
+using Scrubbler.ViewModels.ScrobbleViewModels;
 using System.IO;
-using Last.fm_Scrubbler_WPF.Interfaces;
+using Scrubbler.Interfaces;
 using System.Windows;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels
+namespace Scrubbler.ViewModels
 {
   /// <summary>
   /// ViewModel for the <see cref="FileScrobbleView"/>.

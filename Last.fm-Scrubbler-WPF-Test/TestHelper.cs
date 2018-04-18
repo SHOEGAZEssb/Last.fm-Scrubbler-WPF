@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Last.fm_Scrubbler_WPF_Test
+namespace Scrubbler.Test
 {
   /// <summary>
   /// Helper methods for tests.

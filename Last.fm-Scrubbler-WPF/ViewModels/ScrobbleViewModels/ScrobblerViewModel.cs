@@ -1,9 +1,9 @@
 ﻿using Caliburn.Micro;
-using Last.fm_Scrubbler_WPF.Interfaces;
-using Last.fm_Scrubbler_WPF.Models;
+using Scrubbler.Interfaces;
+using Scrubbler.Models;
 using System;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels
+namespace Scrubbler.ViewModels.ScrobbleViewModels
 {
   /// <summary>
   /// ViewModel managing all Scrobbler ViewModels.

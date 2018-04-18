@@ -1,7 +1,7 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Objects;
-using Last.fm_Scrubbler_WPF.Models;
-using Last.fm_Scrubbler_WPF.Properties;
+using Scrubbler.Models;
+using Scrubbler.Properties;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -11,7 +11,7 @@ using System.Windows;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels
+namespace Scrubbler.ViewModels
 {
   /// <summary>
   /// ViewModel for adding / removing / logging in users.

@@ -1,15 +1,15 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Api;
-using Last.fm_Scrubbler_WPF.Interfaces;
-using Last.fm_Scrubbler_WPF.Properties;
-using Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions;
-using Last.fm_Scrubbler_WPF.ViewModels.ScrobbleViewModels;
-using Last.fm_Scrubbler_WPF.Views;
+using Scrubbler.Interfaces;
+using Scrubbler.Properties;
+using Scrubbler.ViewModels.ExtraFunctions;
+using Scrubbler.ViewModels.ScrobbleViewModels;
+using Scrubbler.Views;
 using System;
 using System.IO;
 using System.Reflection;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels
+namespace Scrubbler.ViewModels
 {
   /// <summary>
   /// ViewModel for the <see cref="MainView"/>.

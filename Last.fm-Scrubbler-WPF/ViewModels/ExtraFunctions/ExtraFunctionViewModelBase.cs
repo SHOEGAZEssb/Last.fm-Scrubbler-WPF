@@ -1,4 +1,4 @@
-﻿namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
+﻿namespace Scrubbler.ViewModels.ExtraFunctions
 {
   /// <summary>
   /// Base class for all extra function ViewModels.

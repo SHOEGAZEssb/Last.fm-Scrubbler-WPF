@@ -1,7 +1,7 @@
 ﻿using Caliburn.Micro;
 using System;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels
+namespace Scrubbler.ViewModels
 {
   /// <summary>
   /// Base class for all ViewModels.

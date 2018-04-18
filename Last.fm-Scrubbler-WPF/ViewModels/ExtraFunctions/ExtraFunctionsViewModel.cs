@@ -1,9 +1,9 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Api;
-using Last.fm_Scrubbler_WPF.Interfaces;
+using Scrubbler.Interfaces;
 using System;
 
-namespace Last.fm_Scrubbler_WPF.ViewModels.ExtraFunctions
+namespace Scrubbler.ViewModels.ExtraFunctions
 {
   /// <summary>
   /// ViewModel managing all extra function ViewModels.

@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Last.fm_Scrubbler_WPF.Converters
+namespace Scrubbler.Converters
 {
   /// <summary>
   /// Converter that converts an object to its type.

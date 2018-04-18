@@ -1,4 +1,4 @@
-﻿namespace Last.fm_Scrubbler_WPF.Interfaces
+﻿namespace Scrubbler.Interfaces
 {
   /// <summary>
   /// Interface for a factory creating <see cref="ITextFieldParser"/>s.

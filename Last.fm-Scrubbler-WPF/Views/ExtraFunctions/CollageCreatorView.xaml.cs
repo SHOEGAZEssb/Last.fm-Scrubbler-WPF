@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Last.fm_Scrubbler_WPF.Views.ExtraFunctions
+namespace Scrubbler.Views.ExtraFunctions
 {
   /// <summary>
   /// Interaction logic for CollageCreatorView.xaml

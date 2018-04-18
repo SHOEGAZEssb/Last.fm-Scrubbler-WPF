@@ -1,9 +1,9 @@
-﻿using Last.fm_Scrubbler_WPF.Models;
+﻿using Scrubbler.Models;
 using System;
 using System.Collections.Generic;
 using WMPLib;
 
-namespace Last.fm_Scrubbler_WPF
+namespace Scrubbler
 {
   /// <summary>
   /// Wraps around the windows media player to get its info.

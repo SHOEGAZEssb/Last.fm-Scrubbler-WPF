@@ -1,7 +1,7 @@
-﻿using Last.fm_Scrubbler_WPF.Interfaces;
+﻿using Scrubbler.Interfaces;
 using System.Net.Http;
 
-namespace Last.fm_Scrubbler_WPF.Models
+namespace Scrubbler.Models
 {
   class LastFMClientFactory : ILastFMClientFactory
   {

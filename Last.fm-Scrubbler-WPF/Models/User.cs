@@ -1,4 +1,4 @@
-﻿namespace Last.fm_Scrubbler_WPF.Models
+﻿namespace Scrubbler.Models
 {
   /// <summary>
   /// Represents a last.fm user.
