@@ -134,14 +134,15 @@ namespace Scrubbler.ViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    public MainViewModel(IExtendedWindowManager windowManager, ILastFMClientFactory clientFactory, IScrobblerFactory scrobblerFactory, ILocalFileFactory localFileFactory)
+    public MainViewModel(IExtendedWindowManager windowManager, ILastFMClientFactory clientFactory, IScrobblerFactory scrobblerFactory, ILocalFileFactory localFileFactory,
+                         IFileOperator fileOperator)
     {
       _windowManager = windowManager;
       _lastFMClientFactory = clientFactory;
       _scrobblerFactory = scrobblerFactory;
       TitleString = "Last.fm Scrubbler WPF " + Assembly.GetExecutingAssembly().GetName().Version;
       CreateNewClient();
-      SetupViewModels(localFileFactory);
+      SetupViewModels(localFileFactory, fileOperator);
       CurrentStatus = "Waiting to scrobble...";
     }
 
@@ -150,21 +151,21 @@ namespace Scrubbler.ViewModels
     /// <summary>
     /// Creates the ViewModels.
     /// </summary>
-    private void SetupViewModels(ILocalFileFactory localFileFactory)
+    private void SetupViewModels(ILocalFileFactory localFileFactory, IFileOperator fileOperator)
     {
-      _scrobblerVM = new ScrobblerViewModel(_windowManager, localFileFactory);
+      _scrobblerVM = new ScrobblerViewModel(_windowManager, localFileFactory, fileOperator);
       _scrobblerVM.StatusUpdated += StatusUpdated;
       CreateScrobblers();
       ActivateItem(_scrobblerVM);
 
-      _extraFunctionsVM = new ExtraFunctionsViewModel(_windowManager, Client.User);
+      _extraFunctionsVM = new ExtraFunctionsViewModel(_windowManager, Client.User, fileOperator);
       _extraFunctionsVM.StatusUpdated += StatusUpdated;
       ActivateItem(_extraFunctionsVM);
 
       // should be active
       ActivateItem(_scrobblerVM);
 
-      UserViewModel = new UserViewModel(_windowManager);
+      UserViewModel = new UserViewModel(_windowManager, fileOperator);
       UserViewModel.ActiveUserChanged += UserViewModel_ActiveUserChanged;
       UserViewModel.LoadLastUser();
     }

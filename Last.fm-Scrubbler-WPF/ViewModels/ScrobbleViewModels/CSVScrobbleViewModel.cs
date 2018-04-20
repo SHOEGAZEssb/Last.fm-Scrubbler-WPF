@@ -169,6 +169,11 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     private ITextFieldParserFactory _parserFactory;
 
+    /// <summary>
+    /// FileOperator used to write to disk.
+    /// </summary>
+    private IFileOperator _fileOperator;
+
     #endregion Private Member
 
     /// <summary>
@@ -176,10 +181,12 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="parserFactory">The factory used to create <see cref="ITextFieldParser"/>.</param>
-    public CSVScrobbleViewModel(IExtendedWindowManager windowManager, ITextFieldParserFactory parserFactory)
+    /// <param name="fileOperator">FileOperator used to write to disk.</param>
+    public CSVScrobbleViewModel(IExtendedWindowManager windowManager, ITextFieldParserFactory parserFactory, IFileOperator fileOperator)
       : base(windowManager, "CSV Scrobbler")
     {
       _parserFactory = parserFactory;
+      _fileOperator = fileOperator;
       Scrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>();
       Duration = 1;
       ScrobbleMode = CSVScrobbleMode.ImportMode;
@@ -286,7 +293,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
               IFileDialog sfd = _windowManager.CreateSaveFileDialog();
               sfd.Filter = "Text Files|*.txt";
               if (sfd.ShowDialog())
-                File.WriteAllLines(sfd.FileName, errors.ToArray());
+                _fileOperator.WriteAllLines(sfd.FileName, errors.ToArray());
             }
           }
 

@@ -99,6 +99,11 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     private ILocalFileFactory _localFileFactory;
 
+    /// <summary>
+    /// FileOperator used to write to disk.
+    /// </summary>
+    private IFileOperator _fileOperator;
+
     #endregion Private Member
 
     /// <summary>
@@ -106,11 +111,13 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="localFileFactory">Factory used to create <see cref="ILocalFile"/>s.</param>
-    public FileScrobbleViewModel(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory)
+    /// <param name="fileOperator">FileOperator used to write to disk.</param>
+    public FileScrobbleViewModel(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory, IFileOperator fileOperator)
       : base(windowManager, "File Scrobbler")
     {
       LoadedFiles = new ObservableCollection<LoadedFileViewModel>();
       _localFileFactory = localFileFactory;
+      _fileOperator = fileOperator;
     }
 
     /// <summary>
@@ -189,7 +196,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
           IFileDialog sfd = _windowManager.CreateSaveFileDialog();
           sfd.Filter = "Text Files|*.txt";
           if (sfd.ShowDialog())
-            File.WriteAllLines(sfd.FileName, errors.ToArray());
+            _fileOperator.WriteAllLines(sfd.FileName, errors.ToArray());
         }
       }
       else

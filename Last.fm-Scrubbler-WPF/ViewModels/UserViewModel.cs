@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Objects;
+using Scrubbler.Interfaces;
 using Scrubbler.Models;
 using Scrubbler.Properties;
 using System;
@@ -91,6 +92,11 @@ namespace Scrubbler.ViewModels
     /// </summary>
     private IWindowManager _windowManager;
 
+    /// <summary>
+    /// FileOperator used to write to disk.
+    /// </summary>
+    private IFileOperator _fileOperator;
+
     #endregion Member
 
     /// <summary>
@@ -98,9 +104,11 @@ namespace Scrubbler.ViewModels
     /// Deserializes the users.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    public UserViewModel(IWindowManager windowManager)
+    /// <param name="fileOperator">FileOperator used to write to disk.</param>
+    public UserViewModel(IWindowManager windowManager, IFileOperator fileOperator)
     {
       _windowManager = windowManager;
+      _fileOperator = fileOperator;
       AvailableUsers = new ObservableCollection<User>();
 
       if (!Directory.Exists(USERSFOLDER))
@@ -135,7 +143,7 @@ namespace Scrubbler.ViewModels
           ActiveUser = null;
 
         // remove xml file
-        File.Delete(USERSFOLDER + "\\" + SelectedUser.Username + ".xml");
+        _fileOperator.Delete(USERSFOLDER + "\\" + SelectedUser.Username + ".xml");
         AvailableUsers.Remove(SelectedUser);
       }
       catch (Exception ex)

@@ -24,10 +24,11 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="localFileFactory">Factory used to create <see cref="ILocalFile"/>s.</param>
-    public ScrobblerViewModel(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory)
+    /// <param name="fileOperator">FileOperator used to interface with files.</param>
+    public ScrobblerViewModel(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory, IFileOperator fileOperator)
     {
       DisplayName = "Scrobbler";
-      CreateViewModels(windowManager, localFileFactory);
+      CreateViewModels(windowManager, localFileFactory, fileOperator);
     }
 
     /// <summary>
@@ -51,7 +52,8 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="localFileFactory">Factory used to create <see cref="ILocalFile"/>s.</param>
-    private void CreateViewModels(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory)
+    /// <param name="fileOperator">FileOperator used to interface with files.</param>
+    private void CreateViewModels(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory, IFileOperator fileOperator)
     {
       var manualScrobbleViewModel = new ManualScrobbleViewModel(windowManager);
       manualScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
@@ -59,9 +61,9 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       friendScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
       var databaseScrobbleViewModel = new DatabaseScrobbleViewModel(windowManager, MainViewModel.Client.Artist, MainViewModel.Client.Album);
       databaseScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
-      var csvScrobbleViewModel = new CSVScrobbleViewModel(windowManager, new CSVTextFieldParserFactory());
+      var csvScrobbleViewModel = new CSVScrobbleViewModel(windowManager, new CSVTextFieldParserFactory(), fileOperator);
       csvScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
-      var fileScrobbleViewModel = new FileScrobbleViewModel(windowManager, localFileFactory);
+      var fileScrobbleViewModel = new FileScrobbleViewModel(windowManager, localFileFactory, fileOperator);
       fileScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
       var mediaPlayerDatabaseScrobbleViewModel = new MediaPlayerDatabaseScrobbleViewModel(windowManager);
       mediaPlayerDatabaseScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;

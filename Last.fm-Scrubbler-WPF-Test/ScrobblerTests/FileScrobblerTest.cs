@@ -39,6 +39,9 @@ namespace Scrubbler.Test.ScrobblerTests
       IEnumerable<Scrobble> actual = null;
       scrobblerMock.Setup(i => i.ScrobbleAsync(It.IsAny<IEnumerable<Scrobble>>())).Callback<IEnumerable<Scrobble>>(s => actual = s)
                                                                                   .Returns(Task.Run(() => new ScrobbleResponse()));
+
+      Mock<IFileOperator> fileOperatorMock = new Mock<IFileOperator>(MockBehavior.Strict);
+
       DateTime scrobbleTime = DateTime.Now;
       List<Scrobble> expected = new List<Scrobble>()
       {
@@ -47,7 +50,7 @@ namespace Scrubbler.Test.ScrobblerTests
         new Scrobble("TestArtist0", "TestAlbum0", "TestTrack0", scrobbleTime.Subtract(TimeSpan.FromSeconds(2))) { AlbumArtist = "TestAlbumArtist0", Duration = TimeSpan.FromSeconds(1)}
       };
 
-      FileScrobbleViewModel vm = new FileScrobbleViewModel(windowManagerMock.Object, localFileFactoryMock.Object)
+      FileScrobbleViewModel vm = new FileScrobbleViewModel(windowManagerMock.Object, localFileFactoryMock.Object, fileOperatorMock.Object)
       {
         Scrobbler = scrobblerMock.Object,
         UseCurrentTime = false,

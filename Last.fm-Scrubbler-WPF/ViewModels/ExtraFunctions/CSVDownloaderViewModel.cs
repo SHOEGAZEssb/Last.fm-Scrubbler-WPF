@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Objects;
+﻿using IF.Lastfm.Core.Api;
+using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -83,16 +84,30 @@ namespace Scrubbler.ViewModels.ExtraFunctions
     /// </summary>
     private IExtendedWindowManager _windowManager;
 
+    /// <summary>
+    /// Last.fm user api used to fetch top artists and albums.
+    /// </summary>
+    private IUserApi _userAPI;
+
+    /// <summary>
+    /// FileOperator used to write to disk.
+    /// </summary>
+    private IFileOperator _fileOperator;
+
     #endregion Private Member
 
     /// <summary>
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    public CSVDownloaderViewModel(IExtendedWindowManager windowManager)
+    /// <param name="userAPI">Last.fm user api used to fetch top artists and albums.</param>
+    /// <param name="fileOperator">FileOperator used to write to disk.</param>
+    public CSVDownloaderViewModel(IExtendedWindowManager windowManager, IUserApi userAPI, IFileOperator fileOperator)
       : base("CSV Downloader")
     {
       _windowManager = windowManager;
+      _userAPI = userAPI;
+      _fileOperator = fileOperator;
       Username = string.Empty;
       FilePath = string.Empty;
     }
@@ -120,7 +135,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
 
       try
       {
-        var userResponse = await MainViewModel.Client.User.GetInfoAsync(Username);
+        var userResponse = await _userAPI.GetInfoAsync(Username);
         if (userResponse.Success)
         {
           int pages = (int)Math.Ceiling(userResponse.Content.Playcount / (double)TRACKSPERPAGE);
@@ -129,7 +144,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
           for (int i = 1; i <= pages; i++)
           {
             OnStatusUpdated("Fetching page " + i + " / " + pages);
-            var pageResponse = await MainViewModel.Client.User.GetRecentScrobbles(Username, null, i, TRACKSPERPAGE);
+            var pageResponse = await _userAPI.GetRecentScrobbles(Username, null, i, TRACKSPERPAGE);
             if (pageResponse.Success)
               scrobbles[i - 1] = pageResponse.Content.Where(s => !s.IsNowPlaying.HasValue || !s.IsNowPlaying.Value).ToArray();
             else
@@ -163,7 +178,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
                 }
               }
 
-              File.WriteAllText(FilePath, csv.ToString());
+              _fileOperator.WriteAllText(FilePath, csv.ToString());
               OnStatusUpdated("Successfully wrote .csv file.");
             }
             catch (Exception ex)

@@ -24,10 +24,11 @@ namespace Scrubbler.ViewModels.ExtraFunctions
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="userAPI">Last.fm user API.</param>
-    public ExtraFunctionsViewModel(IExtendedWindowManager windowManager, IUserApi userAPI)
+    /// <param name="fileOperator">FileOperator used to interface with files.</param>
+    public ExtraFunctionsViewModel(IExtendedWindowManager windowManager, IUserApi userAPI, IFileOperator fileOperator)
     {
       DisplayName = "Extra Functions";
-      CreateViewModels(windowManager, userAPI);
+      CreateViewModels(windowManager, userAPI, fileOperator);
     }
 
     /// <summary>
@@ -35,11 +36,12 @@ namespace Scrubbler.ViewModels.ExtraFunctions
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="userAPI">Last.fm user API.</param>
-    private void CreateViewModels(IExtendedWindowManager windowManager, IUserApi userAPI)
+    /// <param name="fileOperator">FileOperator used to interface with files.</param>
+    private void CreateViewModels(IExtendedWindowManager windowManager, IUserApi userAPI, IFileOperator fileOperator)
     {
       var pasteYourTasteVM = new PasteYourTasteViewModel();
       pasteYourTasteVM.StatusUpdated += VM_StatusUpdated; ;
-      var csvDownloaderVM = new CSVDownloaderViewModel(windowManager);
+      var csvDownloaderVM = new CSVDownloaderViewModel(windowManager, userAPI, fileOperator);
       csvDownloaderVM.StatusUpdated += VM_StatusUpdated;
       var collageCreatorVM = new CollageCreatorViewModel(windowManager, userAPI);
       collageCreatorVM.StatusUpdated += VM_StatusUpdated;
