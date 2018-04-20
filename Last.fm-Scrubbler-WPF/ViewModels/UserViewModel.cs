@@ -143,7 +143,7 @@ namespace Scrubbler.ViewModels
           ActiveUser = null;
 
         // remove xml file
-        _fileOperator.Delete(USERSFOLDER + "\\" + SelectedUser.Username + ".xml");
+        _fileOperator.Delete(Path.Combine(USERSFOLDER, SelectedUser.Username) + ".xml");
         AvailableUsers.Remove(SelectedUser);
       }
       catch (Exception ex)
@@ -226,7 +226,7 @@ namespace Scrubbler.ViewModels
       {
         try
         {
-          using (var streamWriter = new StreamWriter(USERSFOLDER + "\\" + usr.Username + ".xml"))
+          using (var streamWriter = new StreamWriter(Path.Combine(USERSFOLDER, usr.Username) + ".xml"))
           {
             using (var writer = XmlWriter.Create(streamWriter))
             {
