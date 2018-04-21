@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Api.Enums;
+﻿using IF.Lastfm.Core.Api;
+using IF.Lastfm.Core.Api.Enums;
 using System;
 using System.Windows;
 
@@ -124,14 +125,21 @@ namespace Scrubbler.ViewModels.ExtraFunctions
     /// </summary>
     private const string LASTFMPROFILEURL = "https://www.last.fm/user/";
 
+    /// <summary>
+    /// The last.fm api object to get the scrobbles of an user.
+    /// </summary>
+    private IUserApi _userAPI;
+
     #endregion Private Member
 
     /// <summary>
     /// Constructor.
     /// </summary>
-    public PasteYourTasteViewModel()
+    /// <param name="userAPI">The last.fm api object to get the scrobbles of an user.</param>
+    public PasteYourTasteViewModel(IUserApi userAPI)
       : base("Paste Your Taste")
     {
+      _userAPI = userAPI;
       Amount = 20;
       TimeSpan = LastStatsTimeSpan.Overall;
     }
@@ -147,7 +155,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
         EnableControls = false;
         OnStatusUpdated("Fetching top artists...");
 
-        var response = await MainViewModel.Client.User.GetTopArtists(Username, TimeSpan, 1, Amount);
+        var response = await _userAPI.GetTopArtists(Username, TimeSpan, 1, Amount);
         if (response.Success)
         {
           string tasteText = "";

@@ -9,6 +9,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Timers;
+using IF.Lastfm.Core.Api;
 
 namespace Scrubbler.ViewModels.ScrobbleViewModels
 {
@@ -125,8 +126,11 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    public ITunesScrobbleViewModel(IExtendedWindowManager windowManager)
-      : base(windowManager, "ITunes Scrobbler")
+    /// <param name="trackAPI">Last.fm API object for getting track information.</param>
+    /// <param name="albumAPI">Last.fm API object for getting album information.</param>
+    /// <param name="lastAuth">Last.fm authentication object.</param>
+    public ITunesScrobbleViewModel(IExtendedWindowManager windowManager, ITrackApi trackAPI, IAlbumApi albumAPI, ILastAuth lastAuth)
+      : base(windowManager, "ITunes Scrobbler", trackAPI, albumAPI, lastAuth)
     {
       PercentageToScrobble = 0.5;
 

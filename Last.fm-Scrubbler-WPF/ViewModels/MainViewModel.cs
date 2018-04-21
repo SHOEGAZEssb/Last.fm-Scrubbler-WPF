@@ -33,19 +33,6 @@ namespace Scrubbler.ViewModels
     private string _titleString;
 
     /// <summary>
-    /// The client used for all last.fm actions.
-    /// </summary>
-    public static ILastFMClient Client
-    {
-      get { return _client; }
-      private set
-      {
-        _client = value;
-      }
-    }
-    private static ILastFMClient _client;
-
-    /// <summary>
     /// ViewModel for the <see cref="UserView"/>.
     /// </summary>
     public UserViewModel UserViewModel
@@ -71,7 +58,7 @@ namespace Scrubbler.ViewModels
     /// </summary>
     public string StatusBarUsername
     {
-      get { return Client.Auth.Authenticated ? Client.Auth.UserSession.Username : "Not logged in."; }
+      get { return _client.Auth.Authenticated ? _client.Auth.UserSession.Username : "Not logged in."; }
     }
 
     /// <summary>
@@ -93,6 +80,11 @@ namespace Scrubbler.ViewModels
     #endregion Properties
 
     #region Private Member
+
+    /// <summary>
+    /// The client used for all last.fm actions.
+    /// </summary>
+    private ILastFMClient _client;
 
     /// <summary>
     /// The api key of this application.
@@ -129,6 +121,11 @@ namespace Scrubbler.ViewModels
     /// </summary>
     private IScrobblerFactory _scrobblerFactory;
 
+    /// <summary>
+    /// FileOperator for interfacing with the hard disk.
+    /// </summary>
+    private IFileOperator _fileOperator;
+
     #endregion Private Member
 
     /// <summary>
@@ -140,9 +137,10 @@ namespace Scrubbler.ViewModels
       _windowManager = windowManager;
       _lastFMClientFactory = clientFactory;
       _scrobblerFactory = scrobblerFactory;
+      _fileOperator = fileOperator;
       TitleString = "Last.fm Scrubbler WPF " + Assembly.GetExecutingAssembly().GetName().Version;
-      Client = _lastFMClientFactory.CreateClient(APIKEY, APISECRET);
-      SetupViewModels(localFileFactory, fileOperator);
+      _client = _lastFMClientFactory.CreateClient(APIKEY, APISECRET);
+      SetupViewModels(localFileFactory);
       CurrentStatus = "Waiting to scrobble...";
     }
 
@@ -151,21 +149,21 @@ namespace Scrubbler.ViewModels
     /// <summary>
     /// Creates the ViewModels.
     /// </summary>
-    private void SetupViewModels(ILocalFileFactory localFileFactory, IFileOperator fileOperator)
+    private void SetupViewModels(ILocalFileFactory localFileFactory)
     {
-      _scrobblerVM = new ScrobblerViewModel(_windowManager, localFileFactory, fileOperator);
+      _scrobblerVM = new ScrobblerViewModel(_windowManager, localFileFactory, _fileOperator, _client);
       _scrobblerVM.StatusUpdated += StatusUpdated;
       CreateScrobblers();
       ActivateItem(_scrobblerVM);
 
-      _extraFunctionsVM = new ExtraFunctionsViewModel(_windowManager, Client.User, fileOperator);
+      _extraFunctionsVM = new ExtraFunctionsViewModel(_windowManager, _client.User, _fileOperator);
       _extraFunctionsVM.StatusUpdated += StatusUpdated;
       ActivateItem(_extraFunctionsVM);
 
       // should be active
       ActivateItem(_scrobblerVM);
 
-      UserViewModel = new UserViewModel(_windowManager, Client.Auth, fileOperator);
+      UserViewModel = new UserViewModel(_windowManager, _client.Auth, _fileOperator);
       UserViewModel.ActiveUserChanged += UserViewModel_ActiveUserChanged;
       UserViewModel.LoadLastUser();
     }
@@ -190,9 +188,9 @@ namespace Scrubbler.ViewModels
     {
       IAuthScrobbler scrobbler;
       IAuthScrobbler cachingScrobbler;
-      if (Client.Auth.UserSession != null)
+      if (_client.Auth.UserSession != null)
       {
-        string dbFile = Client.Auth.UserSession.Username + ".db";
+        string dbFile = _client.Auth.UserSession.Username + ".db";
 
         try
         {
@@ -204,8 +202,8 @@ namespace Scrubbler.ViewModels
           CurrentStatus = "Error creating cache database. Error: " + ex.Message;
         }
 
-        scrobbler = _scrobblerFactory.CreateScrobbler(Client.Auth);
-        cachingScrobbler = _scrobblerFactory.CreateSQLiteScrobbler(Client.Auth, dbFile);
+        scrobbler = _scrobblerFactory.CreateScrobbler(_client.Auth);
+        cachingScrobbler = _scrobblerFactory.CreateSQLiteScrobbler(_client.Auth, dbFile);
       }
       else
       {

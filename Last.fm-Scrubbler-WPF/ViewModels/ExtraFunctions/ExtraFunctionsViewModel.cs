@@ -39,7 +39,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
     /// <param name="fileOperator">FileOperator used to interface with files.</param>
     private void CreateViewModels(IExtendedWindowManager windowManager, IUserApi userAPI, IFileOperator fileOperator)
     {
-      var pasteYourTasteVM = new PasteYourTasteViewModel();
+      var pasteYourTasteVM = new PasteYourTasteViewModel(userAPI);
       pasteYourTasteVM.StatusUpdated += VM_StatusUpdated; ;
       var csvDownloaderVM = new CSVDownloaderViewModel(windowManager, userAPI, fileOperator);
       csvDownloaderVM.StatusUpdated += VM_StatusUpdated;

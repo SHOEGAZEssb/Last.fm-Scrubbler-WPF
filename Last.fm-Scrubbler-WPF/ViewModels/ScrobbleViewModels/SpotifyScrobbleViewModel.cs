@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Api.Enums;
+﻿using IF.Lastfm.Core.Api;
+using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
 using Scrubbler.Properties;
@@ -86,8 +87,11 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    public SpotifyScrobbleViewModel(IExtendedWindowManager windowManager)
-      : base(windowManager, "Spotify Scrobbler")
+    /// <param name="trackAPI">Last.fm API object for getting track information.</param>
+    /// <param name="albumAPI">Last.fm API object for getting album information.</param>
+    /// <param name="lastAuth">Last.fm authentication object.</param>
+    public SpotifyScrobbleViewModel(IExtendedWindowManager windowManager, ITrackApi trackAPI, IAlbumApi albumAPI, ILastAuth lastAuth)
+      : base(windowManager, "Spotify Scrobbler", trackAPI, albumAPI, lastAuth)
     {
       PercentageToScrobble = 0.5;
       _spotify = new SpotifyLocalAPI();

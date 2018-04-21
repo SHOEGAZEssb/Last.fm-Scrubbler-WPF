@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Objects;
+﻿using IF.Lastfm.Core.Api;
+using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
 using Scrubbler.Models;
 using Scrubbler.ViewModels.SubViewModels;
@@ -263,15 +264,22 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     private Models.Artist _lastClickedArtist;
 
+    /// <summary>
+    /// Last.fm API object for getting artist information.
+    /// </summary>
+    private IArtistApi _artistAPI;
+
     #endregion Private Member
 
     /// <summary>
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    public SetlistFMScrobbleViewModel(IExtendedWindowManager windowManager)
+    /// <param name="artistAPI">Last.fm API object for getting artist information.</param>
+    public SetlistFMScrobbleViewModel(IExtendedWindowManager windowManager, IArtistApi artistAPI)
       : base(windowManager, "Setlist.fm Scrobbler")
     {
+      _artistAPI = artistAPI;
       _setlistFMClient = new SetlistFmApi.SetlistFmApi("23b3fd98-f5c7-49c6-a7d2-28498c0c2283");
       _artistResultView = new ArtistResultView() { DataContext = this };
       _setlistResultView = new SetlistResultView() { DataContext = this };
@@ -314,7 +322,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
           foreach (var artist in asr.Artists)
           {
             Uri imgUri = null;
-            var response = await MainViewModel.Client.Artist.GetInfoAsync(artist.Name);
+            var response = await _artistAPI.GetInfoAsync(artist.Name);
             if (response.Success)
               imgUri = response.Content.MainImage.ExtraLarge;
 

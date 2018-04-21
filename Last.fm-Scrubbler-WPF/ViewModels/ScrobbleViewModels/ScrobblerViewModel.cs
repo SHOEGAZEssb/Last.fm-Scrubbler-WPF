@@ -25,10 +25,11 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="localFileFactory">Factory used to create <see cref="ILocalFile"/>s.</param>
     /// <param name="fileOperator">FileOperator used to interface with files.</param>
-    public ScrobblerViewModel(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory, IFileOperator fileOperator)
+    /// <param name="lastFMClient">Last.fm client.</param>
+    public ScrobblerViewModel(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory, IFileOperator fileOperator, ILastFMClient lastFMClient)
     {
       DisplayName = "Scrobbler";
-      CreateViewModels(windowManager, localFileFactory, fileOperator);
+      CreateViewModels(windowManager, localFileFactory, fileOperator, lastFMClient);
     }
 
     /// <summary>
@@ -53,13 +54,14 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="localFileFactory">Factory used to create <see cref="ILocalFile"/>s.</param>
     /// <param name="fileOperator">FileOperator used to interface with files.</param>
-    private void CreateViewModels(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory, IFileOperator fileOperator)
+    /// <param name="lastFMClient">Last.fm client.</param>
+    private void CreateViewModels(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory, IFileOperator fileOperator, ILastFMClient lastFMClient)
     {
       var manualScrobbleViewModel = new ManualScrobbleViewModel(windowManager);
       manualScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
-      var friendScrobbleViewModel = new FriendScrobbleViewModel(windowManager, MainViewModel.Client.User);
+      var friendScrobbleViewModel = new FriendScrobbleViewModel(windowManager, lastFMClient.User);
       friendScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
-      var databaseScrobbleViewModel = new DatabaseScrobbleViewModel(windowManager, MainViewModel.Client.Artist, MainViewModel.Client.Album);
+      var databaseScrobbleViewModel = new DatabaseScrobbleViewModel(windowManager, lastFMClient.Artist, lastFMClient.Album);
       databaseScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
       var csvScrobbleViewModel = new CSVScrobbleViewModel(windowManager, new CSVTextFieldParserFactory(), fileOperator);
       csvScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
@@ -67,11 +69,11 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       fileScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
       var mediaPlayerDatabaseScrobbleViewModel = new MediaPlayerDatabaseScrobbleViewModel(windowManager);
       mediaPlayerDatabaseScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
-      var iTunesScrobbleVM = new ITunesScrobbleViewModel(windowManager);
+      var iTunesScrobbleVM = new ITunesScrobbleViewModel(windowManager, lastFMClient.Track, lastFMClient.Album, lastFMClient.Auth);
       iTunesScrobbleVM.StatusUpdated += Scrobbler_StatusUpdated;
-      var spotifyScrobbleVM = new SpotifyScrobbleViewModel(windowManager);
+      var spotifyScrobbleVM = new SpotifyScrobbleViewModel(windowManager, lastFMClient.Track, lastFMClient.Album, lastFMClient.Auth);
       spotifyScrobbleVM.StatusUpdated += Scrobbler_StatusUpdated;
-      var setlistFMScrobbleVM = new SetlistFMScrobbleViewModel(windowManager);
+      var setlistFMScrobbleVM = new SetlistFMScrobbleViewModel(windowManager, lastFMClient.Artist);
       setlistFMScrobbleVM.StatusUpdated += Scrobbler_StatusUpdated;
       var cacheScrobblerVM = new CacheScrobblerViewModel(windowManager);
       cacheScrobblerVM.StatusUpdated += Scrobbler_StatusUpdated;

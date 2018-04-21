@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Objects;
+﻿using IF.Lastfm.Core.Api;
+using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -163,6 +164,21 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     protected const string LASTFMURL = "https://www.last.fm/music/";
 
+    /// <summary>
+    /// Last.fm API object for getting track information.
+    /// </summary>
+    protected ITrackApi _trackAPI;
+
+    /// <summary>
+    /// IAlbumApi albumAPI
+    /// </summary>
+    protected IAlbumApi _albumAPI;
+
+    /// <summary>
+    /// Last.fm authentication object.
+    /// </summary>
+    protected ILastAuth _lastAuth;
+
     #endregion Member
 
     /// <summary>
@@ -170,9 +186,16 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="displayName">Display name.</param>
-    public MediaPlayerScrobbleViewModelBase(IExtendedWindowManager windowManager, string displayName)
+    /// <param name="trackAPI">Last.fm API object for getting track information.</param>
+    /// <param name="albumAPI">Last.fm API object for getting album information.</param>
+    /// <param name="lastAuth">Last.fm authentication object.</param>
+    public MediaPlayerScrobbleViewModelBase(IExtendedWindowManager windowManager, string displayName, ITrackApi trackAPI, IAlbumApi albumAPI, ILastAuth lastAuth)
       : base(windowManager, displayName)
-    { }
+    {
+      _trackAPI = trackAPI;
+      _albumAPI = albumAPI;
+      _lastAuth = lastAuth;
+    }
 
     /// <summary>
     /// Connects to the client.
@@ -206,7 +229,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     {
       if (CurrentTrackName != null && CurrentArtistName != null && base.CanScrobble)
       {
-        var info = await MainViewModel.Client.Track.GetInfoAsync(CurrentTrackName, CurrentArtistName, MainViewModel.Client.Auth.UserSession.Username);
+        var info = await _trackAPI.GetInfoAsync(CurrentTrackName, CurrentArtistName, _lastAuth.UserSession.Username);
         if (info.Success)
           CurrentTrackLoved = info.Content.IsLoved.Value;
       }
@@ -219,7 +242,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     protected async Task UpdateNowPlaying()
     {
       if (CurrentTrackName != null && CurrentArtistName != null)
-        await MainViewModel.Client.Track.UpdateNowPlayingAsync(new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now));
+        await _trackAPI.UpdateNowPlayingAsync(new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now));
     }
 
     /// <summary>
@@ -233,9 +256,9 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       try
       {
         if (CurrentTrackLoved)
-          await MainViewModel.Client.Track.UnloveAsync(CurrentTrackName, CurrentArtistName);
+          await _trackAPI.UnloveAsync(CurrentTrackName, CurrentArtistName);
         else
-          await MainViewModel.Client.Track.LoveAsync(CurrentTrackName, CurrentArtistName);
+          await _trackAPI.LoveAsync(CurrentTrackName, CurrentArtistName);
 
         await UpdateLovedInfo();
       }
@@ -257,7 +280,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     {
       if (CurrentArtistName != null && CurrentAlbumName != null)
       {
-        var album = await MainViewModel.Client.Album.GetInfoAsync(CurrentArtistName, CurrentAlbumName);
+        var album = await _albumAPI.GetInfoAsync(CurrentArtistName, CurrentAlbumName);
         CurrentAlbumArtwork = album?.Content?.Images?.Large;
       }
       else
