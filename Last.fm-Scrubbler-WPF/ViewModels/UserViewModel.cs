@@ -198,7 +198,7 @@ namespace Scrubbler.ViewModels
       {
         files = Directory.GetFiles(USERSFOLDER).Where(i => i.EndsWith("xml")).ToArray();
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         Debug.WriteLine("Fatal error while deserializing users: " + ex.Message);
         return;

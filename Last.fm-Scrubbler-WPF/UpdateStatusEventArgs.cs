@@ -1,9 +1,11 @@
-﻿namespace Scrubbler
+﻿using System;
+
+namespace Scrubbler
 {
   /// <summary>
   /// EventArgs that contain a new status for the status bar.
   /// </summary>
-  public class UpdateStatusEventArgs
+  public class UpdateStatusEventArgs : EventArgs
   {
     /// <summary>
     /// The new status string.

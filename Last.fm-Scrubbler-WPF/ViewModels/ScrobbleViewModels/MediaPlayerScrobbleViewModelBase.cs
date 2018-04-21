@@ -141,19 +141,13 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Gets if the client is ready to scrobble.
     /// </summary>
-    public override bool CanScrobble
-    {
-      get { return base.CanScrobble; }
-    }
+    public override bool CanScrobble => base.CanScrobble;
 
     /// <summary>
     /// Gets if the preview button is enabled.
     /// Not needed here.
     /// </summary>
-    public override bool CanPreview
-    {
-      get { throw new NotImplementedException(); }
-    }
+    public override bool CanPreview => false;
 
     #endregion Properties
 
