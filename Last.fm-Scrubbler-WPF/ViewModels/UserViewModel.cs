@@ -108,15 +108,16 @@ namespace Scrubbler.ViewModels
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="lastAuth">Last.fm authentication object.</param>
     /// <param name="fileOperator">FileOperator used to write to disk.</param>
-    public UserViewModel(IExtendedWindowManager windowManager, ILastAuth lastAuth, IFileOperator fileOperator)
+    /// <param name="directoryOperator">DirectoryOperator used to check and create directories.</param>
+    public UserViewModel(IExtendedWindowManager windowManager, ILastAuth lastAuth, IFileOperator fileOperator, IDirectoryOperator directoryOperator)
     {
       _windowManager = windowManager;
       _lastAuth = lastAuth;
       _fileOperator = fileOperator;
       AvailableUsers = new ObservableCollection<User>();
 
-      if (!Directory.Exists(USERSFOLDER))
-        Directory.CreateDirectory(USERSFOLDER);
+      if (!directoryOperator.Exists(USERSFOLDER))
+        directoryOperator.CreateDirectory(USERSFOLDER);
 
       DeserializeUsers();
     }

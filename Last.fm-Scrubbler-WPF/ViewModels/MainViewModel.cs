@@ -136,8 +136,9 @@ namespace Scrubbler.ViewModels
     /// <param name="scrobblerFactory">Factory for creating <see cref="IAuthScrobbler"/>s.</param>
     /// <param name="localFileFactory">Factory for creating <see cref="ILocalFile"/>s.</param>
     /// <param name="fileOperator">FileOperator for interfacing with the hard disk.</param>
+    /// <param name="directoryOperator">DirectoryOperator for operating with directories.</param>
     public MainViewModel(IExtendedWindowManager windowManager, ILastFMClientFactory clientFactory, IScrobblerFactory scrobblerFactory, ILocalFileFactory localFileFactory,
-                         IFileOperator fileOperator)
+                         IFileOperator fileOperator, IDirectoryOperator directoryOperator)
     {
       _windowManager = windowManager;
       _lastFMClientFactory = clientFactory;
@@ -145,7 +146,7 @@ namespace Scrubbler.ViewModels
       _fileOperator = fileOperator;
       TitleString = "Last.fm Scrubbler WPF " + Assembly.GetExecutingAssembly().GetName().Version;
       _client = _lastFMClientFactory.CreateClient(APIKEY, APISECRET);
-      SetupViewModels(localFileFactory);
+      SetupViewModels(localFileFactory, directoryOperator);
       CurrentStatus = "Waiting to scrobble...";
     }
 
@@ -155,7 +156,8 @@ namespace Scrubbler.ViewModels
     /// Creates the ViewModels.
     /// </summary>
     /// <param name="localFileFactory">Factory for creating <see cref="ILocalFile"/>s.</param>
-    private void SetupViewModels(ILocalFileFactory localFileFactory)
+    /// <param name="directoryOperator">DirectoryOperator for operating with directories.</param>
+    private void SetupViewModels(ILocalFileFactory localFileFactory, IDirectoryOperator directoryOperator)
     {
       _scrobblerVM = new ScrobblerViewModel(_windowManager, localFileFactory, _fileOperator, _client);
       _scrobblerVM.StatusUpdated += StatusUpdated;
@@ -169,7 +171,7 @@ namespace Scrubbler.ViewModels
       // should be active
       ActivateItem(_scrobblerVM);
 
-      UserViewModel = new UserViewModel(_windowManager, _client.Auth, _fileOperator);
+      UserViewModel = new UserViewModel(_windowManager, _client.Auth, _fileOperator, directoryOperator);
       UserViewModel.ActiveUserChanged += UserViewModel_ActiveUserChanged;
       UserViewModel.LoadLastUser();
     }

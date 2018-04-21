@@ -42,6 +42,7 @@ namespace Scrubbler
       _container.Singleton<IScrobblerFactory, ScrobblerFactory>();
       _container.Singleton<ILocalFileFactory, LocalFileFactory>();
       _container.Singleton<IFileOperator, FileOperator>();
+      _container.Singleton<IDirectoryOperator, DirectoryOperator>();
       _container.PerRequest<MainViewModel>();
     }
 

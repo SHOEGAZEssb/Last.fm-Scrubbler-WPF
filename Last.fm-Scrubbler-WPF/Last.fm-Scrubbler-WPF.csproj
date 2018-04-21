@@ -154,6 +154,7 @@
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Interfaces\IAuthScrobbler.cs" />
+    <Compile Include="Interfaces\IDirectoryOperator.cs" />
     <Compile Include="Interfaces\IFileOperator.cs" />
     <Compile Include="Interfaces\IMessageBoxService.cs" />
     <Compile Include="Interfaces\IExtendedWindowManager.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="Interfaces\IScrobblerFactory.cs" />
     <Compile Include="Interfaces\ITextFieldParser.cs" />
     <Compile Include="Interfaces\ITextFieldParserFactory.cs" />
+    <Compile Include="Models\DirectoryOperator.cs" />
     <Compile Include="Models\FileOperator.cs" />
     <Compile Include="Models\OpenFileDialogService.cs" />
     <Compile Include="Models\SaveFileDialogService.cs" />
