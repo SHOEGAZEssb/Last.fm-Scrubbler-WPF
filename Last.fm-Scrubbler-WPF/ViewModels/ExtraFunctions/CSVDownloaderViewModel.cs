@@ -3,7 +3,6 @@ using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +26,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       set
       {
         _username = value;
-        NotifyOfPropertyChange(() => Username);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanDownload);
       }
     }
@@ -42,7 +41,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       set
       {
         _filePath = value;
-        NotifyOfPropertyChange(() => FilePath);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanDownload);
       }
     }
@@ -57,7 +56,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       protected set
       {
         _enableControls = value;
-        NotifyOfPropertyChange(() => EnableControls);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanDownload);
       }
     }
@@ -67,7 +66,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
     /// </summary>
     public bool CanDownload
     {
-      get { return EnableControls && Username != string.Empty && FilePath != string.Empty && FilePath.EndsWith(".csv"); }
+      get { return EnableControls && !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(FilePath) && FilePath.EndsWith(".csv"); }
     }
 
     #endregion Properties
@@ -108,8 +107,6 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       _windowManager = windowManager;
       _userAPI = userAPI;
       _fileOperator = fileOperator;
-      Username = string.Empty;
-      FilePath = string.Empty;
     }
 
     /// <summary>

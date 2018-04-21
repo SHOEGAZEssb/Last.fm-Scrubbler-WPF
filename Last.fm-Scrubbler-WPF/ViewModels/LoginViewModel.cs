@@ -1,5 +1,4 @@
-﻿using Caliburn.Micro;
-using IF.Lastfm.Core.Api;
+﻿using IF.Lastfm.Core.Api;
 using Scrubbler.Interfaces;
 using System;
 using System.Threading.Tasks;
@@ -11,26 +10,8 @@ namespace Scrubbler.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.LoginView"/>
   /// </summary>
-  class LoginViewModel : Screen
+  class LoginViewModel : ViewModelBase
   {
-    #region Properties
-
-    /// <summary>
-    /// Gets if certain controls should be enabled.
-    /// </summary>
-    public bool EnableControls
-    {
-      get { return _enableControls; }
-      private set
-      {
-        _enableControls = value;
-        NotifyOfPropertyChange(() => EnableControls);
-      }
-    }
-    private bool _enableControls;
-
-    #endregion Properties
-
     #region Member
 
     /// <summary>
@@ -64,10 +45,9 @@ namespace Scrubbler.ViewModels
     /// <param name="password">The <see cref="PasswordBox"/> containing the password.</param>
     public async Task Login(string username, PasswordBox password)
     {
-      EnableControls = false;
-
       try
       {
+        EnableControls = false;
         var response = await _lastAuth.GetSessionTokenAsync(username, password.Password);
 
         if (response.Success && _lastAuth.Authenticated)

@@ -27,7 +27,7 @@ namespace Scrubbler.ViewModels
       private set
       {
         _titleString = value;
-        NotifyOfPropertyChange(() => TitleString);
+        NotifyOfPropertyChange();
       }
     }
     private string _titleString;
@@ -54,7 +54,7 @@ namespace Scrubbler.ViewModels
       private set
       {
         _userViewModel = value;
-        NotifyOfPropertyChange(() => UserViewModel);
+        NotifyOfPropertyChange();
       }
     }
     private UserViewModel _userViewModel;
@@ -179,8 +179,6 @@ namespace Scrubbler.ViewModels
     /// <param name="e">Ignored.</param>
     private void UserViewModel_ActiveUserChanged(object sender, EventArgs e)
     {
-
-
       NotifyOfPropertyChange(() => StatusBarUsername);
       CreateScrobblers();
     }

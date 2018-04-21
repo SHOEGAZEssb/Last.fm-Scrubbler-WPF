@@ -16,14 +16,21 @@ namespace Scrubbler.ViewModels
     public event EventHandler<UpdateStatusEventArgs> StatusUpdated;
 
     /// <summary>
-    /// Gets if certain controls that modify the
-    /// scrobbling data are enabled.
+    /// Indicates if controls on the UI
+    /// are enabled.
     /// </summary>
-    public abstract bool EnableControls { get; protected set; }
-
+    public virtual bool EnableControls
+    {
+      get { return _enableControls; }
+      protected set
+      {
+        _enableControls = value;
+        NotifyOfPropertyChange();
+      }
+    }
     /// <summary>
-    /// Gets if certain controls that modify the
-    /// scrobbling data are enabled.
+    /// Indicates if controls on the UI
+    /// are enabled.
     /// </summary>
     protected bool _enableControls;
 

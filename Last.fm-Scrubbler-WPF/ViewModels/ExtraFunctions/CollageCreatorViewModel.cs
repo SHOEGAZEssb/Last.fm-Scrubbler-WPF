@@ -82,7 +82,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       set
       {
         _username = value;
-        NotifyOfPropertyChange(() => Username);
+        NotifyOfPropertyChange();
       }
     }
     private string _username;
@@ -96,7 +96,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       set
       {
         _timeSpan = value;
-        NotifyOfPropertyChange(() => TimeSpan);
+        NotifyOfPropertyChange();
       }
     }
     private LastStatsTimeSpan _timeSpan;
@@ -110,7 +110,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       set
       {
         _selectedCollageSize = value;
-        NotifyOfPropertyChange(() => SelectedCollageSize);
+        NotifyOfPropertyChange();
 
         if (SelectedCollageSize == CollageSize.Custom)
           UploadToWeb = false;
@@ -144,7 +144,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       set
       {
         _selectedCollageType = value;
-        NotifyOfPropertyChange(() => SelectedCollageType);
+        NotifyOfPropertyChange();
       }
     }
     private CollageType _selectedCollageType;
@@ -220,7 +220,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       protected set
       {
         _enableControls = value;
-        NotifyOfPropertyChange(() => EnableControls);
+        NotifyOfPropertyChange();
       }
     }
 

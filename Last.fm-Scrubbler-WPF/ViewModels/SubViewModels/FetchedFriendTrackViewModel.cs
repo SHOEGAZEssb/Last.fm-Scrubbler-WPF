@@ -6,7 +6,7 @@ namespace Scrubbler.ViewModels
 {
   /// <summary>
   /// ViewModel for a single fetched track of a friend.
-  /// Used in the <see cref="FriendScrobbleViewModel"/>.
+  /// Used in the <see cref="ScrobbleViewModels.FriendScrobbleViewModel"/>.
   /// </summary>
   public class FetchedFriendTrackViewModel : PropertyChangedBase
   {
@@ -26,7 +26,7 @@ namespace Scrubbler.ViewModels
       private set
       {
         _scrobble = value;
-        NotifyOfPropertyChange(() => Track);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => IsEnabled);
       }
     }
@@ -41,7 +41,7 @@ namespace Scrubbler.ViewModels
       set
       {
         _toScrobble = value;
-        NotifyOfPropertyChange(() => ToScrobble);
+        NotifyOfPropertyChange();
         ToScrobbleChanged?.Invoke(this, EventArgs.Empty);
       }
     }

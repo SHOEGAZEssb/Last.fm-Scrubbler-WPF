@@ -20,7 +20,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       set
       {
         _username = value;
-        NotifyOfPropertyChange(() => Username);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanFetch);
       }
     }
@@ -35,7 +35,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       set
       {
         _amount = value;
-        NotifyOfPropertyChange(() => Amount);
+        NotifyOfPropertyChange();
       }
     }
     private int _amount;
@@ -49,7 +49,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       set
       {
         _timeSpan = value;
-        NotifyOfPropertyChange(() => TimeSpan);
+        NotifyOfPropertyChange();
       }
     }
     private LastStatsTimeSpan _timeSpan;
@@ -64,7 +64,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       set
       {
         _addProfileLink = value;
-        NotifyOfPropertyChange(() => AddProfileLink);
+        NotifyOfPropertyChange();
       }
     }
     private bool _addProfileLink;
@@ -78,7 +78,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       private set
       {
         _tasteText = value;
-        NotifyOfPropertyChange(() => TasteText);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanCopy);
       }
     }
@@ -93,7 +93,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       protected set
       {
         _enableControls = value;
-        NotifyOfPropertyChange(() => EnableControls);
+        NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanFetch);
         NotifyOfPropertyChange(() => CanCopy);
       }
@@ -104,7 +104,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
     /// </summary>
     public bool CanFetch
     {
-      get { return Username != null && Username != string.Empty && EnableControls; }
+      get { return !string.IsNullOrEmpty(Username) && EnableControls; }
     }
 
     /// <summary>
@@ -112,7 +112,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
     /// </summary>
     public bool CanCopy
     {
-      get { return TasteText != null && TasteText != string.Empty && EnableControls; }
+      get { return !string.IsNullOrEmpty(TasteText) && EnableControls; }
     }
 
     #endregion Properties
@@ -142,10 +142,9 @@ namespace Scrubbler.ViewModels.ExtraFunctions
     /// </summary>
     public async void GetTopArtists()
     {
-      EnableControls = false;
-
       try
       {
+        EnableControls = false;
         OnStatusUpdated("Fetching top artists...");
 
         var response = await MainViewModel.Client.User.GetTopArtists(Username, TimeSpan, 1, Amount);
