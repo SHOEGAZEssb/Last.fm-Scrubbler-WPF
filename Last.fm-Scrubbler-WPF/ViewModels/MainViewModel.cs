@@ -1,5 +1,4 @@
 ﻿using Caliburn.Micro;
-using IF.Lastfm.Core.Api;
 using Scrubbler.Interfaces;
 using Scrubbler.Properties;
 using Scrubbler.ViewModels.ExtraFunctions;
@@ -70,7 +69,7 @@ namespace Scrubbler.ViewModels
       private set
       {
         _currentStatus = value;
-        NotifyOfPropertyChange(() => CurrentStatus);
+        NotifyOfPropertyChange();
       }
     }
     private string _currentStatus;
@@ -131,6 +130,11 @@ namespace Scrubbler.ViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
+    /// <param name="windowManager">WindowManager used to display dialogs.</param>
+    /// <param name="clientFactory">Factory for creating <see cref="ILastFMClient"/>s.</param>
+    /// <param name="scrobblerFactory">Factory for creating <see cref="IAuthScrobbler"/>s.</param>
+    /// <param name="localFileFactory">Factory for creating <see cref="ILocalFile"/>s.</param>
+    /// <param name="fileOperator">FileOperator for interfacing with the hard disk.</param>
     public MainViewModel(IExtendedWindowManager windowManager, ILastFMClientFactory clientFactory, IScrobblerFactory scrobblerFactory, ILocalFileFactory localFileFactory,
                          IFileOperator fileOperator)
     {
@@ -149,6 +153,7 @@ namespace Scrubbler.ViewModels
     /// <summary>
     /// Creates the ViewModels.
     /// </summary>
+    /// <param name="localFileFactory">Factory for creating <see cref="ILocalFile"/>s.</param>
     private void SetupViewModels(ILocalFileFactory localFileFactory)
     {
       _scrobblerVM = new ScrobblerViewModel(_windowManager, localFileFactory, _fileOperator, _client);
