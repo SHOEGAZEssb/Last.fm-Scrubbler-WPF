@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
         Title="{Binding TitleString}" Height="400" Width="650" Icon="..\scrubbler_64.ico">
@@ -28,13 +27,7 @@
           <Label Content="Logged in as:" FontWeight="Bold"/>
           <TextBlock Margin="0,5,0,0">
             <Hyperlink>
-              <TextBlock Text="{Binding StatusBarUsername, Mode=OneWay}">
-                <i:Interaction.Triggers>
-                  <i:EventTrigger EventName="MouseDown">
-                    <cal:ActionMessage MethodName="HyperlinkClicked"/>
-                  </i:EventTrigger>
-                </i:Interaction.Triggers>
-              </TextBlock>
+              <TextBlock Text="{Binding StatusBarUsername, Mode=OneWay}" cal:Message.Attach="[Event MouseDown] = [Action HyperlinkClicked]"/>
             </Hyperlink>
           </TextBlock>
         </StackPanel>
@@ -49,6 +42,5 @@
         </StackPanel>
       </StatusBarItem>
     </StatusBar>
-
   </Grid>
 </Window>
