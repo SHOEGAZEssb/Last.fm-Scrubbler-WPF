@@ -242,16 +242,20 @@ namespace Scrubbler.ViewModels
     }
 
     /// <summary>
-    /// Dispose iTunes com object before exit.
+    /// Cleanup before exiting.
     /// </summary>
-    public void MainView_Closing()
+    /// <param name="close">True if the application is closed.</param>
+    protected override void OnDeactivate(bool close)
     {
-      foreach(IDisposable disposableVM in Items.Where(i => i is IDisposable))
+      if(close)
       {
-        disposableVM.Dispose();
-      }
+        foreach (IDisposable disposableVM in Items.Where(i => i is IDisposable))
+        {
+          disposableVM.Dispose();
+        }
 
-      Settings.Default.Save();
+        Settings.Default.Save();
+      }
     }
   }
 }
