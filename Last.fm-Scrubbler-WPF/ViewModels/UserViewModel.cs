@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
 using Scrubbler.Models;
@@ -8,7 +9,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -27,11 +27,6 @@ namespace Scrubbler.ViewModels
     public event EventHandler ActiveUserChanged;
 
     /// <summary>
-    /// The name of the folder the user xmls are saved in.
-    /// </summary>
-    private const string USERSFOLDER = "Users";
-
-    /// <summary>
     /// Currently active user.
     /// </summary>
     public User ActiveUser
@@ -40,15 +35,12 @@ namespace Scrubbler.ViewModels
       private set
       {
         _activeUser = value;
-        NotifyOfPropertyChange(() => ActiveUser);
+        NotifyOfPropertyChange();
 
         if (value != null)
           Settings.Default.Username = value.Username;
         else
-        {
           Settings.Default.Username = string.Empty;
-          MainViewModel.CreateNewClient();
-        }
 
         ActiveUserChanged?.Invoke(this, EventArgs.Empty);
       }
@@ -64,7 +56,7 @@ namespace Scrubbler.ViewModels
       private set
       {
         _availableUsers = value;
-        NotifyOfPropertyChange(() => AvailableUsers);
+        NotifyOfPropertyChange();
       }
     }
     private ObservableCollection<User> _availableUsers;
@@ -78,7 +70,7 @@ namespace Scrubbler.ViewModels
       set
       {
         _selectedUser = value;
-        NotifyOfPropertyChange(() => SelectedUser);
+        NotifyOfPropertyChange();
       }
     }
     private User _selectedUser;
@@ -88,14 +80,24 @@ namespace Scrubbler.ViewModels
     #region Member
 
     /// <summary>
+    /// The name of the folder the user xmls are saved in.
+    /// </summary>
+    private const string USERSFOLDER = "Users";
+
+    /// <summary>
     /// WindowManager used to display dialogs.
     /// </summary>
-    private IWindowManager _windowManager;
+    private IExtendedWindowManager _windowManager;
 
     /// <summary>
     /// FileOperator used to write to disk.
     /// </summary>
     private IFileOperator _fileOperator;
+
+    /// <summary>
+    /// Last.fm authentication object.
+    /// </summary>
+    private ILastAuth _lastAuth;
 
     #endregion Member
 
@@ -104,10 +106,12 @@ namespace Scrubbler.ViewModels
     /// Deserializes the users.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
+    /// <param name="lastAuth">Last.fm authentication object.</param>
     /// <param name="fileOperator">FileOperator used to write to disk.</param>
-    public UserViewModel(IWindowManager windowManager, IFileOperator fileOperator)
+    public UserViewModel(IExtendedWindowManager windowManager, ILastAuth lastAuth, IFileOperator fileOperator)
     {
       _windowManager = windowManager;
+      _lastAuth = lastAuth;
       _fileOperator = fileOperator;
       AvailableUsers = new ObservableCollection<User>();
 
@@ -122,9 +126,9 @@ namespace Scrubbler.ViewModels
     /// </summary>
     public void AddUser()
     {
-      if (_windowManager.ShowDialog(new LoginViewModel()).Value)
+      if (_windowManager.ShowDialog(new LoginViewModel(_lastAuth, _windowManager.MessageBoxService)).Value)
       {
-        User usr = new User(MainViewModel.Client.Auth.UserSession.Username, MainViewModel.Client.Auth.UserSession.Token, MainViewModel.Client.Auth.UserSession.IsSubscriber);
+        User usr = new User(_lastAuth.UserSession.Username, _lastAuth.UserSession.Token, _lastAuth.UserSession.IsSubscriber);
         AvailableUsers.Add(usr);
         ActiveUser = usr;
         SerializeUsers();
@@ -148,7 +152,7 @@ namespace Scrubbler.ViewModels
       }
       catch (Exception ex)
       {
-        MessageBox.Show("Could not remove user from list: " + ex.Message);
+        _windowManager.MessageBoxService.ShowDialog("Could not remove user from list: " + ex.Message);
       }
     }
 
@@ -158,10 +162,10 @@ namespace Scrubbler.ViewModels
     public void LoginUser()
     {
       LoginUser(SelectedUser);
-      if (MainViewModel.Client.Auth.Authenticated)
-        MessageBox.Show("Successfully switched user.");
+      if (_lastAuth.Authenticated)
+        _windowManager.MessageBoxService.ShowDialog("Successfully switched user.");
       else
-        MessageBox.Show("Could not switch user. Try removing and adding the user again.");
+        _windowManager.MessageBoxService.ShowDialog("Could not switch user. Try removing and adding the user again.");
     }
 
     /// <summary>
@@ -177,7 +181,7 @@ namespace Scrubbler.ViewModels
         IsSubscriber = usr.IsSubscriber
       };
 
-      if (MainViewModel.Client.Auth.LoadSession(session))
+      if (_lastAuth.LoadSession(session))
         ActiveUser = usr;
     }
 

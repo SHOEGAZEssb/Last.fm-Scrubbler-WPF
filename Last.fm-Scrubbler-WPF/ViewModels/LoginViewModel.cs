@@ -1,7 +1,8 @@
 ﻿using Caliburn.Micro;
+using IF.Lastfm.Core.Api;
+using Scrubbler.Interfaces;
 using System;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -30,11 +31,29 @@ namespace Scrubbler.ViewModels
 
     #endregion Properties
 
+    #region Member
+
+    /// <summary>
+    /// Last.fm authentication object.
+    /// </summary>
+    private ILastAuth _lastAuth;
+
+    /// <summary>
+    /// Service for showing MessageBoxes.
+    /// </summary>
+    private IMessageBoxService _messageBoxService;
+
+    #endregion Member
+
     /// <summary>
     /// Constructor.
     /// </summary>
-    public LoginViewModel()
+    /// <param name="lastAuth">Last.fm authentication object.</param>
+    /// <param name="messageBoxService">Service for showing MessageBoxes.</param>
+    public LoginViewModel(ILastAuth lastAuth, IMessageBoxService messageBoxService)
     {
+      _lastAuth = lastAuth;
+      _messageBoxService = messageBoxService;
       EnableControls = true;
     }
 
@@ -49,19 +68,19 @@ namespace Scrubbler.ViewModels
 
       try
       {
-        var response = await MainViewModel.Client.Auth.GetSessionTokenAsync(username, password.Password);
+        var response = await _lastAuth.GetSessionTokenAsync(username, password.Password);
 
-        if (response.Success && MainViewModel.Client.Auth.Authenticated)
+        if (response.Success && _lastAuth.Authenticated)
         {
-          MessageBox.Show("Successfully logged in and authenticated!");
+          _messageBoxService.ShowDialog("Successfully logged in and authenticated!");
           TryClose(true);
         }
         else
-          MessageBox.Show("Failed to log in or authenticate!");
+          _messageBoxService.ShowDialog("Failed to log in or authenticate!");
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
-        MessageBox.Show("Fatal error while trying to log in: " + ex.Message);
+        _messageBoxService.ShowDialog("Fatal error while trying to log in: " + ex.Message);
       }
       finally
       {

@@ -141,7 +141,7 @@ namespace Scrubbler.ViewModels
       _lastFMClientFactory = clientFactory;
       _scrobblerFactory = scrobblerFactory;
       TitleString = "Last.fm Scrubbler WPF " + Assembly.GetExecutingAssembly().GetName().Version;
-      CreateNewClient();
+      Client = _lastFMClientFactory.CreateClient(APIKEY, APISECRET);
       SetupViewModels(localFileFactory, fileOperator);
       CurrentStatus = "Waiting to scrobble...";
     }
@@ -165,20 +165,12 @@ namespace Scrubbler.ViewModels
       // should be active
       ActivateItem(_scrobblerVM);
 
-      UserViewModel = new UserViewModel(_windowManager, fileOperator);
+      UserViewModel = new UserViewModel(_windowManager, Client.Auth, fileOperator);
       UserViewModel.ActiveUserChanged += UserViewModel_ActiveUserChanged;
       UserViewModel.LoadLastUser();
     }
 
     #endregion Setup
-
-    /// <summary>
-    /// Creates a new <see cref="LastfmClient"/>.
-    /// </summary>
-    internal static void CreateNewClient()
-    {
-      Client = _lastFMClientFactory.CreateClient(APIKEY, APISECRET);
-    }
 
     /// <summary>
     /// Triggers when the <see cref="UserViewModel.ActiveUser"/> changes.
@@ -187,6 +179,8 @@ namespace Scrubbler.ViewModels
     /// <param name="e">Ignored.</param>
     private void UserViewModel_ActiveUserChanged(object sender, EventArgs e)
     {
+
+
       NotifyOfPropertyChange(() => StatusBarUsername);
       CreateScrobblers();
     }
