@@ -2,6 +2,7 @@
 using Scrubbler.Interfaces;
 using Scrubbler.Models;
 using System;
+using System.Linq;
 
 namespace Scrubbler.ViewModels.ScrobbleViewModels
 {
@@ -39,7 +40,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <param name="cachingScrobbler">Caching scrobbler.</param>
     public void UpdateScrobblers(IAuthScrobbler scrobbler, IAuthScrobbler cachingScrobbler)
     {
-      foreach(var vm in Items)
+      foreach (var vm in Items)
       {
         if (vm is INeedCachingScrobbler)
           vm.Scrobbler = cachingScrobbler;
@@ -108,10 +109,9 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public void Dispose()
     {
-      foreach(var vm in Items)
+      foreach (IDisposable disposableVM in Items.Where(i => i is IDisposable))
       {
-        if (vm is IDisposable d)
-          d.Dispose();
+        disposableVM.Dispose();
       }
     }
   }

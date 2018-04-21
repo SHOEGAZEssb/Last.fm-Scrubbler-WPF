@@ -6,6 +6,7 @@ using Scrubbler.ViewModels.ScrobbleViewModels;
 using Scrubbler.Views;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace Scrubbler.ViewModels
@@ -243,7 +244,11 @@ namespace Scrubbler.ViewModels
     /// </summary>
     public void MainView_Closing()
     {
-      //ITunesScrobbleVM.Dispose();
+      foreach(IDisposable disposableVM in Items.Where(i => i is IDisposable))
+      {
+        disposableVM.Dispose();
+      }
+
       Settings.Default.Save();
     }
   }
