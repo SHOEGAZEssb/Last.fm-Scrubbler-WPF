@@ -5,7 +5,7 @@ namespace Scrubbler.Models
   /// <summary>
   /// Represents a last.fm user.
   /// </summary>
-  [DataContractAttribute]
+  [DataContract]
   public class User
   {
     #region Properties
