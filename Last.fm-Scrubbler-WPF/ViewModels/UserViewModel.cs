@@ -99,6 +99,11 @@ namespace Scrubbler.ViewModels
     /// </summary>
     private ILastAuth _lastAuth;
 
+    /// <summary>
+    /// Serializer used to serialize <see cref="User"/>.
+    /// </summary>
+    private ISerializer<User> _userSerializer;
+
     #endregion Member
 
     /// <summary>
@@ -109,11 +114,13 @@ namespace Scrubbler.ViewModels
     /// <param name="lastAuth">Last.fm authentication object.</param>
     /// <param name="fileOperator">FileOperator used to write to disk.</param>
     /// <param name="directoryOperator">DirectoryOperator used to check and create directories.</param>
-    public UserViewModel(IExtendedWindowManager windowManager, ILastAuth lastAuth, IFileOperator fileOperator, IDirectoryOperator directoryOperator)
+    /// <param name="userSerializer">Serializer used to serialize <see cref="User"/>.</param>
+    public UserViewModel(IExtendedWindowManager windowManager, ILastAuth lastAuth, IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer<User> userSerializer)
     {
       _windowManager = windowManager;
       _lastAuth = lastAuth;
       _fileOperator = fileOperator;
+      _userSerializer = userSerializer;
       AvailableUsers = new ObservableCollection<User>();
 
       if (!directoryOperator.Exists(USERSFOLDER))
@@ -191,33 +198,25 @@ namespace Scrubbler.ViewModels
     /// </summary>
     private void DeserializeUsers()
     {
-      XmlSerializer serializer = new XmlSerializer(typeof(User), typeof(User).GetNestedTypes());
-      string[] files = null;
-
       try
       {
-        files = Directory.GetFiles(USERSFOLDER).Where(i => i.EndsWith("xml")).ToArray();
+        foreach (var file in Directory.GetFiles(USERSFOLDER).Where(i => i.EndsWith("xml")))
+        {
+          try
+          {
+            User usr = _userSerializer.Deserialize(file);
+            AvailableUsers.Add(usr);
+          }
+          catch (Exception ex)
+          {
+            Debug.WriteLine(string.Format("Error deserializing {0}: {1}", file, ex.Message));
+          }
+        }
       }
       catch (Exception ex)
       {
         Debug.WriteLine("Fatal error while deserializing users: " + ex.Message);
         return;
-      }
-
-      foreach (var file in files)
-      {
-        try
-        {
-          using (StreamReader reader = new StreamReader(file))
-          {
-            User usr = (User)serializer.Deserialize(reader);
-            AvailableUsers.Add(usr);
-          }
-        }
-        catch (Exception ex)
-        {
-          Debug.WriteLine(string.Format("Error deserializing {0}: {1}", file, ex.Message));
-        }
       }
     }
 
@@ -226,18 +225,11 @@ namespace Scrubbler.ViewModels
     /// </summary>
     private void SerializeUsers()
     {
-      XmlSerializer serializer = new XmlSerializer(typeof(User));
       foreach (var usr in AvailableUsers)
       {
         try
         {
-          using (var streamWriter = new StreamWriter(Path.Combine(USERSFOLDER, usr.Username) + ".xml"))
-          {
-            using (var writer = XmlWriter.Create(streamWriter))
-            {
-              serializer.Serialize(writer, usr);
-            }
-          }
+          _userSerializer.Serialize(usr, Path.Combine(USERSFOLDER, usr.Username) + ".xml");
         }
         catch (Exception ex)
         {

@@ -1,8 +1,11 @@
-﻿namespace Scrubbler.Models
+﻿using System.Runtime.Serialization;
+
+namespace Scrubbler.Models
 {
   /// <summary>
   /// Represents a last.fm user.
   /// </summary>
+  [DataContractAttribute]
   public class User
   {
     #region Properties
@@ -10,17 +13,20 @@
     /// <summary>
     /// Username of this user.
     /// </summary>
-    public string Username { get; set; }
+    [DataMember]
+    public string Username { get; private set; }
 
     /// <summary>
     /// Login token of this user.
     /// </summary>
-    public string Token { get; set; }
+    [DataMember]
+    public string Token { get; private set; }
 
     /// <summary>
     /// If this user is a subscriber.
     /// </summary>
-    public bool IsSubscriber { get; set; }
+    [DataMember]
+    public bool IsSubscriber { get; private set; }
 
     #endregion Properties
 
@@ -36,11 +42,5 @@
       Token = token;
       IsSubscriber = isSubscriber;
     }
-
-    /// <summary>
-    /// Constructor for serializing.
-    /// </summary>
-    public User()
-    { }
   }
 }

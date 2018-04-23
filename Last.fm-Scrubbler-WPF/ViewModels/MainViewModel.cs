@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Scrubbler.Interfaces;
+using Scrubbler.Models;
 using Scrubbler.Properties;
 using Scrubbler.ViewModels.ExtraFunctions;
 using Scrubbler.ViewModels.ScrobbleViewModels;
@@ -137,8 +138,9 @@ namespace Scrubbler.ViewModels
     /// <param name="localFileFactory">Factory for creating <see cref="ILocalFile"/>s.</param>
     /// <param name="fileOperator">FileOperator for interfacing with the hard disk.</param>
     /// <param name="directoryOperator">DirectoryOperator for operating with directories.</param>
+    /// <param name="userSerializer">Serializer for <see cref="User"/>s.</param>
     public MainViewModel(IExtendedWindowManager windowManager, ILastFMClientFactory clientFactory, IScrobblerFactory scrobblerFactory, ILocalFileFactory localFileFactory,
-                         IFileOperator fileOperator, IDirectoryOperator directoryOperator)
+                         IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer<User> userSerializer)
     {
       _windowManager = windowManager;
       _lastFMClientFactory = clientFactory;
@@ -146,7 +148,7 @@ namespace Scrubbler.ViewModels
       _fileOperator = fileOperator;
       TitleString = "Last.fm Scrubbler WPF " + Assembly.GetExecutingAssembly().GetName().Version;
       _client = _lastFMClientFactory.CreateClient(APIKEY, APISECRET);
-      SetupViewModels(localFileFactory, directoryOperator);
+      SetupViewModels(localFileFactory, directoryOperator, userSerializer);
       CurrentStatus = "Waiting to scrobble...";
     }
 
@@ -157,7 +159,8 @@ namespace Scrubbler.ViewModels
     /// </summary>
     /// <param name="localFileFactory">Factory for creating <see cref="ILocalFile"/>s.</param>
     /// <param name="directoryOperator">DirectoryOperator for operating with directories.</param>
-    private void SetupViewModels(ILocalFileFactory localFileFactory, IDirectoryOperator directoryOperator)
+    /// <param name="userSerializer">Serializer for <see cref="User"/>s.</param>
+    private void SetupViewModels(ILocalFileFactory localFileFactory, IDirectoryOperator directoryOperator, ISerializer<User> userSerializer)
     {
       _scrobblerVM = new ScrobblerViewModel(_windowManager, localFileFactory, _fileOperator, _client);
       _scrobblerVM.StatusUpdated += StatusUpdated;
@@ -171,7 +174,7 @@ namespace Scrubbler.ViewModels
       // should be active
       ActivateItem(_scrobblerVM);
 
-      UserViewModel = new UserViewModel(_windowManager, _client.Auth, _fileOperator, directoryOperator);
+      UserViewModel = new UserViewModel(_windowManager, _client.Auth, _fileOperator, directoryOperator, userSerializer);
       UserViewModel.ActiveUserChanged += UserViewModel_ActiveUserChanged;
       UserViewModel.LoadLastUser();
     }
