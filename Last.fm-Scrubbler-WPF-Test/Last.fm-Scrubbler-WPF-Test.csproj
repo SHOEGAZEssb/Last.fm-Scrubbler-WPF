@@ -114,6 +114,7 @@
     <Compile Include="ScrobblerTests\FriendScrobbleTest.cs" />
     <Compile Include="ScrobblerTests\ManualScrobblerTest.cs" />
     <Compile Include="TestHelper.cs" />
+    <Compile Include="UserViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

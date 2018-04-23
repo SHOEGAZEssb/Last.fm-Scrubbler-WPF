@@ -23,5 +23,14 @@
     /// This object is returned regardless of whether a directory at the
     /// specified path already exists.</returns>
     object CreateDirectory(string path);
+
+    /// <summary>
+    /// Returns the names of files (including their paths) in the specified directory.
+    /// </summary>
+    /// <param name="path">The relative or absolute path to the directory to search.
+    /// This string is not case-sensitive.</param>
+    /// <returns>An array of the full names (including paths) for the files in the specified
+    /// directory, or an empty array if no files are found.</returns>
+    string[] GetFiles(string path);
   }
 }

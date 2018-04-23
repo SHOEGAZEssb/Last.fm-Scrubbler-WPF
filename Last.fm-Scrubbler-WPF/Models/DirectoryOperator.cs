@@ -31,5 +31,17 @@ namespace Scrubbler.Models
     {
       return Directory.Exists(path);
     }
+
+    /// <summary>
+    /// Returns the names of files (including their paths) in the specified directory.
+    /// </summary>
+    /// <param name="path">The relative or absolute path to the directory to search.
+    /// This string is not case-sensitive.</param>
+    /// <returns>An array of the full names (including paths) for the files in the specified
+    /// directory, or an empty array if no files are found.</returns>
+    public string[] GetFiles(string path)
+    {
+      return Directory.GetFiles(path);
+    }
   }
 }

@@ -95,6 +95,11 @@ namespace Scrubbler.ViewModels
     private IFileOperator _fileOperator;
 
     /// <summary>
+    /// DirectoryOperator used to check and create directories.
+    /// </summary>
+    private IDirectoryOperator _directoryOperator;
+
+    /// <summary>
     /// Last.fm authentication object.
     /// </summary>
     private ILastAuth _lastAuth;
@@ -120,11 +125,12 @@ namespace Scrubbler.ViewModels
       _windowManager = windowManager;
       _lastAuth = lastAuth;
       _fileOperator = fileOperator;
+      _directoryOperator = directoryOperator;
       _userSerializer = userSerializer;
       AvailableUsers = new ObservableCollection<User>();
 
-      if (!directoryOperator.Exists(USERSFOLDER))
-        directoryOperator.CreateDirectory(USERSFOLDER);
+      if (!_directoryOperator.Exists(USERSFOLDER))
+        _directoryOperator.CreateDirectory(USERSFOLDER);
 
       DeserializeUsers();
     }
@@ -200,7 +206,7 @@ namespace Scrubbler.ViewModels
     {
       try
       {
-        foreach (var file in Directory.GetFiles(USERSFOLDER).Where(i => i.EndsWith("xml")))
+        foreach (var file in _directoryOperator.GetFiles(USERSFOLDER).Where(i => i.EndsWith("xml")))
         {
           try
           {

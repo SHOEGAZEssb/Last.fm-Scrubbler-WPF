@@ -10,7 +10,7 @@ namespace Scrubbler.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.LoginView"/>
   /// </summary>
-  class LoginViewModel : ViewModelBase
+  public class LoginViewModel : ViewModelBase
   {
     #region Member
 
