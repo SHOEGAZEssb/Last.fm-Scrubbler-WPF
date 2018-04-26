@@ -176,6 +176,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
         if (response.Success)
         {
           ScrobbleData = null;
+          Milestones = null;
           int pagesToFetch = (int)Math.Ceiling(response.Content.Playcount / 1000.0);
           List<LastTrack> tracks = new List<LastTrack>();
           for (int i = 1; i <= pagesToFetch; i++)
@@ -183,7 +184,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
             OnStatusUpdated(string.Format("Getting scrobble data... ({0} / {1}) pages", i, pagesToFetch));
             var pageResponse = await _userAPI.GetRecentScrobbles(Username, null, i, 1000);
             if (pageResponse.Success)
-              tracks.AddRange(pageResponse.Content.Reverse().ToList());
+              tracks.AddRange(pageResponse.Content.Where(c => !c.IsNowPlaying.HasValue || (c.IsNowPlaying.HasValue && !c.IsNowPlaying.Value)).Reverse().ToList());
             else
             {
               OnStatusUpdated(string.Format("Error getting scrobble data: {0}", pageResponse.Status));
@@ -192,7 +193,6 @@ namespace Scrubbler.ViewModels.ExtraFunctions
           }
 
           ScrobbleData = tracks;
-          ScrobbleData.Reverse();
           OnStatusUpdated("Successfully got scrobble data");
         }
         else
