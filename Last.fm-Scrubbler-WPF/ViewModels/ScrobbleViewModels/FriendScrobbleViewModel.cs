@@ -1,6 +1,7 @@
 ﻿using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
+using Scrubbler.ViewModels.SubViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

@@ -1,20 +1,14 @@
-﻿using Caliburn.Micro;
-using Scrubbler.Interfaces;
+﻿using Scrubbler.Interfaces;
 using System;
 
-namespace Scrubbler.ViewModels
+namespace Scrubbler.ViewModels.SubViewModels
 {
   /// <summary>
   /// ViewModel for a <see cref="ILocalFile"/>.
   /// </summary>
-  public class LoadedFileViewModel : PropertyChangedBase
+  public class LoadedFileViewModel : ScrobbableObjectViewModelBase
   {
     #region Properties
-
-    /// <summary>
-    /// Event that triggers when <see cref="ToScrobble"/> changed.
-    /// </summary>
-    public event EventHandler ToScrobbleChanged;
 
     /// <summary>
     /// The artist name.
@@ -45,21 +39,6 @@ namespace Scrubbler.ViewModels
     /// The number of the track.
     /// </summary>
     public int TrackNumber => _file.TrackNumber;
-
-    /// <summary>
-    /// Indicates if this file should be scrobbled.
-    /// </summary>
-    public bool ToScrobble
-    {
-      get { return _toScrobble; }
-      set
-      {
-        _toScrobble = value;
-        NotifyOfPropertyChange(() => ToScrobble);
-        ToScrobbleChanged?.Invoke(this, EventArgs.Empty);
-      }
-    }
-    private bool _toScrobble;
 
     #endregion Properties
 

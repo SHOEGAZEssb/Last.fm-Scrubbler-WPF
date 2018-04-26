@@ -3,6 +3,7 @@ using IF.Lastfm.Core.Api.Helpers;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
 using Scrubbler.Models;
+using Scrubbler.ViewModels.SubViewModels;
 using Scrubbler.Views;
 using System;
 using System.Collections.Generic;
