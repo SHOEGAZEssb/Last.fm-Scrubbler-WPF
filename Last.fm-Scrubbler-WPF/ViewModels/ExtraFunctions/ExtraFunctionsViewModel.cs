@@ -45,10 +45,13 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       csvDownloaderVM.StatusUpdated += VM_StatusUpdated;
       var collageCreatorVM = new CollageCreatorViewModel(windowManager, userAPI);
       collageCreatorVM.StatusUpdated += VM_StatusUpdated;
+      var milestoneCheckerVM = new MilestoneCheckerViewModel(userAPI);
+      milestoneCheckerVM.StatusUpdated += VM_StatusUpdated;
 
       ActivateItem(pasteYourTasteVM);
       ActivateItem(csvDownloaderVM);
       ActivateItem(collageCreatorVM);
+      ActivateItem(milestoneCheckerVM);
 
       // should be selected
       ActivateItem(pasteYourTasteVM);
