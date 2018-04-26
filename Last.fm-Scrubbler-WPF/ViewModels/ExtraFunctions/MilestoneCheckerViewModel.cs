@@ -184,7 +184,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
             OnStatusUpdated(string.Format("Getting scrobble data... ({0} / {1}) pages", i, pagesToFetch));
             var pageResponse = await _userAPI.GetRecentScrobbles(Username, null, i, 1000);
             if (pageResponse.Success)
-              tracks.AddRange(pageResponse.Content.Where(c => !c.IsNowPlaying.HasValue || (c.IsNowPlaying.HasValue && !c.IsNowPlaying.Value)).Reverse().ToList());
+              tracks.AddRange(pageResponse.Content.Where(c => !c.IsNowPlaying.HasValue || !c.IsNowPlaying.Value).Reverse().ToList());
             else
             {
               OnStatusUpdated(string.Format("Error getting scrobble data: {0}", pageResponse.Status));
