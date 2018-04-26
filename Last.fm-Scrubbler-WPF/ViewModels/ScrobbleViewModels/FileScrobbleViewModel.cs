@@ -7,6 +7,7 @@ using IF.Lastfm.Core.Objects;
 using System.IO;
 using Scrubbler.Interfaces;
 using System.Windows;
+using Scrubbler.ViewModels.SubViewModels;
 
 namespace Scrubbler.ViewModels.ScrobbleViewModels
 {

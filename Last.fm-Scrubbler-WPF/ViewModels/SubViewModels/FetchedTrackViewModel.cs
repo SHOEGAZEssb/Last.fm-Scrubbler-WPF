@@ -1,20 +1,14 @@
-﻿using Caliburn.Micro;
-using Scrubbler.Models;
+﻿using Scrubbler.Models;
 using System;
 
-namespace Scrubbler.ViewModels
+namespace Scrubbler.ViewModels.SubViewModels
 {
   /// <summary>
   /// ViewModel for the <see cref="Views.TrackResultView"/>.
   /// </summary>
-  public class FetchedTrackViewModel : PropertyChangedBase
+  public class FetchedTrackViewModel : ScrobbableObjectViewModelBase
   {
     #region Properties
-
-    /// <summary>
-    /// Event that triggers when <see cref="ToScrobble"/> changed.
-    /// </summary>
-    public event EventHandler ToScrobbleChanged;
 
     /// <summary>
     /// The fetched track.
@@ -29,21 +23,6 @@ namespace Scrubbler.ViewModels
       }
     }
     private ScrobbleBase _fetchedTrack;
-
-    /// <summary>
-    /// Gets/sets if this scrobble should be scrobbled.
-    /// </summary>
-    public bool ToScrobble
-    {
-      get { return _toScrobble; }
-      set
-      {
-        _toScrobble = value;
-        NotifyOfPropertyChange(() => ToScrobble);
-        ToScrobbleChanged?.Invoke(this, EventArgs.Empty);
-      }
-    }
-    private bool _toScrobble;
 
     /// <summary>
     /// The Uri of the small image of the parent album.

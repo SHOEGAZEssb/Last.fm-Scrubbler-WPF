@@ -1,20 +1,13 @@
-﻿using Caliburn.Micro;
-using Scrubbler.Models;
-using System;
+﻿using Scrubbler.Models;
 
-namespace Scrubbler.ViewModels
+namespace Scrubbler.ViewModels.SubViewModels
 {
   /// <summary>
   /// ViewModel for a <see cref="MediaDBScrobble"/>.
   /// </summary>
-  public class MediaDBScrobbleViewModel : PropertyChangedBase
+  public class MediaDBScrobbleViewModel : ScrobbableObjectViewModelBase
   {
     #region Properties
-
-    /// <summary>
-    /// Event that triggers when <see cref="ToScrobble"/> changes.
-    /// </summary>
-    public event EventHandler ToScrobbleChanged;
 
     /// <summary>
     /// The parsed scrobble.
@@ -29,21 +22,6 @@ namespace Scrubbler.ViewModels
       }
     }
     private MediaDBScrobble _scrobble;
-
-    /// <summary>
-    /// Gets if this scrobble should be scrobbled.
-    /// </summary>
-    public bool ToScrobble
-    {
-      get { return _toScrobble; }
-      set
-      {
-        _toScrobble = value;
-        NotifyOfPropertyChange(() => ToScrobble);
-        ToScrobbleChanged?.Invoke(this, EventArgs.Empty);
-      }
-    }
-    private bool _toScrobble;
 
     #endregion Properties
 

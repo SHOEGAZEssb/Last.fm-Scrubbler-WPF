@@ -210,6 +210,7 @@
     <Compile Include="Interfaces\INeedScrobbler.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ITunesScrobbleViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\MediaPlayerScrobbleViewModelBase.cs" />
+    <Compile Include="ViewModels\SubViewModels\ScrobbableObjectViewModelBase.cs" />
     <Compile Include="ViewModels\SubViewModels\ScrobblePreviewViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobbleTimeViewModelBase.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\SetlistFMScrobbleViewModel.cs" />
