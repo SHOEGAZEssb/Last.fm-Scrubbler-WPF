@@ -10,7 +10,7 @@
              xmlns:scrobbleViewModels="clr-namespace:Scrubbler.ViewModels.ScrobbleViewModels"
              xmlns:converters="clr-namespace:Scrubbler.Converters"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="350">
+             d:DesignHeight="300" d:DesignWidth="350" Style="{StaticResource EnableControlsStyle}">
 
   <UserControl.Resources>
     <ObjectDataProvider MethodName="GetValues"
@@ -23,7 +23,7 @@
 
     <converters:DataTypeConverter x:Key="DataTypeConv"/>
 
-    <Style TargetType="FrameworkElement" BasedOn="{StaticResource EnableControlsStyle}" x:Key="SetlistResultPageVisibilityStyle">
+    <Style TargetType="FrameworkElement" x:Key="SetlistResultPageVisibilityStyle">
       <Setter Property="Visibility" Value="Collapsed"/>
       <Style.Triggers>
         <DataTrigger Binding="{Binding CurrentView, Converter={StaticResource DataTypeConv}}" Value="{x:Type subViews:SetlistResultView}">
@@ -59,16 +59,15 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="Search Text:"/>
-    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding SearchText}" Style="{StaticResource EnableControlsStyle}"/>
+    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding SearchText}"/>
 
     <Label Grid.Row="0" Grid.Column="4" Content="Search Type:"/>
-    <ComboBox Grid.Row="0" Grid.Column="6" SelectedItem="{Binding SelectedSearchType}" ItemsSource="{Binding Source={StaticResource SetlistSearchTypeKeyDataProvider}}"
-              Style="{StaticResource EnableControlsStyle}"/>
+    <ComboBox Grid.Row="0" Grid.Column="6" SelectedItem="{Binding SelectedSearchType}" ItemsSource="{Binding Source={StaticResource SetlistSearchTypeKeyDataProvider}}"/>
 
-    <Label Grid.Row="0" Grid.Column="8" Content="Artist Result Page:" Style="{StaticResource EnableControlsStyle}"/>
-    <xctk:IntegerUpDown Grid.Row="0" Grid.Column="10" HorizontalAlignment="Left" Value="{Binding ArtistResultPage}" Minimum="1" Style="{StaticResource EnableControlsStyle}"/>
+    <Label Grid.Row="0" Grid.Column="8" Content="Artist Result Page:"/>
+    <xctk:IntegerUpDown Grid.Row="0" Grid.Column="10" HorizontalAlignment="Left" Value="{Binding ArtistResultPage}" Minimum="1"/>
 
-    <Button x:Name="Search" Grid.Row="0" Grid.Column="12" Content="Search" Style="{StaticResource EnableControlsStyle}"/>
+    <Button x:Name="Search" Grid.Row="0" Grid.Column="12" Content="Search"/>
 
     <Label Grid.Row="2" Grid.Column="0" Content="Setlist Result Page:" Style="{StaticResource SetlistResultPageVisibilityStyle}"/>
     <xctk:IntegerUpDown Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Value="{Binding SetlistResultPage}" Minimum="1" Style="{StaticResource SetlistResultPageVisibilityStyle}"/>
@@ -77,7 +76,7 @@
 
     <Grid Grid.Row="6" Grid.ColumnSpan="13" HorizontalAlignment="Stretch">
       <Grid.Style>
-        <Style TargetType="Grid" BasedOn="{StaticResource EnableControlsStyle}">
+        <Style TargetType="Grid">
           <Setter Property="Visibility" Value="Collapsed"/>
           <Style.Triggers>
             <DataTrigger Binding="{Binding CurrentView, Converter={StaticResource DataTypeConv}}" Value="{x:Type views:TrackResultView}">

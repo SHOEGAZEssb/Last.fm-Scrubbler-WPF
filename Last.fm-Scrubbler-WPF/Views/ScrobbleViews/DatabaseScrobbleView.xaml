@@ -10,7 +10,7 @@
              xmlns:converters="clr-namespace:Scrubbler.Converters"
              xmlns:subViews="clr-namespace:Scrubbler.Views.SubViews"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" Style="{StaticResource EnableControlsStyle}">
 
   <UserControl.Resources>
     <ObjectDataProvider MethodName="GetValues"
@@ -57,20 +57,22 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="Text to search:"/>
-    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource EnableControlsStyle}"/>
-    <ComboBox Grid.Row="0" Grid.Column="4" SelectedValue="{Binding DatabaseToSearch}" ItemsSource="{Binding Source={StaticResource DatabaseKeyDataProvider}}"
-              Style="{StaticResource EnableControlsStyle}"/>
-    <ComboBox Grid.Row="0" Grid.Column="6" SelectedValue="{Binding SearchType}" ItemsSource="{Binding Source={StaticResource SearchTypeKeyDataProvider}}"
-              Style="{StaticResource EnableControlsStyle}"/>
+    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+
+    <ComboBox Grid.Row="0" Grid.Column="4" SelectedValue="{Binding DatabaseToSearch}" ItemsSource="{Binding Source={StaticResource DatabaseKeyDataProvider}}"/>
+
+    <ComboBox Grid.Row="0" Grid.Column="6" SelectedValue="{Binding SearchType}" ItemsSource="{Binding Source={StaticResource SearchTypeKeyDataProvider}}"/>
+
     <Label Grid.Row="0" Grid.Column="8" Content="Max Results:"/>
-    <xctk:IntegerUpDown Grid.Row="0" Grid.Column="10" Minimum="1" Maximum="1000" Value="{Binding MaxResults}" Style="{StaticResource EnableControlsStyle}"/>
+    <xctk:IntegerUpDown Grid.Row="0" Grid.Column="10" Minimum="1" Maximum="1000" Value="{Binding MaxResults}"/>
+
     <Button x:Name="Search" Grid.Row="0" Grid.Column="12" Content="Search" IsEnabled="{Binding CanSearch}"/>
 
     <ContentPresenter Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="14" Content="{Binding CurrentView}"/>
 
     <Grid Grid.Row="4" Grid.ColumnSpan="14" HorizontalAlignment="Stretch">
       <Grid.Style>
-        <Style TargetType="Grid" BasedOn="{StaticResource EnableControlsStyle}">
+        <Style TargetType="Grid">
           <Setter Property="Visibility" Value="Collapsed"/>
           <Style.Triggers>
             <DataTrigger Binding="{Binding CurrentView, Converter={StaticResource DataTypeConv}}" Value="{x:Type local:TrackResultView}">

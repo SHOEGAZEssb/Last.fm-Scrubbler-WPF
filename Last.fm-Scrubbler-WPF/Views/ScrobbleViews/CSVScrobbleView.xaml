@@ -9,7 +9,7 @@
              xmlns:viewModels="clr-namespace:Scrubbler.ViewModels.ScrobbleViewModels"
              xmlns:subViews="clr-namespace:Scrubbler.Views.SubViews"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="500">
+             d:DesignHeight="300" d:DesignWidth="500" Style="{StaticResource EnableControlsStyle}">
 
   <UserControl.Resources>
     <ObjectDataProvider MethodName="GetValues"
@@ -46,7 +46,7 @@
 
     <Label Grid.Row="0" Grid.Column="0" Content="CSV File:"/>
     <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding CSVFilePath, UpdateSourceTrigger=PropertyChanged}"/>
-    <Button x:Name="LoadCSVFileDialog" Grid.Row="0" Grid.Column="4" Content=" ... " Style="{StaticResource EnableControlsStyle}"/>
+    <Button x:Name="LoadCSVFileDialog" Grid.Row="0" Grid.Column="4" Content=" ... "/>
     <Button x:Name="ParseCSVFile" Grid.Row="0" Grid.Column="6" Content="Parse" IsEnabled="{Binding CanParse}"/>
     <Button x:Name="OpenCSVParserSettings" Grid.Row="0" Grid.Column="8" Content="Settings"/>
 
@@ -123,8 +123,7 @@
       </Grid.ColumnDefinitions>
 
       <Label Grid.Column="0" Grid.Row="0" Content="Scrobble Mode:"/>
-      <ComboBox Grid.Column="2" Grid.Row="0" SelectedValue="{Binding ScrobbleMode}" ItemsSource="{Binding Source={StaticResource ScrobbleModeKeyDataProvider}}"
-                Style="{StaticResource EnableControlsStyle}"/>
+      <ComboBox Grid.Column="2" Grid.Row="0" SelectedValue="{Binding ScrobbleMode}" ItemsSource="{Binding Source={StaticResource ScrobbleModeKeyDataProvider}}"/>
 
       <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3">
         <Grid.Style>
@@ -152,7 +151,7 @@
         <subViews:SelectScrobbleTimeControl Grid.Row="0" Grid.Column="2"/>
 
         <Label Grid.Column="0" Grid.Row="2" Content="Default Duration per Song (sec):"/>
-        <xctk:IntegerUpDown Grid.Column="2" Grid.Row="2" Minimum="1" Value="{Binding Duration}" Style="{StaticResource EnableControlsStyle}"/>
+        <xctk:IntegerUpDown Grid.Column="2" Grid.Row="2" Minimum="1" Value="{Binding Duration}"/>
       </Grid>
 
       <subViews:ScrobbleButtonControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="7"/>

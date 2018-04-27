@@ -9,7 +9,7 @@
              xmlns:conv="clr-namespace:Scrubbler.Converters"
              xmlns:subViews="clr-namespace:Scrubbler.Views.SubViews"
              mc:Ignorable="d"
-             d:DesignHeight="330" d:DesignWidth="350">
+             d:DesignHeight="330" d:DesignWidth="350" Style="{StaticResource EnableControlsStyle}">
 
   <UserControl.Resources>
     <ObjectDataProvider MethodName="GetValues"
@@ -50,14 +50,14 @@
     <Button x:Name="SelectFile" Grid.Row="0" Grid.Column="4" Content="..." MinWidth="25" IsEnabled="{Binding CanSelectFile}"/>
 
     <ComboBox Grid.Row="0" Grid.Column="6" ItemsSource="{Binding Source={StaticResource MPDDataProvider}}"
-              SelectedValue="{Binding MediaPlayerDatabaseType}" Style="{StaticResource EnableControlsStyle}">
+              SelectedValue="{Binding MediaPlayerDatabaseType}">
       <ComboBox.ItemTemplate>
         <DataTemplate>
           <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConv}}"/>
         </DataTemplate>
       </ComboBox.ItemTemplate>
     </ComboBox>
-    <Button x:Name="ParseFile" Grid.Row="0" Grid.Column="8" Content="Parse" Style="{StaticResource EnableControlsStyle}"/>
+    <Button x:Name="ParseFile" Grid.Row="0" Grid.Column="8" Content="Parse"/>
 
     <subViews:SelectScrobblesControl Grid.Row="2" Grid.ColumnSpan="9"/>
 
