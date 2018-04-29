@@ -4,7 +4,6 @@ using Scrubbler.Models;
 using Scrubbler.Properties;
 using Scrubbler.ViewModels.ExtraFunctions;
 using Scrubbler.ViewModels.ScrobbleViewModels;
-using Scrubbler.Views;
 using System;
 using System.IO;
 using System.Linq;
@@ -13,7 +12,7 @@ using System.Reflection;
 namespace Scrubbler.ViewModels
 {
   /// <summary>
-  /// ViewModel for the <see cref="MainView"/>.
+  /// ViewModel for the <see cref="Views.MainView"/>.
   /// </summary>
   public class MainViewModel : Conductor<Screen>.Collection.OneActive
   {
@@ -34,7 +33,7 @@ namespace Scrubbler.ViewModels
     private string _titleString;
 
     /// <summary>
-    /// ViewModel for the <see cref="UserView"/>.
+    /// ViewModel for the <see cref="Views.UserView"/>.
     /// </summary>
     public UserViewModel UserViewModel
     {
@@ -236,7 +235,7 @@ namespace Scrubbler.ViewModels
     }
 
     /// <summary>
-    /// Shows the <see cref="UserView"/>.
+    /// Shows the <see cref="Views.UserView"/>.
     /// </summary>
     public void HyperlinkClicked()
     {
