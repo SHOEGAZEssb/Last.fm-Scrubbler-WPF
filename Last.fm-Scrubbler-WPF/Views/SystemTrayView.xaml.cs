@@ -3,14 +3,14 @@
 namespace Scrubbler.Views
 {
   /// <summary>
-  /// Interaction logic for MainWindow.xaml
+  /// Interaction logic for SystemTrayView.xaml
   /// </summary>
-  public partial class MainView : Window
+  public partial class SystemTrayView : Window
   {
     /// <summary>
     /// Constructor.
     /// </summary>
-    public MainView()
+    public SystemTrayView()
     {
       InitializeComponent();
     }
