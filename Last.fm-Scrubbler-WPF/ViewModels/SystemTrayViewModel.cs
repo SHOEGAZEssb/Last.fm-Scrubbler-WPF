@@ -49,10 +49,11 @@ namespace Scrubbler.ViewModels
     }
 
     /// <summary>
-    /// Exits the application.
+    /// Saves settings and exits the application.
     /// </summary>
     public void Exit()
     {
+      Settings.Default.Save();
       Application.Current.Shutdown();
     }
 

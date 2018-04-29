@@ -208,6 +208,7 @@
     <Compile Include="ViewModels\ExtraFunctions\ExtraFunctionViewModelBase.cs" />
     <Compile Include="ViewModels\ExtraFunctions\MilestoneCheckerViewModel.cs" />
     <Compile Include="ViewModels\ExtraFunctions\PasteYourTasteViewModel.cs" />
+    <Compile Include="ViewModels\GeneralSettingsViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobblerViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\CacheScrobblerViewModel.cs" />
     <Compile Include="Interfaces\INeedCachingScrobbler.cs" />
@@ -237,6 +238,9 @@
     </Compile>
     <Compile Include="Views\ExtraFunctions\MilestoneCheckerView.xaml.cs">
       <DependentUpon>MilestoneCheckerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GeneralSettingsView.xaml.cs">
+      <DependentUpon>GeneralSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GridViewSort.cs" />
     <Compile Include="Models\DatedScrobble.cs" />
@@ -354,6 +358,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ExtraFunctions\PasteYourTasteView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GeneralSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

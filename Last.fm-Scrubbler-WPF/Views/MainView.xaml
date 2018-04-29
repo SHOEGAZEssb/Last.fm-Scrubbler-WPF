@@ -33,7 +33,17 @@
         </StackPanel>
       </StatusBarItem>
 
-      <Separator />
+      <Separator/>
+
+      <StatusBarItem>
+        <TextBlock>
+            <Hyperlink>
+              <TextBlock Text="Settings" cal:Message.Attach="[Event MouseDown] = [Action ShowSettings]"/>
+            </Hyperlink>
+          </TextBlock>
+      </StatusBarItem>
+
+      <Separator/>
 
       <StatusBarItem>
         <StackPanel Orientation="Horizontal">
