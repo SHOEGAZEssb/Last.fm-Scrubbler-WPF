@@ -2,8 +2,6 @@
 using Scrubbler.Interfaces;
 using Scrubbler.Models;
 using Scrubbler.ViewModels;
-using System;
-using System.Collections.Generic;
 
 namespace Scrubbler
 {
@@ -12,8 +10,6 @@ namespace Scrubbler
   /// </summary>
   internal class AppBootstrapper : BootstrapperBase
   {
-    private SimpleContainer _container;
-
     /// <summary>
     /// Constructor.
     /// </summary>
@@ -22,6 +18,10 @@ namespace Scrubbler
       Initialize();
     }
 
+    /// <summary>
+    /// Configures the View-ViewModel type- and
+    /// namespace mappings.
+    /// </summary>
     protected override void Configure()
     {
       TypeMappingConfiguration map = new TypeMappingConfiguration()
@@ -34,35 +34,6 @@ namespace Scrubbler
       ViewLocator.AddSubNamespaceMapping("Scrubbler.ViewModels.ScrobbleViewModels", "Scrubbler.Views.ScrobbleViews");
       ViewLocator.AddSubNamespaceMapping("Scrubbler.ViewModels.SubViewModels", "Scrubbler.Views.SubViews");
       ViewModelLocator.ConfigureTypeMappings(map);
-
-      _container = new SimpleContainer();
-      _container.Singleton<IWindowManager, WindowManager>();
-      _container.Singleton<IExtendedWindowManager, ExtendedWindowManager>();
-      _container.Singleton<ILastFMClientFactory, LastFMClientFactory>();
-      _container.Singleton<IScrobblerFactory, ScrobblerFactory>();
-      _container.Singleton<ILocalFileFactory, LocalFileFactory>();
-      _container.Singleton<IFileOperator, FileOperator>();
-      _container.Singleton<IDirectoryOperator, DirectoryOperator>();
-      _container.Singleton<ISerializer<User>, DCSerializer<User>>();
-      _container.PerRequest<MainViewModel>();
-    }
-
-    protected override void BuildUp(object instance)
-    {
-      _container.BuildUp(instance);
-    }
-
-    protected override object GetInstance(Type service, string key)
-    {
-      var instance = _container.GetInstance(service, key);
-      if (instance != null)
-        return instance;
-      throw new InvalidOperationException("Could not locate any instances.");
-    }
-
-    protected override IEnumerable<object> GetAllInstances(Type service)
-    {
-      return _container.GetAllInstances(service);
     }
 
     /// <summary>
@@ -72,7 +43,16 @@ namespace Scrubbler
     /// <param name="e">Ignored.</param>
     protected override void OnStartup(object sender, System.Windows.StartupEventArgs e)
     {
-      DisplayRootViewFor<MainViewModel>();
+      IExtendedWindowManager windowManager = new ExtendedWindowManager();
+      ILastFMClientFactory lastFMClientFactory = new LastFMClientFactory();
+      IScrobblerFactory scrobblerFactory = new ScrobblerFactory();
+      ILocalFileFactory localFileFactory = new LocalFileFactory();
+      IFileOperator fileOperator = new FileOperator();
+      IDirectoryOperator directoryOperator = new DirectoryOperator();
+      ISerializer<User> userSerializer = new DCSerializer<User>();
+      MainViewModel mainVM = new MainViewModel(windowManager, lastFMClientFactory, scrobblerFactory, localFileFactory, fileOperator, directoryOperator, userSerializer);
+
+      windowManager.ShowWindow(new SystemTrayViewModel(windowManager, mainVM));
     }
   }
 }

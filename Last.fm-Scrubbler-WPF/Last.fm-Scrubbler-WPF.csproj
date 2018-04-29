@@ -51,6 +51,9 @@
     <Reference Include="Caliburn.Micro.Platform.Core, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.4.0.0-alpha.1\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+    </Reference>
     <Reference Include="IF.Lastfm.Core, Version=1.0.1.307, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Inflatable.Lastfm.1.0.1.307\lib\netstandard1.1\IF.Lastfm.Core.dll</HintPath>
     </Reference>
@@ -205,6 +208,7 @@
     <Compile Include="ViewModels\ExtraFunctions\ExtraFunctionViewModelBase.cs" />
     <Compile Include="ViewModels\ExtraFunctions\MilestoneCheckerViewModel.cs" />
     <Compile Include="ViewModels\ExtraFunctions\PasteYourTasteViewModel.cs" />
+    <Compile Include="ViewModels\GeneralSettingsViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobblerViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\CacheScrobblerViewModel.cs" />
     <Compile Include="Interfaces\INeedCachingScrobbler.cs" />
@@ -220,6 +224,7 @@
     <Compile Include="ViewModels\SubViewModels\ConfigureCSVParserViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\DatedScrobbleViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\FetchedSetlistViewModel.cs" />
+    <Compile Include="ViewModels\SystemTrayViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\ExtraFunctions\CollageCreatorView.xaml.cs">
@@ -233,6 +238,9 @@
     </Compile>
     <Compile Include="Views\ExtraFunctions\MilestoneCheckerView.xaml.cs">
       <DependentUpon>MilestoneCheckerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GeneralSettingsView.xaml.cs">
+      <DependentUpon>GeneralSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GridViewSort.cs" />
     <Compile Include="Models\DatedScrobble.cs" />
@@ -318,6 +326,9 @@
     <Compile Include="Views\SubViews\SelectScrobblesControl.xaml.cs">
       <DependentUpon>SelectScrobblesControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SystemTrayView.xaml.cs">
+      <DependentUpon>SystemTrayView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserView.xaml.cs">
       <DependentUpon>UserView.xaml</DependentUpon>
     </Compile>
@@ -347,6 +358,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ExtraFunctions\PasteYourTasteView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GeneralSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -439,6 +454,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SubViews\SelectScrobblesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SystemTrayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

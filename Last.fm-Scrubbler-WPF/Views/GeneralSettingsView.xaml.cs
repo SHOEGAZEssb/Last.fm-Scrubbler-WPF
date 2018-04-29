@@ -3,14 +3,14 @@
 namespace Scrubbler.Views
 {
   /// <summary>
-  /// Interaction logic for MainWindow.xaml
+  /// Interaction logic for GeneralSettingsView.xaml
   /// </summary>
-  public partial class MainView : Window
+  public partial class GeneralSettingsView : Window
   {
     /// <summary>
     /// Constructor.
     /// </summary>
-    public MainView()
+    public GeneralSettingsView()
     {
       InitializeComponent();
     }

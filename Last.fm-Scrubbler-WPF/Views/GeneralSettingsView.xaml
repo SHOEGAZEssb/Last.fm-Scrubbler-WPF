@@ -1,0 +1,35 @@
+﻿<Window x:Class="Scrubbler.Views.GeneralSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             Width="300" Height="130" Title="General Settings">
+
+  <Grid Margin="5,5,5,5">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <CheckBox Grid.Row="0" Content="Minimize To Tray" IsChecked="{Binding MinimizeToTray}"/>
+    <CheckBox Grid.Row="2" Content="Start Minimized" IsChecked="{Binding StartMinimized}"/>
+
+    <Grid Grid.Row="4" HorizontalAlignment="Right">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+
+      <Button x:Name="OK" Grid.Column="0" Content="OK"/>
+      <Button x:Name="Cancel" Grid.Column="2" Content="Cancel"/>
+      <Button x:Name="LoadDefaults" Grid.Column="4" Content="Restore Defaults"/>
+    </Grid>
+  </Grid>
+</Window>

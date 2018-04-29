@@ -128,6 +128,8 @@ namespace Scrubbler.ViewModels
 
     #endregion Private Member
 
+    #region Construction
+
     /// <summary>
     /// Constructor.
     /// </summary>
@@ -149,6 +151,16 @@ namespace Scrubbler.ViewModels
       _client = _lastFMClientFactory.CreateClient(APIKEY, APISECRET);
       SetupViewModels(localFileFactory, directoryOperator, userSerializer);
       CurrentStatus = "Waiting to scrobble...";
+    }
+
+    #endregion Construction
+
+    /// <summary>
+    /// Shows the general settings.
+    /// </summary>
+    public void ShowSettings()
+    {
+      _windowManager.ShowDialog(new GeneralSettingsViewModel());
     }
 
     #region Setup
@@ -255,8 +267,6 @@ namespace Scrubbler.ViewModels
         {
           disposableVM.Dispose();
         }
-
-        Settings.Default.Save();
       }
     }
   }
