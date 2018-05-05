@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Login" Height="180" Width="180" Icon="..\scrubbler_64.ico" ResizeMode="NoResize">
 
-  <Grid>
+  <Grid FocusManager.FocusedElement="{Binding ElementName=usernameTextBox}">
     <Grid.RowDefinitions>
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
