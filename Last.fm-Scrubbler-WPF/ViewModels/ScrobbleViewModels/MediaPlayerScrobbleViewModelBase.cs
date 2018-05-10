@@ -222,7 +222,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <returns>Task.</returns>
     protected async Task UpdateLovedInfo()
     {
-      if (CurrentTrackName != null && CurrentArtistName != null && base.CanScrobble)
+      if (CurrentTrackName != null && CurrentArtistName != null && _lastAuth?.UserSession?.Username != null)
       {
         var info = await _trackAPI.GetInfoAsync(CurrentTrackName, CurrentArtistName, _lastAuth.UserSession.Username);
         if (info.Success)
