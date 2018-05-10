@@ -185,8 +185,8 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     private void ConnectEvents()
     {
-      _spotify.OnPlayStateChange += _spotify_OnPlayStateChange;
       _spotify.ListenForEvents = true;
+      _spotify.OnPlayStateChange += _spotify_OnPlayStateChange;
     }
 
     /// <summary>
@@ -253,15 +253,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
           UpdateCurrentTrackInfo();
         }
       }
-    }
-
-    /// <summary>
-    /// Notifies the ui of new track info.
-    /// </summary>
-    protected override void UpdateCurrentTrackInfo()
-    {
-      base.UpdateCurrentTrackInfo();
-      FetchAlbumArtwork().Forget();
     }
 
     /// <summary>

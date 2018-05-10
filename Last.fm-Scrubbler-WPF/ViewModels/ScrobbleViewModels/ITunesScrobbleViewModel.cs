@@ -170,7 +170,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       NotifyOfPropertyChange(() => CanDisconnect);
 
       UpdateCurrentTrackInfo();
-      await FetchAlbumArtwork();
 
       _refreshTimer = new Timer(100);
       _refreshTimer.Elapsed += _refreshTimer_Elapsed;
@@ -217,7 +216,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
           CountedSeconds = 0;
           _countTimer.Start();
           UpdateCurrentTrackInfo();
-          FetchAlbumArtwork().Forget();
         }
       }
     }

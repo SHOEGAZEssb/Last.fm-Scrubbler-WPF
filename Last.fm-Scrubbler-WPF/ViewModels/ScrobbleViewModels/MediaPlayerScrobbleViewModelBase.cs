@@ -213,6 +213,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       NotifyOfPropertyChange(() => CurrentTrackLengthToScrobble);
       UpdateLovedInfo().Forget();
       UpdateNowPlaying().Forget();
+      FetchAlbumArtwork().Forget();
     }
 
     /// <summary>
