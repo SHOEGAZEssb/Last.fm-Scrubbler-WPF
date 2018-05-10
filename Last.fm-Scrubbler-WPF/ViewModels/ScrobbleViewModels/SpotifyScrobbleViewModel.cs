@@ -81,6 +81,11 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     private string _lastTrack;
 
+    /// <summary>
+    /// Lock object to lock the data update.
+    /// </summary>
+    private readonly object _lockAnchor = new object();
+
     #endregion Member
 
     /// <summary>
@@ -230,20 +235,23 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <param name="e">Ignored.</param>
     private void _refreshTimer_Elapsed(object sender, ElapsedEventArgs e)
     {
-      _lastTrack = _currentResponse?.Track?.TrackResource.Uri;
-      _currentResponse = _spotify.GetStatus();
-
-      if (_currentResponse.Track == null)
+      lock (_lockAnchor)
       {
-        Disconnect();
-        return;
-      }
+        _lastTrack = _currentResponse?.Track?.TrackResource.Uri;
+        _currentResponse = _spotify.GetStatus();
 
-      if (_lastTrack != _currentResponse.Track.TrackResource.Uri)
-      {
-        CountedSeconds = 0;
-        _counterTimer.Start();
-        UpdateCurrentTrackInfo();
+        if (_currentResponse.Track == null)
+        {
+          Disconnect();
+          return;
+        }
+
+        if (_lastTrack != _currentResponse.Track.TrackResource.Uri)
+        {
+          CountedSeconds = 0;
+          _counterTimer.Start();
+          UpdateCurrentTrackInfo();
+        }
       }
     }
 
@@ -270,16 +278,21 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         {
           OnStatusUpdated("Trying to scrobble currently playing track...");
 
-          Scrobble s = new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now)
+          Scrobble s = null;
+          // lock while acquiring current data
+          lock (_lockAnchor)
           {
-            Duration = TimeSpan.FromSeconds(CurrentTrackLength),
-          };
+            s = new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now)
+            {
+              Duration = TimeSpan.FromSeconds(CurrentTrackLength),
+            };
+          }
 
           var response = await Scrobbler.ScrobbleAsync(s);
           if (response.Success && response.Status == LastResponseStatus.Successful)
-            OnStatusUpdated(string.Format("Successfully scrobbled {0}!", CurrentTrackName));
+            OnStatusUpdated(string.Format("Successfully scrobbled {0}!", s.Track));
           else if(response.Status == LastResponseStatus.Cached)
-            OnStatusUpdated(string.Format("Scrobbling of track {0} failed. Scrobble has been cached", CurrentTrackName));
+            OnStatusUpdated(string.Format("Scrobbling of track {0} failed. Scrobble has been cached", s.Track));
           else
             OnStatusUpdated("Error while scrobbling: " + response.Status);
         }

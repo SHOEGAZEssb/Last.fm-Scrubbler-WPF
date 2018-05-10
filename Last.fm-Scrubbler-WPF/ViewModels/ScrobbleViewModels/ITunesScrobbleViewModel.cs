@@ -116,9 +116,9 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     private Timer _refreshTimer;
 
     /// <summary>
-    /// Lock object to lock the two timer callbacks.
+    /// Lock object to lock the data update.
     /// </summary>
-    private object _lockAnchor = new object();
+    private readonly object _lockAnchor = new object();
 
     #endregion Private Member
 
@@ -209,13 +209,16 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <param name="e">Ignored.</param>
     private void _refreshTimer_Elapsed(object sender, ElapsedEventArgs e)
     {
-      if (ITunesApp?.CurrentTrack?.trackID != _currentTrackID || ITunesApp?.CurrentTrack?.PlayedCount > _currentTrackPlayCount)
+      lock (_lockAnchor)
       {
-        _currentTrackPlayCount = ITunesApp.CurrentTrack.PlayedCount;
-        CountedSeconds = 0;
-        _countTimer.Start();
-        UpdateCurrentTrackInfo();
-        FetchAlbumArtwork().Forget();
+        if (ITunesApp?.CurrentTrack?.trackID != _currentTrackID || ITunesApp?.CurrentTrack?.PlayedCount > _currentTrackPlayCount)
+        {
+          _currentTrackPlayCount = ITunesApp.CurrentTrack.PlayedCount;
+          CountedSeconds = 0;
+          _countTimer.Start();
+          UpdateCurrentTrackInfo();
+          FetchAlbumArtwork().Forget();
+        }
       }
     }
 
@@ -226,7 +229,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <param name="e">Ignored.</param>
     private void _countTimer_Elapsed(object sender, ElapsedEventArgs e)
     {
-      // we check the playerstate manually because the events dont work.
+      // we check the playerstate manually because the events don't work.
       if (ITunesApp?.PlayerState == ITPlayerState.ITPlayerStatePlaying)
       {
         if (++CountedSeconds == CurrentTrackLengthToScrobble)
@@ -278,27 +281,33 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         {
           OnStatusUpdated("Trying to scrobble currently playing track...");
 
-          // try to get AlbumArtist
-          string albumArtist = string.Empty;
-          try
+          Scrobble s = null;
+          // lock while acquiring current data
+          lock (_lockAnchor)
           {
-            albumArtist = (ITunesApp.CurrentTrack as dynamic).AlbumArtist;
-          }
-          catch(RuntimeBinderException)
-          {
-            // swallow, AlbumArtist doesn't exist for some reason.
+            // try to get AlbumArtist
+            string albumArtist = string.Empty;
+            try
+            {
+              albumArtist = (ITunesApp.CurrentTrack as dynamic).AlbumArtist;
+            }
+            catch (RuntimeBinderException)
+            {
+              // swallow, AlbumArtist doesn't exist for some reason.
+            }
+
+            s = new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now)
+            {
+              Duration = TimeSpan.FromSeconds(CurrentTrackLength),
+              AlbumArtist = albumArtist
+            };
           }
 
-          Scrobble s = new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now)
-          {
-            Duration = TimeSpan.FromSeconds(CurrentTrackLength),
-            AlbumArtist = albumArtist
-          };
           var response = await Scrobbler.ScrobbleAsync(s);
           if (response.Success && response.Status == LastResponseStatus.Successful)
-            OnStatusUpdated(string.Format("Successfully scrobbled {0}!", CurrentTrackName));
+            OnStatusUpdated(string.Format("Successfully scrobbled {0}!", s.Track));
           else if (response.Status == LastResponseStatus.Cached)
-            OnStatusUpdated(string.Format("Scrobbling of track {0} failed. Scrobble has been cached", CurrentTrackName));
+            OnStatusUpdated(string.Format("Scrobbling of track {0} failed. Scrobble has been cached", s.Track));
           else
             OnStatusUpdated("Error while scrobbling: " + response.Status);
         }
