@@ -17,7 +17,7 @@ namespace Scrubbler.ViewModels.SubViewModels
     public event EventHandler ToScrobbleChanged;
 
     /// <summary>
-    /// if this object should be scrobbled.
+    /// If this object should be scrobbled.
     /// </summary>
     public bool ToScrobble
     {
