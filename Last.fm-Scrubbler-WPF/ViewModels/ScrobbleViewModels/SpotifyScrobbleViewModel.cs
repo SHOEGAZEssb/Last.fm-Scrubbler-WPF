@@ -240,7 +240,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         _lastTrack = _currentResponse?.Track?.TrackResource.Uri;
         _currentResponse = _spotify.GetStatus();
 
-        if (_currentResponse.Track == null)
+        if (_currentResponse?.Track == null)
         {
           Disconnect();
           return;
