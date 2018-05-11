@@ -279,19 +279,19 @@ namespace Scrubbler.ViewModels.ExtraFunctions
         {
           OnStatusUpdated("Fetching top artists...");
           var response = await _userAPI.GetTopArtists(Username, TimeSpan, 1, numCollageItems);
-          if (response.Success)
+          if (response.Success && response.Status == LastResponseStatus.Successful)
             collage = await StitchImagesTogether(response.Content.Select(a => new Tuple<Uri, string>(a.MainImage.ExtraLarge, CreateArtistText(a))).ToList());
           else
-            OnStatusUpdated("Error while fetching top artists");
+            OnStatusUpdated(string.Format("Error while fetching top artists: {0}", response.Status));
         }
         else if (SelectedCollageType == CollageType.Albums)
         {
           OnStatusUpdated("Fetching top albums...");
           var response = await _userAPI.GetTopAlbums(Username, TimeSpan, 1, numCollageItems);
-          if (response.Success)
+          if (response.Success && response.Status == LastResponseStatus.Successful)
             collage = await StitchImagesTogether(response.Content.Select(a => new Tuple<Uri, string>(a.Images.ExtraLarge, CreateAlbumText(a))).ToList());
           else
-            OnStatusUpdated("Error while fetching top albums");
+            OnStatusUpdated(string.Format("Error while fetching top albums: {0}", response.Status));
         }
 
         using (MemoryStream ms = new MemoryStream())
@@ -307,7 +307,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       }
       catch (Exception ex)
       {
-        OnStatusUpdated("Fatal error while creating collage: " + ex.Message);
+        OnStatusUpdated(string.Format("Fatal error while creating collage: {0}", ex.Message));
       }
       finally
       {
@@ -336,7 +336,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       }
       catch (Exception ex)
       {
-        OnStatusUpdated("Fatal error while saving collage to file: " + ex.Message);
+        OnStatusUpdated(string.Format("Fatal error while saving collage to file: {0}", ex.Message));
       }
     }
 
@@ -402,7 +402,9 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       BitmapFrame[] frames = new BitmapFrame[infos.Count];
       for (int i = 0; i < frames.Length; i++)
       {
-        frames[i] = BitmapDecoder.Create(infos[i].Item1 ?? (SelectedCollageType == CollageType.Albums ? new Uri("pack://application:,,,/Resources/noalbumimage.png") : new Uri("pack://application:,,,/Resources/noartistimage.png")), BitmapCreateOptions.None, BitmapCacheOption.OnDemand).Frames.First();
+        frames[i] = BitmapDecoder.Create(infos[i].Item1 ?? (SelectedCollageType == CollageType.Albums ? new Uri("pack://application:,,,/Resources/noalbumimage.png")
+                                                        : new Uri("pack://application:,,,/Resources/noartistimage.png")),
+                                                                  BitmapCreateOptions.None, BitmapCacheOption.OnDemand).Frames.First();
       }
 
       OnStatusUpdated("Downloading images...");

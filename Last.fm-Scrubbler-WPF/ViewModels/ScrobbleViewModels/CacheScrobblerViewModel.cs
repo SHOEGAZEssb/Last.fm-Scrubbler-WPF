@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Objects;
+﻿using IF.Lastfm.Core.Api.Enums;
+using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
 using Scrubbler.Properties;
 using System;
@@ -118,14 +119,14 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         OnStatusUpdated("Trying to scrobble cached tracks...");
         var response = await Scrobbler.SendCachedScrobblesAsync();
 
-        if (response.Success && response.Status == IF.Lastfm.Core.Api.Enums.LastResponseStatus.Successful)
+        if (response.Success && response.Status == LastResponseStatus.Successful)
           OnStatusUpdated("Successfully scrobbled cached tracks");
         else
-          OnStatusUpdated("Error scrobbling cached tracks: " + response.Status);
+          OnStatusUpdated(string.Format("Error scrobbling cached tracks: {0}", response.Status));
       }
       catch(Exception ex)
       {
-        OnStatusUpdated("Fatal error while trying to scrobble cached tracks: " + ex.Message);
+        OnStatusUpdated(string.Format("Fatal error while trying to scrobble cached tracks: {0}", ex.Message));
       }
       finally
       {
@@ -146,7 +147,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       }
       catch(Exception ex)
       {
-        OnStatusUpdated("Fatal error getting cached scrobbles: " + ex.Message);
+        OnStatusUpdated(string.Format("Fatal error getting cached scrobbles: {0}", ex.Message));
       }
       finally
       {

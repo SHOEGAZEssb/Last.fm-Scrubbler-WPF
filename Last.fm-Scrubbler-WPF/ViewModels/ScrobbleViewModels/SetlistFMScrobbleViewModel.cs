@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Api;
+using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
 using Scrubbler.Models;
@@ -346,7 +347,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       }
       catch (Exception ex)
       {
-        OnStatusUpdated("Fatal error while searching for artist: " + ex.Message);
+        OnStatusUpdated(string.Format("Fatal error while searching for artist '{0}': {1}", SearchText, ex.Message));
       }
       finally
       {
@@ -367,8 +368,8 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
 
         try
         {
-          OnStatusUpdated("Fetching setlists from selected artist...");
           Models.Artist clickedArtist = sender as Models.Artist;
+          OnStatusUpdated(string.Format("Fetching setlists from artist '{0}'...", clickedArtist.Name));
           _lastClickedArtist = clickedArtist;
 
           SetlistSearchResult ssr = null;
@@ -386,19 +387,19 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
 
             if (vms.Count > 0)
             {
-              OnStatusUpdated("Successfully fetched setlists");
+              OnStatusUpdated(string.Format("Successfully fetched setlists from artist '{0}'", clickedArtist.Name));
               FetchedSetlists = vms;
               CurrentView = _setlistResultView;
             }
             else
-              OnStatusUpdated("No setlists found");
+              OnStatusUpdated(string.Format("No setlists found for artist '{0}'", clickedArtist.Name));
           }
           else
-            OnStatusUpdated("No setlists found");
+            OnStatusUpdated(string.Format("No setlists found for artist '{0}'", clickedArtist.Name));
         }
         catch (Exception ex)
         {
-          OnStatusUpdated("Fatal error while fetching setlists: " + ex.Message);
+          OnStatusUpdated(string.Format("Fatal error while fetching setlists: {0}", ex.Message));
         }
         finally
         {
@@ -443,7 +444,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         }
         catch (Exception ex)
         {
-          OnStatusUpdated("Fatal error while getting setlist tracks: " + ex.Message);
+          OnStatusUpdated(string.Format("Fatal error while getting setlist tracks: {0}", ex.Message));
         }
         finally
         {
@@ -498,14 +499,14 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         OnStatusUpdated("Trying to scrobble selected tracks...");
 
         var response = await Scrobbler.ScrobbleAsync(CreateScrobbles());
-        if (response.Success)
-          OnStatusUpdated("Successfully scrobbled!");
+        if (response.Success && response.Status == LastResponseStatus.Successful)
+          OnStatusUpdated("Successfully scrobbled selected tracks");
         else
-          OnStatusUpdated("Error while scrobbling!");
+          OnStatusUpdated(string.Format("Error while scrobbling selected tracks: {0}", response.Status));
       }
       catch(Exception ex)
       {
-        OnStatusUpdated("Fatal error while scrobbling: " + ex.Message);
+        OnStatusUpdated(string.Format("Fatal error while scrobbling: {0}", ex.Message));
       }
       finally
       {

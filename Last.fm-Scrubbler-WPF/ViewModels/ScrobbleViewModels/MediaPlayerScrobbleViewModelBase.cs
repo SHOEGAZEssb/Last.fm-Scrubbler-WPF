@@ -259,7 +259,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       }
       catch (Exception ex)
       {
-        OnStatusUpdated("Fatal error while loving/unloving track: " + ex.Message);
+        OnStatusUpdated(string.Format("Fatal error while loving/unloving '{0}': {1}", CurrentTrackName, ex.Message));
       }
       finally
       {

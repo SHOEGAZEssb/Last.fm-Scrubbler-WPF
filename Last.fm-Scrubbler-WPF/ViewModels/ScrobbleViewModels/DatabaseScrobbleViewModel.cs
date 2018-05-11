@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Api;
+using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Api.Helpers;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
@@ -319,7 +320,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     {
       try
       {
-        OnStatusUpdated("Trying to search for artist '" + SearchText + "'...");
+        OnStatusUpdated(string.Format("Trying to search for artist '{0}'...", SearchText));
 
         FetchedArtists.Clear();
 
@@ -329,14 +330,14 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         if (FetchedArtists.Count != 0)
         {
           CurrentView = _artistResultView;
-          OnStatusUpdated("Found " + FetchedArtists.Count + " artists");
+          OnStatusUpdated(string.Format("Found {0} artists", FetchedArtists.Count));
         }
         else
           OnStatusUpdated("Found no artists");
       }
       catch(Exception ex)
       {
-        OnStatusUpdated("Error while searching for artist '" + SearchText + "': " + ex.Message);
+        OnStatusUpdated(string.Format("Fatal error while searching for artist '{0}': {1}", SearchText, ex.Message));
       }
     }
 
@@ -380,7 +381,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     {
       try
       {
-        OnStatusUpdated("Trying to search for release '" + SearchText + "'");
+        OnStatusUpdated(string.Format("Trying to search for release '{0}'", SearchText));
 
         FetchedReleases.Clear();
 
@@ -391,14 +392,14 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         {
           FetchedReleaseThroughArtist = false;
           CurrentView = _releaseResultView;
-          OnStatusUpdated("Found " + FetchedReleases.Count + " releases");
+          OnStatusUpdated(string.Format("Found {0} releases", FetchedReleases.Count));
         }
         else
           OnStatusUpdated("Found no releases");
       }
       catch(Exception ex)
       {
-        OnStatusUpdated("Error while searching for release '" + SearchText + "': " + ex.Message);
+        OnStatusUpdated(string.Format("Fatal error while searching for release '{0}': {1}", SearchText,  ex.Message));
       }
     }
 
@@ -449,15 +450,13 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         try
         {
           var artist = sender as Artist;
-
-          OnStatusUpdated("Trying to fetch releases from '" + artist.Name + "'");
-
+          OnStatusUpdated(string.Format("Trying to fetch releases from artist '{0}'", artist.Name));
           if (DatabaseToSearch == Database.LastFm)
             await ArtistClickedLastFm(artist);
         }
         catch (Exception ex)
         {
-          OnStatusUpdated("Fatal error while fetching releases from artist: " + ex.Message);
+          OnStatusUpdated(string.Format("Fatal error while fetching releases from artist: {0}", ex.Message));
         }
         finally
         {
@@ -474,7 +473,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     private async Task ArtistClickedLastFm(Artist artist)
     {
       var response = await _lastfmArtistAPI.GetTopAlbumsAsync(artist.Name, false, 1, MaxResults);
-      if (response.Success)
+      if (response.Success && response.Status == LastResponseStatus.Successful)
       {
         FetchedReleases.Clear();
         foreach (var s in response.Content)
@@ -488,13 +487,13 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         {
           FetchedReleaseThroughArtist = true;
           CurrentView = _releaseResultView;
-          OnStatusUpdated("Successfully fetched releases from '" + artist.Name + "'");
+          OnStatusUpdated(string.Format("Successfully fetched releases from artist '{0}'", artist.Name));
         }
         else
-          OnStatusUpdated("'" + artist.Name + "'" + " has no releases");
+          OnStatusUpdated(string.Format("Artist '{0} has no releases", artist.Name));
       }
       else
-        OnStatusUpdated("Error while fetching releases from '" + artist.Name + "'");
+        OnStatusUpdated(string.Format("Error while fetching releases from artist '{0}': {1}", artist.Name, response.Status));
     }
 
     /// <summary>
@@ -511,19 +510,18 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         try
         {
           var release = sender as Release;
+          OnStatusUpdated(string.Format("Trying to fetch tracklist from release '{0}'", release.Name));
 
-          OnStatusUpdated("Trying to fetch tracklist from '" + release.Name + "'");
-
-          LastResponse<LastAlbum> detailedRelease = null;
-          if (release.Mbid != null && release.Mbid != "")
-            detailedRelease = await _lastfmAlbumAPI.GetInfoByMbidAsync(release.Mbid);
+          LastResponse<LastAlbum> response = null;
+          if (!string.IsNullOrEmpty(release.Mbid))
+            response = await _lastfmAlbumAPI.GetInfoByMbidAsync(release.Mbid);
           else
-            detailedRelease = await _lastfmAlbumAPI.GetInfoAsync(release.ArtistName, release.Name);
+            response = await _lastfmAlbumAPI.GetInfoAsync(release.ArtistName, release.Name);
 
-          if (detailedRelease.Success)
+          if (response.Success && response.Status == LastResponseStatus.Successful)
           {
             FetchedTracks.Clear();
-            foreach (var t in detailedRelease.Content.Tracks)
+            foreach (var t in response.Content.Tracks)
             {
               FetchedTrackViewModel vm = new FetchedTrackViewModel(new ScrobbleBase(t.Name, t.ArtistName, t.AlbumName, "", t.Duration), release.Image);
               vm.ToScrobbleChanged += ToScrobbleChanged;
@@ -533,17 +531,17 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
             if (FetchedTracks.Count != 0)
             {
               CurrentView = _trackResultView;
-              OnStatusUpdated("Successfully fetched tracklist from '" + release.Name + "'");
+              OnStatusUpdated(string.Format("Successfully fetched tracklist from release '{0}'", release.Name));
             }
             else
-              OnStatusUpdated("'" + release.Name + "' has no tracks");
+              OnStatusUpdated(string.Format("Release '{0}' has no tracks", release.Name));
           }
           else
-            OnStatusUpdated("Error while fetching tracklist from '" + release.Name + "'");
+            OnStatusUpdated(string.Format("Error while fetching tracklist from release '{0}': {1}", release.Name, response.Status));
         }
         catch(Exception ex)
         {
-          OnStatusUpdated("Fatal error while fetching tracklist from release: " + ex.Message);
+          OnStatusUpdated(string.Format("Fatal error while fetching tracklist from release: {0}", ex.Message));
         }
         finally
         {
@@ -578,21 +576,20 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </remarks>
     public override async Task Scrobble()
     {
-      EnableControls = false;
-
       try
       {
+        EnableControls = false;
         OnStatusUpdated("Trying to scrobble selected tracks...");
 
         var response = await Scrobbler.ScrobbleAsync(CreateScrobbles());
-        if (response.Success)
-          OnStatusUpdated("Successfully scrobbled!");
+        if (response.Success && response.Status == LastResponseStatus.Successful)
+          OnStatusUpdated("Successfully scrobbled selected tracks");
         else
-          OnStatusUpdated("Error while scrobbling!");
+          OnStatusUpdated(string.Format("Error while scrobbling selected tracks: {0}", response.Status));
       }
       catch (Exception ex)
       {
-        OnStatusUpdated("Fatal error while scrobbling: " + ex.Message);
+        OnStatusUpdated(string.Format("Fatal error while scrobbling selected tracks: {0}", ex.Message));
       }
       finally
       {

@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Objects;
+﻿using IF.Lastfm.Core.Api.Enums;
+using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -139,10 +140,10 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
 
         Scrobble s = new Scrobble(Artist, Album, Track, Time) { AlbumArtist = AlbumArtist, Duration = Duration };
         var response = await Scrobbler.ScrobbleAsync(s);
-        if (response.Success)
-          OnStatusUpdated("Successfully scrobbled!");
+        if (response.Success && response.Status == LastResponseStatus.Successful)
+          OnStatusUpdated(string.Format("Successfully scrobbled '{0}'", s.Track));
         else
-          OnStatusUpdated("Error while scrobbling!");
+          OnStatusUpdated(string.Format("Error while scrobbling '{0}': {1}", s.Track, response.Status));
       }
       catch (Exception ex)
       {

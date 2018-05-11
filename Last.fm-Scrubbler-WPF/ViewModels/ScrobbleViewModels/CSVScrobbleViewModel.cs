@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Objects;
+﻿using IF.Lastfm.Core.Api.Enums;
+using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
 using Scrubbler.Models;
 using Scrubbler.Properties;
@@ -282,10 +283,10 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
           });
 
           if (errors.Count == 0)
-            OnStatusUpdated("Successfully parsed CSV file. Parsed " + parsedScrobbles.Count + " rows");
+            OnStatusUpdated(string.Format("Successfully parsed CSV file. Parsed {0} rows", parsedScrobbles.Count));
           else
           {
-            OnStatusUpdated("Partially parsed CSV file. " + errors.Count + " rows could not be parsed");
+            OnStatusUpdated(string.Format("Partially parsed CSV file. {0} rows could not be parsed", errors.Count));
             if (_windowManager.MessageBoxService.ShowDialog("Some rows could not be parsed. Do you want to save a text file with the rows that could not be parsed?",
                                                             "Error parsing rows", IMessageBoxServiceButtons.YesNo) == IMessageBoxServiceResult.Yes)
             {
@@ -302,7 +303,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       catch (Exception ex)
       {
         Scrobbles.Clear();
-        OnStatusUpdated("Error parsing CSV file: " + ex.Message);
+        OnStatusUpdated(string.Format("Error parsing CSV file: {0}", ex.Message));
       }
       finally
       {
@@ -337,16 +338,25 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <returns>Task.</returns>
     public override async Task Scrobble()
     {
-      EnableControls = false;
-      OnStatusUpdated("Trying to scrobble selected tracks...");
+      try
+      {
+        EnableControls = false;
+        OnStatusUpdated("Trying to scrobble selected tracks...");
 
-      var response = await Scrobbler.ScrobbleAsync(CreateScrobbles());
-      if (response.Success)
-        OnStatusUpdated("Successfully scrobbled!");
-      else
-        OnStatusUpdated("Error while scrobbling!");
-
-      EnableControls = true;
+        var response = await Scrobbler.ScrobbleAsync(CreateScrobbles());
+        if (response.Success && response.Status == LastResponseStatus.Successful)
+          OnStatusUpdated("Successfully scrobbled selected tracks");
+        else
+          OnStatusUpdated(string.Format("Error while scrobbling selected tracks: {0}", response.Status));
+      }
+      catch (Exception ex)
+      {
+        OnStatusUpdated(string.Format("Fatal error while scrobbling selected tracks: {0}", ex.Message));
+      }
+      finally
+      {
+        EnableControls = true;
+      }
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Objects;
+﻿using IF.Lastfm.Core.Api.Enums;
+using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
 using Scrubbler.Models;
 using Scrubbler.ViewModels.SubViewModels;
@@ -203,74 +204,84 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     private async void ParseItunesConformXML()
     {
-      EnableControls = false;
-
-      XmlDocument xmlDocument = new XmlDocument();
       try
       {
-        xmlDocument.Load(DBFilePath);
-      }
-      catch (Exception ex)
-      {
-        EnableControls = true;
-        OnStatusUpdated("Could not load database file: " + ex.Message);
-        return;
-      }
+        EnableControls = false;
 
-      // node that points to all tracks
-      XmlNode trackDictNode = null;
-      try
-      {
-        trackDictNode = xmlDocument.ChildNodes[2].ChildNodes[0].ChildNodes.OfType<XmlNode>().First(i => i.Name == "dict");
-        if (trackDictNode == null)
-          throw new Exception("Could not find 'Tracks' node in xml file");
-      }
-      catch (Exception ex)
-      {
-        EnableControls = true;
-        OnStatusUpdated("Error parsing database file: " + ex.Message);
-        return;
-      }
-
-      List<MediaDBScrobbleViewModel> scrobbles = new List<MediaDBScrobbleViewModel>();
-      Dictionary<XmlNode, string> errorNodes = new Dictionary<XmlNode, string>();
-
-      int count = 1;
-      var dictNodes = trackDictNode.ChildNodes.OfType<XmlNode>().Where(i => i.Name == "dict");
-      foreach (XmlNode trackNode in dictNodes)
-      {
-        await Task.Run(() =>
+        XmlDocument xmlDocument = new XmlDocument();
+        try
         {
-          try
-          {
-            var xmlNodes = trackNode.ChildNodes.OfType<XmlNode>();
-            int playCount = int.Parse(xmlNodes.First(i => i.InnerText == "Play Count").NextSibling.InnerText);
-            string trackName = xmlNodes.First(i => i.InnerText == "Name").NextSibling.InnerText;
-            string artistName = xmlNodes.First(i => i.InnerText == "Artist").NextSibling.InnerText;
-            string albumName = xmlNodes.FirstOrDefault(i => i.InnerText == "Album")?.NextSibling.InnerText;
-            string albumArtist = xmlNodes.FirstOrDefault(i => i.InnerText == "Album Artist")?.NextSibling.InnerText;
-            TimeSpan duration = TimeSpan.FromMilliseconds(int.Parse(xmlNodes.FirstOrDefault(i => i.InnerText == "Total Time")?.NextSibling.InnerText));
-            DateTime lastPlayed = DateTime.Parse(xmlNodes.FirstOrDefault(i => i.InnerText == "Play Date UTC")?.NextSibling.InnerText);
+          xmlDocument.Load(DBFilePath);
+        }
+        catch (Exception ex)
+        {
+          EnableControls = true;
+          OnStatusUpdated(string.Format("Could not load database file: {0}", ex.Message));
+          return;
+        }
 
-            MediaDBScrobbleViewModel vm = new MediaDBScrobbleViewModel(new MediaDBScrobble(playCount, lastPlayed, trackName, artistName, albumName, albumArtist, duration));
-            vm.ToScrobbleChanged += ToScrobbleChanged;
-            scrobbles.Add(vm);
-          }
-          catch (Exception ex)
+        // node that points to all tracks
+        XmlNode trackDictNode = null;
+        try
+        {
+          trackDictNode = xmlDocument.ChildNodes[2].ChildNodes[0].ChildNodes.OfType<XmlNode>().First(i => i.Name == "dict");
+          if (trackDictNode == null)
+            throw new Exception("Could not find 'Tracks' node in xml file");
+        }
+        catch (Exception ex)
+        {
+          EnableControls = true;
+          OnStatusUpdated(string.Format("Error parsing database file: {0}", ex.Message));
+          return;
+        }
+
+        List<MediaDBScrobbleViewModel> scrobbles = new List<MediaDBScrobbleViewModel>();
+        Dictionary<XmlNode, string> errorNodes = new Dictionary<XmlNode, string>();
+
+        int count = 1;
+        var dictNodes = trackDictNode.ChildNodes.OfType<XmlNode>().Where(i => i.Name == "dict");
+        foreach (XmlNode trackNode in dictNodes)
+        {
+          await Task.Run(() =>
           {
-            // corrupted or something, log and continue.
-            errorNodes.Add(trackNode, ex.Message);
-          }
-          finally
-          {
-            OnStatusUpdated("Parsing database file... " + count++ + " / " + dictNodes.Count());
-          }
-        });
+            try
+            {
+              var xmlNodes = trackNode.ChildNodes.OfType<XmlNode>();
+              int playCount = int.Parse(xmlNodes.First(i => i.InnerText == "Play Count").NextSibling.InnerText);
+              string trackName = xmlNodes.First(i => i.InnerText == "Name").NextSibling.InnerText;
+              string artistName = xmlNodes.First(i => i.InnerText == "Artist").NextSibling.InnerText;
+              string albumName = xmlNodes.FirstOrDefault(i => i.InnerText == "Album")?.NextSibling.InnerText;
+              string albumArtist = xmlNodes.FirstOrDefault(i => i.InnerText == "Album Artist")?.NextSibling.InnerText;
+              TimeSpan duration = TimeSpan.FromMilliseconds(int.Parse(xmlNodes.FirstOrDefault(i => i.InnerText == "Total Time")?.NextSibling.InnerText));
+              DateTime lastPlayed = DateTime.Parse(xmlNodes.FirstOrDefault(i => i.InnerText == "Play Date UTC")?.NextSibling.InnerText);
+
+              MediaDBScrobbleViewModel vm = new MediaDBScrobbleViewModel(new MediaDBScrobble(playCount, lastPlayed, trackName, artistName, albumName, albumArtist, duration));
+              vm.ToScrobbleChanged += ToScrobbleChanged;
+              scrobbles.Add(vm);
+            }
+            catch (Exception ex)
+            {
+              // corrupted or something, log and continue.
+              errorNodes.Add(trackNode, ex.Message);
+            }
+            finally
+            {
+              OnStatusUpdated(string.Format("Parsing database file... {0} / {1}", count++, dictNodes.Count()));
+            }
+          });
+        }
+
+        OnStatusUpdated("Successfully parsed database file");
+        ParsedScrobbles = new ObservableCollection<MediaDBScrobbleViewModel>(scrobbles);
       }
-
-      OnStatusUpdated("Successfully parsed database file");
-      ParsedScrobbles = new ObservableCollection<MediaDBScrobbleViewModel>(scrobbles);
-      EnableControls = true;
+      catch (Exception ex)
+      {
+        OnStatusUpdated(string.Format("Fatal error while parsing database file: {0}", ex.Message));
+      }
+      finally
+      {
+        EnableControls = true;
+      }
     }
 
     /// <summary>
@@ -278,10 +289,9 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     private async void ParseWMPDatabase()
     {
-      EnableControls = false;
-
       try
       {
+        EnableControls = false;
         await Task.Run(() =>
         {
           OnStatusUpdated("Parsing Windows Media Player library...");
@@ -304,7 +314,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       }
       catch (Exception ex)
       {
-        OnStatusUpdated("Fatal error while parsing Windows Media Player library. Error: " + ex.Message);
+        OnStatusUpdated(string.Format("Fatal error while parsing Windows Media Player library: {0}", ex.Message));
       }
       finally
       {
@@ -318,21 +328,20 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <returns>Task.</returns>
     public override async Task Scrobble()
     {
-      EnableControls = false;
-
       try
       {
+        EnableControls = false;
         OnStatusUpdated("Trying to scrobble selected tracks...");
 
         var response = await Scrobbler.ScrobbleAsync(CreateScrobbles());
-        if (response.Success)
-          OnStatusUpdated("Successfully scrobbled!");
+        if (response.Success && response.Status == LastResponseStatus.Successful)
+          OnStatusUpdated("Successfully scrobbled selected tracks");
         else
-          OnStatusUpdated("Error while scrobbling!");
+          OnStatusUpdated(string.Format("Error while scrobbling selected tracks: {0}", response.Status));
       }
       catch (Exception ex)
       {
-        OnStatusUpdated("Fatal error while trying to scrobble selected tracks. Error: " + ex.Message);
+        OnStatusUpdated(string.Format("Fatal error while trying to scrobble selected tracks: {0}", ex.Message));
       }
       finally
       {

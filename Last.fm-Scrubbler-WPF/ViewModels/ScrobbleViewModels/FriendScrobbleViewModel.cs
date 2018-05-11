@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Api;
+using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
 using Scrubbler.ViewModels.SubViewModels;
@@ -151,7 +152,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
 
       try
       {
-        OnStatusUpdated("Trying to fetch scrobbles of user " + Username + "...");
+        OnStatusUpdated(string.Format("Trying to fetch scrobbles of '{0}' ...", Username));
         FetchedScrobbles.Clear();
         var response = await _userApi.GetRecentScrobbles(Username, null, 1, Amount);
         if (response.Success)
@@ -166,14 +167,14 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
             }
           }
 
-          OnStatusUpdated("Successfully fetched scrobbles of user " + Username);
+          OnStatusUpdated(string.Format("Successfully fetched scrobbles of '{0}'", Username));
         }
         else
-          OnStatusUpdated("Failed to fetch scrobbles of user " + Username);
+          OnStatusUpdated(string.Format("Failed to fetch scrobbles of '{0}': {1}", Username, response.Status));
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while fetching scrobbles of user {0}. Error: {1}", Username, ex.Message));
+        OnStatusUpdated(string.Format("Fatal error while fetching scrobbles of '{0}': {1}", Username, ex.Message));
       }
       finally
       {
@@ -218,17 +219,17 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
 
       try
       {
-        OnStatusUpdated("Trying to scrobble selected tracks");
+        OnStatusUpdated("Trying to scrobble selected tracks...");
 
         var response = await Scrobbler.ScrobbleAsync(CreateScrobbles());
-        if (response.Success)
-          OnStatusUpdated("Successfully scrobbled!");
+        if (response.Success && response.Status == LastResponseStatus.Successful)
+          OnStatusUpdated("Successfully scrobbled selected tracks");
         else
-          OnStatusUpdated("Error while scrobbling!");
+          OnStatusUpdated(string.Format("Error while scrobbling selected tracks: {0}", response.Status));
       }
       catch (Exception ex)
       {
-        OnStatusUpdated("Fatal error while trying to scrobble selected tracks. Error: " + ex.Message);
+        OnStatusUpdated(string.Format("Fatal error while trying to scrobble selected tracks: {0}", ex.Message));
       }
       finally
       {

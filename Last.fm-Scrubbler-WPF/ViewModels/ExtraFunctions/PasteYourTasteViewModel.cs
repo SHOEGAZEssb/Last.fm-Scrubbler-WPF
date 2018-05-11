@@ -153,10 +153,10 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       try
       {
         EnableControls = false;
-        OnStatusUpdated("Fetching top artists...");
+        OnStatusUpdated(string.Format("Fetching top artists of '{0}'...", Username));
 
         var response = await _userAPI.GetTopArtists(Username, TimeSpan, 1, Amount);
-        if (response.Success)
+        if (response.Success && response.Status == LastResponseStatus.Successful)
         {
           string tasteText = "";
           if (AddProfileLink)
@@ -171,14 +171,14 @@ namespace Scrubbler.ViewModels.ExtraFunctions
           }
 
           TasteText = tasteText;
-          OnStatusUpdated("Successfully fetched top artists");
+          OnStatusUpdated(string.Format("Successfully fetched top artists of '{0}'", Username));
         }
         else
-          OnStatusUpdated("Error fetching top artists");
+          OnStatusUpdated(string.Format("Error fetching top artists of '{0}': {1}", Username, response.Status));
       }
       catch (Exception ex)
       {
-        OnStatusUpdated("Fatal error while fetching top artists: " + ex.Message);
+        OnStatusUpdated(string.Format("Fatal error while fetching top artists of '{0}': {1}", Username, ex.Message));
       }
       finally
       {

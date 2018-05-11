@@ -8,6 +8,7 @@ using System.IO;
 using Scrubbler.Interfaces;
 using System.Windows;
 using Scrubbler.ViewModels.SubViewModels;
+using IF.Lastfm.Core.Api.Enums;
 
 namespace Scrubbler.ViewModels.ScrobbleViewModels
 {
@@ -140,7 +141,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       }
       catch (Exception ex)
       {
-        OnStatusUpdated("Fatal error while trying to add files: " + ex.Message);
+        OnStatusUpdated(string.Format("Fatal error while trying to add files: {0}", ex.Message));
       }
       finally
       {
@@ -181,7 +182,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
           }
           catch (Exception ex)
           {
-            errors.Add(file + " " + ex.Message);
+            errors.Add(string.Format("{0} {1}", file, ex.Message));
           }
         }
       });
@@ -190,7 +191,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
 
       if (errors.Count > 0)
       {
-        OnStatusUpdated("Finished parsing selected files. " + errors.Count + " files could not be parsed");
+        OnStatusUpdated(string.Format("Finished parsing selected files. {0} files could not be parsed", errors.Count));
         if (_windowManager.MessageBoxService.ShowDialog("Some files could not be parsed. Do you want to save a text file with the files that could not be parsed?",
                                                         "Error parsing files", IMessageBoxServiceButtons.YesNo) == IMessageBoxServiceResult.Yes)
         {
@@ -201,7 +202,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         }
       }
       else
-        OnStatusUpdated("Successfully parsed selected files. Parsed " + LoadedFiles.Count + " files");
+        OnStatusUpdated("Successfully parsed selected files");
     }
 
     /// <summary>
@@ -210,10 +211,9 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <param name="e">Contains info about the dropped data.</param>
     public async void HandleDrop(DragEventArgs e)
     {
-      EnableControls = false;
-
       try
       {
+        EnableControls = false;
         if (e.Data.GetDataPresent(DataFormats.FileDrop))
         {
           string[] files = ReadDroppedFiles((string[])e.Data.GetData(DataFormats.FileDrop));
@@ -228,7 +228,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       }
       catch (Exception ex)
       {
-        OnStatusUpdated("Fatal error while adding dropped files: " + ex.Message);
+        OnStatusUpdated(string.Format("Fatal error while adding dropped files: {0}", ex.Message));
       }
       finally
       {
@@ -286,21 +286,20 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public override async Task Scrobble()
     {
-      EnableControls = false;
-
       try
       {
+        EnableControls = false;
         OnStatusUpdated("Trying to scrobble selected tracks...");
 
         var response = await Scrobbler.ScrobbleAsync(CreateScrobbles());
-        if (response.Success)
-          OnStatusUpdated("Successfully scrobbled!");
+        if (response.Success && response.Status == LastResponseStatus.Successful)
+          OnStatusUpdated("Successfully scrobbled selected tracks");
         else
-          OnStatusUpdated("Error while scrobbling!");
+          OnStatusUpdated(string.Format("Error while scrobbling selected tracks: {0}", response.Status));
       }
       catch (Exception ex)
       {
-        OnStatusUpdated("An error occurred while trying to scrobble the selected tracks. Error: " + ex.Message);
+        OnStatusUpdated(string.Format("Fatal error while trying to scrobble the selected tracks: {0}", ex.Message));
       }
       finally
       {
@@ -319,7 +318,10 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       foreach (var vm in LoadedFiles.Where(i => i.ToScrobble).Reverse())
       {
         scrobbles.Add(new Scrobble(vm.Artist, vm.Album, vm.Track, timePlayed)
-        { AlbumArtist = vm.AlbumArtist, Duration = vm.Duration });
+        {
+          AlbumArtist = vm.AlbumArtist,
+          Duration = vm.Duration
+        });
         timePlayed = timePlayed.Subtract(vm.Duration);
       }
 

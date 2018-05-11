@@ -274,12 +274,11 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       if (EnableControls && CanScrobble)
       {
         EnableControls = false;
-
+        Scrobble s = null;
         try
         {
-          OnStatusUpdated("Trying to scrobble currently playing track...");
+          OnStatusUpdated(string.Format("Trying to scrobble {0}...", CurrentTrackName));
 
-          Scrobble s = null;
           // lock while acquiring current data
           lock (_lockAnchor)
           {
@@ -303,15 +302,15 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
 
           var response = await Scrobbler.ScrobbleAsync(s);
           if (response.Success && response.Status == LastResponseStatus.Successful)
-            OnStatusUpdated(string.Format("Successfully scrobbled {0}!", s.Track));
+            OnStatusUpdated(string.Format("Successfully scrobbled {0}", s.Track));
           else if (response.Status == LastResponseStatus.Cached)
             OnStatusUpdated(string.Format("Scrobbling of track {0} failed. Scrobble has been cached", s.Track));
           else
-            OnStatusUpdated("Error while scrobbling: " + response.Status);
+            OnStatusUpdated(string.Format("Error while scrobbling: {0}", response.Status));
         }
         catch (Exception ex)
         {
-          OnStatusUpdated("Fatal error while trying to scrobble currently playing track. Error: " + ex.Message);
+          OnStatusUpdated(string.Format("Fatal error while trying to scrobble '{0}': {1}", s?.Track, ex.Message));
         }
         finally
         {

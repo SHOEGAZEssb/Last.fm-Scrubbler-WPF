@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Api;
+using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
 using System;
@@ -128,37 +129,35 @@ namespace Scrubbler.ViewModels.ExtraFunctions
     /// <returns>Task.</returns>
     public async Task Download()
     {
-      EnableControls = false;
-
       try
       {
+        EnableControls = false;
         var userResponse = await _userAPI.GetInfoAsync(Username);
-        if (userResponse.Success)
+        if (userResponse.Success && userResponse.Status == LastResponseStatus.Successful)
         {
           int pages = (int)Math.Ceiling(userResponse.Content.Playcount / (double)TRACKSPERPAGE);
-          bool error = false;
+          string error = null;
           IReadOnlyList<LastTrack>[] scrobbles = new IReadOnlyList<LastTrack>[pages];
           for (int i = 1; i <= pages; i++)
           {
-            OnStatusUpdated("Fetching page " + i + " / " + pages);
+            OnStatusUpdated(string.Format("Fetching page {0} / {1}", i, pages));
             var pageResponse = await _userAPI.GetRecentScrobbles(Username, null, i, TRACKSPERPAGE);
-            if (pageResponse.Success)
+            if (pageResponse.Success && pageResponse.Status == LastResponseStatus.Successful)
               scrobbles[i - 1] = pageResponse.Content.Where(s => !s.IsNowPlaying.HasValue || !s.IsNowPlaying.Value).ToArray();
             else
             {
-              error = true;
+              error = pageResponse.Status.ToString();
               break;
             }
           }
 
-          if (error)
-            OnStatusUpdated("Error while fetching scrobble data.");
+          if (!string.IsNullOrEmpty(error))
+            OnStatusUpdated(string.Format("Error while fetching scrobble data: {0}", error));
           else
           {
-            OnStatusUpdated("Creating .csv file...");
-
             try
             {
+              OnStatusUpdated("Creating .csv file...");
               StringBuilder csv = new StringBuilder();
               foreach (var page in scrobbles)
               {
@@ -180,12 +179,12 @@ namespace Scrubbler.ViewModels.ExtraFunctions
             }
             catch (Exception ex)
             {
-              OnStatusUpdated("Error writing .csv file: " + ex.Message);
+              OnStatusUpdated(string.Format("Error writing .csv file: {0}", ex.Message));
             }
           }
         }
         else
-          OnStatusUpdated("Error while fetching user info.");
+          OnStatusUpdated(string.Format("Error while fetching user info: {0}", userResponse.Status));
       }
       finally
       {
@@ -201,7 +200,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
     /// <returns>Enclosed string.</returns>
     private string EncloseComma(string str)
     {
-      if(str.Contains(','))
+      if (str.Contains(','))
         return "\"" + str + "\"";
       return str;
     }
