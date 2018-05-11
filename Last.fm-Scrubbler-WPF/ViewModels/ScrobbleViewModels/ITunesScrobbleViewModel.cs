@@ -141,7 +141,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Connects/reconnects to iTunes.
     /// </summary>
-    public override async void Connect()
+    public override void Connect()
     {
       EnableControls = false;
 
