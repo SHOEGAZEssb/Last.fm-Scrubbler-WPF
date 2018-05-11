@@ -50,7 +50,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// The length of the current track.
     /// </summary>
-    public override int CurrentTrackLength => ((_currentResponse == null ||_currentResponse.Track == null) ? 0 : _currentResponse.Track.Length);
+    public override int CurrentTrackLength => _currentResponse?.Track == null ? 0 : _currentResponse.Track.Length;
 
     #endregion Properties
 
