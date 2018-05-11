@@ -48,7 +48,7 @@ namespace Scrubbler.ViewModels
     /// Updates the status.
     /// </summary>
     /// <param name="newStatus">New status.</param>
-    protected virtual void OnStatusUpdated(string newStatus)
+    protected void OnStatusUpdated(string newStatus)
     {
       StatusUpdated?.Invoke(this, new UpdateStatusEventArgs(newStatus));
     }
