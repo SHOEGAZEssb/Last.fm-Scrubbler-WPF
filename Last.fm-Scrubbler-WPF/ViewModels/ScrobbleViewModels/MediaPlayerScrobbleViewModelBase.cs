@@ -198,54 +198,15 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     public abstract void Disconnect();
 
     /// <summary>
-    /// Notifies the ui of changed song info.
-    /// </summary>
-    protected virtual void UpdateCurrentTrackInfo()
-    {
-      NotifyOfPropertyChange(() => CurrentTrackName);
-      NotifyOfPropertyChange(() => CurrentArtistName);
-      NotifyOfPropertyChange(() => CurrentAlbumName);
-      NotifyOfPropertyChange(() => CurrentTrackLength);
-      NotifyOfPropertyChange(() => CurrentTrackLengthToScrobble);
-      UpdateLovedInfo().Forget();
-      UpdateNowPlaying().Forget();
-      FetchAlbumArtwork().Forget();
-    }
-
-    /// <summary>
-    /// Checks if the current track is loved.
-    /// </summary>
-    /// <returns>Task.</returns>
-    protected async Task UpdateLovedInfo()
-    {
-      if (CurrentTrackName != null && CurrentArtistName != null && _lastAuth?.UserSession?.Username != null)
-      {
-        var info = await _trackAPI.GetInfoAsync(CurrentTrackName, CurrentArtistName, _lastAuth.UserSession.Username);
-        if (info.Success && info.Status == LastResponseStatus.Successful)
-          CurrentTrackLoved = info.Content.IsLoved.Value;
-      }
-    }
-
-    /// <summary>
-    /// Updates the "now playing" info.
-    /// </summary>
-    /// <returns></returns>
-    protected async Task UpdateNowPlaying()
-    {
-      if (CurrentTrackName != null && CurrentArtistName != null)
-        await _trackAPI.UpdateNowPlayingAsync(new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now));
-    }
-
-    /// <summary>
     /// Loves / unloves the current track.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Task.</returns>
     public async Task SwitchLoveState()
     {
-      EnableControls = false;
-
       try
       {
+        EnableControls = false;
+
         if (CurrentTrackLoved)
           await _trackAPI.UnloveAsync(CurrentTrackName, CurrentArtistName);
         else
@@ -261,21 +222,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       {
         EnableControls = true;
       }
-    }
-
-    /// <summary>
-    /// Gets the album artwork of the current track.
-    /// </summary>
-    /// <returns>Task.</returns>
-    protected async Task FetchAlbumArtwork()
-    {
-      if (CurrentArtistName != null && CurrentAlbumName != null)
-      {
-        var album = await _albumAPI.GetInfoAsync(CurrentArtistName, CurrentAlbumName);
-        CurrentAlbumArtwork = album?.Content?.Images?.Large;
-      }
-      else
-        CurrentAlbumArtwork = null;
     }
 
     /// <summary>
@@ -303,12 +249,66 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     }
 
     /// <summary>
+    /// Notifies the ui of changed song info.
+    /// </summary>
+    protected virtual void UpdateCurrentTrackInfo()
+    {
+      NotifyOfPropertyChange(() => CurrentTrackName);
+      NotifyOfPropertyChange(() => CurrentArtistName);
+      NotifyOfPropertyChange(() => CurrentAlbumName);
+      NotifyOfPropertyChange(() => CurrentTrackLength);
+      NotifyOfPropertyChange(() => CurrentTrackLengthToScrobble);
+      UpdateLovedInfo().Forget();
+      UpdateNowPlaying().Forget();
+      FetchAlbumArtwork().Forget();
+    }
+
+    /// <summary>
     /// Does nothing here.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Empty scrobble collection.</returns>
     protected override IEnumerable<Scrobble> CreateScrobbles()
     {
       return new List<Scrobble>();
+    }
+
+    /// <summary>
+    /// Checks if the current track is loved.
+    /// </summary>
+    /// <returns>Task.</returns>
+    private async Task UpdateLovedInfo()
+    {
+      if (CurrentTrackName != null && CurrentArtistName != null && _lastAuth?.UserSession?.Username != null)
+      {
+        var info = await _trackAPI.GetInfoAsync(CurrentTrackName, CurrentArtistName, _lastAuth.UserSession.Username);
+        if (info.Success && info.Status == LastResponseStatus.Successful)
+          CurrentTrackLoved = info.Content.IsLoved.Value;
+      }
+    }
+
+    /// <summary>
+    /// Updates the "now playing" info.
+    /// </summary>
+    /// <returns>Task.</returns>
+    private async Task UpdateNowPlaying()
+    {
+      if (CurrentTrackName != null && CurrentArtistName != null)
+        await _trackAPI.UpdateNowPlayingAsync(new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now));
+    }
+
+    /// <summary>
+    /// Gets the album artwork of the current track.
+    /// </summary>
+    /// <returns>Task.</returns>
+    private async Task FetchAlbumArtwork()
+    {
+      if (CurrentArtistName != null && CurrentAlbumName != null)
+      {
+        var album = await _albumAPI.GetInfoAsync(CurrentArtistName, CurrentAlbumName);
+        CurrentAlbumArtwork = album?.Content?.Images?.Large;
+      }
+      else
+        CurrentAlbumArtwork = null;
     }
   }
 }
