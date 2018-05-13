@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Api;
+using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
 using System;
@@ -139,11 +140,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     }
 
     /// <summary>
-    /// Gets if the client is ready to scrobble.
-    /// </summary>
-    public override bool CanScrobble => base.CanScrobble;
-
-    /// <summary>
     /// Gets if the preview button is enabled.
     /// Not needed here.
     /// </summary>
@@ -225,7 +221,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       if (CurrentTrackName != null && CurrentArtistName != null && _lastAuth?.UserSession?.Username != null)
       {
         var info = await _trackAPI.GetInfoAsync(CurrentTrackName, CurrentArtistName, _lastAuth.UserSession.Username);
-        if (info.Success)
+        if (info.Success && info.Status == LastResponseStatus.Successful)
           CurrentTrackLoved = info.Content.IsLoved.Value;
       }
     }
