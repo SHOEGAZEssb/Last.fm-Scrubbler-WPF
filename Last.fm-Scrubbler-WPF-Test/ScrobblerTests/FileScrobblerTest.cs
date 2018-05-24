@@ -35,10 +35,11 @@ namespace Scrubbler.Test.ScrobblerTests
       localFileFactoryMock.Setup(l => l.CreateFile(files[1])).Returns(localFileMocks[1].Object);
       localFileFactoryMock.Setup(l => l.CreateFile(files[2])).Returns(localFileMocks[2].Object);
 
-      Mock<IAuthScrobbler> scrobblerMock = new Mock<IAuthScrobbler>();
       IEnumerable<Scrobble> actual = null;
-      scrobblerMock.Setup(i => i.ScrobbleAsync(It.IsAny<IEnumerable<Scrobble>>())).Callback<IEnumerable<Scrobble>>(s => actual = s)
+      Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>(MockBehavior.Strict);
+      scrobblerMock.Setup(u => u.ScrobbleAsync(It.IsAny<IEnumerable<Scrobble>>(), false)).Callback<IEnumerable<Scrobble>, bool>((s, c) => actual = s)
                                                                                   .Returns(Task.Run(() => new ScrobbleResponse()));
+      scrobblerMock.Setup(u => u.IsAuthenticated).Returns(true);
 
       Mock<IFileOperator> fileOperatorMock = new Mock<IFileOperator>(MockBehavior.Strict);
 

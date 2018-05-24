@@ -23,9 +23,9 @@ namespace Scrubbler.Test.ScrobblerTests
     {
       Scrobble expected = new Scrobble("TestArtist", "TestAlbum", "TestTrack", DateTime.Now) { AlbumArtist = "TestAlbumArtist", Duration = TimeSpan.FromSeconds(30) };
 
-      Mock<IAuthScrobbler> scrobblerMock = new Mock<IAuthScrobbler>();
+      Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>();
       Scrobble actual = null;
-      scrobblerMock.Setup(i => i.ScrobbleAsync(It.IsAny<Scrobble>())).Callback<Scrobble>(s => actual = s);
+      scrobblerMock.Setup(i => i.ScrobbleAsync(It.IsAny<Scrobble>(), false)).Callback<Scrobble, bool>((s, c) => actual = s);
 
       ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null)
       {
@@ -53,8 +53,8 @@ namespace Scrubbler.Test.ScrobblerTests
     public void CanScrobbleNoAuthTest()
     {
       // given: ManualScrobbleViewModel without auth
-      Mock<IAuthScrobbler> scrobblerMock = new Mock<IAuthScrobbler>();
-      scrobblerMock.Setup(s => s.Auth.Authenticated).Returns(false);
+      Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>();
+      scrobblerMock.Setup(s => s.IsAuthenticated).Returns(false);
 
       ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null)
       {
@@ -67,7 +67,7 @@ namespace Scrubbler.Test.ScrobblerTests
       Assert.That(vm.CanScrobble, Is.False);
 
       // make sure it really was the auth
-      scrobblerMock.Setup(s => s.Auth.Authenticated).Returns(true);
+      scrobblerMock.Setup(s => s.IsAuthenticated).Returns(true);
       Assert.That(vm.CanScrobble, Is.True);
     }
 
@@ -79,8 +79,8 @@ namespace Scrubbler.Test.ScrobblerTests
     public void CanScrobbleNoArtistTest()
     {
       // given: ManualScrobbleViewModel without given artist.
-      Mock<IAuthScrobbler> scrobblerMock = new Mock<IAuthScrobbler>();
-      scrobblerMock.Setup(s => s.Auth.Authenticated).Returns(true);
+      Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>();
+      scrobblerMock.Setup(s => s.IsAuthenticated).Returns(true);
 
       ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null)
       {
@@ -104,8 +104,8 @@ namespace Scrubbler.Test.ScrobblerTests
     public void CanScrobbleNoTrackTest()
     {
       // given: ManualScrobbleViewModel without given artist.
-      Mock<IAuthScrobbler> scrobblerMock = new Mock<IAuthScrobbler>();
-      scrobblerMock.Setup(s => s.Auth.Authenticated).Returns(true);
+      Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>();
+      scrobblerMock.Setup(s => s.IsAuthenticated).Returns(true);
 
       ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null)
       {
