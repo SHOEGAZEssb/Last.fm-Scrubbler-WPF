@@ -14,7 +14,7 @@ namespace Scrubbler.Models
   /// that a <see cref="User"/> can not scrobble
   /// more than the scrobble cap.
   /// </summary>
-  class UserScrobbler : IUserScrobbler
+  public class UserScrobbler : IUserScrobbler
   {
     #region Properties
 
@@ -78,7 +78,7 @@ namespace Scrubbler.Models
     {
       User.UpdateRecentScrobbles();
       if (User.RecentScrobbles.Count + scrobbles.Count() > User.MAXSCROBBLESPERDAY)
-        throw new Exception(string.Format("Scrobbling these tracks would break the daily scrobble cap! ({0})\r\nYou have scrobbled {1} tracks in the past 24 hours.",
+        throw new InvalidOperationException(string.Format("Scrobbling these tracks would break the daily scrobble cap! ({0})\r\nYou have scrobbled {1} tracks in the past 24 hours.",
                                           User.MAXSCROBBLESPERDAY, User.RecentScrobbles.Count));
 
       ScrobbleResponse response;

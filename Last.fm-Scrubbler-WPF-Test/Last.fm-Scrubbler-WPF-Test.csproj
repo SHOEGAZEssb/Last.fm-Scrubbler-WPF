@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExtraFunctionsTests\PasteYourTasteTest.cs" />
+    <Compile Include="ModelTests\UserScrobblerTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScrobblerTests\CSVScrobbleTest.cs" />
