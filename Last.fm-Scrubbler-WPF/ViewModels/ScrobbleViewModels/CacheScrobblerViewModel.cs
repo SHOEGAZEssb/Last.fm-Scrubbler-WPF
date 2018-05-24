@@ -12,14 +12,14 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.ScrobbleViews.CacheScrobblerView"/>
   /// </summary>
-  public class CacheScrobblerViewModel : ScrobbleViewModelBase, INeedCachingScrobbler
+  public class CacheScrobblerViewModel : ScrobbleViewModelBase
   {
     #region Properties
 
     /// <summary>
     /// Gets if the scrobble button is enabled.
     /// </summary>
-    public override bool CanScrobble => Scrobbler.Auth.Authenticated && CachedScrobbles.Count > 0 && EnableControls;
+    public override bool CanScrobble => base.CanScrobble && CachedScrobbles.Count > 0 && EnableControls;
 
     /// <summary>
     /// Gets if the preview button is enabled.

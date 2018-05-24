@@ -35,8 +35,13 @@ namespace Scrubbler.ViewModels
         _activeUser = value;
         NotifyOfPropertyChange();
 
+        if (ActiveUser != null)
+          ActiveUser.RecentScrobblesChanged -= Value_RecentScrobblesChanged;
         if (value != null)
+        {
           Settings.Default.Username = value.Username;
+          value.RecentScrobblesChanged += Value_RecentScrobblesChanged;
+        }
         else
           Settings.Default.Username = string.Empty;
 
@@ -253,6 +258,11 @@ namespace Scrubbler.ViewModels
         if (usr != null)
           LoginUser(usr);
       }
+    }
+
+    private void Value_RecentScrobblesChanged(object sender, EventArgs e)
+    {
+      SerializeUsers();
     }
   }
 }

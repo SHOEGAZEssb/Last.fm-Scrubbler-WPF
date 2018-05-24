@@ -173,6 +173,9 @@ namespace Scrubbler.ViewModels
     /// <param name="userSerializer">Serializer for <see cref="User"/>s.</param>
     private void SetupViewModels(ILocalFileFactory localFileFactory, IDirectoryOperator directoryOperator, ISerializer<User> userSerializer)
     {
+      UserViewModel = new UserViewModel(_windowManager, _client.Auth, _fileOperator, directoryOperator, userSerializer);
+      UserViewModel.LoadLastUser();
+
       _scrobblerVM = new ScrobblerViewModel(_windowManager, localFileFactory, _fileOperator, _client);
       _scrobblerVM.StatusUpdated += StatusUpdated;
       CreateScrobblers();
@@ -182,12 +185,11 @@ namespace Scrubbler.ViewModels
       _extraFunctionsVM.StatusUpdated += StatusUpdated;
       ActivateItem(_extraFunctionsVM);
 
+      // we do this later to stop a NullReferenceException (we create scrobblers here anyways!)
+      UserViewModel.ActiveUserChanged += UserViewModel_ActiveUserChanged;
+
       // should be active
       ActivateItem(_scrobblerVM);
-
-      UserViewModel = new UserViewModel(_windowManager, _client.Auth, _fileOperator, directoryOperator, userSerializer);
-      UserViewModel.ActiveUserChanged += UserViewModel_ActiveUserChanged;
-      UserViewModel.LoadLastUser();
     }
 
     #endregion Setup
@@ -233,7 +235,7 @@ namespace Scrubbler.ViewModels
         cachingScrobbler = null;
       }
 
-      _scrobblerVM.UpdateScrobblers(scrobbler, cachingScrobbler);
+      _scrobblerVM.UpdateScrobblers(_scrobblerFactory.CreateUserScrobbler(UserViewModel.ActiveUser, scrobbler, cachingScrobbler));
     }
 
     /// <summary>

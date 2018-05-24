@@ -15,5 +15,17 @@ namespace Scrubbler.Models
     {
       return new AuthSQLiteScrobbler(auth, dbFile, httpClient);
     }
+
+    /// <summary>
+    /// Creates a scrobbler that checks <see cref="Models.User"/>
+    /// scrobble count.
+    /// </summary>
+    /// <param name="scrobbler">Normal scrobbler.</param>
+    /// <param name="cachingScrobbler">Scrobbler that caches.</param>
+    /// <returns>Newly created scrobbler.</returns>
+    public IUserScrobbler CreateUserScrobbler(User user, IAuthScrobbler scrobbler, IAuthScrobbler cachingScrobbler)
+    {
+      return new UserScrobbler(user, scrobbler, cachingScrobbler);
+    }
   }
 }

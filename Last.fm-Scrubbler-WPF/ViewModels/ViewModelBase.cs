@@ -28,7 +28,6 @@ namespace Scrubbler.ViewModels
         NotifyOfPropertyChange();
       }
     }
-
     /// <summary>
     /// Indicates if controls on the UI
     /// are enabled.

@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Api;
+using Scrubbler.Models;
 using System.Net.Http;
 
 namespace Scrubbler.Interfaces
@@ -24,5 +25,15 @@ namespace Scrubbler.Interfaces
     /// <param name="httpClient">HttpClient used for requests.</param>
     /// <returns>Newly created scrobbler.</returns>
     IAuthScrobbler CreateSQLiteScrobbler(ILastAuth auth, string dbFile, HttpClient httpClient = null);
+
+    /// <summary>
+    /// Creates a scrobbler that checks <see cref="User"/>
+    /// scrobble count.
+    /// </summary>
+    /// <param name="user">User to check scrobbles for.</param>
+    /// <param name="scrobbler">Normal scrobbler.</param>
+    /// <param name="cachingScrobbler">Scrobbler that caches.</param>
+    /// <returns>Newly created scrobbler.</returns>
+    IUserScrobbler CreateUserScrobbler(User user, IAuthScrobbler scrobbler, IAuthScrobbler cachingScrobbler);
   }
 }

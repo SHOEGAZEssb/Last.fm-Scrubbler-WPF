@@ -1,4 +1,8 @@
-﻿using System.Runtime.Serialization;
+﻿using IF.Lastfm.Core.Objects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
 
 namespace Scrubbler.Models
 {
@@ -9,6 +13,14 @@ namespace Scrubbler.Models
   public class User
   {
     #region Properties
+
+
+    public event EventHandler RecentScrobblesChanged;
+
+    /// <summary>
+    /// Allowed scrobbles per day.
+    /// </summary>
+    public const int MAXSCROBBLESPERDAY = 2800;
 
     /// <summary>
     /// Username of this user.
@@ -28,6 +40,15 @@ namespace Scrubbler.Models
     [DataMember]
     public bool IsSubscriber { get; private set; }
 
+    /// <summary>
+    /// List of recent scrobbles.
+    /// Scrobbles older than a day should be removed from this.
+    /// No more than 2.8k scrobbles should be in here.
+    /// </summary>
+    public IReadOnlyList<Tuple<Scrobble, DateTime>> RecentScrobbles => _recentScrobbles.AsReadOnly();
+    [DataMember]
+    private List<Tuple<Scrobble, DateTime>> _recentScrobbles;
+
     #endregion Properties
 
     /// <summary>
@@ -41,6 +62,29 @@ namespace Scrubbler.Models
       Username = username;
       Token = token;
       IsSubscriber = isSubscriber;
+      _recentScrobbles = new List<Tuple<Scrobble, DateTime>>(MAXSCROBBLESPERDAY);
+    }
+
+    /// <summary>
+    /// Updates the <see cref="RecentScrobbles"/>,
+    /// removing scrobbles older than 1 day.
+    /// </summary>
+    public void UpdateRecentScrobbles()
+    {
+      _recentScrobbles = RecentScrobbles.Where(i => (DateTime.Now - i.Item2) <= TimeSpan.FromDays(1)).ToList();
+    }
+
+    /// <summary>
+    /// Adds the given <paramref name="scrobbles"/> to
+    /// the <see cref="RecentScrobbles"/>.
+    /// </summary>
+    /// <param name="scrobbles">Scrobbles to add.</param>
+    public void AddScrobbles(IEnumerable<Scrobble> scrobbles)
+    {
+      DateTime scrobbleDate = DateTime.Now;
+      foreach (var scrobble in scrobbles)
+        _recentScrobbles.Add(new Tuple<Scrobble, DateTime>(scrobble, scrobbleDate));
+      RecentScrobblesChanged?.Invoke(this, EventArgs.Empty);
     }
   }
 }
