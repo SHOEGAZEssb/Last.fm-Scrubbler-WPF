@@ -9,18 +9,42 @@ using System.Threading.Tasks;
 
 namespace Scrubbler.Models
 {
+  /// <summary>
+  /// Scrobbler making sure
+  /// that a <see cref="User"/> can not scrobble
+  /// more than the scrobble cap.
+  /// </summary>
   class UserScrobbler : IUserScrobbler
   {
+    #region Properties
+
+    /// <summary>
+    /// User to check for scrobble cap.
+    /// </summary>
     public User User { get; private set; }
 
+    /// <summary>
+    /// Gets if the scrobbler is authenticated.
+    /// </summary>
     public bool IsAuthenticated => _scrobbler.Auth.Authenticated && _cachingScrobbler.Auth.Authenticated;
+
+    #endregion Properties
 
     #region Member
 
+    /// <summary>
+    /// Actual normal scrobbler.
+    /// </summary>
     private IAuthScrobbler _scrobbler;
+
+    /// <summary>
+    /// Actual caching scrobbler.
+    /// </summary>
     private IAuthScrobbler _cachingScrobbler;
 
     #endregion Member
+
+    #region Construction
 
     public UserScrobbler(User user, IAuthScrobbler scrobbler, IAuthScrobbler cachingScrobbler)
     {
@@ -29,11 +53,27 @@ namespace Scrubbler.Models
       _cachingScrobbler = cachingScrobbler ?? throw new ArgumentNullException(nameof(cachingScrobbler));
     }
 
+    #endregion Construction
+
+    /// <summary>
+    /// Scrobbles the given <paramref name="scrobble"/>.
+    /// </summary>
+    /// <param name="scrobble">Scrobble object to scrobble.</param>
+    /// <param name="needCaching">If true, scrobbles should be cached
+    /// if they can't be scrobbled.</param>
+    /// <returns>Response.</returns>
     public async Task<ScrobbleResponse> ScrobbleAsync(Scrobble scrobble, bool needCaching = false)
     {
       return await ScrobbleAsync(new[] { scrobble }, needCaching);
     }
 
+    /// <summary>
+    /// Scrobbles the given <paramref name="scrobbles"/>.
+    /// </summary>
+    /// <param name="scrobbles">Collection of scrobble objects to scrobble.</param>
+    /// <param name="needCaching">If true, scrobbles should be cached
+    /// if they can't be scrobbled.</param>
+    /// <returns>Response.</returns>
     public async Task<ScrobbleResponse> ScrobbleAsync(IEnumerable<Scrobble> scrobbles, bool needCaching = false)
     {
       User.UpdateRecentScrobbles();
@@ -52,11 +92,19 @@ namespace Scrubbler.Models
       return response;
     }
 
+    /// <summary>
+    /// Sends the cached scrobbles.
+    /// </summary>
+    /// <returns>Response.</returns>
     public async Task<ScrobbleResponse> SendCachedScrobblesAsync()
     {
       return await _cachingScrobbler.SendCachedScrobblesAsync();
     }
 
+    /// <summary>
+    /// Gets the cached tracks.
+    /// </summary>
+    /// <returns>Cached tracks.</returns>
     public async Task<IEnumerable<Scrobble>> GetCachedAsync()
     {
       return await _cachingScrobbler.GetCachedAsync();
