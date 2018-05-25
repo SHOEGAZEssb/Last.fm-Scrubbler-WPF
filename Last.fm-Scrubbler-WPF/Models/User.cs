@@ -14,7 +14,10 @@ namespace Scrubbler.Models
   {
     #region Properties
 
-
+    /// <summary>
+    /// Event that fires when the <see cref="RecentScrobbles"/>
+    /// change.
+    /// </summary>
     public event EventHandler RecentScrobblesChanged;
 
     /// <summary>
@@ -79,11 +82,12 @@ namespace Scrubbler.Models
     /// the <see cref="RecentScrobbles"/>.
     /// </summary>
     /// <param name="scrobbles">Scrobbles to add.</param>
-    public void AddScrobbles(IEnumerable<Scrobble> scrobbles)
+    /// <param name="timeScrobbled">The time this scrobble was scrobbled.
+    /// Leave null if you want to use the TimePlayed of the scrobble.</param>
+    public void AddScrobbles(IEnumerable<Scrobble> scrobbles, DateTime? timeScrobbled = null)
     {
-      DateTime scrobbleDate = DateTime.Now;
       foreach (var scrobble in scrobbles)
-        _recentScrobbles.Add(new Tuple<Scrobble, DateTime>(scrobble, scrobbleDate));
+        _recentScrobbles.Add(new Tuple<Scrobble, DateTime>(scrobble, timeScrobbled ?? scrobble.TimePlayed.DateTime));
       RecentScrobblesChanged?.Invoke(this, EventArgs.Empty);
     }
   }

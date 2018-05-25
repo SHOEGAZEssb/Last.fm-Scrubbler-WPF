@@ -88,7 +88,7 @@ namespace Scrubbler.Models
         response = await _scrobbler.ScrobbleAsync(scrobbles);
 
       if (response.Success && response.Status == LastResponseStatus.Successful)
-        User.AddScrobbles(scrobbles);
+        User.AddScrobbles(scrobbles, DateTime.Now);
       return response;
     }
 

@@ -3,6 +3,7 @@ using Moq;
 using NUnit.Framework;
 using Scrubbler.Interfaces;
 using Scrubbler.Models;
+using System;
 
 namespace Scrubbler.Test.ModelTests
 {
@@ -27,7 +28,7 @@ namespace Scrubbler.Test.ModelTests
         scrobbles[i] = new Scrobble();
       }
 
-      user.AddScrobbles(scrobbles);
+      user.AddScrobbles(scrobbles, DateTime.Now);
 
       Mock<IAuthScrobbler> scrobblerMock = new Mock<IAuthScrobbler>(MockBehavior.Strict);
       Mock<IAuthScrobbler> cachingScrobblerMock = new Mock<IAuthScrobbler>(MockBehavior.Strict);
