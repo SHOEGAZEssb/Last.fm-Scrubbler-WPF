@@ -24,11 +24,11 @@ namespace Scrubbler.Test.ScrobblerTests
     public async Task NormalScrobbleTest()
     {
       // given: CSVScrobbleViewModel with needed mocks to scrobble
-      Mock<IAuthScrobbler> scrobblerMock = new Mock<IAuthScrobbler>();
-      scrobblerMock.Setup(s => s.Auth.Authenticated).Returns(true);
       IEnumerable<Scrobble> actual = null;
-      scrobblerMock.Setup(s => s.ScrobbleAsync(It.IsAny<IEnumerable<Scrobble>>())).Callback<IEnumerable<Scrobble>>(s => actual = s)
+      Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>(MockBehavior.Strict);
+      scrobblerMock.Setup(u => u.ScrobbleAsync(It.IsAny<IEnumerable<Scrobble>>(), false)).Callback<IEnumerable<Scrobble>, bool>((s, c) => actual = s)
                                                                                   .Returns(Task.Run(() => new ScrobbleResponse()));
+      scrobblerMock.Setup(u => u.IsAuthenticated).Returns(true);
 
       List<Scrobble> expected = new List<Scrobble>()
       {

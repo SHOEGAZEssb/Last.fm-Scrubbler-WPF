@@ -10,22 +10,14 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
   /// <summary>
   /// Base class for all scrobblers.
   /// </summary>
-  public abstract class ScrobbleViewModelBase : ViewModelBase, INeedScrobbler
+  public abstract class ScrobbleViewModelBase : ViewModelBase
   {
     #region Properties
 
     /// <summary>
     /// Gets if the scrobble button is enabled.
     /// </summary>
-    public virtual bool CanScrobble
-    {
-      get
-      {
-        if (Scrobbler != null && Scrobbler.Auth != null)
-          return Scrobbler.Auth.Authenticated;
-        return false;
-      }
-    }
+    public virtual bool CanScrobble => Scrobbler?.IsAuthenticated ?? false;
 
     /// <summary>
     /// Gets if the preview button is enabled.
@@ -35,7 +27,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Scrobbler used to scrobble.
     /// </summary>
-    public IAuthScrobbler Scrobbler
+    public IUserScrobbler Scrobbler
     {
       get { return _scrobbler; }
       set
@@ -45,7 +37,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         NotifyOfPropertyChange(() => CanScrobble);
       }
     }
-    private IAuthScrobbler _scrobbler;
+    private IUserScrobbler _scrobbler;
 
     #endregion Properties
 

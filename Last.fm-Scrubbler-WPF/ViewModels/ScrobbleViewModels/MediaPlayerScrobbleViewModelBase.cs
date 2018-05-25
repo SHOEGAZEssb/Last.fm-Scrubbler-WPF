@@ -12,7 +12,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
   /// <summary>
   /// Base class for all scrobblers that scrobble a media player.
   /// </summary>
-  public abstract class MediaPlayerScrobbleViewModelBase : ScrobbleViewModelBase, INeedCachingScrobbler
+  public abstract class MediaPlayerScrobbleViewModelBase : ScrobbleViewModelBase
   {
     #region Properties
 

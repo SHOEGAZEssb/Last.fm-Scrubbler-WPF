@@ -33,19 +33,11 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       CreateViewModels(windowManager, localFileFactory, fileOperator, lastFMClient);
     }
 
-    /// <summary>
-    /// Updates the scrobblers of the ViewModels.
-    /// </summary>
-    /// <param name="scrobbler">Normal scrobbler.</param>
-    /// <param name="cachingScrobbler">Caching scrobbler.</param>
-    public void UpdateScrobblers(IAuthScrobbler scrobbler, IAuthScrobbler cachingScrobbler)
+    public void UpdateScrobblers(IUserScrobbler scrobbler)
     {
-      foreach (var vm in Items)
+      foreach(var vm in Items)
       {
-        if (vm is INeedCachingScrobbler)
-          vm.Scrobbler = cachingScrobbler;
-        else
-          vm.Scrobbler = scrobbler;
+        vm.Scrobbler = scrobbler;
       }
     }
 

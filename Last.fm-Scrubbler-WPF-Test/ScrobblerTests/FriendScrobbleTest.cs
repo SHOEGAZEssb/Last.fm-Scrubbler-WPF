@@ -33,10 +33,11 @@ namespace Scrubbler.Test.ScrobblerTests
         new Scrobble("TestArtist3", "TestAlbum3", "TestTrack3", DateTime.Now.AddSeconds(2)) { Duration = TimeSpan.FromSeconds(30) }
       };
 
-      Mock<IAuthScrobbler> scrobblerMock = new Mock<IAuthScrobbler>();
       IEnumerable<Scrobble> actual = null;
-      scrobblerMock.Setup(i => i.ScrobbleAsync(It.IsAny<IEnumerable<Scrobble>>())).Callback<IEnumerable<Scrobble>>(s => actual = s)
+      Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>(MockBehavior.Strict);
+      scrobblerMock.Setup(u => u.ScrobbleAsync(It.IsAny<IEnumerable<Scrobble>>(), false)).Callback<IEnumerable<Scrobble>, bool>((s, c) => actual = s)
                                                                                   .Returns(Task.Run(() => new ScrobbleResponse()));
+      scrobblerMock.Setup(u => u.IsAuthenticated).Returns(true);
 
 
       Mock<IUserApi> userApiMock = new Mock<IUserApi>();

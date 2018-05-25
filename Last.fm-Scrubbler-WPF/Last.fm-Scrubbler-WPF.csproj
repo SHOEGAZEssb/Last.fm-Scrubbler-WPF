@@ -180,6 +180,7 @@
     <Compile Include="Interfaces\ISerializer.cs" />
     <Compile Include="Interfaces\ITextFieldParser.cs" />
     <Compile Include="Interfaces\ITextFieldParserFactory.cs" />
+    <Compile Include="Interfaces\IUserScrobbler.cs" />
     <Compile Include="Models\DCSerializer.cs" />
     <Compile Include="Models\DirectoryOperator.cs" />
     <Compile Include="Models\FileOperator.cs" />
@@ -201,6 +202,7 @@
     <Compile Include="Models\ScrobbleBase.cs" />
     <Compile Include="Models\ScrobblerFactory.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserScrobbler.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="ViewModels\ExtraFunctions\CollageCreatorViewModel.cs" />
     <Compile Include="ViewModels\ExtraFunctions\CSVDownloaderViewModel.cs" />
@@ -211,8 +213,6 @@
     <Compile Include="ViewModels\GeneralSettingsViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobblerViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\CacheScrobblerViewModel.cs" />
-    <Compile Include="Interfaces\INeedCachingScrobbler.cs" />
-    <Compile Include="Interfaces\INeedScrobbler.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ITunesScrobbleViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\MediaPlayerScrobbleViewModelBase.cs" />
     <Compile Include="ViewModels\SubViewModels\MilestoneViewModel.cs" />

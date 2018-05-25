@@ -300,7 +300,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
             };
           }
 
-          var response = await Scrobbler.ScrobbleAsync(s);
+          var response = await Scrobbler.ScrobbleAsync(s, true);
           if (response.Success && response.Status == LastResponseStatus.Successful)
             OnStatusUpdated(string.Format("Successfully scrobbled '{0}'", s.Track));
           else if (response.Status == LastResponseStatus.Cached)
