@@ -48,7 +48,11 @@
       <StatusBarItem>
         <StackPanel Orientation="Horizontal">
           <Label Content="Current Status:" FontWeight="Bold"/>
-          <Label Content="{Binding CurrentStatus}"/>
+          <Label Content="{Binding CurrentStatus}">
+            <Label.ToolTip>
+              <ToolTip Content="{Binding CurrentStatus}"/>
+            </Label.ToolTip>
+          </Label>
         </StackPanel>
       </StatusBarItem>
     </StatusBar>
