@@ -74,7 +74,11 @@ namespace Scrubbler.Models
     /// </summary>
     public void UpdateRecentScrobbles()
     {
+      int oldCount = RecentScrobbles.Count;
       _recentScrobbles = RecentScrobbles.Where(i => (DateTime.Now - i.Item2) <= TimeSpan.FromDays(1)).ToList();
+
+      if(oldCount != RecentScrobbles.Count)
+        RecentScrobblesChanged?.Invoke(this, EventArgs.Empty);
     }
 
     /// <summary>
