@@ -25,6 +25,22 @@ namespace Scrubbler.ViewModels
     public event EventHandler ActiveUserChanged;
 
     /// <summary>
+    /// Username of the <see cref="ActiveUser"/>.
+    /// </summary>
+    public string Username
+    {
+      get { return ActiveUser?.Username; }
+    }
+
+    /// <summary>
+    /// Count of recent scrobbles of the <see cref="ActiveUser"/>.
+    /// </summary>
+    public int RecentScrobbleCount
+    {
+      get { return ActiveUser?.RecentScrobbles.Count ?? 0; }
+    }
+
+    /// <summary>
     /// Currently active user.
     /// </summary>
     public User ActiveUser
@@ -34,13 +50,15 @@ namespace Scrubbler.ViewModels
       {
         _activeUser = value;
         NotifyOfPropertyChange();
+        NotifyOfPropertyChange(() => Username);
+        NotifyOfPropertyChange(() => RecentScrobbleCount);
 
         if (ActiveUser != null)
-          ActiveUser.RecentScrobblesChanged -= Value_RecentScrobblesChanged;
+          ActiveUser.RecentScrobblesChanged -= User_RecentScrobblesChanged;
         if (value != null)
         {
           Settings.Default.Username = value.Username;
-          value.RecentScrobblesChanged += Value_RecentScrobblesChanged;
+          value.RecentScrobblesChanged += User_RecentScrobblesChanged;
         }
         else
           Settings.Default.Username = string.Empty;
@@ -260,8 +278,14 @@ namespace Scrubbler.ViewModels
       }
     }
 
-    private void Value_RecentScrobblesChanged(object sender, EventArgs e)
+    /// <summary>
+    /// Serializes users when their recent scrobble count changes.
+    /// </summary>
+    /// <param name="sender">Ignored.</param>
+    /// <param name="e">Ignored.</param>
+    private void User_RecentScrobblesChanged(object sender, EventArgs e)
     {
+      NotifyOfPropertyChange(() => RecentScrobbleCount);
       SerializeUsers();
     }
   }

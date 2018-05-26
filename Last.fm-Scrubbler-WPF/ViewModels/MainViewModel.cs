@@ -178,7 +178,6 @@ namespace Scrubbler.ViewModels
 
       _scrobblerVM = new ScrobblerViewModel(_windowManager, localFileFactory, _fileOperator, _client);
       _scrobblerVM.StatusUpdated += StatusUpdated;
-      CreateScrobblers();
       ActivateItem(_scrobblerVM);
 
       _extraFunctionsVM = new ExtraFunctionsViewModel(_windowManager, _client.User, _fileOperator);

@@ -43,12 +43,19 @@
       <ColumnDefinition Width="5"/>
     </Grid.ColumnDefinitions>
 
-    <Label Grid.Row="1" Grid.Column="1" Content="Active User:" FontWeight="Bold"/>
-    <Label Grid.Row="1" Grid.Column="3" Content="{Binding ActiveUser.Username, FallbackValue='No active user'}"/>
+    <TextBlock Grid.Row="1" Grid.Column="1" Text="Active User:" FontWeight="Bold"/>
+    <TextBlock Grid.Row="1" Grid.Column="3">
+      <TextBlock.Text>
+        <MultiBinding StringFormat="{}{0} ({1})">
+          <Binding Path="Username" TargetNullValue='No active user'/>
+          <Binding Path="RecentScrobbleCount" FallbackValue="0"/>
+        </MultiBinding>
+      </TextBlock.Text>
+    </TextBlock>
 
     <Separator Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5"/>
 
-    <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Available Users:" FontWeight="Bold"/>
+    <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Text="Available Users:" FontWeight="Bold"/>
     <ListBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding AvailableUsers}" DisplayMemberPath="Username" SelectedItem="{Binding SelectedUser}"/>
 
     <StackPanel Grid.Row="5" Grid.Column="5" Orientation="Vertical">
