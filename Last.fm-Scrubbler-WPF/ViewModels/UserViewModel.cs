@@ -232,6 +232,7 @@ namespace Scrubbler.ViewModels
           try
           {
             User usr = _userSerializer.Deserialize(file);
+            usr.UpdateRecentScrobbles();
             AvailableUsers.Add(usr);
           }
           catch (Exception ex)
@@ -256,13 +257,22 @@ namespace Scrubbler.ViewModels
       {
         try
         {
-          _userSerializer.Serialize(usr, Path.Combine(USERSFOLDER, usr.Username) + ".xml");
+          SerializeUser(usr);
         }
         catch (Exception ex)
         {
           Debug.WriteLine(string.Format("Error serializing User {0}: {1}", usr.Username, ex.Message));
         }
       }
+    }
+
+    /// <summary>
+    /// Serializes a single user.
+    /// </summary>
+    /// <param name="user">User to serialize.</param>
+    private void SerializeUser(User user)
+    {
+      _userSerializer.Serialize(user, Path.Combine(USERSFOLDER, user.Username) + ".xml");
     }
 
     /// <summary>
@@ -286,7 +296,14 @@ namespace Scrubbler.ViewModels
     private void User_RecentScrobblesChanged(object sender, EventArgs e)
     {
       NotifyOfPropertyChange(() => RecentScrobbleCount);
-      SerializeUsers();
+      try
+      {
+        SerializeUser(sender as User);
+      }
+      catch(Exception ex)
+      {
+        Debug.WriteLine("Error serializing User {0}: {1}", (sender as User).Username, ex.Message);
+      }
     }
   }
 }
