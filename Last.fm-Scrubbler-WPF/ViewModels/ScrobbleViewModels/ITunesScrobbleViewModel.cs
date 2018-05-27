@@ -210,7 +210,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     {
       lock (_lockAnchor)
       {
-        if (ITunesApp?.CurrentTrack?.trackID != _currentTrackID || ITunesApp?.CurrentTrack?.PlayedCount > _currentTrackPlayCount)
+        if (ITunesApp?.CurrentTrack != null && ITunesApp?.CurrentTrack?.trackID != _currentTrackID || ITunesApp?.CurrentTrack?.PlayedCount > _currentTrackPlayCount)
         {
           _currentTrackPlayCount = ITunesApp.CurrentTrack.PlayedCount;
           CountedSeconds = 0;
