@@ -147,7 +147,7 @@ namespace Scrubbler.ViewModels
       _lastFMClientFactory = clientFactory;
       _scrobblerFactory = scrobblerFactory;
       _fileOperator = fileOperator;
-      TitleString = "Last.fm Scrubbler WPF " + Assembly.GetExecutingAssembly().GetName().Version;
+      TitleString = "Last.fm Scrubbler WPF Beta " + Assembly.GetExecutingAssembly().GetName().Version;
       _client = _lastFMClientFactory.CreateClient(APIKEY, APISECRET);
       SetupViewModels(localFileFactory, directoryOperator, userSerializer);
       CurrentStatus = "Waiting to scrobble...";
