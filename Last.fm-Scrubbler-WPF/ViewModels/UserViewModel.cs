@@ -232,7 +232,10 @@ namespace Scrubbler.ViewModels
           try
           {
             User usr = _userSerializer.Deserialize(file);
+            // connect and disconnect to serialize if recent scrobbles are different
+            usr.RecentScrobblesChanged += User_RecentScrobblesChanged;
             usr.UpdateRecentScrobbles();
+            usr.RecentScrobblesChanged -= User_RecentScrobblesChanged;
             AvailableUsers.Add(usr);
           }
           catch (Exception ex)
