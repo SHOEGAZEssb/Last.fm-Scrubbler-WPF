@@ -187,6 +187,9 @@ namespace Scrubbler.ViewModels
       // we do this later to stop a NullReferenceException (we create scrobblers here anyways!)
       UserViewModel.ActiveUserChanged += UserViewModel_ActiveUserChanged;
 
+      if(UserViewModel.ActiveUser != null)
+        CreateScrobblers();
+
       // should be active
       ActivateItem(_scrobblerVM);
     }
