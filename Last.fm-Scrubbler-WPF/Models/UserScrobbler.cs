@@ -46,6 +46,12 @@ namespace Scrubbler.Models
 
     #region Construction
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="user">User to count scrobbles for.</param>
+    /// <param name="scrobbler">Normal scrobbler.</param>
+    /// <param name="cachingScrobbler">Scrobbler that caches.</param>
     public UserScrobbler(User user, IAuthScrobbler scrobbler, IAuthScrobbler cachingScrobbler)
     {
       User = user ?? throw new ArgumentNullException(nameof(user));

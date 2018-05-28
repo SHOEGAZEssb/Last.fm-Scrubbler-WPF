@@ -30,9 +30,10 @@ namespace Scrubbler.Models
     }
 
     /// <summary>
-    /// Creates a scrobbler that checks <see cref="Models.User"/>
+    /// Creates a scrobbler that checks <see cref="User"/>
     /// scrobble count.
     /// </summary>
+    /// <param name="user">User to count scrobbles for.</param>
     /// <param name="scrobbler">Normal scrobbler.</param>
     /// <param name="cachingScrobbler">Scrobbler that caches.</param>
     /// <returns>Newly created scrobbler.</returns>
