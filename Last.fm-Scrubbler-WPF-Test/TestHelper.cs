@@ -71,5 +71,21 @@ namespace Scrubbler.Test
     {
       return new Scrobble(scrobble.Artist, scrobble.Album, scrobble.Track, scrobble.TimePlayed.AddSeconds(1)) { AlbumArtist = scrobble.AlbumArtist, Duration = scrobble.Duration };
     }
+
+    /// <summary>
+    /// Creates generic scrobbles (without information).
+    /// </summary>
+    /// <param name="amount">Amount of scrobbles to create.</param>
+    /// <returns>Newly created, generic scrobbles.</returns>
+    public static Scrobble[] CreateGenericScrobbles(int amount)
+    {
+      Scrobble[] scrobbles = new Scrobble[amount];
+      for (int i = 0; i < scrobbles.Length; i++)
+      {
+        scrobbles[i] = new Scrobble();
+      }
+
+      return scrobbles;
+    }
   }
 }

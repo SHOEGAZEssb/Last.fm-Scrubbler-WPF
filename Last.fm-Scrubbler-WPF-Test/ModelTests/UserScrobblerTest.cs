@@ -7,6 +7,7 @@ using Scrubbler.Interfaces;
 using Scrubbler.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Scrubbler.Test.ModelTests
@@ -26,7 +27,7 @@ namespace Scrubbler.Test.ModelTests
       // given: mocks
       User user = new User("TestUser", "TestToken", false);
 
-      var scrobbles = CreateScrobbles(User.MAXSCROBBLESPERDAY);
+      var scrobbles = TestHelper.CreateGenericScrobbles(User.MAXSCROBBLESPERDAY);
       user.AddScrobbles(scrobbles, DateTime.Now);
 
       Mock<IAuthScrobbler> scrobblerMock = new Mock<IAuthScrobbler>(MockBehavior.Strict);
@@ -40,9 +41,38 @@ namespace Scrubbler.Test.ModelTests
     }
 
     /// <summary>
+    /// Tests the scrobbling a single scrobble.
+    /// </summary>
+    /// <returns>Task.</returns>
+    [Test]
+    public async Task ScrobbleTest()
+    {
+      // given: mocks
+      User user = new User("TestUser", "TestToken", false);
+
+      Mock<IAuthScrobbler> scrobblerMock = new Mock<IAuthScrobbler>(MockBehavior.Strict);
+      IEnumerable<Scrobble> actual = null;
+      scrobblerMock.Setup(u => u.ScrobbleAsync(It.IsAny<IEnumerable<Scrobble>>())).Callback<IEnumerable<Scrobble>>((s) => actual = s)
+                                                                            .Returns(Task.Run(() => new ScrobbleResponse(LastResponseStatus.Successful)));
+
+      Mock<IAuthScrobbler> cachingScrobblerMock = new Mock<IAuthScrobbler>(MockBehavior.Strict);
+
+      UserScrobbler userScrobbler = new UserScrobbler(user, scrobblerMock.Object, cachingScrobblerMock.Object);
+
+      var expected = TestHelper.CreateGenericScrobbles(1);
+
+      // when: scrobbling
+      await userScrobbler.ScrobbleAsync(expected.First(), false);
+
+      // then: correctly scrobbled and saved to the user
+      Assert.That(user.RecentScrobbles.Count, Is.EqualTo(expected.Length));
+      Assert.That(TestHelper.IsEqualScrobble(actual, expected));
+    }
+
+    /// <summary>
     /// Tests the scrobbling of multiple scrobbles.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Task.</returns>
     [Test]
     public async Task ScrobbleMultipleTest()
     {
@@ -58,7 +88,7 @@ namespace Scrubbler.Test.ModelTests
 
       UserScrobbler userScrobbler = new UserScrobbler(user, scrobblerMock.Object, cachingScrobblerMock.Object);
 
-      var expected = CreateScrobbles(10);
+      var expected = TestHelper.CreateGenericScrobbles(10);
 
       // when: scrobbling
       await userScrobbler.ScrobbleAsync(expected, false);
@@ -66,17 +96,6 @@ namespace Scrubbler.Test.ModelTests
       // then: correctly scrobbled and saved to the user
       Assert.That(user.RecentScrobbles.Count, Is.EqualTo(expected.Length));
       Assert.That(TestHelper.IsEqualScrobble(actual, expected));
-    }
-
-    private Scrobble[] CreateScrobbles(int amount)
-    {
-      Scrobble[] scrobbles = new Scrobble[amount];
-      for (int i = 0; i < scrobbles.Length; i++)
-      {
-        scrobbles[i] = new Scrobble();
-      }
-
-      return scrobbles;
     }
   }
 }
