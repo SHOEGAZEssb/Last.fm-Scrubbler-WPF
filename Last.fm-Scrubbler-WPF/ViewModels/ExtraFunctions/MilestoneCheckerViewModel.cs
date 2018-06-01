@@ -79,6 +79,21 @@ namespace Scrubbler.ViewModels.ExtraFunctions
     private int _number;
 
     /// <summary>
+    /// If true, "import" timestamps (e.g. 1970...)
+    /// are ignored.
+    /// </summary>
+    public bool IgnoreBrokenTimestamps
+    {
+      get { return _ignoreBrokenTimestamps; }
+      set
+      {
+        _ignoreBrokenTimestamps = value;
+        NotifyOfPropertyChange();
+      }
+    }
+    private bool _ignoreBrokenTimestamps;
+
+    /// <summary>
     /// The scrobble data of the <see cref="Username"/>.
     /// </summary>
     public List<LastTrack> ScrobbleData
@@ -136,16 +151,19 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       {
         EnableControls = false;
 
-        List<LastTrack> tracksToProcess = new List<LastTrack>();
+        List<LastTrack> tracksToProcess = ScrobbleData;
+        if (IgnoreBrokenTimestamps)
+          tracksToProcess = ScrobbleData.Where(i => i.TimePlayed.Value.Year != 1970).ToList();
+
         if (SelectedMilestoneType == MilestoneType.SpecificTrack)
-          Milestones = new ObservableCollection<MilestoneViewModel>() { new MilestoneViewModel(ScrobbleData[Number - 1], Number) };
+          Milestones = new ObservableCollection<MilestoneViewModel>() { new MilestoneViewModel(tracksToProcess[Number - 1], Number) };
         else
         {
           List<MilestoneViewModel> milestones = new List<MilestoneViewModel>();
-          for(int i = 0; i < ScrobbleData.Count; i++)
+          for(int i = 0; i < tracksToProcess.Count; i++)
           {
             if((i + 1) % Number == 0)
-              milestones.Add(new MilestoneViewModel(_scrobbleData[i], i + 1));
+              milestones.Add(new MilestoneViewModel(tracksToProcess[i], i + 1));
           }
 
           Milestones = new ObservableCollection<MilestoneViewModel>(milestones);

@@ -69,6 +69,8 @@
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="5"/>
         <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
       </Grid.ColumnDefinitions>
 
       <TextBlock Grid.Row="0" Grid.Column="0" Text="Milestone Type:"/>
@@ -83,7 +85,9 @@
       <TextBlock Grid.Row="0" Grid.Column="4" Text="Number:"/>
       <xceed:IntegerUpDown Grid.Row="0" Grid.Column="6" Value="{Binding Number}" Minimum="1" Maximum="{Binding ScrobbleData.Count}"/>
 
-      <Button Grid.Row="0" Grid.Column="8" x:Name="GetMilestones" Content="Get Milestones"/>
+      <CheckBox Grid.Row="0" Grid.Column="8" Content="Ignore Broken Timestamps" IsChecked="{Binding IgnoreBrokenTimestamps}" VerticalAlignment="Center"/>
+
+      <Button Grid.Row="0" Grid.Column="10" x:Name="GetMilestones" Content="Get Milestones"/>
     </Grid>
 
     <ListView Grid.Row="4" VerticalAlignment="Stretch" ItemsSource="{Binding Milestones}" views:GridViewSort.AutoSort="True">
