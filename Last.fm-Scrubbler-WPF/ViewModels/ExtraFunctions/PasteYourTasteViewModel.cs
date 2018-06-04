@@ -22,7 +22,6 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       {
         _username = value;
         NotifyOfPropertyChange();
-        NotifyOfPropertyChange(() => CanFetch);
       }
     }
     private string _username;
@@ -80,41 +79,9 @@ namespace Scrubbler.ViewModels.ExtraFunctions
       {
         _tasteText = value;
         NotifyOfPropertyChange();
-        NotifyOfPropertyChange(() => CanCopy);
       }
     }
     private string _tasteText;
-
-    /// <summary>
-    /// Gets if certain controls on the ui are enabled.
-    /// </summary>
-    public override bool EnableControls
-    {
-      get { return _enableControls; }
-      protected set
-      {
-        _enableControls = value;
-        NotifyOfPropertyChange();
-        NotifyOfPropertyChange(() => CanFetch);
-        NotifyOfPropertyChange(() => CanCopy);
-      }
-    }
-
-    /// <summary>
-    /// Gets if the fetch button on the ui is enabled.
-    /// </summary>
-    public bool CanFetch
-    {
-      get { return !string.IsNullOrEmpty(Username) && EnableControls; }
-    }
-
-    /// <summary>
-    /// Gets if the copy button on the ui is enabled.
-    /// </summary>
-    public bool CanCopy
-    {
-      get { return !string.IsNullOrEmpty(TasteText) && EnableControls; }
-    }
 
     #endregion Properties
 

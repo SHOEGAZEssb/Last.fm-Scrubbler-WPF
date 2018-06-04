@@ -211,19 +211,6 @@ namespace Scrubbler.ViewModels.ExtraFunctions
     }
     private BitmapSource _collage;
 
-    /// <summary>
-    /// Gets if certain controls on the ui are enabled.
-    /// </summary>
-    public override bool EnableControls
-    {
-      get { return _enableControls; }
-      protected set
-      {
-        _enableControls = value;
-        NotifyOfPropertyChange();
-      }
-    }
-
     #endregion Properties
 
     #region Member
