@@ -27,7 +27,7 @@
           <Label Content="Logged in as:" FontWeight="Bold"/>
           <TextBlock Margin="0,5,0,0">
             <Hyperlink>
-              <TextBlock Text="{Binding UserViewModel.Username, Mode=OneWay, TargetNullValue='Not logged in'}" cal:Message.Attach="[Event MouseDown] = [Action HyperlinkClicked]"/>
+              <TextBlock Text="{Binding UserViewModel.Username, Mode=OneWay, TargetNullValue='Not logged in'}" cal:Message.Attach="[Event MouseDown] = [Action ShowUserView]"/>
             </Hyperlink>
           </TextBlock>
         </StackPanel>

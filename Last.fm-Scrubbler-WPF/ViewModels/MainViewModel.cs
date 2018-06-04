@@ -19,6 +19,11 @@ namespace Scrubbler.ViewModels
     #region Properties
 
     /// <summary>
+    /// The minimum DateTime for all DateTimePickers.
+    /// </summary>
+    public static DateTime MinimumDateTime = DateTime.Now.Subtract(TimeSpan.FromDays(14));
+
+    /// <summary>
     /// String containing application name and version.
     /// </summary>
     public string TitleString
@@ -47,13 +52,6 @@ namespace Scrubbler.ViewModels
     private UserViewModel _userViewModel;
 
     /// <summary>
-    /// The minimum DateTime for all DateTimePickers.
-    /// </summary>
-    public static DateTime MinimumDateTime = DateTime.Now.Subtract(TimeSpan.FromDays(14));
-
-    #region StatusBar Properties
-
-    /// <summary>
     /// Gets the current status displayed in the status bar.
     /// </summary>
     public string CurrentStatus
@@ -66,8 +64,6 @@ namespace Scrubbler.ViewModels
       }
     }
     private string _currentStatus;
-
-    #endregion StatusBar Properties
 
     #endregion Properties
 
@@ -153,6 +149,29 @@ namespace Scrubbler.ViewModels
     public void ShowSettings()
     {
       _windowManager.ShowDialog(new GeneralSettingsViewModel());
+    }
+
+    /// <summary>
+    /// Shows the <see cref="Views.UserView"/>.
+    /// </summary>
+    public void ShowUserView()
+    {
+      _windowManager.ShowDialog(UserViewModel);
+    }
+
+    /// <summary>
+    /// Cleanup before exiting.
+    /// </summary>
+    /// <param name="close">True if the application is closed.</param>
+    protected override void OnDeactivate(bool close)
+    {
+      if (close)
+      {
+        foreach (IDisposable disposableVM in Items.Where(i => i is IDisposable))
+        {
+          disposableVM.Dispose();
+        }
+      }
     }
 
     #region Setup
@@ -242,29 +261,6 @@ namespace Scrubbler.ViewModels
     private void StatusUpdated(object sender, UpdateStatusEventArgs e)
     {
       CurrentStatus = e.NewStatus;
-    }
-
-    /// <summary>
-    /// Shows the <see cref="Views.UserView"/>.
-    /// </summary>
-    public void HyperlinkClicked()
-    {
-      _windowManager.ShowDialog(UserViewModel);
-    }
-
-    /// <summary>
-    /// Cleanup before exiting.
-    /// </summary>
-    /// <param name="close">True if the application is closed.</param>
-    protected override void OnDeactivate(bool close)
-    {
-      if(close)
-      {
-        foreach (IDisposable disposableVM in Items.Where(i => i is IDisposable))
-        {
-          disposableVM.Dispose();
-        }
-      }
     }
   }
 }
