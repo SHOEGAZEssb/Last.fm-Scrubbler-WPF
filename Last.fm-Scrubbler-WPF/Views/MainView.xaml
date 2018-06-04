@@ -36,11 +36,9 @@
       <Separator/>
 
       <StatusBarItem>
-        <TextBlock>
-            <Hyperlink>
-              <TextBlock Text="Settings" cal:Message.Attach="[Event MouseDown] = [Action ShowSettings]"/>
-            </Hyperlink>
-          </TextBlock>
+        <Hyperlink>
+          <TextBlock Text="Settings" cal:Message.Attach="[Event MouseDown] = [Action ShowSettings]"/>
+        </Hyperlink>
       </StatusBarItem>
 
       <Separator/>
