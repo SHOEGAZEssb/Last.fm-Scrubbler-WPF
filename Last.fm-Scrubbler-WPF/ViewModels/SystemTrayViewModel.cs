@@ -45,7 +45,8 @@ namespace Scrubbler.ViewModels
     /// </summary>
     public void ShowScreen()
     {
-      _windowManager.ShowWindow(_screenToShow);
+      if(!_screenToShow.IsActive)
+        _windowManager.ShowWindow(_screenToShow);
     }
 
     /// <summary>
