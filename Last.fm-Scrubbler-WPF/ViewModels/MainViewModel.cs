@@ -54,14 +54,6 @@ namespace Scrubbler.ViewModels
     #region StatusBar Properties
 
     /// <summary>
-    /// Gets the username displayed in the status bar.
-    /// </summary>
-    public string StatusBarUsername
-    {
-      get { return _client.Auth.Authenticated ? _client.Auth.UserSession.Username : "Not logged in."; }
-    }
-
-    /// <summary>
     /// Gets the current status displayed in the status bar.
     /// </summary>
     public string CurrentStatus
@@ -203,7 +195,6 @@ namespace Scrubbler.ViewModels
     /// <param name="e">Ignored.</param>
     private void UserViewModel_ActiveUserChanged(object sender, EventArgs e)
     {
-      NotifyOfPropertyChange(() => StatusBarUsername);
       CreateScrobblers();
     }
 
@@ -256,7 +247,6 @@ namespace Scrubbler.ViewModels
     public void HyperlinkClicked()
     {
       _windowManager.ShowDialog(UserViewModel);
-      NotifyOfPropertyChange(() => StatusBarUsername);
     }
 
     /// <summary>
