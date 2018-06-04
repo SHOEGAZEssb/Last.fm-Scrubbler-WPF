@@ -21,6 +21,14 @@
     </ObjectDataProvider>
 
     <conv:EnumDescriptionConverter x:Key="EnumDescriptionConv"/>
+
+    <Style x:Key="CanSelectPathStyle" TargetType="FrameworkElement">
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding MediaPlayerDatabaseType}" Value="{x:Static viewModels:MediaPlayerDatabaseType.WMP}">
+          <Setter Property="IsEnabled" Value="False"/>
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
   </UserControl.Resources>
 
   <Grid>
@@ -46,8 +54,8 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="DB File Path:"/>
-    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding DBFilePath}" IsEnabled="{Binding CanSelectFile}"/>
-    <Button x:Name="SelectFile" Grid.Row="0" Grid.Column="4" Content="..." MinWidth="25" IsEnabled="{Binding CanSelectFile}"/>
+    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding DBFilePath}" Style="{StaticResource CanSelectPathStyle}"/>
+    <Button x:Name="SelectFile" Grid.Row="0" Grid.Column="4" Content="..." MinWidth="25" Style="{StaticResource CanSelectPathStyle}"/>
 
     <ComboBox Grid.Row="0" Grid.Column="6" ItemsSource="{Binding Source={StaticResource MPDDataProvider}}"
               SelectedValue="{Binding MediaPlayerDatabaseType}">
@@ -57,6 +65,7 @@
         </DataTemplate>
       </ComboBox.ItemTemplate>
     </ComboBox>
+
     <Button x:Name="ParseFile" Grid.Row="0" Grid.Column="8" Content="Parse"/>
 
     <subViews:SelectScrobblesControl Grid.Row="2" Grid.ColumnSpan="9"/>

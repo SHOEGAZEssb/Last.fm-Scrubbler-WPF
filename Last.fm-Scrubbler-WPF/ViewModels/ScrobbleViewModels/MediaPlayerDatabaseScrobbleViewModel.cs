@@ -62,7 +62,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       {
         _mediaPlayerDatabaseType = value;
         NotifyOfPropertyChange();
-        NotifyOfPropertyChange(() => CanSelectFile);
       }
     }
     private MediaPlayerDatabaseType _mediaPlayerDatabaseType;
@@ -82,37 +81,11 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     private ObservableCollection<MediaDBScrobbleViewModel> _parsedScrobbles;
 
     /// <summary>
-    /// Gets if certain controls are enabled on the UI:
-    /// </summary>
-    public override bool EnableControls
-    {
-      get { return _enableControls; }
-      protected set
-      {
-        _enableControls = value;
-        NotifyOfPropertyChange();
-        NotifyOfPropertyChange(() => CanScrobble);
-        NotifyOfPropertyChange(() => CanPreview);
-        NotifyOfPropertyChange(() => CanSelectAll);
-        NotifyOfPropertyChange(() => CanSelectNone);
-        NotifyOfPropertyChange(() => CanSelectFile);
-      }
-    }
-
-    /// <summary>
-    /// Gets if the "..." button is enabled on the ui.
-    /// </summary>
-    public bool CanSelectFile
-    {
-      get { return MediaPlayerDatabaseType != MediaPlayerDatabaseType.WMP && EnableControls; }
-    }
-
-    /// <summary>
     /// Gets if the "Scrobble" button is enabled on the UI.
     /// </summary>
     public override bool CanScrobble
     {
-      get { return base.CanScrobble && ParsedScrobbles.Any(i => i.ToScrobble) && EnableControls; }
+      get { return base.CanScrobble && ParsedScrobbles.Any(i => i.ToScrobble); }
     }
 
     /// <summary>
@@ -120,14 +93,14 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public override bool CanPreview
     {
-      get { return ParsedScrobbles.Any(i => i.ToScrobble) && EnableControls; }
+      get { return ParsedScrobbles.Any(i => i.ToScrobble); }
     }
     /// <summary>
     /// Gets if the "Select ALL" button is enabled on the UI.
     /// </summary>
     public bool CanSelectAll
     {
-      get { return ParsedScrobbles.Any(i => !i.ToScrobble) && EnableControls; }
+      get { return ParsedScrobbles.Any(i => !i.ToScrobble); }
     }
 
     /// <summary>
@@ -135,7 +108,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public bool CanSelectNone
     {
-      get { return ParsedScrobbles.Any(i => i.ToScrobble) && EnableControls; }
+      get { return ParsedScrobbles.Any(i => i.ToScrobble); }
     }
 
     #endregion Properties

@@ -34,25 +34,11 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     private ObservableCollection<LoadedFileViewModel> _loadedFiles;
 
     /// <summary>
-    /// Gets if certain controls should be enabled on the UI.
-    /// </summary>
-    public override bool EnableControls
-    {
-      get { return _enableControls; }
-      protected set
-      {
-        _enableControls = value;
-        NotifyOfPropertyChange();
-        NotifyCanProperties();
-      }
-    }
-
-    /// <summary>
     /// Gets if the scrobble button on the ui is enabled.
     /// </summary>
     public override bool CanScrobble
     {
-      get { return base.CanScrobble && LoadedFiles.Any(i => i.ToScrobble) && EnableControls; }
+      get { return base.CanScrobble && LoadedFiles.Any(i => i.ToScrobble); }
     }
 
     /// <summary>
@@ -84,7 +70,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public bool CanRemoveFiles
     {
-      get { return LoadedFiles.Any(i => i.ToScrobble) && EnableControls; }
+      get { return LoadedFiles.Any(i => i.ToScrobble); }
     }
 
     #endregion Properties

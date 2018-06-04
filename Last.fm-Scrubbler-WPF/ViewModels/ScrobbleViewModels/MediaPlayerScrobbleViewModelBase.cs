@@ -127,19 +127,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     }
 
     /// <summary>
-    /// If certain controls should be enabled.
-    /// </summary>
-    public override bool EnableControls
-    {
-      get { return _enableControls; }
-      protected set
-      {
-        _enableControls = value;
-        NotifyOfPropertyChange();
-      }
-    }
-
-    /// <summary>
     /// Gets if the preview button is enabled.
     /// Not needed here.
     /// </summary>

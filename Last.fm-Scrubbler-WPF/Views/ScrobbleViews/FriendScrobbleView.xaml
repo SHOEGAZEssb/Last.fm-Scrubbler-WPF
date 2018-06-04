@@ -39,7 +39,17 @@
     <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
     <Label Grid.Row="0" Grid.Column="4" Content="Amount:"/>
     <xctk:IntegerUpDown Grid.Row="0" Grid.Column="6" Value="{Binding Amount}" Minimum="1" Maximum="1000"/>
-    <Button x:Name="FetchScrobbles" Grid.Row="0" Grid.Column="8" Content="Fetch" IsEnabled="{Binding CanFetch}"/>
+    <Button x:Name="FetchScrobbles" Grid.Row="0" Grid.Column="8" Content="Fetch">
+      <Button.Style>
+        <Style TargetType="Button">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding Username, TargetNullValue=''}" Value="">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Button.Style>
+    </Button>
 
     <subViews:SelectScrobblesControl Grid.Row="2" Grid.ColumnSpan="9"/>
 

@@ -47,7 +47,17 @@
     <Label Grid.Row="0" Grid.Column="0" Content="CSV File:"/>
     <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding CSVFilePath, UpdateSourceTrigger=PropertyChanged}"/>
     <Button x:Name="LoadCSVFileDialog" Grid.Row="0" Grid.Column="4" Content=" ... "/>
-    <Button x:Name="ParseCSVFile" Grid.Row="0" Grid.Column="6" Content="Parse" IsEnabled="{Binding CanParse}"/>
+    <Button x:Name="ParseCSVFile" Grid.Row="0" Grid.Column="6" Content="Parse">
+      <Button.Style>
+        <Style TargetType="Button">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CSVFilePath, TargetNullValue=''}" Value="">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Button.Style>
+    </Button>
     <Button x:Name="OpenCSVParserSettings" Grid.Row="0" Grid.Column="8" Content="Settings"/>
 
     <subViews:SelectScrobblesControl Grid.Row="2" Grid.ColumnSpan="9"/>

@@ -87,26 +87,11 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     private TimeSpan _duration;
 
     /// <summary>
-    /// Gets if certain controls that modify the
-    /// scrobbling data are enabled.
-    /// </summary>
-    public override bool EnableControls
-    {
-      get { return _enableControls; }
-      protected set
-      {
-        _enableControls = value;
-        NotifyOfPropertyChange();
-        NotifyCanProperties();
-      }
-    }
-
-    /// <summary>
     /// Gets if the scrobble button is enabled.
     /// </summary>
     public override bool CanScrobble
     {
-      get { return base.CanScrobble && !string.IsNullOrEmpty(Artist) && !string.IsNullOrEmpty(Track) && EnableControls; }
+      get { return base.CanScrobble && !string.IsNullOrEmpty(Artist) && !string.IsNullOrEmpty(Track); }
     }
 
     /// <summary>
@@ -114,7 +99,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public override bool CanPreview
     {
-      get { return !string.IsNullOrEmpty(Artist) && !string.IsNullOrEmpty(Track) && EnableControls; }
+      get { return !string.IsNullOrEmpty(Artist) && !string.IsNullOrEmpty(Track); }
     }
 
     #endregion Properties
@@ -132,10 +117,9 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public override async Task Scrobble()
     {
-      EnableControls = false;
-
       try
       {
+        EnableControls = false;
         OnStatusUpdated("Trying to scrobble...");
 
         Scrobble s = new Scrobble(Artist, Album, Track, Time) { AlbumArtist = AlbumArtist, Duration = Duration };

@@ -59,7 +59,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       {
         _searchText = value;
         NotifyOfPropertyChange();
-        NotifyOfPropertyChange(() => CanSearch);
       }
     }
     private string _searchText;
@@ -163,23 +162,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     private ObservableCollection<FetchedTrackViewModel> _fetchedTracks;
 
     /// <summary>
-    /// Gets if certain controls should be enabled on the UI.
-    /// </summary>
-    public override bool EnableControls
-    {
-      get { return _enableControls; }
-      protected set
-      {
-        _enableControls = value;
-        NotifyOfPropertyChange();
-        NotifyOfPropertyChange(() => CanScrobble);
-        NotifyOfPropertyChange(() => CanPreview);
-        NotifyOfPropertyChange(() => CanSelectAll);
-        NotifyOfPropertyChange(() => CanSelectNone);
-      }
-    }
-
-    /// <summary>
     /// Gets if the currently fetched releases has been fetched
     /// through the click on an artist.
     /// </summary>
@@ -195,19 +177,11 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     private bool _fetchedReleaseThroughArtist;
 
     /// <summary>
-    /// Gets if the search button is enabled on the UI.
-    /// </summary>
-    public bool CanSearch
-    {
-      get { return EnableControls && !string.IsNullOrEmpty(SearchText); }
-    }
-
-    /// <summary>
     /// Gets if the scrobble button is enabled on the UI.
     /// </summary>
     public override bool CanScrobble
     {
-      get { return base.CanScrobble && FetchedTracks.Any(i => i.ToScrobble) && EnableControls; }
+      get { return base.CanScrobble && FetchedTracks.Any(i => i.ToScrobble); }
     }
 
     /// <summary>
@@ -215,7 +189,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public override bool CanPreview
     {
-      get { return FetchedTracks.Any(i => i.ToScrobble) && EnableControls; }
+      get { return FetchedTracks.Any(i => i.ToScrobble); }
     }
 
     /// <summary>
@@ -223,7 +197,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public bool CanSelectAll
     {
-      get { return !FetchedTracks.All(i => i.ToScrobble) && EnableControls; }
+      get { return !FetchedTracks.All(i => i.ToScrobble); }
     }
 
     /// <summary>
@@ -231,7 +205,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public bool CanSelectNone
     {
-      get { return FetchedTracks.Any(i => i.ToScrobble) && EnableControls; }
+      get { return FetchedTracks.Any(i => i.ToScrobble); }
     }
 
     #endregion Properties
@@ -239,7 +213,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     #region Private Member
 
     /// <summary>
-    /// The view that displays the fetched aritsts.
+    /// The view that displays the fetched artists.
     /// </summary>
     private ArtistResultView _artistResultView;
 

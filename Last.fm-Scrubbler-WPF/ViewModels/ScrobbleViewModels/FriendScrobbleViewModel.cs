@@ -28,7 +28,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       {
         _username = value;
         NotifyOfPropertyChange();
-        NotifyOfPropertyChange(() => CanFetch);
       }
     }
     private string _username;
@@ -62,29 +61,11 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     private ObservableCollection<FetchedFriendTrackViewModel> _fetchedScrobbles;
 
     /// <summary>
-    /// Gets/sets if certain controls on the UI should be enabled.
-    /// </summary>
-    public override bool EnableControls
-    {
-      get { return _enableControls; }
-      protected set
-      {
-        _enableControls = value;
-        NotifyOfPropertyChange();
-        NotifyOfPropertyChange(() => CanScrobble);
-        NotifyOfPropertyChange(() => CanPreview);
-        NotifyOfPropertyChange(() => CanFetch);
-        NotifyOfPropertyChange(() => CanSelectAll);
-        NotifyOfPropertyChange(() => CanSelectNone);
-      }
-    }
-
-    /// <summary>
     /// Gets if the scrobble button is enabled.
     /// </summary>
     public override bool CanScrobble
     {
-      get { return base.CanScrobble && FetchedScrobbles.Any(i => i.ToScrobble) && EnableControls; }
+      get { return base.CanScrobble && FetchedScrobbles.Any(i => i.ToScrobble); }
     }
 
     /// <summary>
@@ -92,15 +73,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public override bool CanPreview
     {
-      get { return FetchedScrobbles.Any(i => i.ToScrobble) && EnableControls; }
-    }
-
-    /// <summary>
-    /// Gets if the fetch button is enabled.
-    /// </summary>
-    public bool CanFetch
-    {
-      get { return !string.IsNullOrEmpty(Username) && EnableControls; }
+      get { return FetchedScrobbles.Any(i => i.ToScrobble); }
     }
 
     /// <summary>
@@ -108,7 +81,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public bool CanSelectAll
     {
-      get { return !FetchedScrobbles.All(i => i.ToScrobble) && EnableControls; }
+      get { return !FetchedScrobbles.All(i => i.ToScrobble); }
     }
 
     /// <summary>
@@ -116,7 +89,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public bool CanSelectNone
     {
-      get { return FetchedScrobbles.Any(i => i.ToScrobble) && EnableControls; }
+      get { return FetchedScrobbles.Any(i => i.ToScrobble); }
     }
 
     #endregion Properties
@@ -148,10 +121,9 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public async Task FetchScrobbles()
     {
-      EnableControls = false;
-
       try
       {
+        EnableControls = false;
         OnStatusUpdated(string.Format("Trying to fetch scrobbles of '{0}' ...", Username));
         FetchedScrobbles.Clear();
         var response = await _userApi.GetRecentScrobbles(Username, null, 1, Amount);
@@ -215,10 +187,9 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public override async Task Scrobble()
     {
-      EnableControls = false;
-
       try
       {
+        EnableControls = false;
         OnStatusUpdated("Trying to scrobble selected tracks...");
 
         var response = await Scrobbler.ScrobbleAsync(CreateScrobbles());

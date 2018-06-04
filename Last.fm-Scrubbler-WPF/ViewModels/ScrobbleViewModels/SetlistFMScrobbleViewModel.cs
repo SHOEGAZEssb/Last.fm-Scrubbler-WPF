@@ -90,7 +90,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       {
         _customAlbumString = value;
         if (!value)
-          AlbumString = "";
+          AlbumString = string.Empty;
 
         NotifyOfPropertyChange();
       }
@@ -190,26 +190,11 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     private UserControl _currentView;
 
     /// <summary>
-    /// Gets if certain controls that modify the
-    /// scrobbling data are enabled.
-    /// </summary>
-    public override bool EnableControls
-    {
-      get { return _enableControls; }
-      protected set
-      {
-        _enableControls = value;
-        NotifyOfPropertyChange();
-        NotifyOfPropertyChange(() => CanPreview);
-      }
-    }
-
-    /// <summary>
     /// Gets if the scrobble button is enabled.
     /// </summary>
     public override bool CanScrobble
     {
-      get { return base.CanScrobble && EnableControls; }
+      get { return base.CanScrobble; }
     }
 
     /// <summary>
@@ -217,7 +202,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public override bool CanPreview
     {
-      get { return true; }
+      get { return FetchedTracks.Any(i => i.ToScrobble); }
     }
 
     /// <summary>
@@ -225,7 +210,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public bool CanSelectAll
     {
-      get { return !FetchedTracks.All(i => i.ToScrobble) && EnableControls; }
+      get { return !FetchedTracks.All(i => i.ToScrobble); }
     }
 
     /// <summary>
@@ -233,7 +218,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public bool CanSelectNone
     {
-      get { return FetchedTracks.Any(i => i.ToScrobble) && EnableControls; }
+      get { return FetchedTracks.Any(i => i.ToScrobble); }
     }
 
     #endregion Properties

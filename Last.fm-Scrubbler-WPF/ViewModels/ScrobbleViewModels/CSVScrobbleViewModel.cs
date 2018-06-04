@@ -46,7 +46,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       {
         _csvFilePath = value;
         NotifyOfPropertyChange();
-        NotifyOfPropertyChange(() => CanParse);
       }
     }
     private string _csvFilePath;
@@ -106,7 +105,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public override bool CanScrobble
     {
-      get { return base.CanScrobble && Scrobbles.Any(i => i.ToScrobble) && EnableControls; }
+      get { return base.CanScrobble && Scrobbles.Any(i => i.ToScrobble); }
     }
 
     /// <summary>
@@ -114,7 +113,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public override bool CanPreview
     {
-      get { return Scrobbles.Any(i => i.ToScrobble) && EnableControls; }
+      get { return Scrobbles.Any(i => i.ToScrobble); }
     }
 
     /// <summary>
@@ -122,7 +121,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public bool CanSelectAll
     {
-      get { return !Scrobbles.All(i => i.ToScrobble) && EnableControls; }
+      get { return !Scrobbles.All(i => i.ToScrobble); }
     }
 
     /// <summary>
@@ -130,29 +129,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public bool CanSelectNone
     {
-      get { return Scrobbles.Any(i => i.ToScrobble) && EnableControls; }
-    }
-
-    /// <summary>
-    /// Gets if the "Parse" button is enabled.
-    /// </summary>
-    public bool CanParse
-    {
-      get { return !string.IsNullOrEmpty(CSVFilePath); }
-    }
-
-    /// <summary>
-    /// Gets/sets if certain controls on the UI should be enabled.
-    /// </summary>
-    public override bool EnableControls
-    {
-      get { return _enableControls; }
-      protected set
-      {
-        _enableControls = value;
-        NotifyOfPropertyChange(() => EnableControls);
-        NotifyCanProperties();
-      }
+      get { return Scrobbles.Any(i => i.ToScrobble); }
     }
 
     #endregion Properties
@@ -317,14 +294,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <param name="sender">Ignored.</param>
     /// <param name="e">Ignored.</param>
     private void ToScrobbleChanged(object sender, EventArgs e)
-    {
-      NotifyCanProperties();
-    }
-
-    /// <summary>
-    /// Notifies the UI of possible "Can-Property" changes.
-    /// </summary>
-    private void NotifyCanProperties()
     {
       NotifyOfPropertyChange(() => CanScrobble);
       NotifyOfPropertyChange(() => CanPreview);
