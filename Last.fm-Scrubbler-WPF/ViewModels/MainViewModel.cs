@@ -195,7 +195,10 @@ namespace Scrubbler.ViewModels
     /// <param name="e">Ignored.</param>
     private void UserViewModel_ActiveUserChanged(object sender, EventArgs e)
     {
-      CreateScrobblers();
+      if (UserViewModel.ActiveUser != null)
+        CreateScrobblers();
+      else
+        _scrobblerVM.UpdateScrobblers(null);
     }
 
     /// <summary>
