@@ -26,12 +26,7 @@ namespace Scrubbler.Test.ScrobblerTests
     public async Task ScrobbleTest()
     {
       //given: FriendScrobbleViewModel with mocked userapi
-      List<Scrobble> expected = new List<Scrobble>
-      {
-        new Scrobble("TestArtist", "TestAlbum", "TestTrack", DateTime.Now) { Duration = TimeSpan.FromSeconds(30) },
-        new Scrobble("TestArtist2", "TestAlbum2", "TestTrack2", DateTime.Now.AddSeconds(1)) { Duration = TimeSpan.FromSeconds(30) },
-        new Scrobble("TestArtist3", "TestAlbum3", "TestTrack3", DateTime.Now.AddSeconds(2)) { Duration = TimeSpan.FromSeconds(30) }
-      };
+      var expected = TestHelper.CreateGenericScrobbles(3);
 
       IEnumerable<Scrobble> actual = null;
       Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>(MockBehavior.Strict);
@@ -57,7 +52,7 @@ namespace Scrubbler.Test.ScrobblerTests
       await vm.Scrobble();
 
       // we add 1 second to each TimePlayed of the expected because the vm does this too so you can scrobble from yourself...
-      for(int i = 0; i < expected.Count; i++)
+      for(int i = 0; i < expected.Length; i++)
         expected[i] = expected[i].CloneWithAddedSecond();
 
       // then: scrobbled tracks should be equal to the given tracks.
