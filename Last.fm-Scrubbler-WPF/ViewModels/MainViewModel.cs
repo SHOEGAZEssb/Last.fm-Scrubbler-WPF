@@ -77,12 +77,12 @@ namespace Scrubbler.ViewModels
     /// <summary>
     /// The api key of this application.
     /// </summary>
-    private const string APIKEY = "9d226e3ff2fcd55a42c553fef62a7553";
+    private const string APIKEY = "69fbfa5fdc2cc1a158ec3bffab4be7a7";
 
     /// <summary>
     /// The api secret of this application.
     /// </summary>
-    private const string APISECRET = "c779028b480f6c63449c380aeebbbd63";
+    private const string APISECRET = "30a6ed8a75dad2aa6758fa607c53adb5";
 
     /// <summary>
     /// ViewModel managing all scrobble ViewModels.
