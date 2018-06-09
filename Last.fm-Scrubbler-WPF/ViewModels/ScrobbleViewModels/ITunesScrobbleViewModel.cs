@@ -143,38 +143,40 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public override void Connect()
     {
-      EnableControls = false;
-
       try
       {
+        EnableControls = false;
+
         if (ITunesApp != null)
           Dispose();
 
         ITunesApp = new iTunesApp();
         //ITunesApp.OnAboutToPromptUserToQuitEvent += _app_AboutToQuitEvent;
         IsConnected = true;
+
+        CountedSeconds = 0;
+        _countTimer = new Timer(1000);
+        _countTimer.Elapsed += _countTimer_Elapsed;
+        _countTimer.Start();
+
+        NotifyOfPropertyChange(() => CanDisconnect);
+
+        UpdateCurrentTrackInfo();
+
+        _refreshTimer = new Timer(100);
+        _refreshTimer.Elapsed += _refreshTimer_Elapsed;
+        _refreshTimer.Start();
       }
       catch (Exception ex)
       {
         OnStatusUpdated("Error connecting to iTunes: " + ex.Message);
         AutoConnect = false;
         IsConnected = false;
-        return;
       }
-
-      CountedSeconds = 0;
-      _countTimer = new Timer(1000);
-      _countTimer.Elapsed += _countTimer_Elapsed;
-      _countTimer.Start();
-
-      NotifyOfPropertyChange(() => CanDisconnect);
-
-      UpdateCurrentTrackInfo();
-
-      _refreshTimer = new Timer(100);
-      _refreshTimer.Elapsed += _refreshTimer_Elapsed;
-      _refreshTimer.Start();
-      EnableControls = true;
+      finally
+      {
+        EnableControls = true;
+      }
     }
 
     /// <summary>
