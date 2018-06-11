@@ -50,7 +50,9 @@ namespace Scrubbler
       IFileOperator fileOperator = new FileOperator();
       IDirectoryOperator directoryOperator = new DirectoryOperator();
       ISerializer<User> userSerializer = new DCSerializer<User>();
-      MainViewModel mainVM = new MainViewModel(windowManager, lastFMClientFactory, scrobblerFactory, localFileFactory, fileOperator, directoryOperator, userSerializer);
+      ILogger logger = new Logger("log.txt");
+      MainViewModel mainVM = new MainViewModel(windowManager, lastFMClientFactory, scrobblerFactory, localFileFactory, fileOperator,
+                                               directoryOperator, userSerializer, logger);
 
       windowManager.ShowWindow(new SystemTrayViewModel(windowManager, mainVM));
     }

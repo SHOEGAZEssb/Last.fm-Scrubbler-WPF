@@ -168,6 +168,7 @@
     <Compile Include="Interfaces\IAuthScrobbler.cs" />
     <Compile Include="Interfaces\IDirectoryOperator.cs" />
     <Compile Include="Interfaces\IFileOperator.cs" />
+    <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Interfaces\IMessageBoxService.cs" />
     <Compile Include="Interfaces\IExtendedWindowManager.cs" />
     <Compile Include="Interfaces\IFileDialog.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Models\DCSerializer.cs" />
     <Compile Include="Models\DirectoryOperator.cs" />
     <Compile Include="Models\FileOperator.cs" />
+    <Compile Include="Models\Logger.cs" />
     <Compile Include="Models\OpenFileDialogService.cs" />
     <Compile Include="Models\SaveFileDialogService.cs" />
     <Compile Include="Models\Artist.cs" />

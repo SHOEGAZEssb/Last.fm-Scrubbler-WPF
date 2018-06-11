@@ -1,7 +1,6 @@
 ﻿using Caliburn.Micro;
 using Scrubbler.Interfaces;
 using Scrubbler.Models;
-using Scrubbler.Properties;
 using Scrubbler.ViewModels.ExtraFunctions;
 using Scrubbler.ViewModels.ScrobbleViewModels;
 using System;
@@ -61,6 +60,8 @@ namespace Scrubbler.ViewModels
       {
         _currentStatus = value;
         NotifyOfPropertyChange();
+
+        _logger?.Log(CurrentStatus);
       }
     }
     private string _currentStatus;
@@ -114,6 +115,11 @@ namespace Scrubbler.ViewModels
     /// </summary>
     private IFileOperator _fileOperator;
 
+    /// <summary>
+    /// Logger used to log status messages.
+    /// </summary>
+    private ILogger _logger;
+
     #endregion Private Member
 
     #region Construction
@@ -128,13 +134,15 @@ namespace Scrubbler.ViewModels
     /// <param name="fileOperator">FileOperator for interfacing with the hard disk.</param>
     /// <param name="directoryOperator">DirectoryOperator for operating with directories.</param>
     /// <param name="userSerializer">Serializer for <see cref="User"/>s.</param>
+    /// <param name="logger">Logger used to log status messages.</param>
     public MainViewModel(IExtendedWindowManager windowManager, ILastFMClientFactory clientFactory, IScrobblerFactory scrobblerFactory, ILocalFileFactory localFileFactory,
-                         IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer<User> userSerializer)
+                         IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer<User> userSerializer, ILogger logger)
     {
       _windowManager = windowManager;
       _lastFMClientFactory = clientFactory;
       _scrobblerFactory = scrobblerFactory;
       _fileOperator = fileOperator;
+      _logger = logger;
       TitleString = "Last.fm Scrubbler WPF Beta " + Assembly.GetExecutingAssembly().GetName().Version;
       _client = _lastFMClientFactory.CreateClient(APIKEY, APISECRET);
       SetupViewModels(localFileFactory, directoryOperator, userSerializer);
