@@ -54,6 +54,9 @@ namespace Scrubbler.ViewModels
     /// </summary>
     public void Exit()
     {
+      if (_screenToShow is IDisposable screen)
+        screen.Dispose();
+
       Settings.Default.Save();
       Application.Current.Shutdown();
     }

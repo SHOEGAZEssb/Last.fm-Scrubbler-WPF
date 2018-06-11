@@ -13,7 +13,7 @@ namespace Scrubbler.ViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.MainView"/>.
   /// </summary>
-  public class MainViewModel : Conductor<Screen>.Collection.OneActive
+  public class MainViewModel : Conductor<Screen>.Collection.OneActive, IDisposable
   {
     #region Properties
 
@@ -173,13 +173,9 @@ namespace Scrubbler.ViewModels
     /// <param name="close">True if the application is closed.</param>
     protected override void OnDeactivate(bool close)
     {
-      if (close)
-      {
-        foreach (IDisposable disposableVM in Items.Where(i => i is IDisposable))
-        {
-          disposableVM.Dispose();
-        }
-      }
+      // we need to override this because the default
+      // implementation disposes the items on deactivation.
+      // but we want to dispose manually.
     }
 
     #region Setup
@@ -269,6 +265,17 @@ namespace Scrubbler.ViewModels
     private void StatusUpdated(object sender, UpdateStatusEventArgs e)
     {
       CurrentStatus = e.NewStatus;
+    }
+
+    /// <summary>
+    /// Disposes resources.
+    /// </summary>
+    public void Dispose()
+    {
+      foreach (IDisposable disposableVM in Items.Where(i => i is IDisposable))
+      {
+        disposableVM.Dispose();
+      }
     }
   }
 }
