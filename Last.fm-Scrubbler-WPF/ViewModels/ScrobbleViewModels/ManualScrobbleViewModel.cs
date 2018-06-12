@@ -120,7 +120,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       try
       {
         EnableControls = false;
-        OnStatusUpdated("Trying to scrobble...");
+        OnStatusUpdated(string.Format("Trying to scrobble '{0}'...", Track));
 
         Scrobble s = new Scrobble(Artist, Album, Track, Time) { AlbumArtist = AlbumArtist, Duration = Duration };
         var response = await Scrobbler.ScrobbleAsync(s);
