@@ -29,6 +29,7 @@ This tool will always be free, but if it was helpful to you, consider donating t
 - [Paste Your Taste](#paste-your-taste)
 - [CSV Downloader](#csv-downloader)
 - [Collage Creator](#collage-creator)
+- [Milestone Checker](#milestone-checker)
 
 ### Manual Single Track Scrobbling
 Allows you to enter artist, track and album info aswell as when you listened to the song and lets you scrobble it.
