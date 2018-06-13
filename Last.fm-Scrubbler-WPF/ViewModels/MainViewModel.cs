@@ -120,6 +120,8 @@ namespace Scrubbler.ViewModels
     /// </summary>
     private ILogger _logger;
 
+    private GeneralSettingsViewModel _generalSettingsVM;
+
     #endregion Private Member
 
     #region Construction
@@ -156,7 +158,7 @@ namespace Scrubbler.ViewModels
     /// </summary>
     public void ShowSettings()
     {
-      _windowManager.ShowDialog(new GeneralSettingsViewModel());
+      _windowManager.ShowDialog(_generalSettingsVM);
     }
 
     /// <summary>
@@ -190,6 +192,8 @@ namespace Scrubbler.ViewModels
     {
       UserViewModel = new UserViewModel(_windowManager, _client.Auth, _fileOperator, directoryOperator, userSerializer);
       UserViewModel.LoadLastUser();
+
+      _generalSettingsVM = new GeneralSettingsViewModel(_windowManager);
 
       _scrobblerVM = new ScrobblerViewModel(_windowManager, localFileFactory, _fileOperator, _client);
       _scrobblerVM.StatusUpdated += StatusUpdated;

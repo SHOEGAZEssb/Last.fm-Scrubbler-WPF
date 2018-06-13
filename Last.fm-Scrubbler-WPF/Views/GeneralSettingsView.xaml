@@ -3,11 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d"
-             Width="300" Height="130" Title="General Settings">
+             Width="300" Height="160" Title="General Settings" Style="{StaticResource EnableControlsStyle}">
 
   <Grid Margin="5,5,5,5">
     <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
@@ -18,7 +23,10 @@
     <CheckBox Grid.Row="0" Content="Minimize To Tray" IsChecked="{Binding MinimizeToTray}"/>
     <CheckBox Grid.Row="2" Content="Start Minimized" IsChecked="{Binding StartMinimized}"/>
 
-    <Grid Grid.Row="4" HorizontalAlignment="Right">
+    <CheckBox Content="Check For Updates At Startup" Grid.Row="4" VerticalAlignment="Center" IsChecked="{Binding StartupUpdateCheck}"/>
+    <Button cal:Message.Attach="[Event Click] = [Action CheckForUpdates('true')]" Grid.Row="6" Content="Check For Updates" Grid.Column="2" HorizontalAlignment="Left"/>
+
+    <Grid Grid.Row="8" HorizontalAlignment="Right">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="5"/>
