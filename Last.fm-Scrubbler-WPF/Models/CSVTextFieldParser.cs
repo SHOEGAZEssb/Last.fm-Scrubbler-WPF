@@ -1,5 +1,6 @@
 ﻿using Scrubbler.Interfaces;
 using Microsoft.VisualBasic.FileIO;
+using System.Text;
 
 namespace Scrubbler.Models
 {
@@ -42,7 +43,7 @@ namespace Scrubbler.Models
     /// <param name="path">Path of the file to parse.</param>
     public CSVTextFieldParser(string path)
     {
-      _parser = new TextFieldParser(path);
+      _parser = new TextFieldParser(path, Encoding.Default);
     }
 
     /// <summary>
