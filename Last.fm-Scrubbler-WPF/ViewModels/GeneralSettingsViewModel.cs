@@ -97,6 +97,7 @@ namespace Scrubbler.ViewModels
     {
       Settings.Default.MinimizeToTray = MinimizeToTray;
       Settings.Default.StartMinimized = StartMinimized;
+      Settings.Default.StartupUpdateCheck = StartupUpdateCheck;
       TryClose(true);
     }
 
