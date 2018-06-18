@@ -43,7 +43,7 @@
       <subViews:SelectScrobblesControl Grid.Row="0" Grid.Column="4"/>
     </Grid>
 
-    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"  VerticalAlignment="Stretch" ItemsSource="{Binding LoadedFiles}"
+    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"  VerticalAlignment="Stretch" ItemsSource="{Binding Scrobbles}"
               local:GridViewSort.AutoSort="True" AllowDrop="True" cal:Message.Attach="[Event Drop] = [Action HandleDrop($eventArgs)]">
       <ListView.View>
         <GridView>

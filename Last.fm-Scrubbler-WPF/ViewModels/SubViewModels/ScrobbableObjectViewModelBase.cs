@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Scrubbler.Interfaces;
 using System;
 
 namespace Scrubbler.ViewModels.SubViewModels
@@ -7,7 +8,7 @@ namespace Scrubbler.ViewModels.SubViewModels
   /// Base ViewModel for all ViewModels that
   /// manage scrobbable objects.
   /// </summary>
-  public abstract class ScrobbableObjectViewModelBase : Screen
+  public abstract class ScrobbableObjectViewModelBase : Screen, IScrobbableObject
   {
     #region Properties
 

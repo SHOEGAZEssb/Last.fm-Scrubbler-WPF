@@ -32,7 +32,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
   /// <summary>
   /// Viewmodel for the <see cref="Views.ScrobbleViews.SetlistFMScrobbleView"/>
   /// </summary>
-  public class SetlistFMScrobbleViewModel : ScrobbleTimeViewModelBase
+  public class SetlistFMScrobbleViewModel : ScrobbleMultipleTimeViewModelBase<FetchedTrackViewModel>
   {
     #region Properties
 
@@ -161,19 +161,19 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// List of fetched tracks.
     /// </summary>
-    public ObservableCollection<FetchedTrackViewModel> FetchedTracks
+    public override ObservableCollection<FetchedTrackViewModel> Scrobbles
     {
-      get { return _fetchedTracks; }
-      private set
+      get { return _scrobbles; }
+      protected set
       {
-        _fetchedTracks = value;
+        _scrobbles = value;
         NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanSelectAll);
         NotifyOfPropertyChange(() => CanSelectNone);
         NotifyOfPropertyChange(() => CanScrobble);
       }
     }
-    private ObservableCollection<FetchedTrackViewModel> _fetchedTracks;
+    private ObservableCollection<FetchedTrackViewModel> _scrobbles;
 
     /// <summary>
     /// The UserControl that is currently shown in the UI.
@@ -202,23 +202,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public override bool CanPreview
     {
-      get { return FetchedTracks.Any(i => i.ToScrobble); }
-    }
-
-    /// <summary>
-    /// Gets if the "Select All" button is enabled.
-    /// </summary>
-    public bool CanSelectAll
-    {
-      get { return !FetchedTracks.All(i => i.ToScrobble); }
-    }
-
-    /// <summary>
-    /// Gets if the "Select None" button is enabled.
-    /// </summary>
-    public bool CanSelectNone
-    {
-      get { return FetchedTracks.Any(i => i.ToScrobble); }
+      get { return Scrobbles.Any(i => i.ToScrobble); }
     }
 
     #endregion Properties
@@ -273,7 +257,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       AlbumString = "";
       FetchedArtists = new ObservableCollection<FetchedArtistViewModel>();
       FetchedSetlists = new ObservableCollection<FetchedSetlistViewModel>();
-      FetchedTracks = new ObservableCollection<FetchedTrackViewModel>();
+      Scrobbles = new ObservableCollection<FetchedTrackViewModel>();
       SetlistResultPage = 1;
       ArtistResultPage = 1;
     }
@@ -421,7 +405,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
           if (vms.Count > 0)
           {
             OnStatusUpdated("Successfully got tracks from setlist");
-            FetchedTracks = vms;
+            Scrobbles = vms;
             CurrentView = _trackResultView;
           }
           else
@@ -508,7 +492,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     {
       DateTime finishingTime = Time;
       List<Scrobble> scrobbles = new List<Scrobble>();
-      foreach (FetchedTrackViewModel vm in FetchedTracks.Where(i => i.ToScrobble).Reverse())
+      foreach (FetchedTrackViewModel vm in Scrobbles.Where(i => i.ToScrobble).Reverse())
       {
         scrobbles.Add(new Scrobble(vm.FetchedTrack.ArtistName, AlbumString, vm.FetchedTrack.TrackName, finishingTime));
         if (vm.FetchedTrack.Duration.HasValue)
@@ -518,28 +502,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       }
 
       return scrobbles;
-    }
-
-    /// <summary>
-    /// Set ToScrobble to true for all <see cref="FetchedTracks"/>.
-    /// </summary>
-    public void SelectAll()
-    {
-      foreach (var vm in FetchedTracks)
-      {
-        vm.ToScrobble = true;
-      }
-    }
-
-    /// <summary>
-    /// Set ToScrobble to false for all <see cref="FetchedTracks"/>.
-    /// </summary>
-    public void SelectNone()
-    {
-      foreach (var vm in FetchedTracks)
-      {
-        vm.ToScrobble = false;
-      }
     }
   }
 }

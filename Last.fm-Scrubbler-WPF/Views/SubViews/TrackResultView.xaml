@@ -32,7 +32,7 @@
       <subViews:SelectScrobblesControl Grid.Row="0" Grid.Column="2"/>
     </Grid>
 
-    <ListView Grid.Row="2" VerticalAlignment="Stretch" ItemsSource="{Binding FetchedTracks}" local:GridViewSort.AutoSort="True">
+    <ListView Grid.Row="2" VerticalAlignment="Stretch" ItemsSource="{Binding Scrobbles}" local:GridViewSort.AutoSort="True">
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Scrobble?" local:GridViewSort.PropertyName="ToScrobble">

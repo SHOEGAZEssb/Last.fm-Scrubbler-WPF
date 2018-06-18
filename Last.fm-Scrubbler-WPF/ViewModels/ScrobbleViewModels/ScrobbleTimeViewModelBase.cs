@@ -53,6 +53,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         NotifyOfPropertyChange(() => Time);
       }
     }
+
     private bool _useCurrentTime;
 
     #endregion Properties

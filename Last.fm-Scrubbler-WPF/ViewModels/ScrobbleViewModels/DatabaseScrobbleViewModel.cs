@@ -45,7 +45,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.ScrobbleViews.DatabaseScrobbleView"/>.
   /// </summary>
-  public class DatabaseScrobbleViewModel : ScrobbleTimeViewModelBase
+  public class DatabaseScrobbleViewModel : ScrobbleMultipleTimeViewModelBase<FetchedTrackViewModel>
   {
     #region Properties
 
@@ -150,16 +150,16 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// The list of fetched tracks.
     /// </summary>
-    public ObservableCollection<FetchedTrackViewModel> FetchedTracks
+    public override ObservableCollection<FetchedTrackViewModel> Scrobbles
     {
-      get { return _fetchedTracks; }
-      private set
+      get { return _scrobbles; }
+      protected set
       {
-        _fetchedTracks = value;
+        _scrobbles = value;
         NotifyOfPropertyChange();
       }
     }
-    private ObservableCollection<FetchedTrackViewModel> _fetchedTracks;
+    private ObservableCollection<FetchedTrackViewModel> _scrobbles;
 
     /// <summary>
     /// Gets if the currently fetched releases has been fetched
@@ -181,7 +181,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public override bool CanScrobble
     {
-      get { return base.CanScrobble && FetchedTracks.Any(i => i.ToScrobble); }
+      get { return base.CanScrobble && Scrobbles.Any(i => i.ToScrobble); }
     }
 
     /// <summary>
@@ -189,23 +189,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public override bool CanPreview
     {
-      get { return FetchedTracks.Any(i => i.ToScrobble); }
-    }
-
-    /// <summary>
-    /// Gets if the "Select All" button is enabled.
-    /// </summary>
-    public bool CanSelectAll
-    {
-      get { return !FetchedTracks.All(i => i.ToScrobble); }
-    }
-
-    /// <summary>
-    /// Gets if the "Select None" button is enabled.
-    /// </summary>
-    public bool CanSelectNone
-    {
-      get { return FetchedTracks.Any(i => i.ToScrobble); }
+      get { return Scrobbles.Any(i => i.ToScrobble); }
     }
 
     #endregion Properties
@@ -257,7 +241,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       MaxResults = 25;
       FetchedArtists = new ObservableCollection<FetchedArtistViewModel>();
       FetchedReleases = new ObservableCollection<FetchedReleaseViewModel>();
-      FetchedTracks = new ObservableCollection<FetchedTrackViewModel>();
+      Scrobbles = new ObservableCollection<FetchedTrackViewModel>();
       _artistResultView = new ArtistResultView() { DataContext = this };
       _releaseResultView = new ReleaseResultView() { DataContext = this };
       _trackResultView = new TrackResultView() { DataContext = this };
@@ -494,15 +478,15 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
 
           if (response.Success && response.Status == LastResponseStatus.Successful)
           {
-            FetchedTracks.Clear();
+            Scrobbles.Clear();
             foreach (var t in response.Content.Tracks)
             {
               FetchedTrackViewModel vm = new FetchedTrackViewModel(new ScrobbleBase(t.Name, t.ArtistName, t.AlbumName, "", t.Duration), release.Image);
               vm.ToScrobbleChanged += ToScrobbleChanged;
-              FetchedTracks.Add(vm);
+              Scrobbles.Add(vm);
             }
 
-            if (FetchedTracks.Count != 0)
+            if (Scrobbles.Count != 0)
             {
               CurrentView = _trackResultView;
               OnStatusUpdated(string.Format("Successfully fetched tracklist from release '{0}'", release.Name));
@@ -579,7 +563,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     {
       DateTime finishingTime = Time;
       List<Scrobble> scrobbles = new List<Scrobble>();
-      foreach (FetchedTrackViewModel vm in FetchedTracks.Where(i => i.ToScrobble).Reverse())
+      foreach (FetchedTrackViewModel vm in Scrobbles.Where(i => i.ToScrobble).Reverse())
       {
         scrobbles.Add(new Scrobble(vm.FetchedTrack.ArtistName, vm.FetchedTrack.AlbumName, vm.FetchedTrack.TrackName, finishingTime));
         if (vm.FetchedTrack.Duration.HasValue)
@@ -605,28 +589,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     public void BackFromTrackResult()
     {
       CurrentView = _releaseResultView;
-    }
-
-    /// <summary>
-    /// Marks all tracks as "ToScrobble".
-    /// </summary>
-    public void SelectAll()
-    {
-      foreach (var vm in FetchedTracks)
-      {
-        vm.ToScrobble = true;
-      }
-    }
-
-    /// <summary>
-    /// Marks all tracks as not "ToScrobble";
-    /// </summary>
-    public void SelectNone()
-    {
-      foreach (var vm in FetchedTracks)
-      {
-        vm.ToScrobble = false;
-      }
     }
   }
 }

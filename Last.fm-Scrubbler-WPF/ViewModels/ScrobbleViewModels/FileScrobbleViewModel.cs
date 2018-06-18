@@ -15,30 +15,30 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.ScrobbleViews.FileScrobbleView"/>.
   /// </summary>
-  public class FileScrobbleViewModel : ScrobbleTimeViewModelBase
+  public class FileScrobbleViewModel : ScrobbleMultipleTimeViewModelBase<LoadedFileViewModel>
   {
     #region Properties
 
     /// <summary>
     /// List of loaded files.
     /// </summary>
-    public ObservableCollection<LoadedFileViewModel> LoadedFiles
+    public override ObservableCollection<LoadedFileViewModel> Scrobbles
     {
-      get { return _loadedFiles; }
-      private set
+      get { return _scrobbles; }
+      protected set
       {
-        _loadedFiles = value;
+        _scrobbles = value;
         NotifyOfPropertyChange();
       }
     }
-    private ObservableCollection<LoadedFileViewModel> _loadedFiles;
+    private ObservableCollection<LoadedFileViewModel> _scrobbles;
 
     /// <summary>
     /// Gets if the scrobble button on the ui is enabled.
     /// </summary>
     public override bool CanScrobble
     {
-      get { return base.CanScrobble && LoadedFiles.Any(i => i.ToScrobble); }
+      get { return base.CanScrobble && Scrobbles.Any(i => i.ToScrobble); }
     }
 
     /// <summary>
@@ -46,23 +46,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public override bool CanPreview
     {
-      get { return LoadedFiles.Any(i => i.ToScrobble); }
-    }
-
-    /// <summary>
-    /// Gets if the "Select All" button is enabled in the UI.
-    /// </summary>
-    public bool CanSelectAll
-    {
-      get { return !LoadedFiles.All(i => i.ToScrobble); }
-    }
-
-    /// <summary>
-    /// Gets if the "Select None" button is enabled in the UI.
-    /// </summary>
-    public bool CanSelectNone
-    {
-      get { return LoadedFiles.Any(i => i.ToScrobble); }
+      get { return Scrobbles.Any(i => i.ToScrobble); }
     }
 
     /// <summary>
@@ -70,7 +54,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public bool CanRemoveFiles
     {
-      get { return LoadedFiles.Any(i => i.ToScrobble); }
+      get { return Scrobbles.Any(i => i.ToScrobble); }
     }
 
     #endregion Properties
@@ -103,7 +87,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     public FileScrobbleViewModel(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory, IFileOperator fileOperator)
       : base(windowManager, "File Scrobbler")
     {
-      LoadedFiles = new ObservableCollection<LoadedFileViewModel>();
+      Scrobbles = new ObservableCollection<LoadedFileViewModel>();
       _localFileFactory = localFileFactory;
       _fileOperator = fileOperator;
     }
@@ -173,7 +157,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         }
       });
 
-      LoadedFiles = new ObservableCollection<LoadedFileViewModel>(LoadedFiles.Concat(newFiles));
+      Scrobbles = new ObservableCollection<LoadedFileViewModel>(Scrobbles.Concat(newFiles));
 
       if (errors.Count > 0)
       {
@@ -263,7 +247,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public void RemoveFiles()
     {
-      LoadedFiles = new ObservableCollection<LoadedFileViewModel>(LoadedFiles.Where(i => !i.ToScrobble).ToList());
+      Scrobbles = new ObservableCollection<LoadedFileViewModel>(Scrobbles.Where(i => !i.ToScrobble).ToList());
       NotifyCanProperties();
     }
 
@@ -301,7 +285,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     {
       DateTime timePlayed = Time;
       List<Scrobble> scrobbles = new List<Scrobble>();
-      foreach (var vm in LoadedFiles.Where(i => i.ToScrobble).Reverse())
+      foreach (var vm in Scrobbles.Where(i => i.ToScrobble).Reverse())
       {
         scrobbles.Add(new Scrobble(vm.Artist, vm.Album, vm.Track, timePlayed)
         {
@@ -335,28 +319,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       NotifyOfPropertyChange(() => CanSelectAll);
       NotifyOfPropertyChange(() => CanSelectNone);
       NotifyOfPropertyChange(() => CanRemoveFiles);
-    }
-
-    /// <summary>
-    /// Marks all tracks as "ToScrobble".
-    /// </summary>
-    public void SelectAll()
-    {
-      foreach (var vm in LoadedFiles)
-      {
-        vm.ToScrobble = true;
-      }
-    }
-
-    /// <summary>
-    /// Marks all tracks as not "ToScrobble".
-    /// </summary>
-    public void SelectNone()
-    {
-      foreach (var vm in LoadedFiles)
-      {
-        vm.ToScrobble = false;
-      }
     }
   }
 }

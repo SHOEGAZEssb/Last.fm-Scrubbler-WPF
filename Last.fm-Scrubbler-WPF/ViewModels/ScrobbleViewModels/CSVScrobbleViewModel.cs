@@ -32,7 +32,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.ScrobbleViews.CSVScrobbleView"/>.
   /// </summary>
-  public class CSVScrobbleViewModel : ScrobbleTimeViewModelBase
+  public class CSVScrobbleViewModel : ScrobbleMultipleTimeViewModelBase<ParsedCSVScrobbleViewModel>
   {
     #region Properties
 
@@ -53,10 +53,10 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// The parsed scrobbles from the csv file.
     /// </summary>
-    public ObservableCollection<ParsedCSVScrobbleViewModel> Scrobbles
+    public override ObservableCollection<ParsedCSVScrobbleViewModel> Scrobbles
     {
       get { return _scrobbles; }
-      private set
+      protected set
       {
         _scrobbles = value;
         NotifyOfPropertyChange();
@@ -112,22 +112,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// Gets if the preview button is enabled.
     /// </summary>
     public override bool CanPreview
-    {
-      get { return Scrobbles.Any(i => i.ToScrobble); }
-    }
-
-    /// <summary>
-    /// Gets if the "Select All" button is enabled.
-    /// </summary>
-    public bool CanSelectAll
-    {
-      get { return !Scrobbles.All(i => i.ToScrobble); }
-    }
-
-    /// <summary>
-    /// Gets if the "Select None" button is enabled.
-    /// </summary>
-    public bool CanSelectNone
     {
       get { return Scrobbles.Any(i => i.ToScrobble); }
     }
@@ -373,7 +357,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Marks all scrobbles as "ToScrobble".
     /// </summary>
-    public void SelectAll()
+    public override void SelectAll()
     {
       foreach (var vm in Scrobbles.Where(i => i.IsEnabled))
       {
@@ -384,7 +368,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Marks all scrobbles as not "ToScrobble".
     /// </summary>
-    public void SelectNone()
+    public override void SelectNone()
     {
       foreach (var vm in Scrobbles.Where(i => i.IsEnabled))
       {

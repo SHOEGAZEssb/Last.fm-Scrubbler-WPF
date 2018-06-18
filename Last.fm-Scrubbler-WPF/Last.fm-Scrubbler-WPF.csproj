@@ -169,6 +169,7 @@
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Interfaces\IAuthScrobbler.cs" />
+    <Compile Include="Interfaces\ICanSelectScrobbles.cs" />
     <Compile Include="Interfaces\IDirectoryOperator.cs" />
     <Compile Include="Interfaces\IFileOperator.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="Interfaces\ILastFMClientFactory.cs" />
     <Compile Include="Interfaces\ILocalFileFactory.cs" />
     <Compile Include="Interfaces\IOpenFileDialog.cs" />
+    <Compile Include="Interfaces\IScrobbableObject.cs" />
     <Compile Include="Interfaces\IScrobblerFactory.cs" />
     <Compile Include="Interfaces\ISerializer.cs" />
     <Compile Include="Interfaces\ITextFieldParser.cs" />
@@ -217,6 +219,7 @@
     <Compile Include="ViewModels\ExtraFunctions\PasteYourTasteViewModel.cs" />
     <Compile Include="ViewModels\GeneralSettingsViewModel.cs" />
     <Compile Include="ViewModels\NewVersionViewModel.cs" />
+    <Compile Include="ViewModels\ScrobbleViewModels\ScrobbleMultipleTimeViewModelBase.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobblerViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\CacheScrobblerViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ITunesScrobbleViewModel.cs" />
