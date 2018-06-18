@@ -59,7 +59,7 @@ If the .csv file you have has a different data sequence, you can configure the f
 
 ![CSV Scrobbling Settings](https://i.imgur.com/RZUvCvZ.png)
 
-Individual fields can be enclosed by quotes and NEED to be enclosed by quotes if the field contains a comma.
+Individual fields can be enclosed by quotes and NEED to be enclosed by quotes if the field contains any of the set delimiters.
 For example:
 
 "ArtistWith, CommaInTheName", Album, Track, 06/13/2016 19:54, AlbumArtist, 00:02:33 
