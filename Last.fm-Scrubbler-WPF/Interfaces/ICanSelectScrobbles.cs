@@ -33,5 +33,11 @@ namespace Scrubbler.Interfaces
     /// Gets if all scrobbles can currently be unselected.
     /// </summary>
     bool CanSelectNone { get; }
+
+    /// <summary>
+    /// Gets the amount of scrobbles that are
+    /// marked as "ToScrobble".
+    /// </summary>
+    int ToScrobbleCount { get; }
   }
 }

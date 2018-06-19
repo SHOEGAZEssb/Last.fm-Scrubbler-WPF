@@ -159,23 +159,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     private ObservableCollection<FetchedSetlistViewModel> _fetchedSetlists;
 
     /// <summary>
-    /// List of fetched tracks.
-    /// </summary>
-    public override ObservableCollection<FetchedTrackViewModel> Scrobbles
-    {
-      get { return _scrobbles; }
-      protected set
-      {
-        _scrobbles = value;
-        NotifyOfPropertyChange();
-        NotifyOfPropertyChange(() => CanSelectAll);
-        NotifyOfPropertyChange(() => CanSelectNone);
-        NotifyOfPropertyChange(() => CanScrobble);
-      }
-    }
-    private ObservableCollection<FetchedTrackViewModel> _scrobbles;
-
-    /// <summary>
     /// The UserControl that is currently shown in the UI.
     /// </summary>
     public UserControl CurrentView
@@ -194,7 +177,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public override bool CanScrobble
     {
-      get { return base.CanScrobble; }
+      get { return base.CanScrobble && Scrobbles.Any(s => s.ToScrobble); }
     }
 
     /// <summary>
@@ -396,9 +379,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
           {
             foreach(var song in set.Songs)
             {
-              FetchedTrackViewModel vm = new FetchedTrackViewModel(new ScrobbleBase(song.Name, clickedSetlist.Artist.Name), null);
-              vm.ToScrobbleChanged += ToScrobbleChanged;
-              vms.Add(vm);
+              vms.Add(new FetchedTrackViewModel(new ScrobbleBase(song.Name, clickedSetlist.Artist.Name), null));
             }
           }
 
@@ -418,10 +399,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         finally
         {
           EnableControls = true;
-
-          // more or less a hack, but we cant do it before because EnableControls is false.
-          NotifyOfPropertyChange(() => CanSelectAll);
-          NotifyOfPropertyChange(() => CanSelectNone);
         }
       }
     }
@@ -444,27 +421,14 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     }
 
     /// <summary>
-    /// Notifies the ui that ToScrobble changed for any track.
-    /// </summary>
-    /// <param name="sender">Ignored.</param>
-    /// <param name="e">Ignored.</param>
-    private void ToScrobbleChanged(object sender, EventArgs e)
-    {
-      NotifyOfPropertyChange(() => CanScrobble);
-      NotifyOfPropertyChange(() => CanSelectAll);
-      NotifyOfPropertyChange(() => CanSelectNone);
-    }
-
-    /// <summary>
     /// Scrobbles the selected tracks.
     /// </summary>
     /// <returns>Task.</returns>
     public override async Task Scrobble()
     {
-      EnableControls = false;
-
       try
       {
+        EnableControls = false;
         OnStatusUpdated("Trying to scrobble selected tracks...");
 
         var response = await Scrobbler.ScrobbleAsync(CreateScrobbles());

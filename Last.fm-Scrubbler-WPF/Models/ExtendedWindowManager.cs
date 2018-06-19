@@ -3,22 +3,44 @@ using Scrubbler.Interfaces;
 
 namespace Scrubbler.Models
 {
-  class ExtendedWindowManager : WindowManager, IExtendedWindowManager
+  /// <summary>
+  /// Extended <see cref="WindowManager"/> with
+  /// MessageBox, Open- and SaveFileDialog functionality.
+  /// </summary>
+  public class ExtendedWindowManager : WindowManager, IExtendedWindowManager
   {
-    public IMessageBoxService MessageBoxService => _messageBoxService;
+    #region Properties
 
-    private MessageBoxService _messageBoxService;
+    /// <summary>
+    /// Service that can display MessageBoxes and dialogs.
+    /// </summary>
+    public IMessageBoxService MessageBoxService { get; private set; }
 
+    #endregion Properties
+
+    #region Construction
+
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public ExtendedWindowManager()
     {
-      _messageBoxService = new MessageBoxService();
+      MessageBoxService = new MessageBoxService();
     }
 
+    #endregion Construction
+
+    /// <summary>
+    /// Create a OpenFileDialog service object.
+    /// </summary>
     public IOpenFileDialog CreateOpenFileDialog()
     {
       return new OpenFileDialogService();
     }
 
+    /// <summary>
+    /// Creates a SaveFileDialog service object.
+    /// </summary>
     public IFileDialog CreateSaveFileDialog()
     {
       return new SaveFileDialogService();

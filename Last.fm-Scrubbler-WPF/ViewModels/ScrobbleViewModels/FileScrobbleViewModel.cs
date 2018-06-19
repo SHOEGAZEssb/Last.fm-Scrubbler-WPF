@@ -20,36 +20,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     #region Properties
 
     /// <summary>
-    /// List of loaded files.
-    /// </summary>
-    public override ObservableCollection<LoadedFileViewModel> Scrobbles
-    {
-      get { return _scrobbles; }
-      protected set
-      {
-        _scrobbles = value;
-        NotifyOfPropertyChange();
-      }
-    }
-    private ObservableCollection<LoadedFileViewModel> _scrobbles;
-
-    /// <summary>
-    /// Gets if the scrobble button on the ui is enabled.
-    /// </summary>
-    public override bool CanScrobble
-    {
-      get { return base.CanScrobble && Scrobbles.Any(i => i.ToScrobble); }
-    }
-
-    /// <summary>
-    /// Gets if the preview button is enabled.
-    /// </summary>
-    public override bool CanPreview
-    {
-      get { return Scrobbles.Any(i => i.ToScrobble); }
-    }
-
-    /// <summary>
     /// Gets if the "Remove Selected Files" button is enabled in the UI.
     /// </summary>
     public bool CanRemoveFiles
@@ -145,9 +115,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
               if (string.IsNullOrEmpty(audioFile.Track))
                 throw new Exception("No track name found");
 
-              LoadedFileViewModel vm = new LoadedFileViewModel(audioFile);
-              vm.ToScrobbleChanged += ToScrobbleChanged;
-              newFiles.Add(vm);
+              newFiles.Add(new LoadedFileViewModel(audioFile));
             }
           }
           catch (Exception ex)
@@ -248,7 +216,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     public void RemoveFiles()
     {
       Scrobbles = new ObservableCollection<LoadedFileViewModel>(Scrobbles.Where(i => !i.ToScrobble).ToList());
-      NotifyCanProperties();
+      NotifyOfPropertyChange(() => CanRemoveFiles);
     }
 
     /// <summary>
@@ -296,29 +264,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       }
 
       return scrobbles;
-    }
-
-    /// <summary>
-    /// Notifies the UI that the ToScrobble property of a
-    /// <see cref="LoadedFileViewModel"/> has changed.
-    /// </summary>
-    /// <param name="sender">Ignored.</param>
-    /// <param name="e">Ignored.</param>
-    private void ToScrobbleChanged(object sender, EventArgs e)
-    {
-      NotifyCanProperties();
-    }
-
-    /// <summary>
-    /// Notifies the UI that something of the collection changed.
-    /// </summary>
-    private void NotifyCanProperties()
-    {
-      NotifyOfPropertyChange(() => CanScrobble);
-      NotifyOfPropertyChange(() => CanPreview);
-      NotifyOfPropertyChange(() => CanSelectAll);
-      NotifyOfPropertyChange(() => CanSelectNone);
-      NotifyOfPropertyChange(() => CanRemoveFiles);
     }
   }
 }

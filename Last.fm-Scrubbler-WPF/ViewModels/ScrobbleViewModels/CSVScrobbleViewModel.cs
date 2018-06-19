@@ -51,20 +51,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     private string _csvFilePath;
 
     /// <summary>
-    /// The parsed scrobbles from the csv file.
-    /// </summary>
-    public override ObservableCollection<ParsedCSVScrobbleViewModel> Scrobbles
-    {
-      get { return _scrobbles; }
-      protected set
-      {
-        _scrobbles = value;
-        NotifyOfPropertyChange();
-      }
-    }
-    private ObservableCollection<ParsedCSVScrobbleViewModel> _scrobbles;
-
-    /// <summary>
     /// The selected <see cref="CSVScrobbleMode"/>.
     /// </summary>
     public CSVScrobbleMode ScrobbleMode
@@ -99,22 +85,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       }
     }
     private int _duration;
-
-    /// <summary>
-    /// Gets if the Scrobble button is enabled on the UI.
-    /// </summary>
-    public override bool CanScrobble
-    {
-      get { return base.CanScrobble && Scrobbles.Any(i => i.ToScrobble); }
-    }
-
-    /// <summary>
-    /// Gets if the preview button is enabled.
-    /// </summary>
-    public override bool CanPreview
-    {
-      get { return Scrobbles.Any(i => i.ToScrobble); }
-    }
 
     #endregion Properties
 
@@ -225,9 +195,8 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
                 DatedScrobble parsedScrobble = new DatedScrobble(date.AddSeconds(1), fields[Settings.Default.TrackFieldIndex],
                                                                 fields[Settings.Default.ArtistFieldIndex], album,
                                                                 albumArtist, time);
-                ParsedCSVScrobbleViewModel vm = new ParsedCSVScrobbleViewModel(parsedScrobble, ScrobbleMode);
-                vm.ToScrobbleChanged += ToScrobbleChanged;
-                parsedScrobbles.Add(vm);
+
+                parsedScrobbles.Add(new ParsedCSVScrobbleViewModel(parsedScrobble, ScrobbleMode));
               }
               catch (Exception ex)
               {
@@ -270,19 +239,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       {
         EnableControls = true;
       }
-    }
-
-    /// <summary>
-    /// Notifies the UI that "ToScrobble" has changed.
-    /// </summary>
-    /// <param name="sender">Ignored.</param>
-    /// <param name="e">Ignored.</param>
-    private void ToScrobbleChanged(object sender, EventArgs e)
-    {
-      NotifyOfPropertyChange(() => CanScrobble);
-      NotifyOfPropertyChange(() => CanPreview);
-      NotifyOfPropertyChange(() => CanSelectAll);
-      NotifyOfPropertyChange(() => CanSelectNone);
     }
 
     /// <summary>

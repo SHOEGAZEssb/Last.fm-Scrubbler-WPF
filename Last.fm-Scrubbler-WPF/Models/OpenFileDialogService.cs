@@ -41,6 +41,8 @@ namespace Scrubbler.Models
 
     #endregion Member
 
+    #region Construction
+
     /// <summary>
     /// Constructor.
     /// </summary>
@@ -48,6 +50,8 @@ namespace Scrubbler.Models
     {
       _openFileDialog = new OpenFileDialog();
     }
+
+    #endregion Construction
 
     /// <summary>
     /// Shows the file dialog.

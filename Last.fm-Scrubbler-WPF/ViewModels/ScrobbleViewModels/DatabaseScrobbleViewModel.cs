@@ -148,20 +148,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     private ObservableCollection<FetchedReleaseViewModel> _fetchedAlbums;
 
     /// <summary>
-    /// The list of fetched tracks.
-    /// </summary>
-    public override ObservableCollection<FetchedTrackViewModel> Scrobbles
-    {
-      get { return _scrobbles; }
-      protected set
-      {
-        _scrobbles = value;
-        NotifyOfPropertyChange();
-      }
-    }
-    private ObservableCollection<FetchedTrackViewModel> _scrobbles;
-
-    /// <summary>
     /// Gets if the currently fetched releases has been fetched
     /// through the click on an artist.
     /// </summary>
@@ -175,22 +161,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       }
     }
     private bool _fetchedReleaseThroughArtist;
-
-    /// <summary>
-    /// Gets if the scrobble button is enabled on the UI.
-    /// </summary>
-    public override bool CanScrobble
-    {
-      get { return base.CanScrobble && Scrobbles.Any(i => i.ToScrobble); }
-    }
-
-    /// <summary>
-    /// Gets if the preview button is enabled.
-    /// </summary>
-    public override bool CanPreview
-    {
-      get { return Scrobbles.Any(i => i.ToScrobble); }
-    }
 
     #endregion Properties
 
@@ -518,8 +488,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     {
       NotifyOfPropertyChange(() => CanScrobble);
       NotifyOfPropertyChange(() => CanPreview);
-      NotifyOfPropertyChange(() => CanSelectAll);
-      NotifyOfPropertyChange(() => CanSelectNone);
     }
 
     /// <summary>
