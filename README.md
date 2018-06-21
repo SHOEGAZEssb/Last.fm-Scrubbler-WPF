@@ -3,6 +3,7 @@
 Manual Last.fm scrobbling for when a service (or you!) failed to scrobble.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/6dm7kutqw56irq97?svg=true)](https://ci.appveyor.com/project/coczero/last-fm-scrubbler-wpf)
+[![codecov](https://codecov.io/gh/coczero/Last.fm-Scrubbler-WPF/branch/master/graph/badge.svg)](https://codecov.io/gh/coczero/Last.fm-Scrubbler-WPF)
 ### IMPORTANT
 This app is still in beta. It did not get a lot of testing. I recommend trying to scrobble to a test account first and see if the things you want to scrobble do so correctly. Especially if you scrobble a lot of tracks at once there can be some problems. Please be careful with your accounts.
 ### Scrobble Cap ###
