@@ -1,12 +1,10 @@
-init:
-  - git config --global core.autocrlf input
 image: Visual Studio 2017
 before_build:
  - nuget restore
 build_script:
  - msbuild /verbosity:quiet "Last.fm-Scrubbler-WPF.sln"
 test_script:
- - "Last.fm-Scrubbler-WPF-Test\TestCoverage\RunCoverage.bat"
+ - Last.fm-Scrubbler-WPF-Test\TestCoverage\RunCoverage.bat
 after_test:
   - ps: |
       $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
