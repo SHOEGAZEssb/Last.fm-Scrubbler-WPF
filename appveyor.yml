@@ -8,5 +8,5 @@ test_script:
 after_test:
   - ps: |
       $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
-      Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile Last.fm-Scrubbler-WPF-Test\TestCoverage\codecov.sh
-      bash Last.fm-Scrubbler-WPF-Test\TestCoverage\codecov.sh -f "coverage.xml" -t 69b3edab-2962-427c-9df8-71e0e1cd2132
+      Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
+      bash codecov.sh -f "coverage.xml" -t 69b3edab-2962-427c-9df8-71e0e1cd2132
