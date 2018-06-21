@@ -1,0 +1,1 @@
+..\..\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:"..\bin\Debug\Last.fm-Scrubbler-WPF-Test.exe" -output:".\coverage.xml" -filter:"+[Last.fm-Scrubbler-WPF]Scrubbler* -[Last.fm-Scrubbler-WPF]Scrubbler.Views.*"
