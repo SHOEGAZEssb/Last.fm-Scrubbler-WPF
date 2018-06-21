@@ -121,7 +121,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="CreateCoverageReport.bat" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -479,7 +479,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     }
 
     /// <summary>
-    /// Notifies <see cref="CanScrobble"/> that one or more
+    /// Notifies that one or more
     /// ToScrobbles have been changed.
     /// </summary>
     /// <param name="sender">Ignored.</param>
