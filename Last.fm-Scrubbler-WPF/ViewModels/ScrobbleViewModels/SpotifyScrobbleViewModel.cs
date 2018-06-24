@@ -176,6 +176,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       DisconnectEvents();
       _spotify.Dispose();
       _currentResponse = null;
+      CountedSeconds = 0;
       IsConnected = false;
       UpdateCurrentTrackInfo();
     }

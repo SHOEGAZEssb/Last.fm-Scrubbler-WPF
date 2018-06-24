@@ -189,8 +189,9 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       Dispose();
       NotifyOfPropertyChange(() => CanDisconnect);
       CurrentAlbumArtwork = null;
-      UpdateCurrentTrackInfo();
+      CountedSeconds = 0;
       IsConnected = false;
+      UpdateCurrentTrackInfo();
     }
 
     /// <summary>
