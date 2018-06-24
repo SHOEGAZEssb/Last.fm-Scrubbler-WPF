@@ -104,5 +104,45 @@ namespace Scrubbler.Test
       CollectionAssert.IsEmpty(vm.AvailableUsers);
       Assert.That(() => fileOperatorMock.Verify(f => f.Delete(It.IsAny<string>()), Times.Once), Throws.Nothing);
     }
+
+    /// <summary>
+    /// Tests the deserialization of users.
+    /// </summary>
+    [Test]
+    public void DeserializeUsersTest()
+    {
+      // given: needed mocks
+      string[] files = new string[]
+      {
+        "TestUser1.xml",
+        "TestUser2.xml",
+        "TestUser3.xml",
+        "FileToBeIgnored.txt"
+      };
+
+      Mock<IDirectoryOperator> directoryOperatorMock = new Mock<IDirectoryOperator>(MockBehavior.Strict);
+      directoryOperatorMock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true);
+      directoryOperatorMock.Setup(d => d.GetFiles(It.IsAny<string>())).Returns(files);
+
+      User[] users = new User[]
+      {
+        new User("TestUser1", "TestToken1", true),
+        new User("TestUser2", "TestToken2", true),
+        new User("TestUser3", "TestToken3", true)
+      };
+
+      Mock<ISerializer<User>> userSerializerMock = new Mock<ISerializer<User>>(MockBehavior.Strict);
+      for(int i = 0; i < users.Length; i++)
+      {
+        userSerializerMock.Setup(u => u.Deserialize(files[i])).Returns(users[i]);
+      }
+
+      // when: creating the vm
+      UserViewModel vm = new UserViewModel(null, null, null, directoryOperatorMock.Object, userSerializerMock.Object);
+
+      // then: users have been deserialized
+      Assert.That(vm.AvailableUsers.Count, Is.EqualTo(users.Length));
+      CollectionAssert.AreEqual(users, vm.AvailableUsers);
+    }
   }
 }
