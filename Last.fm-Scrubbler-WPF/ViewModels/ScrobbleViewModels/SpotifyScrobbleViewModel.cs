@@ -99,7 +99,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       : base(windowManager, "Spotify Scrobbler", trackAPI, albumAPI, lastAuth)
     {
       PercentageToScrobble = 0.5;
-      _spotify = new SpotifyLocalAPI();
       _counterTimer = new Timer(1000);
       _counterTimer.Elapsed += _counterTimer_Elapsed;
       _refreshTimer = new Timer(1000);
@@ -121,6 +120,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         if (IsConnected)
           Disconnect();
 
+        _spotify = new SpotifyLocalAPI();
         SpotifyLocalAPI.RunSpotify();
         SpotifyLocalAPI.RunSpotifyWebHelper();
 
@@ -176,6 +176,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       DisconnectEvents();
       _spotify.Dispose();
       _currentResponse = null;
+      _lastTrack = null;
       CountedSeconds = 0;
       IsConnected = false;
       UpdateCurrentTrackInfo();
@@ -244,7 +245,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         if (_lastTrack != _currentResponse?.Track?.TrackResource?.Uri)
         {
           CountedSeconds = 0;
-          _counterTimer.Start();
           UpdateCurrentTrackInfo();
         }
       }
