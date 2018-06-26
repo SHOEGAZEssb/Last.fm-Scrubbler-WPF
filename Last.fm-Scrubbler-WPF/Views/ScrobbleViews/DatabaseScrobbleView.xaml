@@ -107,7 +107,7 @@
       <subViews:ScrobbleButtonControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7"/>
 
       <Label Grid.Column="0" Content="Finishing Time:"/>
-      <subViews:SelectScrobbleTimeControl Grid.Column="2" Grid.ColumnSpan="3"/>
+      <subViews:SelectScrobbleTimeControl Grid.Column="2" Grid.ColumnSpan="3" DataContext="{Binding ScrobbleTimeVM}"/>
 
     </Grid>
   </Grid>

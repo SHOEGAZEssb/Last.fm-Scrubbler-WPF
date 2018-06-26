@@ -251,7 +251,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <returns>List with scrobbles.</returns>
     protected override IEnumerable<Scrobble> CreateScrobbles()
     {
-      DateTime timePlayed = Time;
+      DateTime timePlayed = ScrobbleTimeVM.Time;
       List<Scrobble> scrobbles = new List<Scrobble>();
       foreach (var vm in Scrobbles.Where(i => i.ToScrobble).Reverse())
       {

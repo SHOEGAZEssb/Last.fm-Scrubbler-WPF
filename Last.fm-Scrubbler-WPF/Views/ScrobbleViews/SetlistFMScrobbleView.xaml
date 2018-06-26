@@ -105,7 +105,7 @@
       <CheckBox x:Name="CustomAlbumStringCheckBox" Grid.Row="0" Grid.Column="4" Content="Custom" VerticalAlignment="Center" IsChecked="{Binding CustomAlbumString}"/>
 
       <Label Grid.Column="0" Grid.Row="2" Content="Finishing Time:"/>
-      <subViews:SelectScrobbleTimeControl Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3"/>
+      <subViews:SelectScrobbleTimeControl Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3" DataContext="{Binding ScrobbleTimeVM}"/>
 
       <subViews:ScrobbleButtonControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="7"/>
     </Grid>

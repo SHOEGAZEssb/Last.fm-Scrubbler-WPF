@@ -1,5 +1,4 @@
-﻿using Scrubbler.Interfaces;
-using System;
+﻿using System;
 using System.Timers;
 
 namespace Scrubbler.ViewModels.ScrobbleViewModels
@@ -7,7 +6,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
   /// <summary>
   /// Base class for ViewModels that need to use a "Starting" or "Finishing" time.
   /// </summary>
-  public abstract class ScrobbleTimeViewModelBase : ScrobbleViewModelBase
+  public class ScrobbleTimeViewModel : ViewModelBase
   {
     #region Properties
 
@@ -53,7 +52,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         NotifyOfPropertyChange(() => Time);
       }
     }
-
     private bool _useCurrentTime;
 
     #endregion Properties
@@ -70,10 +68,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Constructor.
     /// </summary>
-    /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    /// <param name="displayName">Display name.</param>
-    public ScrobbleTimeViewModelBase(IExtendedWindowManager windowManager, string displayName)
-      : base(windowManager, displayName)
+    public ScrobbleTimeViewModel()
     {
       _currentTimeTimer = new Timer(1000);
       _currentTimeTimer.Elapsed += _currentTimeTimer_Elapsed;

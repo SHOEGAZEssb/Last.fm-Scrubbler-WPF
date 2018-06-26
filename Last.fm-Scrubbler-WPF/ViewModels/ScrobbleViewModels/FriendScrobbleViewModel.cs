@@ -14,7 +14,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.ScrobbleViews.FriendScrobbleView"/>.
   /// </summary>
-  public class FriendScrobbleViewModel : ScrobbleViewModelBase
+  public class FriendScrobbleViewModel : ScrobbleMultipleViewModelBase<FetchedFriendTrackViewModel>
   {
     #region Properties
 
@@ -46,52 +46,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     }
     private int _amount;
 
-    /// <summary>
-    /// List of fetched scrobbles.
-    /// </summary>
-    public ObservableCollection<FetchedFriendTrackViewModel> FetchedScrobbles
-    {
-      get { return _fetchedScrobbles; }
-      private set
-      {
-        _fetchedScrobbles = value;
-        NotifyOfPropertyChange();
-      }
-    }
-    private ObservableCollection<FetchedFriendTrackViewModel> _fetchedScrobbles;
-
-    /// <summary>
-    /// Gets if the scrobble button is enabled.
-    /// </summary>
-    public override bool CanScrobble
-    {
-      get { return base.CanScrobble && FetchedScrobbles.Any(i => i.ToScrobble); }
-    }
-
-    /// <summary>
-    /// Gets if the preview button is enabled.
-    /// </summary>
-    public override bool CanPreview
-    {
-      get { return FetchedScrobbles.Any(i => i.ToScrobble); }
-    }
-
-    /// <summary>
-    /// Gets if the "Select All" button is enabled.
-    /// </summary>
-    public bool CanSelectAll
-    {
-      get { return !FetchedScrobbles.All(i => i.ToScrobble); }
-    }
-
-    /// <summary>
-    /// Gets if the "Select None" button is enabled.
-    /// </summary>
-    public bool CanSelectNone
-    {
-      get { return FetchedScrobbles.Any(i => i.ToScrobble); }
-    }
-
     #endregion Properties
 
     #region Member
@@ -112,7 +66,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       : base(windowManager, "Friend Scrobbler")
     {
       _userApi = userApi;
-      FetchedScrobbles = new ObservableCollection<FetchedFriendTrackViewModel>();
+      Scrobbles = new ObservableCollection<FetchedFriendTrackViewModel>();
       Amount = 20;
     }
 
@@ -125,7 +79,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       {
         EnableControls = false;
         OnStatusUpdated(string.Format("Trying to fetch scrobbles of '{0}' ...", Username));
-        FetchedScrobbles.Clear();
+        Scrobbles.Clear();
         var response = await _userApi.GetRecentScrobbles(Username, null, 1, Amount);
         if (response.Success)
         {
@@ -135,7 +89,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
             {
               FetchedFriendTrackViewModel vm = new FetchedFriendTrackViewModel(s);
               vm.ToScrobbleChanged += ToScrobbleChanged;
-              FetchedScrobbles.Add(vm);
+              Scrobbles.Add(vm);
             }
           }
 
@@ -174,7 +128,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     protected override IEnumerable<Scrobble> CreateScrobbles()
     {
       List<Scrobble> scrobbles = new List<Scrobble>();
-      foreach (var vm in FetchedScrobbles.Where(i => i.ToScrobble))
+      foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
       {
         scrobbles.Add(new Scrobble(vm.Track.ArtistName, vm.Track.AlbumName, vm.Track.Name, vm.Track.TimePlayed.Value.LocalDateTime.AddSeconds(1)) { Duration = vm.Track.Duration });
       }
@@ -211,9 +165,9 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Marks all fetched scrobbles as "ToScrobble".
     /// </summary>
-    public void SelectAll()
+    public override void SelectAll()
     {
-      foreach (var vm in FetchedScrobbles.Where(i => i.IsEnabled))
+      foreach (var vm in Scrobbles.Where(i => i.IsEnabled))
       {
         vm.ToScrobble = true;
       }
@@ -222,9 +176,9 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Marks all fetched scrobbles as not "ToScrobble".
     /// </summary>
-    public void SelectNone()
+    public override void SelectNone()
     {
-      foreach (var vm in FetchedScrobbles.Where(i => i.IsEnabled))
+      foreach (var vm in Scrobbles.Where(i => i.IsEnabled))
       {
         vm.ToScrobble = false;
       }

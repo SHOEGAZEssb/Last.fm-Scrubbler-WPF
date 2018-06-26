@@ -30,15 +30,14 @@ namespace Scrubbler.Test.ScrobblerTests
       ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null)
       {
         Scrobbler = scrobblerMock.Object,
-        UseCurrentTime = false,
-
         Artist = expected.Artist,
         Album = expected.Album,
         Track = expected.Track,
-        Time = expected.TimePlayed.DateTime,
         AlbumArtist = expected.AlbumArtist,
         Duration = expected.Duration.Value
       };
+      vm.ScrobbleTimeVM.UseCurrentTime = false;
+      vm.ScrobbleTimeVM.Time = expected.TimePlayed.DateTime;
 
       await vm.Scrobble();
 

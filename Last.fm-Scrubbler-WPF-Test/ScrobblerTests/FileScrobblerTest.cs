@@ -54,9 +54,9 @@ namespace Scrubbler.Test.ScrobblerTests
       FileScrobbleViewModel vm = new FileScrobbleViewModel(windowManagerMock.Object, localFileFactoryMock.Object, fileOperatorMock.Object)
       {
         Scrobbler = scrobblerMock.Object,
-        UseCurrentTime = false,
-        Time = scrobbleTime
       };
+      vm.ScrobbleTimeVM.UseCurrentTime = false;
+      vm.ScrobbleTimeVM.Time = scrobbleTime;
 
       await vm.AddFiles();
       vm.SelectAll();

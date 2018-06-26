@@ -5,12 +5,8 @@ using IF.Lastfm.Core.Objects;
 using Moq;
 using NUnit.Framework;
 using Scrubbler.ViewModels.ExtraFunctions;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace Scrubbler.Test.ExtraFunctionsTests
 {

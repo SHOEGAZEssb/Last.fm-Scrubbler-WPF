@@ -10,7 +10,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.ScrobbleViews.ManualScrobbleView"/>.
   /// </summary>
-  public class ManualScrobbleViewModel : ScrobbleTimeViewModelBase
+  public class ManualScrobbleViewModel : ScrobbleViewModelBase
   {
     #region Properties
 
@@ -87,6 +87,20 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     private TimeSpan _duration;
 
     /// <summary>
+    /// ViewModel for selecting the time to scrobble.
+    /// </summary>
+    public ScrobbleTimeViewModel ScrobbleTimeVM
+    {
+      get { return _scrobbleTimeVM; }
+      private set
+      {
+        _scrobbleTimeVM = value;
+        NotifyOfPropertyChange();
+      }
+    }
+    private ScrobbleTimeViewModel _scrobbleTimeVM;
+
+    /// <summary>
     /// Gets if the scrobble button is enabled.
     /// </summary>
     public override bool CanScrobble
@@ -110,7 +124,9 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     public ManualScrobbleViewModel(IExtendedWindowManager windowManager)
       : base(windowManager, "Manual Scrobbler")
-    { }
+    {
+      ScrobbleTimeVM = new ScrobbleTimeViewModel();
+    }
 
     /// <summary>
     /// Scrobbles the track with the given info.
@@ -122,7 +138,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         EnableControls = false;
         OnStatusUpdated(string.Format("Trying to scrobble '{0}'...", Track));
 
-        Scrobble s = new Scrobble(Artist, Album, Track, Time) { AlbumArtist = AlbumArtist, Duration = Duration };
+        Scrobble s = new Scrobble(Artist, Album, Track, ScrobbleTimeVM.Time) { AlbumArtist = AlbumArtist, Duration = Duration };
         var response = await Scrobbler.ScrobbleAsync(s);
         if (response.Success && response.Status == LastResponseStatus.Successful)
           OnStatusUpdated(string.Format("Successfully scrobbled '{0}'", s.Track));
@@ -146,7 +162,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <returns>List with scrobbles.</returns>
     protected override IEnumerable<Scrobble> CreateScrobbles()
     {
-      return new[] { new Scrobble(Artist, Album, Track, Time) { AlbumArtist = AlbumArtist, Duration = Duration } };
+      return new[] { new Scrobble(Artist, Album, Track, ScrobbleTimeVM.Time) { AlbumArtist = AlbumArtist, Duration = Duration } };
     }
 
     /// <summary>

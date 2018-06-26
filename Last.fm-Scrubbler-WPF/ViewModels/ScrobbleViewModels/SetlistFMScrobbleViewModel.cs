@@ -454,7 +454,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// scrobbled with the current settings.</returns>
     protected override IEnumerable<Scrobble> CreateScrobbles()
     {
-      DateTime finishingTime = Time;
+      DateTime finishingTime = ScrobbleTimeVM.Time;
       List<Scrobble> scrobbles = new List<Scrobble>();
       foreach (FetchedTrackViewModel vm in Scrobbles.Where(i => i.ToScrobble).Reverse())
       {

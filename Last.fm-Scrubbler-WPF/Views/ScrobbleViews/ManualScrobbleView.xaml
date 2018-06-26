@@ -48,7 +48,7 @@
     <xctk:TimeSpanUpDown Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="3" Value="{Binding Duration}" Minimum="0" />
 
     <Label Grid.Row="10" Grid.Column="0" Content="Time Played:"/>
-    <subViews:SelectScrobbleTimeControl Grid.Row="10" Grid.Column="2" Grid.ColumnSpan="3"/>
+    <subViews:SelectScrobbleTimeControl Grid.Row="10" Grid.Column="2" Grid.ColumnSpan="3" DataContext="{Binding ScrobbleTimeVM}"/>
 
     <subViews:ScrobbleButtonControl Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="5"/>
   </Grid>

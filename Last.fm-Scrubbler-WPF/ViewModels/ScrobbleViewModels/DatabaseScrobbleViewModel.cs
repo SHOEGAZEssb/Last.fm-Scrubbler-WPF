@@ -496,8 +496,8 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <remarks>
     /// Scrobbles will be 'reversed' meaning track 1 of the release
     /// will be scrobbled last.
-    /// The first track to be scrobbled will have the <see cref="ScrobbleTimeViewModelBase.Time"/>
-    /// as timestamp. The last track (track 1) will have the <see cref="ScrobbleTimeViewModelBase.Time"/>
+    /// The first track to be scrobbled will have the <see cref="ScrobbleTimeViewModel.Time"/>
+    /// as timestamp. The last track (track 1) will have the <see cref="ScrobbleTimeViewModel.Time"/>
     /// minus all the durations of the scrobbles before. 3 minute default duration.
     /// </remarks>
     public override async Task Scrobble()
@@ -529,7 +529,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <returns>List with scrobbles.</returns>
     protected override IEnumerable<Scrobble> CreateScrobbles()
     {
-      DateTime finishingTime = Time;
+      DateTime finishingTime = ScrobbleTimeVM.Time;
       List<Scrobble> scrobbles = new List<Scrobble>();
       foreach (FetchedTrackViewModel vm in Scrobbles.Where(i => i.ToScrobble).Reverse())
       {

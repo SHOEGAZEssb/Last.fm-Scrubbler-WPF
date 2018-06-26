@@ -24,7 +24,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     Normal,
 
     /// <summary>
-    /// Set the timestamp by setting <see cref="ScrobbleTimeViewModelBase.Time"/>.
+    /// Set the timestamp by setting <see cref="ScrobbleTimeViewModel.Time"/>.
     /// </summary>
     ImportMode
   }
@@ -286,7 +286,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       }
       else if (ScrobbleMode == CSVScrobbleMode.ImportMode)
       {
-        DateTime time = Time;
+        DateTime time = ScrobbleTimeVM.Time;
         foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
         {
           scrobbles.Add(new Scrobble(vm.ParsedScrobble.ArtistName, vm.ParsedScrobble.AlbumName, vm.ParsedScrobble.TrackName, time)
