@@ -217,7 +217,10 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         {
           _currentTrackPlayCount = ITunesApp.CurrentTrack.PlayedCount;
           CountedSeconds = 0;
-          _countTimer.Start();
+
+          if(ITunesApp?.PlayerState == ITPlayerState.ITPlayerStatePlaying)
+            _countTimer.Start();
+
           UpdateCurrentTrackInfo();
         }
       }

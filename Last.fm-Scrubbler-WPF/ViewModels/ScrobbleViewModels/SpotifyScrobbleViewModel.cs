@@ -245,6 +245,10 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         if (_lastTrack != _currentResponse?.Track?.TrackResource?.Uri)
         {
           CountedSeconds = 0;
+
+          if (_currentResponse?.Playing ?? false)
+            _counterTimer.Start();
+
           UpdateCurrentTrackInfo();
         }
       }
