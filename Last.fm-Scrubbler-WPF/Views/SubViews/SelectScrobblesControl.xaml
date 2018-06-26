@@ -14,13 +14,17 @@
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="Auto"/>
-      <ColumnDefinition Width="5"/>
-      <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
 
     <Button x:Name="SelectAll" Grid.Column="0" Content="Select ALL" IsEnabled="{Binding CanSelectAll}"/>
     <Button x:Name="SelectNone" Grid.Column="2" Content="Select NONE" IsEnabled="{Binding CanSelectNone}"/>
-    <TextBlock Grid.Column="4" Text="Num to scrobble:" VerticalAlignment="Center"/>
-    <TextBlock Grid.Column="6" Text="{Binding ToScrobbleCount}" VerticalAlignment="Center"/>
+    <TextBlock Grid.Column="4" VerticalAlignment="Center">
+      <TextBlock.Text>
+        <MultiBinding StringFormat="{}Num to scrobble: {0} / {1}">
+          <Binding Path="ToScrobbleCount"/>
+          <Binding Path="Scrobbles.Count"/>
+        </MultiBinding>
+      </TextBlock.Text>
+    </TextBlock>
   </Grid>
 </UserControl>
