@@ -130,6 +130,8 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
           scrobble.ToScrobbleChanged -= Scrobble_ToScrobbleChanged;
         }
       }
+
+      NotifyCanProperties();
     }
 
     /// <summary>
