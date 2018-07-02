@@ -24,11 +24,6 @@ namespace Scrubbler.Models
     /// </summary>
     public ILastAuth Auth => _scrobbler.Auth;
 
-    /// <summary>
-    /// If the scrobbler caches scrobbles.
-    /// </summary>
-    public bool CacheEnabled => _scrobbler.CacheEnabled;
-
     #endregion Properties
 
     #region Member

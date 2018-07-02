@@ -22,11 +22,6 @@ namespace Scrubbler.Models
     /// </summary>
     public ILastAuth Auth => _scrobbler.Auth;
 
-    /// <summary>
-    /// If the scrobbler caches scrobbles.
-    /// </summary>
-    public bool CacheEnabled => _scrobbler.CacheEnabled;
-
     #endregion Properties
 
     #region Member
@@ -34,7 +29,7 @@ namespace Scrubbler.Models
     /// <summary>
     /// The actual scrobbler.
     /// </summary>
-    private Scrobbler _scrobbler;
+    private MemoryScrobbler _scrobbler;
 
     #endregion Member
 
@@ -45,7 +40,7 @@ namespace Scrubbler.Models
     /// <param name="httpClient">HttpClient to use for connections.</param>
     public AuthScrobbler(ILastAuth auth, HttpClient httpClient = null)
     {
-      _scrobbler = new Scrobbler(auth, httpClient);
+      _scrobbler = new MemoryScrobbler(auth, httpClient);
     }
 
     /// <summary>

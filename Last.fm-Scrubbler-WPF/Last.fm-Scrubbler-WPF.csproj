@@ -54,8 +54,8 @@
     <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
     </Reference>
-    <Reference Include="IF.Lastfm.Core, Version=1.0.1.307, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Inflatable.Lastfm.1.0.1.307\lib\netstandard1.1\IF.Lastfm.Core.dll</HintPath>
+    <Reference Include="IF.Lastfm.Core, Version=1.1.0.339, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Inflatable.Lastfm.1.1.0.339\lib\netstandard1.1\IF.Lastfm.Core.dll</HintPath>
     </Reference>
     <Reference Include="IF.Lastfm.SQLite, Version=0.2.0.211, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Inflatable.Lastfm.SQLite.0.2.0.211\lib\portable-win8+net45+wp8+wpa81\IF.Lastfm.SQLite.dll</HintPath>
