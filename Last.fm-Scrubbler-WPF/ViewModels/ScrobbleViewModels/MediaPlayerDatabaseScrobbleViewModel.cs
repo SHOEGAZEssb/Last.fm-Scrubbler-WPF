@@ -34,7 +34,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.ScrobbleViews.MediaPlayerDatabaseScrobbleView"/>.
   /// </summary>
-  public class MediaPlayerDatabaseScrobbleViewModel : ScrobbleViewModelBase
+  public class MediaPlayerDatabaseScrobbleViewModel : ScrobbleMultipleViewModelBase<MediaDBScrobbleViewModel>
   {
     #region Properties
 
@@ -66,51 +66,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     }
     private MediaPlayerDatabaseType _mediaPlayerDatabaseType;
 
-    /// <summary>
-    /// List of parsed scrobbles.
-    /// </summary>
-    public ObservableCollection<MediaDBScrobbleViewModel> ParsedScrobbles
-    {
-      get { return _parsedScrobbles; }
-      private set
-      {
-        _parsedScrobbles = value;
-        NotifyOfPropertyChange();
-      }
-    }
-    private ObservableCollection<MediaDBScrobbleViewModel> _parsedScrobbles;
-
-    /// <summary>
-    /// Gets if the "Scrobble" button is enabled on the UI.
-    /// </summary>
-    public override bool CanScrobble
-    {
-      get { return base.CanScrobble && ParsedScrobbles.Any(i => i.ToScrobble); }
-    }
-
-    /// <summary>
-    /// Gets if the preview button is enabled.
-    /// </summary>
-    public override bool CanPreview
-    {
-      get { return ParsedScrobbles.Any(i => i.ToScrobble); }
-    }
-    /// <summary>
-    /// Gets if the "Select ALL" button is enabled on the UI.
-    /// </summary>
-    public bool CanSelectAll
-    {
-      get { return ParsedScrobbles.Any(i => !i.ToScrobble); }
-    }
-
-    /// <summary>
-    /// Gets if the "Select NONE" button is enabled on the UI.
-    /// </summary>
-    public bool CanSelectNone
-    {
-      get { return ParsedScrobbles.Any(i => i.ToScrobble); }
-    }
-
     #endregion Properties
 
     /// <summary>
@@ -120,7 +75,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     public MediaPlayerDatabaseScrobbleViewModel(IExtendedWindowManager windowManager)
       : base(windowManager, "Media Player Database Scrobbler")
     {
-      ParsedScrobbles = new ObservableCollection<MediaDBScrobbleViewModel>();
+      Scrobbles = new ObservableCollection<MediaDBScrobbleViewModel>();
     }
 
     /// <summary>
@@ -147,28 +102,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         ParseItunesConformXML();
       else if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.WMP)
         ParseWMPDatabase();
-    }
-
-    /// <summary>
-    /// Marks all scrobbles as "ToScrobble".
-    /// </summary>
-    public void SelectAll()
-    {
-      foreach (MediaDBScrobbleViewModel s in ParsedScrobbles.Where(i => !i.ToScrobble))
-      {
-        s.ToScrobble = true;
-      }
-    }
-
-    /// <summary>
-    /// Marks all scrobbles as not "ToScrobble".
-    /// </summary>
-    public void SelectNone()
-    {
-      foreach (MediaDBScrobbleViewModel s in ParsedScrobbles.Where(i => i.ToScrobble))
-      {
-        s.ToScrobble = false;
-      }
     }
 
     /// <summary>
@@ -245,7 +178,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         }
 
         OnStatusUpdated("Successfully parsed database file");
-        ParsedScrobbles = new ObservableCollection<MediaDBScrobbleViewModel>(scrobbles);
+        Scrobbles = new ObservableCollection<MediaDBScrobbleViewModel>(scrobbles);
       }
       catch (Exception ex)
       {
@@ -280,7 +213,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
               scrobbleVMs.Add(vm);
             }
 
-            ParsedScrobbles = new ObservableCollection<MediaDBScrobbleViewModel>(scrobbleVMs);
+            Scrobbles = new ObservableCollection<MediaDBScrobbleViewModel>(scrobbleVMs);
           }
           OnStatusUpdated("Successfully parsed Windows Media Player library");
         });
@@ -331,7 +264,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       List<Scrobble> scrobbles = new List<Scrobble>();
 
       DateTime time = DateTime.Now; ;
-      foreach (var vm in ParsedScrobbles.Where(i => i.ToScrobble))
+      foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
       {
         for (int i = 0; i < vm.Scrobble.PlayCount; i++)
         {
