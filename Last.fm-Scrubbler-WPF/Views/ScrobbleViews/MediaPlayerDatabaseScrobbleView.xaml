@@ -122,7 +122,7 @@
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Last Played" local:GridViewSort.PropertyName="Scrobble.LastPlayed">
+          <GridViewColumn Header="Last Played" local:GridViewSort.PropertyName="Scrobble.Played">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <Label VerticalAlignment="Center" Content="{Binding Scrobble.Played}"/>
