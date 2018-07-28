@@ -1,10 +1,13 @@
 ﻿using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
+using Scrubbler.Models;
 using Scrubbler.Properties;
+using Scrubbler.ViewModels.SubViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Scrubbler.ViewModels.ScrobbleViewModels
@@ -12,19 +15,19 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
   /// <summary>
   /// ViewModel for the <see cref="Views.ScrobbleViews.CacheScrobblerView"/>
   /// </summary>
-  public class CacheScrobblerViewModel : ScrobbleViewModelBase
+  public class CacheScrobblerViewModel : ScrobbleMultipleViewModelBase<DatedScrobbleViewModel>
   {
     #region Properties
 
     /// <summary>
     /// Gets if the scrobble button is enabled.
     /// </summary>
-    public override bool CanScrobble => base.CanScrobble && CachedScrobbles.Count > 0 && EnableControls;
+    public override bool CanScrobble => base.CanScrobble && Scrobbles.Count > 0 && EnableControls;
 
     /// <summary>
     /// Gets if the preview button is enabled.
     /// </summary>
-    public override bool CanPreview => CachedScrobbles.Count > 0 && EnableControls;
+    public override bool CanPreview => Scrobbles.Count > 0 && EnableControls;
 
     /// <summary>
     /// Gets if certain controls that modify the
@@ -41,22 +44,6 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         NotifyOfPropertyChange(() => CanPreview);
       }
     }
-
-    /// <summary>
-    /// List of cached scrobbles.
-    /// </summary>
-    public ObservableCollection<Scrobble> CachedScrobbles
-    {
-      get { return _cachedScrobbles; }
-      private set
-      {
-        _cachedScrobbles = value;
-        NotifyOfPropertyChange();
-        NotifyOfPropertyChange(() => CanScrobble);
-        NotifyOfPropertyChange(() => CanPreview);
-      }
-    }
-    private ObservableCollection<Scrobble> _cachedScrobbles;
 
     /// <summary>
     /// If true, tries to scrobble the cache at application startup.
@@ -80,7 +67,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     public CacheScrobblerViewModel(IExtendedWindowManager windowManager)
       : base(windowManager, "Cache Scrobbler")
     {
-      CachedScrobbles = new ObservableCollection<Scrobble>();
+      Scrobbles = new ObservableCollection<DatedScrobbleViewModel>();
       StartupHandling();
     }
 
@@ -104,7 +91,8 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <returns>List with scrobbles.</returns>
     protected override IEnumerable<Scrobble> CreateScrobbles()
     {
-      return CachedScrobbles;
+      return Scrobbles.Select(vm => new Scrobble(vm.Scrobble.ArtistName, vm.Scrobble.AlbumName, vm.Scrobble.TrackName, vm.Scrobble.Played)
+                             { AlbumArtist = vm.Scrobble.AlbumArtist, Duration = vm.Scrobble.Duration });
     }
 
     /// <summary>
@@ -143,7 +131,13 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       try
       {
         EnableControls = false;
-        CachedScrobbles = new ObservableCollection<Scrobble>(await Scrobbler.GetCachedAsync());
+        Scrobbles.Clear();
+        var scrobbles = new ObservableCollection<Scrobble>(await Scrobbler.GetCachedAsync());
+
+        foreach(var s in scrobbles)
+        {
+          Scrobbles.Add(new DatedScrobbleViewModel(new DatedScrobble(s.TimePlayed.DateTime, s.Track, s.Artist, s.Album, s.AlbumArtist, s.Duration)));
+        }
       }
       catch(Exception ex)
       {

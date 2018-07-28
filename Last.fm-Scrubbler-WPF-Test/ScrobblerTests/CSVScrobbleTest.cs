@@ -64,7 +64,7 @@ namespace Scrubbler.Test.ScrobblerTests
       };
 
       await vm.ParseCSVFile();
-      vm.SelectAll();
+      vm.CheckAll();
 
       // when: scrobbling
       await vm.Scrobble();

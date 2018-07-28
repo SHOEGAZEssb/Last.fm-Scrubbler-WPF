@@ -7,7 +7,7 @@ namespace Scrubbler.Interfaces
   /// scrobble multiple scrobbles.
   /// </summary>
   /// <typeparam name="T">Type of the scrobbable object.</typeparam>
-  interface ICanSelectScrobbles<T> where T : IScrobbableObject
+  interface ICanSelectScrobbles<T> where T : IScrobbableObjectViewModel
   {
     /// <summary>
     /// Possible objects to scrobble.
@@ -17,22 +17,22 @@ namespace Scrubbler.Interfaces
     /// <summary>
     /// Marks all scrobbles as "ToScrobble".
     /// </summary>
-    void SelectAll();
+    void CheckAll();
 
     /// <summary>
     /// Marks all scrobbles as not "ToScrobble".
     /// </summary>
-    void SelectNone();
+    void UncheckAll();
 
     /// <summary>
     /// Gets if all scrobbles can currently be selected.
     /// </summary>
-    bool CanSelectAll { get; }
+    bool CanCheckAll { get; }
 
     /// <summary>
     /// Gets if all scrobbles can currently be unselected.
     /// </summary>
-    bool CanSelectNone { get; }
+    bool CanUncheckAll { get; }
 
     /// <summary>
     /// Gets the amount of scrobbles that are

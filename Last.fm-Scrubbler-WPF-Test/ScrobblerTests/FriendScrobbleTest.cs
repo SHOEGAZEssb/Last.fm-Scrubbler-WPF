@@ -46,7 +46,7 @@ namespace Scrubbler.Test.ScrobblerTests
       };
 
       await vm.FetchScrobbles();
-      vm.SelectAll();
+      vm.CheckAll();
 
       // when: scrobbling the fetched tracks.
       await vm.Scrobble();

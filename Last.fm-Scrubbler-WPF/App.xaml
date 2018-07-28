@@ -16,6 +16,17 @@
               </DataTrigger>
             </Style.Triggers>
           </Style>
+
+          <Style x:Key="ScrobbableObjectListViewStyle" TargetType="ListView">
+            <Setter Property="SelectionMode" Value="Extended"/>
+            <Setter Property="ItemContainerStyle">
+              <Setter.Value>
+                <Style TargetType="ListViewItem">
+                  <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                </Style>
+              </Setter.Value>
+            </Setter>
+          </Style>
         </ResourceDictionary>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>

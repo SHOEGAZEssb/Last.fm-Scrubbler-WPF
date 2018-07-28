@@ -12,7 +12,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
   /// "Starting" or "Finishing" time.
   /// </summary>
   /// <typeparam name="T">Type of the scrobble ViewModel.</typeparam>
-  public abstract class ScrobbleMultipleViewModelBase<T> : ScrobbleViewModelBase, ICanSelectScrobbles<T> where T : IScrobbableObject
+  public abstract class ScrobbleMultipleViewModelBase<T> : ScrobbleViewModelBase, ICanSelectScrobbles<T> where T : IScrobbableObjectViewModel
   {
     #region Properties
 
@@ -59,18 +59,33 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Gets if all scrobbles can currently be selected.
     /// </summary>
-    public bool CanSelectAll => Scrobbles.Any(s => !s.ToScrobble);
+    public bool CanCheckAll => Scrobbles.Any(s => !s.ToScrobble);
 
     /// <summary>
-    /// Gets if no scrobbles can currently be selected.
+    /// Gets if all scrobbles can currently be unchecked.
     /// </summary>
-    public bool CanSelectNone => Scrobbles.Any(s => s.ToScrobble);
+    public bool CanUncheckAll => Scrobbles.Any(s => s.ToScrobble);
+
+    /// <summary>
+    /// Gets if selected scrobbles can be checked.
+    /// </summary>
+    public bool CanCheckSelected => Scrobbles.Any(s => s.IsSelected && !s.ToScrobble);
+
+    /// <summary>
+    /// Gets if selected scrobbles can be unchecked.
+    /// </summary>
+    public bool CanUncheckSelected => Scrobbles.Any(s => s.IsSelected && s.ToScrobble);
 
     /// <summary>
     /// Gets the amount of scrobbles that are
     /// marked as "ToScrobble".
     /// </summary>
     public int ToScrobbleCount => Scrobbles.Where(s => s.ToScrobble).Count();
+
+    /// <summary>
+    /// Gets the amount of selected scrobbles.
+    /// </summary>
+    public int SelectedCount => Scrobbles.Where(s => s.IsSelected).Count();
 
     #endregion Properties
 
@@ -90,7 +105,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Marks all scrobbles as "ToScrobble".
     /// </summary>
-    public virtual void SelectAll()
+    public virtual void CheckAll()
     {
       foreach (var s in Scrobbles)
       {
@@ -101,9 +116,31 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Marks all scrobbles as not "ToScrobble".
     /// </summary>
-    public virtual void SelectNone()
+    public virtual void UncheckAll()
     {
       foreach (var s in Scrobbles)
+      {
+        s.ToScrobble = false;
+      }
+    }
+
+    /// <summary>
+    /// Marks all selected scrobbles as "ToScrobble".
+    /// </summary>
+    public virtual void CheckSelected()
+    {
+      foreach(var s in Scrobbles.Where(s => s.IsSelected))
+      {
+        s.ToScrobble = true;
+      }
+    }
+
+    /// <summary>
+    /// Marks all selected scrobbles as not "ToScrobble".
+    /// </summary>
+    public virtual void UncheckSelected()
+    {
+      foreach (var s in Scrobbles.Where(s => s.IsSelected))
       {
         s.ToScrobble = false;
       }
@@ -120,14 +157,16 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       {
         foreach (T scrobble in e.NewItems)
         {
-          scrobble.ToScrobbleChanged += Scrobble_ToScrobbleChanged;
+          scrobble.ToScrobbleChanged += Scrobble_StateChanged;
+          scrobble.IsSelectedChanged += Scrobble_StateChanged;
         }
       }
       else if (e.Action == NotifyCollectionChangedAction.Remove)
       {
         foreach (T scrobble in e.OldItems)
         {
-          scrobble.ToScrobbleChanged -= Scrobble_ToScrobbleChanged;
+          scrobble.ToScrobbleChanged -= Scrobble_StateChanged;
+          scrobble.IsSelectedChanged -= Scrobble_StateChanged;
         }
       }
 
@@ -139,7 +178,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     /// <param name="sender">Ignored.</param>
     /// <param name="e">Ignored.</param>
-    private void Scrobble_ToScrobbleChanged(object sender, EventArgs e)
+    private void Scrobble_StateChanged(object sender, EventArgs e)
     {
       NotifyCanProperties();
     }
@@ -151,9 +190,12 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     {
       NotifyOfPropertyChange(() => CanScrobble);
       NotifyOfPropertyChange(() => CanPreview);
-      NotifyOfPropertyChange(() => CanSelectAll);
-      NotifyOfPropertyChange(() => CanSelectNone);
+      NotifyOfPropertyChange(() => CanCheckAll);
+      NotifyOfPropertyChange(() => CanUncheckAll);
+      NotifyOfPropertyChange(() => CanCheckSelected);
+      NotifyOfPropertyChange(() => CanUncheckSelected);
       NotifyOfPropertyChange(() => ToScrobbleCount);
+      NotifyOfPropertyChange(() => SelectedCount);
     }
 
     /// <summary>
@@ -164,7 +206,8 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     {
       foreach (T scrobble in Scrobbles)
       {
-        scrobble.ToScrobbleChanged += Scrobble_ToScrobbleChanged;
+        scrobble.ToScrobbleChanged += Scrobble_StateChanged;
+        scrobble.IsSelectedChanged += Scrobble_StateChanged;
       }
     }
 
@@ -176,7 +219,8 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     {
       foreach (T scrobble in Scrobbles)
       {
-        scrobble.ToScrobbleChanged -= Scrobble_ToScrobbleChanged;
+        scrobble.ToScrobbleChanged -= Scrobble_StateChanged;
+        scrobble.IsSelectedChanged -= Scrobble_StateChanged;
       }
     }
   }

@@ -44,7 +44,7 @@
     </Grid>
 
     <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"  VerticalAlignment="Stretch" ItemsSource="{Binding Scrobbles}"
-              local:GridViewSort.AutoSort="True" AllowDrop="True" cal:Message.Attach="[Event Drop] = [Action HandleDrop($eventArgs)]">
+              local:GridViewSort.AutoSort="True" AllowDrop="True" cal:Message.Attach="[Event Drop] = [Action HandleDrop($eventArgs)]" Style="{StaticResource ScrobbableObjectListViewStyle}">
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Scrobble?" local:GridViewSort.PropertyName="ToScrobble">

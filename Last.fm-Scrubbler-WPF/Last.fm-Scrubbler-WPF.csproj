@@ -180,7 +180,7 @@
     <Compile Include="Interfaces\ILastFMClientFactory.cs" />
     <Compile Include="Interfaces\ILocalFileFactory.cs" />
     <Compile Include="Interfaces\IOpenFileDialog.cs" />
-    <Compile Include="Interfaces\IScrobbableObject.cs" />
+    <Compile Include="Interfaces\IScrobbableObjectViewModel.cs" />
     <Compile Include="Interfaces\IScrobblerFactory.cs" />
     <Compile Include="Interfaces\ISerializer.cs" />
     <Compile Include="Interfaces\ITextFieldParser.cs" />
@@ -344,9 +344,6 @@
     <Compile Include="Views\UserView.xaml.cs">
       <DependentUpon>UserView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SubViews\ScrobbleListView.xaml.cs">
-      <DependentUpon>ScrobbleListView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SubViews\SetlistResultView.xaml.cs">
       <DependentUpon>SetlistResultView.xaml</DependentUpon>
     </Compile>
@@ -478,10 +475,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UserView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SubViews\ScrobbleListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

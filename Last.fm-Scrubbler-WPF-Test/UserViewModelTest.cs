@@ -144,5 +144,13 @@ namespace Scrubbler.Test
       Assert.That(vm.AvailableUsers.Count, Is.EqualTo(users.Length));
       CollectionAssert.AreEqual(users, vm.AvailableUsers);
     }
+
+    [Test]
+    public void LoginTest()
+    {
+      // given: mocks
+      Mock<IDirectoryOperator> directoryOperatorMock = new Mock<IDirectoryOperator>(MockBehavior.Strict);
+      directoryOperatorMock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true);
+    }
   }
 }

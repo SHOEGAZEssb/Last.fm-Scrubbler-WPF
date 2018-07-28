@@ -8,7 +8,7 @@
              xmlns:views="clr-namespace:Scrubbler.Views"
              xmlns:subViews="clr-namespace:Scrubbler.Views.SubViews"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" Style="{StaticResource EnableControlsStyle}">
 
   <Grid>
     <Grid.RowDefinitions>
@@ -24,7 +24,7 @@
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
-    <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Content="Reload Cache" Style="{StaticResource EnableControlsStyle}">
+    <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Content="Reload Cache">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="GetCachedScrobbles"/>
@@ -32,48 +32,48 @@
       </i:Interaction.Triggers>
     </Button>
 
-    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding CachedScrobbles}" views:GridViewSort.AutoSort="True" Style="{StaticResource EnableControlsStyle}">
+    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding CachedScrobbles}" views:GridViewSort.AutoSort="True" Style="{StaticResource ScrobbableObjectListViewStyle}">
       <ListView.View>
         <GridView>
-          <GridViewColumn Header="Artist" views:GridViewSort.PropertyName="Artist">
+          <GridViewColumn Header="Artist" views:GridViewSort.PropertyName="Scrobble.ArtistName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding Artist}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Scrobble.ArtistName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Album" views:GridViewSort.PropertyName="Album">
+          <GridViewColumn Header="Album" views:GridViewSort.PropertyName="Scrobble.AlbumName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding Album}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Scrobble.AlbumName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Track Title" views:GridViewSort.PropertyName="Track">
+          <GridViewColumn Header="Track Title" views:GridViewSort.PropertyName="Scrobble.TrackName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding Track}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Scrobble.TrackName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Album Artist" views:GridViewSort.PropertyName="AlbumArtist">
+          <GridViewColumn Header="Album Artist" views:GridViewSort.PropertyName="Scrobble.AlbumArtist">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding AlbumArtist}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Scrobble.AlbumArtist}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Duration" views:GridViewSort.PropertyName="Duration">
+          <GridViewColumn Header="Duration" views:GridViewSort.PropertyName="Scrobble.Duration">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding Duration}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Scrobble.Duration}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Time Played" views:GridViewSort.PropertyName="TimePlayed">
+          <GridViewColumn Header="Time Played" views:GridViewSort.PropertyName="Scrobble.Played">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding TimePlayed}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Scrobble.Played}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
@@ -83,6 +83,6 @@
 
     <subViews:ScrobbleButtonControl Grid.Row="4" Grid.Column="0"/>
 
-    <CheckBox Grid.Row="4" Grid.Column="2" Content="Auto Scrobble at startup" VerticalAlignment="Center" IsChecked="{Binding AutoScrobble}" Style="{StaticResource EnableControlsStyle}"/>
+    <CheckBox Grid.Row="4" Grid.Column="2" Content="Auto Scrobble at startup" VerticalAlignment="Center" IsChecked="{Binding AutoScrobble}"/>
   </Grid>
 </UserControl>

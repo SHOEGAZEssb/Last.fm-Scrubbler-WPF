@@ -7,7 +7,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
   /// with selectable time.
   /// </summary>
   /// <typeparam name="T"></typeparam>
-  public abstract class ScrobbleMultipleTimeViewModelBase<T> : ScrobbleMultipleViewModelBase<T> where T : IScrobbableObject
+  public abstract class ScrobbleMultipleTimeViewModelBase<T> : ScrobbleMultipleViewModelBase<T> where T : IScrobbableObjectViewModel
   {
     #region Properties
 
