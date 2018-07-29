@@ -93,7 +93,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Different formats to try in case TryParse fails.
     /// </summary>
-    private static string[] _formats = new string[] { "M/dd/yyyy h:mm" };
+    private static readonly string[] _formats = new string[] { "M/dd/yyyy h:mm" };
 
     /// <summary>
     /// The factory used to create <see cref="ITextFieldParser"/>.
