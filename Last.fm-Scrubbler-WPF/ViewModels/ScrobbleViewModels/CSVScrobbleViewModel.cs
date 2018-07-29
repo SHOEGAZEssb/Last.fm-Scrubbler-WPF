@@ -331,5 +331,27 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         vm.ToScrobble = false;
       }
     }
+
+    /// <summary>
+    /// Marks all selected scrobbles as "ToScrobble".
+    /// </summary>
+    public override void CheckSelected()
+    {
+      foreach (var vm in Scrobbles.Where(i => i.IsEnabled && i.IsSelected))
+      {
+        vm.ToScrobble = false;
+      }
+    }
+
+    /// <summary>
+    /// Marks all selected scrobbles as not "ToScrobble".
+    /// </summary>
+    public override void UncheckSelected()
+    {
+      foreach (var s in Scrobbles.Where(s => s.IsEnabled && s.IsSelected))
+      {
+        s.ToScrobble = false;
+      }
+    }
   }
 }
