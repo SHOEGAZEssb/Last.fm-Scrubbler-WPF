@@ -59,7 +59,7 @@ namespace Scrubbler.Test.ScrobblerTests
       vm.ScrobbleTimeVM.Time = scrobbleTime;
 
       await vm.AddFiles();
-      vm.SelectAll();
+      vm.CheckAll();
 
       // when: scrobbling
       await vm.Scrobble();

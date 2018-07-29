@@ -8,7 +8,7 @@ namespace Scrubbler.ViewModels.SubViewModels
   /// Base ViewModel for all ViewModels that
   /// manage scrobbable objects.
   /// </summary>
-  public abstract class ScrobbableObjectViewModelBase : Screen, IScrobbableObject
+  public abstract class ScrobbableObjectViewModelBase : Screen, IScrobbableObjectViewModel
   {
     #region Properties
 
@@ -16,6 +16,11 @@ namespace Scrubbler.ViewModels.SubViewModels
     /// Event that triggers when <see cref="ToScrobble"/> changed.
     /// </summary>
     public event EventHandler ToScrobbleChanged;
+
+    /// <summary>
+    /// Event that triggers when <see cref="IsSelected"/> changes.
+    /// </summary>
+    public event EventHandler IsSelectedChanged;
 
     /// <summary>
     /// If this object should be scrobbled.
@@ -31,6 +36,21 @@ namespace Scrubbler.ViewModels.SubViewModels
       }
     }
     private bool _toScrobble;
+
+    /// <summary>
+    /// If this object is selected in the UI.
+    /// </summary>
+    public bool IsSelected
+    {
+      get { return _isSelected; }
+      set
+      {
+        _isSelected = value;
+        NotifyOfPropertyChange();
+        IsSelectedChanged?.Invoke(this, EventArgs.Empty);
+      }
+    }
+    private bool _isSelected;
 
     #endregion Properties
   }

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d"
-             d:DesignHeight="30" d:DesignWidth="300" cal:Bind.Model="{Binding}">
+             d:DesignHeight="30" d:DesignWidth="400" cal:Bind.Model="{Binding}">
 
   <Grid>
     <Grid.ColumnDefinitions>
@@ -14,15 +14,23 @@
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
 
-    <Button x:Name="SelectAll" Grid.Column="0" Content="Select ALL" IsEnabled="{Binding CanSelectAll}"/>
-    <Button x:Name="SelectNone" Grid.Column="2" Content="Select NONE" IsEnabled="{Binding CanSelectNone}"/>
-    <TextBlock Grid.Column="4" VerticalAlignment="Center">
+    <Button x:Name="CheckAll" Grid.Column="0" Content="Check All" IsEnabled="{Binding CanCheckAll}"/>
+    <Button x:Name="UncheckAll" Grid.Column="2" Content="Uncheck All" IsEnabled="{Binding CanUncheckAll}"/>
+    <Button x:Name="CheckSelected" Grid.Column="4" Content="Check Selected" IsEnabled="{Binding CanCheckSelected}"/>
+    <Button x:Name="UncheckSelected" Grid.Column="6" Content="Uncheck Selected" IsEnabled="{Binding CanUncheckSelected}"/>
+
+    <TextBlock Grid.Column="9" VerticalAlignment="Center">
       <TextBlock.Text>
-        <MultiBinding StringFormat="{}Num to scrobble: {0} / {1}">
+        <MultiBinding StringFormat="{}Num to scrobble: {0} / {1} | Selected: {2}">
           <Binding Path="ToScrobbleCount"/>
           <Binding Path="Scrobbles.Count"/>
+          <Binding Path="SelectedCount"/>
         </MultiBinding>
       </TextBlock.Text>
     </TextBlock>

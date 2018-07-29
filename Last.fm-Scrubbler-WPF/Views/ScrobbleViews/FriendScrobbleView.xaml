@@ -53,7 +53,8 @@
 
     <subViews:SelectScrobblesControl Grid.Row="2" Grid.ColumnSpan="9"/>
 
-    <ListView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="9" VerticalAlignment="Stretch" ItemsSource="{Binding Scrobbles}" local:GridViewSort.AutoSort="True">
+    <ListView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="9" VerticalAlignment="Stretch" ItemsSource="{Binding Scrobbles}" local:GridViewSort.AutoSort="True"
+              Style="{StaticResource ScrobbableObjectListViewStyle}">
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Scrobble?" local:GridViewSort.PropertyName="ToScrobble">

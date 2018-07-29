@@ -117,8 +117,8 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     {
       NotifyOfPropertyChange(() => CanScrobble);
       NotifyOfPropertyChange(() => CanPreview);
-      NotifyOfPropertyChange(() => CanSelectAll);
-      NotifyOfPropertyChange(() => CanSelectNone);
+      NotifyOfPropertyChange(() => CanCheckAll);
+      NotifyOfPropertyChange(() => CanUncheckAll);
     }
 
     /// <summary>
@@ -165,7 +165,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Marks all fetched scrobbles as "ToScrobble".
     /// </summary>
-    public override void SelectAll()
+    public override void CheckAll()
     {
       foreach (var vm in Scrobbles.Where(i => i.IsEnabled))
       {
@@ -176,7 +176,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Marks all fetched scrobbles as not "ToScrobble".
     /// </summary>
-    public override void SelectNone()
+    public override void UncheckAll()
     {
       foreach (var vm in Scrobbles.Where(i => i.IsEnabled))
       {

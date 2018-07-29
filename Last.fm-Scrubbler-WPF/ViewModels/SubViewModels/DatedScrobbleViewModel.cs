@@ -7,7 +7,7 @@ namespace Scrubbler.ViewModels.SubViewModels
   /// ViewModel for a <see cref="DatedScrobble"/> that has been
   /// fetched, parsed or gotten from somewhere else.
   /// </summary>
-  class DatedScrobbleViewModel : ScrobbableObjectViewModelBase
+  public class DatedScrobbleViewModel : ScrobbableObjectViewModelBase
   {
     #region Properties
 

@@ -283,8 +283,8 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <param name="e">Ignored.</param>
     private void ToScrobbleChanged(object sender, EventArgs e)
     {
-      NotifyOfPropertyChange(() => CanSelectAll);
-      NotifyOfPropertyChange(() => CanSelectNone);
+      NotifyOfPropertyChange(() => CanCheckAll);
+      NotifyOfPropertyChange(() => CanUncheckAll);
       NotifyOfPropertyChange(() => CanScrobble);
       NotifyOfPropertyChange(() => CanPreview);
     }

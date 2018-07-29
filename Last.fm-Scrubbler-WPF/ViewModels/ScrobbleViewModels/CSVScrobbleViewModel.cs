@@ -313,7 +313,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Marks all scrobbles as "ToScrobble".
     /// </summary>
-    public override void SelectAll()
+    public override void CheckAll()
     {
       foreach (var vm in Scrobbles.Where(i => i.IsEnabled))
       {
@@ -324,11 +324,33 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <summary>
     /// Marks all scrobbles as not "ToScrobble".
     /// </summary>
-    public override void SelectNone()
+    public override void UncheckAll()
     {
       foreach (var vm in Scrobbles.Where(i => i.IsEnabled))
       {
         vm.ToScrobble = false;
+      }
+    }
+
+    /// <summary>
+    /// Marks all selected scrobbles as "ToScrobble".
+    /// </summary>
+    public override void CheckSelected()
+    {
+      foreach (var vm in Scrobbles.Where(i => i.IsEnabled && i.IsSelected))
+      {
+        vm.ToScrobble = false;
+      }
+    }
+
+    /// <summary>
+    /// Marks all selected scrobbles as not "ToScrobble".
+    /// </summary>
+    public override void UncheckSelected()
+    {
+      foreach (var s in Scrobbles.Where(s => s.IsEnabled && s.IsSelected))
+      {
+        s.ToScrobble = false;
       }
     }
   }
