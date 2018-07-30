@@ -55,24 +55,24 @@
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Artist" local:GridViewSort.PropertyName="FetchedTrack.ArtistName">
+          <GridViewColumn Header="Artist" local:GridViewSort.PropertyName="ArtistName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding FetchedTrack.ArtistName}"/>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding ArtistName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Release Title" local:GridViewSort.PropertyName="FetchedTrack.AlbumName">
+          <GridViewColumn Header="Release Title" local:GridViewSort.PropertyName="AlbumName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding FetchedTrack.AlbumName}"/>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding AlbumName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Track Title" local:GridViewSort.PropertyName="FetchedTrack.TrackName">
+          <GridViewColumn Header="Track Title" local:GridViewSort.PropertyName="TrackName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding FetchedTrack.TrackName}"/>
+                <Label Grid.Column="4" VerticalAlignment="Center" Content="{Binding TrackName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>

@@ -91,8 +91,8 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// <returns>List with scrobbles.</returns>
     protected override IEnumerable<Scrobble> CreateScrobbles()
     {
-      return Scrobbles.Select(vm => new Scrobble(vm.Scrobble.ArtistName, vm.Scrobble.AlbumName, vm.Scrobble.TrackName, vm.Scrobble.Played)
-                             { AlbumArtist = vm.Scrobble.AlbumArtist, Duration = vm.Scrobble.Duration });
+      return Scrobbles.Select(vm => new Scrobble(vm.ArtistName, vm.AlbumName, vm.TrackName, vm.Played)
+                             { AlbumArtist = vm.AlbumArtist, Duration = vm.Duration });
     }
 
     /// <summary>

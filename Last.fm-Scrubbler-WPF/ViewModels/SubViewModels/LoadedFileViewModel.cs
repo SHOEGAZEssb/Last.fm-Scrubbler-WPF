@@ -1,4 +1,5 @@
 ﻿using Scrubbler.Interfaces;
+using Scrubbler.Models;
 using System;
 
 namespace Scrubbler.ViewModels.SubViewModels
@@ -9,31 +10,6 @@ namespace Scrubbler.ViewModels.SubViewModels
   public class LoadedFileViewModel : ScrobbableObjectViewModelBase
   {
     #region Properties
-
-    /// <summary>
-    /// The artist name.
-    /// </summary>
-    public string Artist => _file.Artist;
-
-    /// <summary>
-    /// The album name.
-    /// </summary>
-    public string Album => _file.Album;
-
-    /// <summary>
-    /// The track name.
-    /// </summary>
-    public string Track => _file.Track;
-
-    /// <summary>
-    /// The album artist name.
-    /// </summary>
-    public string AlbumArtist => _file.AlbumArtist;
-
-    /// <summary>
-    /// The duration of the track.
-    /// </summary>
-    public TimeSpan Duration => _file.Duration;
 
     /// <summary>
     /// The number of the track.
@@ -56,6 +32,7 @@ namespace Scrubbler.ViewModels.SubViewModels
     /// </summary>
     /// <param name="file">The loaded file.</param>
     public LoadedFileViewModel(ILocalFile file)
+      : base(new ScrobbleBase(file.Track, file.Artist, file.Album, file.AlbumArtist, file.Duration))
     {
       _file = file;
     }

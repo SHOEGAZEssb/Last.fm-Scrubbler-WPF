@@ -280,8 +280,8 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       {
         foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
         {
-          scrobbles.Add(new Scrobble(vm.ParsedScrobble.ArtistName, vm.ParsedScrobble.AlbumName, vm.ParsedScrobble.TrackName, vm.ParsedScrobble.Played)
-          { AlbumArtist = vm.ParsedScrobble.AlbumArtist, Duration = vm.ParsedScrobble.Duration });
+          scrobbles.Add(new Scrobble(vm.ArtistName, vm.AlbumName, vm.TrackName, vm.Played)
+          { AlbumArtist = vm.AlbumArtist, Duration = vm.Duration });
         }
       }
       else if (ScrobbleMode == CSVScrobbleMode.ImportMode)
@@ -289,10 +289,10 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
         DateTime time = ScrobbleTimeVM.Time;
         foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
         {
-          scrobbles.Add(new Scrobble(vm.ParsedScrobble.ArtistName, vm.ParsedScrobble.AlbumName, vm.ParsedScrobble.TrackName, time)
+          scrobbles.Add(new Scrobble(vm.ArtistName, vm.AlbumName, vm.TrackName, time)
           {
-            AlbumArtist = vm.ParsedScrobble.AlbumArtist,
-            Duration = vm.ParsedScrobble.Duration
+            AlbumArtist = vm.AlbumArtist,
+            Duration = vm.Duration
           });
 
           time = time.Subtract(TimeSpan.FromSeconds(Duration));

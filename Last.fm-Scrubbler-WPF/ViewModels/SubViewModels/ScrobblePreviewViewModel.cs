@@ -1,6 +1,8 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Objects;
+using Scrubbler.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Scrubbler.ViewModels.SubViewModels
 {
@@ -14,7 +16,7 @@ namespace Scrubbler.ViewModels.SubViewModels
     /// <summary>
     /// Scrobbles to preview.
     /// </summary>
-    public IEnumerable<Scrobble> Scrobbles
+    public IEnumerable<ScrobbleViewModel> Scrobbles
     {
       get { return _scrobbles; }
       private set
@@ -23,7 +25,7 @@ namespace Scrubbler.ViewModels.SubViewModels
         NotifyOfPropertyChange();
       }
     }
-    private IEnumerable<Scrobble> _scrobbles;
+    private IEnumerable<ScrobbleViewModel> _scrobbles;
 
     #endregion Properties
 
@@ -33,7 +35,7 @@ namespace Scrubbler.ViewModels.SubViewModels
     /// <param name="scrobbles">List with scrobbles to preview.</param>
     public ScrobblePreviewViewModel(IEnumerable<Scrobble> scrobbles)
     {
-      Scrobbles = scrobbles;
+      Scrobbles = scrobbles.Select(s => new ScrobbleViewModel(new ScrobbleBase(s)));
     }
 
     /// <summary>

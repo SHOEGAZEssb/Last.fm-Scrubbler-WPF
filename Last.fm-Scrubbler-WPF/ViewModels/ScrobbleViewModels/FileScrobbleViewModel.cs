@@ -255,12 +255,12 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       List<Scrobble> scrobbles = new List<Scrobble>();
       foreach (var vm in Scrobbles.Where(i => i.ToScrobble).Reverse())
       {
-        scrobbles.Add(new Scrobble(vm.Artist, vm.Album, vm.Track, timePlayed)
+        scrobbles.Add(new Scrobble(vm.ArtistName, vm.AlbumName, vm.TrackName, timePlayed)
         {
           AlbumArtist = vm.AlbumArtist,
           Duration = vm.Duration
         });
-        timePlayed = timePlayed.Subtract(vm.Duration);
+        timePlayed = timePlayed.Subtract(vm.Duration ?? TimeSpan.FromSeconds(1));
       }
 
       return scrobbles;

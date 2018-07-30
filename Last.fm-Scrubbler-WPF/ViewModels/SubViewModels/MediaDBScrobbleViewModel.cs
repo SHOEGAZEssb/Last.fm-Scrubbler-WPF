@@ -5,33 +5,34 @@ namespace Scrubbler.ViewModels.SubViewModels
   /// <summary>
   /// ViewModel for a <see cref="MediaDBScrobble"/>.
   /// </summary>
-  public class MediaDBScrobbleViewModel : ScrobbableObjectViewModelBase
+  public class MediaDBScrobbleViewModel : DatedScrobbleViewModel
   {
     #region Properties
 
     /// <summary>
-    /// The parsed scrobble.
+    /// The play count of this database entry.
     /// </summary>
-    public MediaDBScrobble Scrobble
-    {
-      get { return _scrobble; }
-      private set
-      {
-        _scrobble = value;
-        NotifyOfPropertyChange(() => Scrobble);
-      }
-    }
-    private MediaDBScrobble _scrobble;
+    public int PlayCount => _scrobble.PlayCount;
 
     #endregion Properties
+
+    #region Member
+
+    /// <summary>
+    /// The actual scrobble.
+    /// </summary>
+    private MediaDBScrobble _scrobble;
+
+    #endregion Member
 
     /// <summary>
     /// Constructor.
     /// </summary>
     /// <param name="scrobble">The parsed scrobble.</param>
     public MediaDBScrobbleViewModel(MediaDBScrobble scrobble)
+      : base(scrobble)
     {
-      Scrobble = scrobble;
+      _scrobble = scrobble;
     }
   }
 }

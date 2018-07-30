@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Objects;
+using Scrubbler.Models;
 using System;
 
 namespace Scrubbler.ViewModels.SubViewModels
@@ -41,6 +42,7 @@ namespace Scrubbler.ViewModels.SubViewModels
     /// </summary>
     /// <param name="scrobble">The scrobbled track.</param>
     public FetchedFriendTrackViewModel(LastTrack scrobble)
+      : base(new ScrobbleBase(scrobble.Name, scrobble.ArtistName, scrobble.AlbumName, "", scrobble.Duration))
     {
       Track = scrobble;
     }

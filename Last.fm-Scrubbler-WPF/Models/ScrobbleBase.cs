@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IF.Lastfm.Core.Objects;
+using System;
 
 namespace Scrubbler.Models
 {
@@ -58,6 +59,8 @@ namespace Scrubbler.Models
 
     #endregion Properties
 
+    #region Construction
+
     /// <summary>
     /// Constructor.
     /// </summary>
@@ -74,5 +77,20 @@ namespace Scrubbler.Models
       AlbumArtist = albumArtist;
       Duration = duration;
     }
+
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="scrobble">Scrobble to pull info from.</param>
+    public ScrobbleBase(Scrobble scrobble)
+    {
+      TrackName = scrobble.Track;
+      ArtistName = scrobble.Artist;
+      AlbumName = scrobble.Album;
+      AlbumArtist = scrobble.AlbumArtist;
+      Duration = scrobble.Duration;
+    }
+
+    #endregion Construction
   }
 }

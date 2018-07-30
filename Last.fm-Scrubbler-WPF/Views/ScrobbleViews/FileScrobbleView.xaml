@@ -61,24 +61,24 @@
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Artist" local:GridViewSort.PropertyName="Artist">
+          <GridViewColumn Header="Artist Name" local:GridViewSort.PropertyName="ArtistName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding Artist}"/>
+                <Label VerticalAlignment="Center" Content="{Binding ArtistName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Album" local:GridViewSort.PropertyName="Album">
+          <GridViewColumn Header="Album Name" local:GridViewSort.PropertyName="AlbumName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding Album}"/>
+                <Label VerticalAlignment="Center" Content="{Binding AlbumName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Track" local:GridViewSort.PropertyName="Track">
+          <GridViewColumn Header="Track Name" local:GridViewSort.PropertyName="TrackName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding Track}"/>
+                <Label VerticalAlignment="Center" Content="{Binding TrackName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>

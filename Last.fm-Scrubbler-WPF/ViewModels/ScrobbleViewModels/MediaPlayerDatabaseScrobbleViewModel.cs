@@ -266,9 +266,9 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       DateTime time = DateTime.Now; ;
       foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
       {
-        for (int i = 0; i < vm.Scrobble.PlayCount; i++)
+        for (int i = 0; i < vm.PlayCount; i++)
         {
-          scrobbles.Add(new Scrobble(vm.Scrobble.ArtistName, vm.Scrobble.AlbumName, vm.Scrobble.TrackName, time) { AlbumArtist = vm.Scrobble.AlbumArtist, Duration = vm.Scrobble.Duration });
+          scrobbles.Add(new Scrobble(vm.ArtistName, vm.AlbumName, vm.TrackName, time) { AlbumArtist = vm.AlbumArtist, Duration = vm.Duration });
           time = time.Subtract(TimeSpan.FromSeconds(1));
         }
       }

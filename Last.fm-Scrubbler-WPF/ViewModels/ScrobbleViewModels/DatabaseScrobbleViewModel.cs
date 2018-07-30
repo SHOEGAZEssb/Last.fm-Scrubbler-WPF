@@ -533,9 +533,9 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       List<Scrobble> scrobbles = new List<Scrobble>();
       foreach (FetchedTrackViewModel vm in Scrobbles.Where(i => i.ToScrobble).Reverse())
       {
-        scrobbles.Add(new Scrobble(vm.FetchedTrack.ArtistName, vm.FetchedTrack.AlbumName, vm.FetchedTrack.TrackName, finishingTime));
-        if (vm.FetchedTrack.Duration.HasValue)
-          finishingTime = finishingTime.Subtract(vm.FetchedTrack.Duration.Value);
+        scrobbles.Add(new Scrobble(vm.ArtistName, vm.AlbumName, vm.TrackName, finishingTime));
+        if (vm.Duration.HasValue)
+          finishingTime = finishingTime.Subtract(vm.Duration.Value);
         else
           finishingTime = finishingTime.Subtract(TimeSpan.FromMinutes(3.0));
       }

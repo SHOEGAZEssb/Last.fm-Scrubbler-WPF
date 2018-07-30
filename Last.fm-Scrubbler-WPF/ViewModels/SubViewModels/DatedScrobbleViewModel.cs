@@ -12,37 +12,37 @@ namespace Scrubbler.ViewModels.SubViewModels
     #region Properties
 
     /// <summary>
-    /// The scrobble.
+    /// The time this scrobble was scrobbled / played.
     /// </summary>
-    public DatedScrobble Scrobble
-    {
-      get { return _parsedScrobble; }
-      private set
-      {
-        _parsedScrobble = value;
-        NotifyOfPropertyChange(() => Scrobble);
-        NotifyOfPropertyChange(() => IsEnabled);
-      }
-    }
-    private DatedScrobble _parsedScrobble;
+    public DateTime Played => _scrobble.Played;
 
     /// <summary>
     /// Gets if the "Scrobble?" CheckBox is enabled.
     /// </summary>
     public bool IsEnabled
     {
-      get { return Scrobble.Played > DateTime.Now.Subtract(TimeSpan.FromDays(14)); }
+      get { return _scrobble.Played > DateTime.Now.Subtract(TimeSpan.FromDays(14)); }
     }
 
     #endregion Properties
+
+    #region Member
+
+    /// <summary>
+    /// The actual scrobble.
+    /// </summary>
+    private DatedScrobble _scrobble;
+
+    #endregion Member
 
     /// <summary>
     /// Constructor.
     /// </summary>
     /// <param name="scrobble">The scrobble.</param>
     public DatedScrobbleViewModel(DatedScrobble scrobble)
+      : base(scrobble)
     {
-      Scrobble = scrobble;
+      _scrobble = scrobble;
     }
   }
 }

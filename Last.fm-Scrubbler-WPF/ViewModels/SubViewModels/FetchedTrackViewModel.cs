@@ -11,20 +11,6 @@ namespace Scrubbler.ViewModels.SubViewModels
     #region Properties
 
     /// <summary>
-    /// The fetched track.
-    /// </summary>
-    public ScrobbleBase FetchedTrack
-    {
-      get { return _fetchedTrack; }
-      private set
-      {
-        _fetchedTrack = value;
-        NotifyOfPropertyChange(() => FetchedTrack);
-      }
-    }
-    private ScrobbleBase _fetchedTrack;
-
-    /// <summary>
     /// The Uri of the small image of the parent album.
     /// </summary>
     public Uri Image
@@ -46,8 +32,8 @@ namespace Scrubbler.ViewModels.SubViewModels
     /// <param name="fetchedTrack">The fetched track.</param>
     /// <param name="image">The small image of the parent album.</param>
     public FetchedTrackViewModel(ScrobbleBase fetchedTrack, Uri image)
+      : base(fetchedTrack)
     {
-      FetchedTrack = fetchedTrack;
       Image = image;
     }
   }
