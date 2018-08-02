@@ -24,7 +24,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public bool CanRemoveFiles
     {
-      get { return Scrobbles.Any(i => i.ToScrobble); }
+      get { return Scrobbles.Any(i => i.IsSelected); }
     }
 
     #endregion Properties
@@ -115,7 +115,9 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
               if (string.IsNullOrEmpty(audioFile.Track))
                 throw new Exception("No track name found");
 
-              newFiles.Add(new LoadedFileViewModel(audioFile));
+              var vm = new LoadedFileViewModel(audioFile);
+              vm.IsSelectedChanged += Vm_IsSelectedChanged;
+              newFiles.Add(vm);
             }
           }
           catch (Exception ex)
@@ -215,7 +217,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     public void RemoveFiles()
     {
-      Scrobbles = new ObservableCollection<LoadedFileViewModel>(Scrobbles.Where(i => !i.ToScrobble).ToList());
+      Scrobbles = new ObservableCollection<LoadedFileViewModel>(Scrobbles.Where(i => !i.IsSelected).ToList());
       NotifyOfPropertyChange(() => CanRemoveFiles);
     }
 
@@ -264,6 +266,17 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
       }
 
       return scrobbles;
+    }
+
+    /// <summary>
+    /// Triggers when the "IsSelected" property of the
+    /// <see cref="LoadedFileViewModel"/> changes.
+    /// </summary>
+    /// <param name="sender">Ignored.</param>
+    /// <param name="e">Ignored.</param>
+    private void Vm_IsSelectedChanged(object sender, EventArgs e)
+    {
+      NotifyOfPropertyChange(() => CanRemoveFiles);
     }
   }
 }
