@@ -56,14 +56,14 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
 
     #endregion Properties
 
-    #region Private Member
+    #region Member
 
     /// <summary>
     /// Timer used to update the current time.
     /// </summary>
     private Timer _currentTimeTimer;
 
-    #endregion Private Member
+    #endregion Member
 
     /// <summary>
     /// Constructor.

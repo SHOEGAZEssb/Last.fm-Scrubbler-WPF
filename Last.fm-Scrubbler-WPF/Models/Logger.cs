@@ -20,7 +20,7 @@ namespace Scrubbler.Models
 
     #endregion Properties
 
-    #region Private Member
+    #region Member
 
     /// <summary>
     /// Lock anchor to prevent simultaneously writing of the log file.
@@ -33,7 +33,7 @@ namespace Scrubbler.Models
     /// </summary>
     private StreamWriter _streamWriter;
 
-    #endregion Private Member
+    #endregion Member
 
     #region Construction
 

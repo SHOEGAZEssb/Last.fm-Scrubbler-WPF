@@ -85,7 +85,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
 
     #endregion Properties
 
-    #region Private Member
+    #region Member
 
     /// <summary>
     /// Base URL to a Last.fm user profile.
@@ -97,7 +97,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
     /// </summary>
     private IUserApi _userAPI;
 
-    #endregion Private Member
+    #endregion Member
 
     /// <summary>
     /// Constructor.

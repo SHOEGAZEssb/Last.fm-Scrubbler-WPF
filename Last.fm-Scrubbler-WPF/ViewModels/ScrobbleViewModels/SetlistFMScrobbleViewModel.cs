@@ -190,7 +190,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
 
     #endregion Properties
 
-    #region Private Member
+    #region Member
 
     /// <summary>
     /// Object used to communicate with the Setlist.fm api.
@@ -222,7 +222,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     private IArtistApi _artistAPI;
 
-    #endregion Private Member
+    #endregion Member
 
     /// <summary>
     /// Constructor.

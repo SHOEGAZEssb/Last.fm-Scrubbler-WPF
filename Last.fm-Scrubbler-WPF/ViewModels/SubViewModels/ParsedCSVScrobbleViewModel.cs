@@ -21,14 +21,14 @@ namespace Scrubbler.ViewModels.SubViewModels
 
     #endregion Properties
 
-    #region Private Member
+    #region Member
 
     /// <summary>
     /// The used scrobble mode.
     /// </summary>
     private readonly CSVScrobbleMode _scrobbleMode;
 
-    #endregion Private Member
+    #endregion Member
 
     /// <summary>
     /// Constructor.

@@ -10,7 +10,7 @@ namespace Scrubbler
   /// </summary>
   class WMP : IDisposable
   {
-    #region Private Member
+    #region Member
 
     /// <summary>
     /// Reference to the windows media player.
@@ -52,7 +52,7 @@ namespace Scrubbler
     /// </summary>
     private int _userLastPlayedTimeIndex;
 
-    #endregion Private Member
+    #endregion Member
 
     /// <summary>
     /// Constructor.

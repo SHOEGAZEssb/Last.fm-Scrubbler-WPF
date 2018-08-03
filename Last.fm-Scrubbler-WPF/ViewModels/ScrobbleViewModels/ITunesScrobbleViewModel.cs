@@ -89,7 +89,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
 
     #endregion Properties
 
-    #region Private Member
+    #region Member
 
     /// <summary>
     /// ID of the current playing track.
@@ -120,7 +120,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     private readonly object _lockAnchor = new object();
 
-    #endregion Private Member
+    #endregion Member
 
     /// <summary>
     /// Constructor.

@@ -72,7 +72,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
 
     #endregion Properties
 
-    #region Private Member
+    #region Member
 
     /// <summary>
     /// Tracks to fetch per page.
@@ -94,7 +94,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
     /// </summary>
     private IFileOperator _fileOperator;
 
-    #endregion Private Member
+    #endregion Member
 
     /// <summary>
     /// Constructor.

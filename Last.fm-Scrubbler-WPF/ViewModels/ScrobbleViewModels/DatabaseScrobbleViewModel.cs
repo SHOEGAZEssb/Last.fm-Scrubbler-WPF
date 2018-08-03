@@ -164,7 +164,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
 
     #endregion Properties
 
-    #region Private Member
+    #region Member
 
     /// <summary>
     /// The view that displays the fetched artists.
@@ -191,7 +191,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     private IAlbumApi _lastfmAlbumAPI;
 
-    #endregion Private Member
+    #endregion Member
 
     #region Construction
 

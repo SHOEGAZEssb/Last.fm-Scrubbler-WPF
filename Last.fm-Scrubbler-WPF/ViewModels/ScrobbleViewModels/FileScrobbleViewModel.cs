@@ -29,7 +29,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
 
     #endregion Properties
 
-    #region Private Member
+    #region Member
 
     /// <summary>
     /// Supported file formats.
@@ -46,7 +46,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     private IFileOperator _fileOperator;
 
-    #endregion Private Member
+    #endregion Member
 
     /// <summary>
     /// Constructor.

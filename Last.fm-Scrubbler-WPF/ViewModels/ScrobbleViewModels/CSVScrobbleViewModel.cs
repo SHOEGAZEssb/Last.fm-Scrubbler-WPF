@@ -88,7 +88,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
 
     #endregion Properties
 
-    #region Private Member
+    #region Member
 
     /// <summary>
     /// Different formats to try in case TryParse fails.
@@ -105,7 +105,7 @@ namespace Scrubbler.ViewModels.ScrobbleViewModels
     /// </summary>
     private IFileOperator _fileOperator;
 
-    #endregion Private Member
+    #endregion Member
 
     /// <summary>
     /// Constructor.

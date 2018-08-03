@@ -68,7 +68,7 @@ namespace Scrubbler.ViewModels
 
     #endregion Properties
 
-    #region Private Member
+    #region Member
 
     /// <summary>
     /// The client used for all last.fm actions.
@@ -113,16 +113,19 @@ namespace Scrubbler.ViewModels
     /// <summary>
     /// FileOperator for interfacing with the hard disk.
     /// </summary>
-    private IFileOperator _fileOperator;
+    private readonly IFileOperator _fileOperator;
 
     /// <summary>
     /// Logger used to log status messages.
     /// </summary>
-    private ILogger _logger;
+    private readonly ILogger _logger;
 
+    /// <summary>
+    /// ViewModel for the general settings.
+    /// </summary>
     private GeneralSettingsViewModel _generalSettingsVM;
 
-    #endregion Private Member
+    #endregion Member
 
     #region Construction
 
@@ -140,10 +143,10 @@ namespace Scrubbler.ViewModels
     public MainViewModel(IExtendedWindowManager windowManager, ILastFMClientFactory clientFactory, IScrobblerFactory scrobblerFactory, ILocalFileFactory localFileFactory,
                          IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer<User> userSerializer, ILogger logger)
     {
-      _windowManager = windowManager;
-      _lastFMClientFactory = clientFactory;
-      _scrobblerFactory = scrobblerFactory;
-      _fileOperator = fileOperator;
+      _windowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));
+      _lastFMClientFactory = clientFactory ?? throw new ArgumentNullException(nameof(clientFactory));
+      _scrobblerFactory = scrobblerFactory ?? throw new ArgumentNullException(nameof(scrobblerFactory));
+      _fileOperator = fileOperator ?? throw new ArgumentNullException(nameof(fileOperator));
       _logger = logger;
       TitleString = "Last.fm Scrubbler WPF Beta " + Assembly.GetExecutingAssembly().GetName().Version;
       _client = _lastFMClientFactory.CreateClient(APIKEY, APISECRET);
