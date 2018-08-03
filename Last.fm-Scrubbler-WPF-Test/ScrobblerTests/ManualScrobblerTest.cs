@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
 using Scrubbler.ViewModels.ScrobbleViewModels;
+using IF.Lastfm.Core.Scrobblers;
 
 namespace Scrubbler.Test.ScrobblerTests
 {
@@ -25,7 +26,8 @@ namespace Scrubbler.Test.ScrobblerTests
 
       Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>();
       Scrobble actual = null;
-      scrobblerMock.Setup(i => i.ScrobbleAsync(It.IsAny<Scrobble>(), false)).Callback<Scrobble, bool>((s, c) => actual = s);
+      scrobblerMock.Setup(i => i.ScrobbleAsync(It.IsAny<Scrobble>(), false)).Callback<Scrobble, bool>((s, c) => actual = s)
+                                                                            .Returns(Task.Run(() => new ScrobbleResponse()));
 
       ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null)
       {
