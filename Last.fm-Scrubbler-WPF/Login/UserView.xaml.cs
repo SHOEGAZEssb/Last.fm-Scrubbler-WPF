@@ -1,16 +1,16 @@
 ﻿using System.Windows;
 
-namespace Scrubbler.Views
+namespace Scrubbler.Login
 {
   /// <summary>
-  /// Interaction logic for LoginView.xaml
+  /// Interaction logic for SelectUserView.xaml
   /// </summary>
-  public partial class LoginView : Window
+  public partial class UserView : Window
   {
     /// <summary>
     /// Constructor.
     /// </summary>
-		public LoginView()
+    public UserView()
     {
       InitializeComponent();
     }

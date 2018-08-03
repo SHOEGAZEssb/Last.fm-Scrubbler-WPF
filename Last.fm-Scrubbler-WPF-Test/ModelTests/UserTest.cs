@@ -1,6 +1,6 @@
 ﻿using IF.Lastfm.Core.Objects;
 using NUnit.Framework;
-using Scrubbler.Models;
+using Scrubbler.Login;
 using System;
 using System.Linq;
 

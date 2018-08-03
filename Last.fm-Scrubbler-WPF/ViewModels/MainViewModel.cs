@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro;
 using Scrubbler.Interfaces;
-using Scrubbler.Models;
+using Scrubbler.Login;
 using Scrubbler.ViewModels.ExtraFunctions;
 using Scrubbler.ViewModels.ScrobbleViewModels;
 using System;
@@ -37,7 +37,7 @@ namespace Scrubbler.ViewModels
     private string _titleString;
 
     /// <summary>
-    /// ViewModel for the <see cref="Views.UserView"/>.
+    /// ViewModel for the <see cref="UserView"/>.
     /// </summary>
     public UserViewModel UserViewModel
     {
@@ -165,7 +165,7 @@ namespace Scrubbler.ViewModels
     }
 
     /// <summary>
-    /// Shows the <see cref="Views.UserView"/>.
+    /// Shows the <see cref="UserView"/>.
     /// </summary>
     public void ShowUserView()
     {

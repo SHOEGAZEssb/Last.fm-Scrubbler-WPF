@@ -1,5 +1,4 @@
-﻿using Caliburn.Micro;
-using Scrubbler.Interfaces;
+﻿using Scrubbler.Interfaces;
 using Scrubbler.Models;
 using System;
 

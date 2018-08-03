@@ -1,5 +1,5 @@
 ﻿using IF.Lastfm.Core.Api;
-using Scrubbler.Models;
+using Scrubbler.Login;
 using System.Net.Http;
 
 namespace Scrubbler.Interfaces

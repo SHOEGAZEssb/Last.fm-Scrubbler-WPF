@@ -2,7 +2,6 @@
 using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
-using Scrubbler.Models;
 using Scrubbler.Properties;
 using System;
 using System.Collections.ObjectModel;
@@ -10,7 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-namespace Scrubbler.ViewModels
+namespace Scrubbler.Login
 {
   /// <summary>
   /// ViewModel for adding / removing / logging in users.

@@ -2,6 +2,7 @@
 using IF.Lastfm.Core.Objects;
 using IF.Lastfm.Core.Scrobblers;
 using Scrubbler.Interfaces;
+using Scrubbler.Login;
 using System;
 using System.Collections.Generic;
 using System.Linq;

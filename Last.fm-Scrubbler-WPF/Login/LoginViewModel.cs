@@ -1,14 +1,15 @@
 ﻿using IF.Lastfm.Core.Api;
 using Scrubbler.Interfaces;
+using Scrubbler.ViewModels;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Scrubbler.ViewModels
+namespace Scrubbler.Login
 {
   /// <summary>
-  /// ViewModel for the <see cref="Views.LoginView"/>
+  /// ViewModel for the <see cref="LoginView"/>
   /// </summary>
   public class LoginViewModel : ViewModelBase
   {

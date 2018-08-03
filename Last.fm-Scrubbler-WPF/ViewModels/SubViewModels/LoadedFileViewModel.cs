@@ -1,6 +1,5 @@
 ﻿using Scrubbler.Interfaces;
 using Scrubbler.Models;
-using System;
 
 namespace Scrubbler.ViewModels.SubViewModels
 {

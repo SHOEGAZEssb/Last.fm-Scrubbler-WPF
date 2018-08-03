@@ -207,7 +207,7 @@
     <Compile Include="Models\Release.cs" />
     <Compile Include="Models\ScrobbleBase.cs" />
     <Compile Include="Models\ScrobblerFactory.cs" />
-    <Compile Include="Models\User.cs" />
+    <Compile Include="Login\User.cs" />
     <Compile Include="Models\UserScrobbler.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="ViewModels\ExtraFunctions\CollageCreatorViewModel.cs" />
@@ -235,7 +235,7 @@
     <Compile Include="ViewModels\SubViewModels\FetchedSetlistViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\ScrobbleViewModel.cs" />
     <Compile Include="ViewModels\SystemTrayViewModel.cs" />
-    <Compile Include="ViewModels\UserViewModel.cs" />
+    <Compile Include="Login\UserViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\ExtraFunctions\CollageCreatorView.xaml.cs">
       <DependentUpon>CollageCreatorView.xaml</DependentUpon>
@@ -266,7 +266,7 @@
     <Compile Include="ViewModels\ScrobbleViewModels\FileScrobbleViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\FriendScrobbleViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\LoadedFileViewModel.cs" />
-    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="Login\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ManualScrobbleViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\MediaDBScrobbleViewModel.cs" />
@@ -318,7 +318,7 @@
     <Compile Include="Views\ScrobbleViews\FriendScrobbleView.xaml.cs">
       <DependentUpon>FriendScrobbleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LoginView.xaml.cs">
+    <Compile Include="Login\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScrobbleViews\ManualScrobbleView.xaml.cs">
@@ -342,7 +342,7 @@
     <Compile Include="Views\SystemTrayView.xaml.cs">
       <DependentUpon>SystemTrayView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UserView.xaml.cs">
+    <Compile Include="Login\UserView.xaml.cs">
       <DependentUpon>UserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SubViews\SetlistResultView.xaml.cs">
@@ -443,7 +443,7 @@
       <DependentUpon>MainView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\LoginView.xaml">
+    <Page Include="Login\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -475,7 +475,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UserView.xaml">
+    <Page Include="Login\UserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

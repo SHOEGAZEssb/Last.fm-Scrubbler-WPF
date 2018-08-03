@@ -3,8 +3,7 @@ using IF.Lastfm.Core.Objects;
 using Moq;
 using NUnit.Framework;
 using Scrubbler.Interfaces;
-using Scrubbler.Models;
-using Scrubbler.ViewModels;
+using Scrubbler.Login;
 using System.Collections.Generic;
 using System.Linq;
 

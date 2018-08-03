@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace Scrubbler.Models
+namespace Scrubbler.Login
 {
   /// <summary>
   /// Represents a last.fm user.

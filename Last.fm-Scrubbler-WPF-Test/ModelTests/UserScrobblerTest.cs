@@ -5,6 +5,7 @@ using IF.Lastfm.Core.Scrobblers;
 using Moq;
 using NUnit.Framework;
 using Scrubbler.Interfaces;
+using Scrubbler.Login;
 using Scrubbler.Models;
 using System;
 using System.Collections.Generic;

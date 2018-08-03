@@ -1,6 +1,6 @@
 ﻿using IF.Lastfm.Core.Objects;
 using IF.Lastfm.Core.Scrobblers;
-using Scrubbler.Models;
+using Scrubbler.Login;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
