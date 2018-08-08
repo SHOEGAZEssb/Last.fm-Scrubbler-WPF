@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Scrubbler.Views
+namespace Scrubbler.Configuration
 {
   /// <summary>
   /// Interaction logic for GeneralSettingsView.xaml

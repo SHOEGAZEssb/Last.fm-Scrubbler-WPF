@@ -3,10 +3,10 @@ using Octokit;
 using System;
 using System.Diagnostics;
 
-namespace Scrubbler.ViewModels
+namespace Scrubbler.Configuration
 {
   /// <summary>
-  /// ViewModel for the <see cref="Views.NewVersionView"/>.
+  /// ViewModel for the <see cref="NewVersionView"/>.
   /// </summary>
   class NewVersionViewModel : Screen
   {

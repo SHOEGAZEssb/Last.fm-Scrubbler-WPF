@@ -1,14 +1,15 @@
 ﻿using Octokit;
 using Scrubbler.Interfaces;
 using Scrubbler.Properties;
+using Scrubbler.ViewModels;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Scrubbler.ViewModels
+namespace Scrubbler.Configuration
 {
   /// <summary>
-  /// ViewModel for the <see cref="Views.GeneralSettingsView"/>.
+  /// ViewModel for the <see cref="GeneralSettingsView"/>.
   /// </summary>
   class GeneralSettingsViewModel : ViewModelBase
   {

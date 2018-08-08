@@ -216,8 +216,8 @@
     <Compile Include="ViewModels\ExtraFunctions\ExtraFunctionViewModelBase.cs" />
     <Compile Include="ViewModels\ExtraFunctions\MilestoneCheckerViewModel.cs" />
     <Compile Include="ViewModels\ExtraFunctions\PasteYourTasteViewModel.cs" />
-    <Compile Include="ViewModels\GeneralSettingsViewModel.cs" />
-    <Compile Include="ViewModels\NewVersionViewModel.cs" />
+    <Compile Include="Configuration\GeneralSettingsViewModel.cs" />
+    <Compile Include="Configuration\NewVersionViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobbleMultipleTimeViewModelBase.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobbleMultipleViewModelBase.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobblerViewModel.cs" />
@@ -249,7 +249,7 @@
     <Compile Include="Views\ExtraFunctions\MilestoneCheckerView.xaml.cs">
       <DependentUpon>MilestoneCheckerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GeneralSettingsView.xaml.cs">
+    <Compile Include="Configuration\GeneralSettingsView.xaml.cs">
       <DependentUpon>GeneralSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GridViewSort.cs" />
@@ -276,7 +276,7 @@
     <Compile Include="Views\ExtraFunctions\PasteYourTasteView.xaml.cs">
       <DependentUpon>PasteYourTasteView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewVersionView.xaml.cs">
+    <Compile Include="Configuration\NewVersionView.xaml.cs">
       <DependentUpon>NewVersionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScrobbleViews\CacheScrobblerView.xaml.cs">
@@ -371,11 +371,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\GeneralSettingsView.xaml">
+    <Page Include="Configuration\GeneralSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewVersionView.xaml">
+    <Page Include="Configuration\NewVersionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

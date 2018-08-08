@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Scrubbler.Configuration;
 using Scrubbler.Interfaces;
 using Scrubbler.Login;
 using Scrubbler.ViewModels.ExtraFunctions;
