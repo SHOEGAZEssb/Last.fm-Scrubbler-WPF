@@ -210,12 +210,12 @@
     <Compile Include="Login\User.cs" />
     <Compile Include="Models\UserScrobbler.cs" />
     <Compile Include="NativeMethods.cs" />
-    <Compile Include="ViewModels\ExtraFunctions\CollageCreatorViewModel.cs" />
-    <Compile Include="ViewModels\ExtraFunctions\CSVDownloaderViewModel.cs" />
-    <Compile Include="ViewModels\ExtraFunctions\ExtraFunctionsViewModel.cs" />
-    <Compile Include="ViewModels\ExtraFunctions\ExtraFunctionViewModelBase.cs" />
-    <Compile Include="ViewModels\ExtraFunctions\MilestoneCheckerViewModel.cs" />
-    <Compile Include="ViewModels\ExtraFunctions\PasteYourTasteViewModel.cs" />
+    <Compile Include="ExtraFunctions\CollageCreatorViewModel.cs" />
+    <Compile Include="ExtraFunctions\CSVDownloaderViewModel.cs" />
+    <Compile Include="ExtraFunctions\ExtraFunctionsViewModel.cs" />
+    <Compile Include="ExtraFunctions\ExtraFunctionViewModelBase.cs" />
+    <Compile Include="ExtraFunctions\MilestoneCheckerViewModel.cs" />
+    <Compile Include="ExtraFunctions\PasteYourTasteViewModel.cs" />
     <Compile Include="Configuration\GeneralSettingsViewModel.cs" />
     <Compile Include="Configuration\NewVersionViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobbleMultipleTimeViewModelBase.cs" />
@@ -237,16 +237,16 @@
     <Compile Include="ViewModels\SystemTrayViewModel.cs" />
     <Compile Include="Login\UserViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="Views\ExtraFunctions\CollageCreatorView.xaml.cs">
+    <Compile Include="ExtraFunctions\CollageCreatorView.xaml.cs">
       <DependentUpon>CollageCreatorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ExtraFunctions\CSVDownloaderView.xaml.cs">
+    <Compile Include="ExtraFunctions\CSVDownloaderView.xaml.cs">
       <DependentUpon>CSVDownloaderView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ExtraFunctions\ExtraFunctionsView.xaml.cs">
+    <Compile Include="ExtraFunctions\ExtraFunctionsView.xaml.cs">
       <DependentUpon>ExtraFunctionsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ExtraFunctions\MilestoneCheckerView.xaml.cs">
+    <Compile Include="ExtraFunctions\MilestoneCheckerView.xaml.cs">
       <DependentUpon>MilestoneCheckerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Configuration\GeneralSettingsView.xaml.cs">
@@ -273,7 +273,7 @@
     <Compile Include="ViewModels\ScrobbleViewModels\MediaPlayerDatabaseScrobbleViewModel.cs" />
     <Compile Include="ViewModels\SubViewModels\ParsedCSVScrobbleViewModel.cs" />
     <Compile Include="ViewModels\ScrobbleViewModels\ScrobbleViewModelBase.cs" />
-    <Compile Include="Views\ExtraFunctions\PasteYourTasteView.xaml.cs">
+    <Compile Include="ExtraFunctions\PasteYourTasteView.xaml.cs">
       <DependentUpon>PasteYourTasteView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Configuration\NewVersionView.xaml.cs">
@@ -351,23 +351,23 @@
     <Compile Include="Views\SubViews\TrackResultView.xaml.cs">
       <DependentUpon>TrackResultView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\ExtraFunctions\CollageCreatorView.xaml">
+    <Page Include="ExtraFunctions\CollageCreatorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ExtraFunctions\CSVDownloaderView.xaml">
+    <Page Include="ExtraFunctions\CSVDownloaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ExtraFunctions\ExtraFunctionsView.xaml">
+    <Page Include="ExtraFunctions\ExtraFunctionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ExtraFunctions\MilestoneCheckerView.xaml">
+    <Page Include="ExtraFunctions\MilestoneCheckerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ExtraFunctions\PasteYourTasteView.xaml">
+    <Page Include="ExtraFunctions\PasteYourTasteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -542,7 +542,11 @@
   <ItemGroup>
     <Resource Include="Resources\copy.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Scrobbling\" />
+    <Folder Include="ViewModels\ExtraFunctions\" />
+    <Folder Include="Views\ExtraFunctions\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

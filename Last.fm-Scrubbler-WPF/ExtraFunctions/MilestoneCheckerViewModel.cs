@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Scrubbler.ViewModels.ExtraFunctions
+namespace Scrubbler.ExtraFunctions
 {
   /// <summary>
   /// Milestone type to fetch.
@@ -30,7 +30,7 @@ namespace Scrubbler.ViewModels.ExtraFunctions
   }
 
   /// <summary>
-  /// ViewModel for the <see cref="Views.ExtraFunctions.MilestoneCheckerView"/>
+  /// ViewModel for the <see cref="MilestoneCheckerView"/>
   /// </summary>
   public class MilestoneCheckerViewModel : ExtraFunctionViewModelBase
   {

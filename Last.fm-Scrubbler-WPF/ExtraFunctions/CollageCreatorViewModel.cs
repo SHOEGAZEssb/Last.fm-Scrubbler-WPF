@@ -2,7 +2,6 @@
 using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Interfaces;
-using Scrubbler.Views.ExtraFunctions;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -18,7 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 
-namespace Scrubbler.ViewModels.ExtraFunctions
+namespace Scrubbler.ExtraFunctions
 {
   /// <summary>
   /// Available collage sizes.

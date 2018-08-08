@@ -1,8 +1,8 @@
 ﻿using Caliburn.Micro;
 using Scrubbler.Configuration;
+using Scrubbler.ExtraFunctions;
 using Scrubbler.Interfaces;
 using Scrubbler.Login;
-using Scrubbler.ViewModels.ExtraFunctions;
 using Scrubbler.ViewModels.ScrobbleViewModels;
 using System;
 using System.IO;

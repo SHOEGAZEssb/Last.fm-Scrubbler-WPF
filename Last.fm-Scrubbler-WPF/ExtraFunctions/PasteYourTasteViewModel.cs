@@ -3,10 +3,10 @@ using IF.Lastfm.Core.Api.Enums;
 using System;
 using System.Windows;
 
-namespace Scrubbler.ViewModels.ExtraFunctions
+namespace Scrubbler.ExtraFunctions
 {
   /// <summary>
-  /// ViewModel for the <see cref="Views.ExtraFunctions.PasteYourTasteView"/>.
+  /// ViewModel for the <see cref="PasteYourTasteView"/>.
   /// </summary>
   public class PasteYourTasteViewModel : ExtraFunctionViewModelBase
   {

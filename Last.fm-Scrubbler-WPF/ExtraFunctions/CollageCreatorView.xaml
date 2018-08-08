@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="Scrubbler.Views.ExtraFunctions.CollageCreatorView"
+﻿<UserControl x:Class="Scrubbler.ExtraFunctions.CollageCreatorView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:lastEnums="clr-namespace:IF.Lastfm.Core.Api.Enums;assembly=IF.Lastfm.Core"
-             xmlns:extraFuncVMs="clr-namespace:Scrubbler.ViewModels.ExtraFunctions"
+             xmlns:local="clr-namespace:Scrubbler.ExtraFunctions"
              xmlns:conv="clr-namespace:Scrubbler.Converters"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d"
@@ -23,14 +23,14 @@
                     ObjectType="{x:Type sys:Enum}"
                     x:Key="CollageSizeDataProvider">
       <ObjectDataProvider.MethodParameters>
-        <x:Type TypeName="extraFuncVMs:CollageSize"/>
+        <x:Type TypeName="local:CollageSize"/>
       </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
     <ObjectDataProvider MethodName="GetValues"
                     ObjectType="{x:Type sys:Enum}"
                     x:Key="CollageTypeDataProvider">
       <ObjectDataProvider.MethodParameters>
-        <x:Type TypeName="extraFuncVMs:CollageType"/>
+        <x:Type TypeName="local:CollageType"/>
       </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
 
@@ -125,7 +125,7 @@
         <CheckBox.Style>
           <Style TargetType="CheckBox" BasedOn="{StaticResource EnableControlsStyle}">
             <Style.Triggers>
-              <DataTrigger Binding="{Binding SelectedCollageSize}" Value="{x:Static extraFuncVMs:CollageSize.Custom}">
+              <DataTrigger Binding="{Binding SelectedCollageSize}" Value="{x:Static local:CollageSize.Custom}">
                 <Setter Property="IsEnabled" Value="False"/>
               </DataTrigger>
             </Style.Triggers>
@@ -138,7 +138,7 @@
           <Style TargetType="Grid" BasedOn="{StaticResource EnableControlsStyle}">
             <Setter Property="Visibility" Value="Collapsed"/>
             <Style.Triggers>
-              <DataTrigger Binding="{Binding SelectedCollageSize}" Value="{x:Static extraFuncVMs:CollageSize.Custom}">
+              <DataTrigger Binding="{Binding SelectedCollageSize}" Value="{x:Static local:CollageSize.Custom}">
                 <Setter Property="Visibility" Value="Visible"/>
               </DataTrigger>
             </Style.Triggers>

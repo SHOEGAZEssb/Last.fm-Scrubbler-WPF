@@ -8,10 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Scrubbler.ViewModels.ExtraFunctions
+namespace Scrubbler.ExtraFunctions
 {
   /// <summary>
-  /// ViewModel for the <see cref="Views.ExtraFunctions.CSVDownloaderView"/>
+  /// ViewModel for the <see cref="CSVDownloaderView"/>
   /// </summary>
   public class CSVDownloaderViewModel : ExtraFunctionViewModelBase
   {
