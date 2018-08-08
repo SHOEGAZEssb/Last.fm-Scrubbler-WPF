@@ -1,7 +1,6 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Api;
-using Scrubbler.Interfaces;
-using Scrubbler.ViewModels;
+using Scrubbler.Helper;
 using System;
 
 namespace Scrubbler.ExtraFunctions

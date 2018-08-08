@@ -1,7 +1,6 @@
 ﻿using Octokit;
-using Scrubbler.Interfaces;
+using Scrubbler.Helper;
 using Scrubbler.Properties;
-using Scrubbler.ViewModels;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;

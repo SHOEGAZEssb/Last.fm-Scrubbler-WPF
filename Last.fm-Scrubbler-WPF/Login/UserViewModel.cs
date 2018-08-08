@@ -1,7 +1,7 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Objects;
-using Scrubbler.Interfaces;
+using Scrubbler.Helper;
 using Scrubbler.Properties;
 using System;
 using System.Collections.ObjectModel;

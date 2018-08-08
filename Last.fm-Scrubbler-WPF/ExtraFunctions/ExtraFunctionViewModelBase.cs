@@ -1,6 +1,4 @@
-﻿using Scrubbler.ViewModels;
-
-namespace Scrubbler.ExtraFunctions
+﻿namespace Scrubbler.ExtraFunctions
 {
   /// <summary>
   /// Base class for all extra function ViewModels.

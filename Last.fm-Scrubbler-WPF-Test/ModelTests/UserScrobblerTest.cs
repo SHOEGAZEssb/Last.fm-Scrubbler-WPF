@@ -4,9 +4,8 @@ using IF.Lastfm.Core.Objects;
 using IF.Lastfm.Core.Scrobblers;
 using Moq;
 using NUnit.Framework;
-using Scrubbler.Interfaces;
 using Scrubbler.Login;
-using Scrubbler.Models;
+using Scrubbler.Scrobbling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -172,7 +171,7 @@ namespace Scrubbler.Test.ModelTests
       // given: mocks
       User user = new User("TestUser", "TestToken", false);
 
-      Mock<IAuthScrobbler> scrobblerMock = new Mock<IAuthScrobbler>(MockBehavior.Strict);      
+      Mock<IAuthScrobbler> scrobblerMock = new Mock<IAuthScrobbler>(MockBehavior.Strict);
 
       Mock<IAuthScrobbler> cachingScrobblerMock = new Mock<IAuthScrobbler>(MockBehavior.Strict);
       IEnumerable<Scrobble> actual = null;

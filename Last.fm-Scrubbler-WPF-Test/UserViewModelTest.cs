@@ -2,7 +2,7 @@
 using IF.Lastfm.Core.Objects;
 using Moq;
 using NUnit.Framework;
-using Scrubbler.Interfaces;
+using Scrubbler.Helper;
 using Scrubbler.Login;
 using System.Collections.Generic;
 using System.Linq;

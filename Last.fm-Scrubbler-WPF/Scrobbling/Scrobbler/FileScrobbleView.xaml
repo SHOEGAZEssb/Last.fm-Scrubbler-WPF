@@ -1,0 +1,109 @@
+﻿<UserControl x:Class="Scrubbler.Scrobbling.Scrobbler.FileScrobbleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:local="clr-namespace:Scrubbler.Scrobbling.Scrobbler"
+             xmlns:scrub="clr-namespace:Scrubbler"
+             xmlns:scrobbling="clr-namespace:Scrubbler.Scrobbling"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="325" Style="{StaticResource EnableControlsStyle}">
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
+
+    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+
+      <Button x:Name="AddFiles" Grid.Row="0" Grid.Column="0" Content="Add Files..." HorizontalAlignment="Left"/>
+
+      <Button x:Name="RemoveFiles" Grid.Row="0" Grid.Column="2" Content="Remove Selected Files" HorizontalAlignment="Left" IsEnabled="{Binding CanRemoveFiles}"/>
+
+      <scrobbling:SelectScrobblesControl Grid.Row="0" Grid.Column="4"/>
+    </Grid>
+
+    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"  VerticalAlignment="Stretch" ItemsSource="{Binding Scrobbles}"
+              scrub:GridViewSort.AutoSort="True" AllowDrop="True" cal:Message.Attach="[Event Drop] = [Action HandleDrop($eventArgs)]" Style="{StaticResource ScrobbableObjectListViewStyle}">
+      <ListView.View>
+        <GridView>
+          <GridViewColumn Header="Scrobble?" scrub:GridViewSort.PropertyName="ToScrobble">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <CheckBox IsChecked="{Binding ToScrobble}" HorizontalAlignment="Center"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="#" scrub:GridViewSort.PropertyName="TrackNumber">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label VerticalAlignment="Center" Content="{Binding TrackNumber}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Artist Name" scrub:GridViewSort.PropertyName="ArtistName">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label VerticalAlignment="Center" Content="{Binding ArtistName}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Album Name" scrub:GridViewSort.PropertyName="AlbumName">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label VerticalAlignment="Center" Content="{Binding AlbumName}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Track Name" scrub:GridViewSort.PropertyName="TrackName">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label VerticalAlignment="Center" Content="{Binding TrackName}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Album Artist" scrub:GridViewSort.PropertyName="AlbumArtist">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label VerticalAlignment="Center" Content="{Binding AlbumArtist}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Duration" scrub:GridViewSort.PropertyName="Duration">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Label VerticalAlignment="Center" Content="{Binding Duration}"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+        </GridView>
+      </ListView.View>
+    </ListView>
+
+    <scrobbling:ScrobbleButtonControl Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="5"/>
+
+    <Label Grid.Row="4" Grid.Column="0" Content="Finishing Time:"/>
+    <scrobbling:SelectScrobbleTimeControl Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" DataContext="{Binding ScrobbleTimeVM}"/>
+  </Grid>
+</UserControl>

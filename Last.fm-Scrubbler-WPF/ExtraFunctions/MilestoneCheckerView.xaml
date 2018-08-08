@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:Scrubbler.ExtraFunctions"
-             xmlns:views="clr-namespace:Scrubbler.Views"
+             xmlns:scrub="clr-namespace:Scrubbler"
              xmlns:conv="clr-namespace:Scrubbler.Converters"
              xmlns:xceed="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d"
@@ -90,7 +90,7 @@
       <Button Grid.Row="0" Grid.Column="10" x:Name="GetMilestones" Content="Get Milestones"/>
     </Grid>
 
-    <ListView Grid.Row="4" VerticalAlignment="Stretch" ItemsSource="{Binding Milestones}" views:GridViewSort.AutoSort="True">
+    <ListView Grid.Row="4" VerticalAlignment="Stretch" ItemsSource="{Binding Milestones}" scrub:GridViewSort.AutoSort="True">
       <ListView.Style>
         <Style TargetType="ListView">
           <Setter Property="Visibility" Value="Visible"/>
@@ -103,14 +103,14 @@
       </ListView.Style>
       <ListView.View>
         <GridView>
-          <GridViewColumn Header="Scrobble #" views:GridViewSort.PropertyName="ScrobbleNumber">
+          <GridViewColumn Header="Scrobble #" scrub:GridViewSort.PropertyName="ScrobbleNumber">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <TextBlock VerticalAlignment="Center" Text="{Binding ScrobbleNumber}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Scrobble Date" views:GridViewSort.PropertyName="MilestoneDate">
+          <GridViewColumn Header="Scrobble Date" scrub:GridViewSort.PropertyName="MilestoneDate">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <TextBlock VerticalAlignment="Center" Text="{Binding MilestoneDate}"/>
@@ -124,21 +124,21 @@
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Track Title" views:GridViewSort.PropertyName="TrackName">
+          <GridViewColumn Header="Track Title" scrub:GridViewSort.PropertyName="TrackName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <TextBlock VerticalAlignment="Center" Text="{Binding TrackName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Artist" views:GridViewSort.PropertyName="ArtistName">
+          <GridViewColumn Header="Artist" scrub:GridViewSort.PropertyName="ArtistName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <TextBlock VerticalAlignment="Center" Text="{Binding ArtistName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Release Title" views:GridViewSort.PropertyName="AlbumName">
+          <GridViewColumn Header="Release Title" scrub:GridViewSort.PropertyName="AlbumName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <TextBlock VerticalAlignment="Center" Text="{Binding AlbumName}"/>

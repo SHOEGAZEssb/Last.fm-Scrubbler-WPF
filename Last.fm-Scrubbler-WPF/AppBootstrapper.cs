@@ -1,8 +1,7 @@
 ﻿using Caliburn.Micro;
-using Scrubbler.Interfaces;
+using Scrubbler.Helper;
 using Scrubbler.Login;
-using Scrubbler.Models;
-using Scrubbler.ViewModels;
+using Scrubbler.Scrobbling;
 
 namespace Scrubbler
 {
@@ -17,24 +16,6 @@ namespace Scrubbler
     public AppBootstrapper()
     {
       Initialize();
-    }
-
-    /// <summary>
-    /// Configures the View-ViewModel type- and
-    /// namespace mappings.
-    /// </summary>
-    protected override void Configure()
-    {
-      TypeMappingConfiguration map = new TypeMappingConfiguration()
-      {
-        DefaultSubNamespaceForViewModels = "Scrubbler.ViewModels",
-        DefaultSubNamespaceForViews = "Scrubbler.Views"
-      };
-
-      ViewLocator.ConfigureTypeMappings(map);
-      ViewLocator.AddSubNamespaceMapping("Scrubbler.ViewModels.ScrobbleViewModels", "Scrubbler.Views.ScrobbleViews");
-      ViewLocator.AddSubNamespaceMapping("Scrubbler.ViewModels.SubViewModels", "Scrubbler.Views.SubViews");
-      ViewModelLocator.ConfigureTypeMappings(map);
     }
 
     /// <summary>

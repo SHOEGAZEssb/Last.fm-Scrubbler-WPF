@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Scrubbler.Login"
         mc:Ignorable="d"
-        Title="Select user" Height="300" Width="300" Icon="..\scrubbler_64.ico">
+        Title="Select user" Height="300" Width="300" Icon="..\Resources\scrubbler_64.ico">
 
   <Window.Resources>
     <Style x:Key="UserButtonStyle" TargetType="Button">

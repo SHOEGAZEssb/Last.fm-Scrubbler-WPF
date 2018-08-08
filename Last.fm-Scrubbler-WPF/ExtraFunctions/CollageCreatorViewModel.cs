@@ -1,7 +1,7 @@
 ﻿using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
-using Scrubbler.Interfaces;
+using Scrubbler.Helper;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
