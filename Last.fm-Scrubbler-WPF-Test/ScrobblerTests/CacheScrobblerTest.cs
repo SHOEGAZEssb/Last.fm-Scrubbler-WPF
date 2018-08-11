@@ -47,5 +47,32 @@ namespace Scrubbler.Test.ScrobblerTests
       // then: send has been called
       Assert.That(() => scrobblerMock.Verify(u => u.SendCachedScrobblesAsync(), Times.Once), Throws.Nothing);
     }
+
+    /// <summary>
+    /// Tests the <see cref="CacheScrobblerViewModel.GetCachedScrobbles"/> function.
+    /// </summary>
+    /// <returns>Task.</returns>
+    [Test]
+    public async Task GetCachedScrobblesTest()
+    {
+      // given: CacheScrobbleViewModel and mocks
+      var expected = TestHelper.CreateGenericScrobbles(3);
+
+      Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>(MockBehavior.Strict);
+      scrobblerMock.Setup(u => u.GetCachedAsync()).Returns(Task.Run(() => expected.AsEnumerable()));
+
+      Mock<IExtendedWindowManager> windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);
+
+      CacheScrobblerViewModel vm = new CacheScrobblerViewModel(windowManagerMock.Object)
+      {
+        Scrobbler = scrobblerMock.Object
+      };
+
+      // when: getting the cached scrobbles
+      await vm.GetCachedScrobbles();
+
+      // then: scrobbles are the expected ones
+      Assert.That(vm.Scrobbles.IsEqualScrobble(expected));
+    }
   }
 }
