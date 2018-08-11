@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using IF.Lastfm.Core.Scrobblers;
 using Scrubbler.Scrobbling.Scrobbler;
 using Scrubbler.Scrobbling;
+using Scrubbler.Helper;
 
 namespace Scrubbler.Test.ScrobblerTests
 {
@@ -29,7 +30,9 @@ namespace Scrubbler.Test.ScrobblerTests
       scrobblerMock.Setup(i => i.ScrobbleAsync(It.IsAny<Scrobble>(), false)).Callback<Scrobble, bool>((s, c) => actual = s)
                                                                             .Returns(Task.Run(() => new ScrobbleResponse()));
 
-      ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null)
+      Mock<IExtendedWindowManager> windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);
+
+      ManualScrobbleViewModel vm = new ManualScrobbleViewModel(windowManagerMock.Object)
       {
         Scrobbler = scrobblerMock.Object,
         Artist = expected.Artist,
@@ -57,7 +60,9 @@ namespace Scrubbler.Test.ScrobblerTests
       Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>();
       scrobblerMock.Setup(s => s.IsAuthenticated).Returns(false);
 
-      ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null)
+      Mock<IExtendedWindowManager> windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);
+
+      ManualScrobbleViewModel vm = new ManualScrobbleViewModel(windowManagerMock.Object)
       {
         Scrobbler = scrobblerMock.Object,
         Artist = "TestArtist",
@@ -83,7 +88,9 @@ namespace Scrubbler.Test.ScrobblerTests
       Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>();
       scrobblerMock.Setup(s => s.IsAuthenticated).Returns(true);
 
-      ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null)
+      Mock<IExtendedWindowManager> windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);
+
+      ManualScrobbleViewModel vm = new ManualScrobbleViewModel(windowManagerMock.Object)
       {
         Scrobbler = scrobblerMock.Object,
         Track = "TestTrack"
@@ -108,7 +115,9 @@ namespace Scrubbler.Test.ScrobblerTests
       Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>();
       scrobblerMock.Setup(s => s.IsAuthenticated).Returns(true);
 
-      ManualScrobbleViewModel vm = new ManualScrobbleViewModel(null)
+      Mock<IExtendedWindowManager> windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);
+
+      ManualScrobbleViewModel vm = new ManualScrobbleViewModel(windowManagerMock.Object)
       {
         Scrobbler = scrobblerMock.Object,
         Artist = "TestArtist"

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Scrubbler.Scrobbling.Scrobbler;
 using Scrubbler.Scrobbling;
+using Scrubbler.Helper;
 
 namespace Scrubbler.Test.ScrobblerTests
 {
@@ -39,7 +40,9 @@ namespace Scrubbler.Test.ScrobblerTests
       userApiMock.Setup(i => i.GetRecentScrobbles(It.IsAny<string>(), It.IsAny<DateTimeOffset?>(), It.IsAny<int>(), It.IsAny<int>())).Returns(()
                                                   => Task.Run(() => PageResponse<LastTrack>.CreateSuccessResponse(expected.ToLastTracks())));
 
-      FriendScrobbleViewModel vm = new FriendScrobbleViewModel(null, userApiMock.Object)
+      Mock<IExtendedWindowManager> windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);
+
+      FriendScrobbleViewModel vm = new FriendScrobbleViewModel(windowManagerMock.Object, userApiMock.Object)
       {
         Scrobbler = scrobblerMock.Object,
         Username = "TestUser"

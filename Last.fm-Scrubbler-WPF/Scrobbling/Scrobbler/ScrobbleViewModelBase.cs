@@ -57,7 +57,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     public ScrobbleViewModelBase(IExtendedWindowManager windowManager, string displayName)
     {
       DisplayName = displayName;
-      _windowManager = windowManager;
+      _windowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));
     }
 
     /// <summary>
