@@ -19,6 +19,32 @@ namespace Scrubbler.Scrobbling.Scrobbler
     #region Properties
 
     /// <summary>
+    /// Gets if the scrobble button is enabled.
+    /// </summary>
+    public override bool CanScrobble => base.CanScrobble && Scrobbles.Count > 0 && EnableControls;
+
+    /// <summary>
+    /// Gets if the preview button is enabled.
+    /// </summary>
+    public override bool CanPreview => Scrobbles.Count > 0 && EnableControls;
+
+    /// <summary>
+    /// Gets if certain controls that modify the
+    /// scrobbling data are enabled.
+    /// </summary>
+    public override bool EnableControls
+    {
+      get { return _enableControls; }
+      protected set
+      {
+        _enableControls = value;
+        NotifyOfPropertyChange();
+        NotifyOfPropertyChange(() => CanScrobble);
+        NotifyOfPropertyChange(() => CanPreview);
+      }
+    }
+
+    /// <summary>
     /// If true, tries to scrobble the cache at application startup.
     /// </summary>
     public bool AutoScrobble
@@ -41,13 +67,13 @@ namespace Scrubbler.Scrobbling.Scrobbler
       : base(windowManager, "Cache Scrobbler")
     {
       Scrobbles = new ObservableCollection<DatedScrobbleViewModel>();
-      StartupHandling().Forget();
+      StartupHandling();
     }
 
     /// <summary>
     /// Handles the auto scrobble.
     /// </summary>
-    private async Task StartupHandling()
+    private async void StartupHandling()
     {
       if (base.CanScrobble)
       {
@@ -104,16 +130,13 @@ namespace Scrubbler.Scrobbling.Scrobbler
       try
       {
         EnableControls = false;
-        OnStatusUpdated("Getting cached tracks...");
         Scrobbles.Clear();
         var scrobbles = new ObservableCollection<Scrobble>(await Scrobbler.GetCachedAsync());
 
         foreach(var s in scrobbles)
         {
-          Scrobbles.Add(new DatedScrobbleViewModel(new DatedScrobble(s)));
+          Scrobbles.Add(new DatedScrobbleViewModel(new DatedScrobble(s.TimePlayed.DateTime, s.Track, s.Artist, s.Album, s.AlbumArtist, s.Duration)));
         }
-
-        OnStatusUpdated(string.Format("Successfully got cached tracks ({0})", Scrobbles.Count));
       }
       catch(Exception ex)
       {

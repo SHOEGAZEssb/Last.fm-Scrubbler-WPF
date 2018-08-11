@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
              xmlns:scrub="clr-namespace:Scrubbler"
              xmlns:scrobbling="clr-namespace:Scrubbler.Scrobbling"
              mc:Ignorable="d"
@@ -22,19 +24,15 @@
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
-    <Button Grid.Row="0" Grid.Column="0" x:Name="GetCachedScrobbles" HorizontalAlignment="Left" Content="Reload Cache">
-      <Button.Style>
-        <Style TargetType="Button">
-          <Style.Triggers>
-            <DataTrigger Binding="{Binding Scrobbler}" Value="{x:Null}">
-              <Setter Property="IsEnabled" Value="False"/>
-            </DataTrigger>
-          </Style.Triggers>
-        </Style>
-      </Button.Style>
+    <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Content="Reload Cache">
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Click">
+          <cal:ActionMessage MethodName="GetCachedScrobbles"/>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
     </Button>
 
-    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding Scrobbles}" scrub:GridViewSort.AutoSort="True" Style="{StaticResource ScrobbableObjectListViewStyle}">
+    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding CachedScrobbles}" scrub:GridViewSort.AutoSort="True" Style="{StaticResource ScrobbableObjectListViewStyle}">
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Artist" scrub:GridViewSort.PropertyName="Scrobble.ArtistName">
