@@ -34,6 +34,16 @@ namespace Scrubbler.Scrobbling.Data
     }
 
     /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="scrobble">Scrobble to wrap.</param>
+    public DatedScrobble(Scrobble scrobble)
+      : base(scrobble)
+    {
+      Played = scrobble.TimePlayed.DateTime;
+    }
+
+    /// <summary>
     /// Returns a new <see cref="Scrobble"/> with infos from
     /// this <see cref="DatedScrobble"/>.
     /// </summary>
