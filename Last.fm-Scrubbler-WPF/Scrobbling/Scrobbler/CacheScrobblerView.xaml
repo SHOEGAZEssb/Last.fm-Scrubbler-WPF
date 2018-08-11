@@ -32,48 +32,48 @@
       </i:Interaction.Triggers>
     </Button>
 
-    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding CachedScrobbles}" scrub:GridViewSort.AutoSort="True" Style="{StaticResource ScrobbableObjectListViewStyle}">
+    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding Scrobbles}" scrub:GridViewSort.AutoSort="True">
       <ListView.View>
         <GridView>
-          <GridViewColumn Header="Artist" scrub:GridViewSort.PropertyName="Scrobble.ArtistName">
+          <GridViewColumn Header="Artist" scrub:GridViewSort.PropertyName="Artist">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding Scrobble.ArtistName}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Artist}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Album" scrub:GridViewSort.PropertyName="Scrobble.AlbumName">
+          <GridViewColumn Header="Album" scrub:GridViewSort.PropertyName="Album">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding Scrobble.AlbumName}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Album}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Track Title" scrub:GridViewSort.PropertyName="Scrobble.TrackName">
+          <GridViewColumn Header="Track Title" scrub:GridViewSort.PropertyName="Track">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding Scrobble.TrackName}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Track}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Album Artist" scrub:GridViewSort.PropertyName="Scrobble.AlbumArtist">
+          <GridViewColumn Header="Album Artist" scrub:GridViewSort.PropertyName="AlbumArtist">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding Scrobble.AlbumArtist}"/>
+                <Label VerticalAlignment="Center" Content="{Binding AlbumArtist}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Duration" scrub:GridViewSort.PropertyName="Scrobble.Duration">
+          <GridViewColumn Header="Duration" scrub:GridViewSort.PropertyName="Duration">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding Scrobble.Duration}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Duration}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Time Played" scrub:GridViewSort.PropertyName="Scrobble.Played">
+          <GridViewColumn Header="Time Played" scrub:GridViewSort.PropertyName="TimePlayed">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding Scrobble.Played}"/>
+                <Label VerticalAlignment="Center" Content="{Binding TimePlayed}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>

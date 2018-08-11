@@ -14,35 +14,35 @@ namespace Scrubbler.Scrobbling.Scrobbler
   /// <summary>
   /// ViewModel for the <see cref="CacheScrobblerView"/>
   /// </summary>
-  public class CacheScrobblerViewModel : ScrobbleMultipleViewModelBase<DatedScrobbleViewModel>
+  public class CacheScrobblerViewModel : ScrobbleViewModelBase
   {
     #region Properties
 
     /// <summary>
     /// Gets if the scrobble button is enabled.
     /// </summary>
-    public override bool CanScrobble => base.CanScrobble && Scrobbles.Count > 0 && EnableControls;
+    public override bool CanScrobble => base.CanScrobble && Scrobbles.Count > 0;
 
     /// <summary>
     /// Gets if the preview button is enabled.
     /// </summary>
-    public override bool CanPreview => Scrobbles.Count > 0 && EnableControls;
+    public override bool CanPreview => Scrobbles.Count > 0;
 
     /// <summary>
-    /// Gets if certain controls that modify the
-    /// scrobbling data are enabled.
+    /// List with the cached scrobbles.
     /// </summary>
-    public override bool EnableControls
+    public ObservableCollection<Scrobble> Scrobbles
     {
-      get { return _enableControls; }
-      protected set
+      get { return _Scrobbles; }
+      private set
       {
-        _enableControls = value;
+        _Scrobbles = value;
         NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => CanScrobble);
         NotifyOfPropertyChange(() => CanPreview);
       }
     }
+    private ObservableCollection<Scrobble> _Scrobbles;
 
     /// <summary>
     /// If true, tries to scrobble the cache at application startup.
@@ -66,7 +66,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     public CacheScrobblerViewModel(IExtendedWindowManager windowManager)
       : base(windowManager, "Cache Scrobbler")
     {
-      Scrobbles = new ObservableCollection<DatedScrobbleViewModel>();
+      Scrobbles = new ObservableCollection<Scrobble>();
       StartupHandling();
     }
 
@@ -90,8 +90,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <returns>List with scrobbles.</returns>
     protected override IEnumerable<Scrobble> CreateScrobbles()
     {
-      return Scrobbles.Select(vm => new Scrobble(vm.ArtistName, vm.AlbumName, vm.TrackName, vm.Played)
-                             { AlbumArtist = vm.AlbumArtist, Duration = vm.Duration });
+      return Scrobbles;
     }
 
     /// <summary>
@@ -130,16 +129,13 @@ namespace Scrubbler.Scrobbling.Scrobbler
       try
       {
         EnableControls = false;
-        Scrobbles.Clear();
-        var scrobbles = new ObservableCollection<Scrobble>(await Scrobbler.GetCachedAsync());
-
-        foreach(var s in scrobbles)
-        {
-          Scrobbles.Add(new DatedScrobbleViewModel(new DatedScrobble(s.TimePlayed.DateTime, s.Track, s.Artist, s.Album, s.AlbumArtist, s.Duration)));
-        }
+        OnStatusUpdated("Trying to get cached scrobbles...");
+        Scrobbles = new ObservableCollection<Scrobble>(await Scrobbler.GetCachedAsync());
+        OnStatusUpdated(string.Format("Successfully got cached scrobbles ({0})", Scrobbles.Count));
       }
       catch(Exception ex)
       {
+        Scrobbles.Clear();
         OnStatusUpdated(string.Format("Fatal error getting cached scrobbles: {0}", ex.Message));
       }
       finally
