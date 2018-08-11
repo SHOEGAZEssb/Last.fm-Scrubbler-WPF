@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             xmlns:local="clr-namespace:Scrubbler.Scrobbling.Scrobbler"
              xmlns:scrobbling="clr-namespace:Scrubbler.Scrobbling"
              xmlns:scrub="clr-namespace:Scrubbler"
              mc:Ignorable="d"
