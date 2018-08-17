@@ -13,7 +13,7 @@ namespace Scrubbler
     /// <param name="apiKey">API key.</param>
     /// <param name="apiSecret">API secret.</param>
     /// <param name="httpClient">HttpClient used for requests.</param>
-    /// <returns></returns>
+    /// <returns>Newly created ILastFMClient.</returns>
     ILastFMClient CreateClient(string apiKey, string apiSecret, HttpClient httpClient = null);
   }
 }
