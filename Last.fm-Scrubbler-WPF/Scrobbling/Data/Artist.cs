@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IF.Lastfm.Core.Objects;
+using System;
 
 namespace Scrubbler.Scrobbling.Data
 {
@@ -26,6 +27,8 @@ namespace Scrubbler.Scrobbling.Data
 
     #endregion Properties
 
+    #region Construction
+
     /// <summary>
     /// Constructor.
     /// </summary>
@@ -38,5 +41,15 @@ namespace Scrubbler.Scrobbling.Data
       Mbid = mbid;
       Image = image;
     }
+
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="artist">Artist to pull info from.</param>
+    public Artist(LastArtist artist)
+      : this(artist.Name, artist.Mbid, artist.MainImage.Large)
+    { }
+
+    #endregion Construction
   }
 }

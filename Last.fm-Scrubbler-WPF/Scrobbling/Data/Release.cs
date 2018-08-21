@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IF.Lastfm.Core.Objects;
+using System;
 
 namespace Scrubbler.Scrobbling.Data
 {
@@ -31,6 +32,8 @@ namespace Scrubbler.Scrobbling.Data
 
     #endregion Properties
 
+    #region Construction
+
     /// <summary>
     /// Constructor.
     /// </summary>
@@ -45,5 +48,15 @@ namespace Scrubbler.Scrobbling.Data
       Mbid = mbid;
       Image = image;
     }
+
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="release">Release to get data from.</param>
+    public Release(LastAlbum release)
+      : this(release.Name, release.ArtistName, release.Mbid, release.Images.Large)
+    { }
+
+    #endregion Construction
   }
 }

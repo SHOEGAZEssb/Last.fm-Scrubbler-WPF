@@ -83,13 +83,16 @@ namespace Scrubbler.Scrobbling.Data
     /// </summary>
     /// <param name="scrobble">Scrobble to pull info from.</param>
     public ScrobbleBase(Scrobble scrobble)
-    {
-      TrackName = scrobble.Track;
-      ArtistName = scrobble.Artist;
-      AlbumName = scrobble.Album;
-      AlbumArtist = scrobble.AlbumArtist;
-      Duration = scrobble.Duration;
-    }
+      : this(scrobble.Track, scrobble.Artist, scrobble.Album, scrobble.AlbumArtist, scrobble.Duration)
+    { }
+
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="track">Track to pull info from.</param>
+    public ScrobbleBase(Track track)
+      : this(track.Name, track.ArtistName, track.AlbumName, null)
+    { }
 
     #endregion Construction
   }

@@ -1,15 +1,16 @@
-﻿using IF.Lastfm.Core.Api;
+﻿using Caliburn.Micro;
+using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Api.Helpers;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Helper;
 using Scrubbler.Scrobbling.Data;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
@@ -43,9 +44,14 @@ namespace Scrubbler.Scrobbling.Scrobbler
   /// <summary>
   /// ViewModel for the <see cref="DatabaseScrobbleView"/>.
   /// </summary>
-  public class DatabaseScrobbleViewModel : ScrobbleMultipleTimeViewModelBase<FetchedTrackViewModel>
+  public class DatabaseScrobbleViewModel : ScrobbleMultipleTimeViewModelBase<FetchedTrackViewModel>, IConductor, IHaveActiveItem
   {
     #region Properties
+
+    /// <summary>
+    /// Event that triggers when the activation of a new item has been processed.
+    /// </summary>
+    public event EventHandler<ActivationProcessedEventArgs> ActivationProcessed;
 
     /// <summary>
     /// String to search.
@@ -104,48 +110,6 @@ namespace Scrubbler.Scrobbling.Scrobbler
     private int _maxResults;
 
     /// <summary>
-    /// The current view that is displayed.
-    /// </summary>
-    public UserControl CurrentView
-    {
-      get { return _currentView; }
-      private set
-      {
-        _currentView = value;
-        NotifyOfPropertyChange();
-      }
-    }
-    private UserControl _currentView;
-
-    /// <summary>
-    /// The list of fetched artists.
-    /// </summary>
-    public ObservableCollection<FetchedArtistViewModel> FetchedArtists
-    {
-      get { return _fetchedArtists; }
-      private set
-      {
-        _fetchedArtists = value;
-        NotifyOfPropertyChange();
-      }
-    }
-    private ObservableCollection<FetchedArtistViewModel> _fetchedArtists;
-
-    /// <summary>
-    /// The list of fetched releases.
-    /// </summary>
-    public ObservableCollection<FetchedReleaseViewModel> FetchedReleases
-    {
-      get { return _fetchedAlbums; }
-      private set
-      {
-        _fetchedAlbums = value;
-        NotifyOfPropertyChange();
-      }
-    }
-    private ObservableCollection<FetchedReleaseViewModel> _fetchedAlbums;
-
-    /// <summary>
     /// Gets if the currently fetched releases has been fetched
     /// through the click on an artist.
     /// </summary>
@@ -160,24 +124,22 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
     private bool _fetchedReleaseThroughArtist;
 
+    /// <summary>
+    /// The currently displayed item.
+    /// </summary>
+    public object ActiveItem
+    {
+      get => _conductor.ActiveItem;
+      set
+      {
+        _conductor.ActiveItem = (IScreen)value;
+        NotifyOfPropertyChange();
+      }
+    }
+
     #endregion Properties
 
     #region Member
-
-    /// <summary>
-    /// The view that displays the fetched artists.
-    /// </summary>
-    private ArtistResultView _artistResultView;
-
-    /// <summary>
-    /// The view that displays the fetched releases.
-    /// </summary>
-    private ReleaseResultView _releaseResultView;
-
-    /// <summary>
-    /// The view that displays the fetched tracks.
-    /// </summary>
-    private TrackResultView _trackResultView;
 
     /// <summary>
     /// Last.fm artist api used to search for artists.
@@ -188,6 +150,21 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// Last.fm album api used to search for albums.
     /// </summary>
     private IAlbumApi _lastfmAlbumAPI;
+
+    /// <summary>
+    /// Conductor used for view switching.
+    /// </summary>
+    private Conductor<IScreen> _conductor;
+
+    /// <summary>
+    /// The last <see cref="ArtistResultViewModel"/>.
+    /// </summary>
+    private ArtistResultViewModel _artistResultVM;
+
+    /// <summary>
+    /// The last <see cref="ReleaseResultViewModel"/>.
+    /// </summary>
+    private ReleaseResultViewModel _releaseResultVM;
 
     #endregion Member
 
@@ -204,15 +181,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
     {
       _lastfmArtistAPI = lastfmArtistAPI;
       _lastfmAlbumAPI = lastfmAlbumAPI;
+      _conductor = new Conductor<IScreen>();
+      _conductor.ActivationProcessed += _conductor_ActivationProcessed;
       DatabaseToSearch = Database.LastFm;
       SearchType = SearchType.Artist;
       MaxResults = 25;
-      FetchedArtists = new ObservableCollection<FetchedArtistViewModel>();
-      FetchedReleases = new ObservableCollection<FetchedReleaseViewModel>();
       Scrobbles = new ObservableCollection<FetchedTrackViewModel>();
-      _artistResultView = new ArtistResultView() { DataContext = this };
-      _releaseResultView = new ReleaseResultView() { DataContext = this };
-      _trackResultView = new TrackResultView() { DataContext = this };
     }
 
     #endregion Construction
@@ -248,20 +222,28 @@ namespace Scrubbler.Scrobbling.Scrobbler
       {
         OnStatusUpdated(string.Format("Trying to search for artist '{0}'...", SearchText));
 
-        FetchedArtists.Clear();
-
+        IEnumerable<Artist> fetchedArtists = new Artist[0];
         if (DatabaseToSearch == Database.LastFm)
-          await SearchArtistLastFm();
+          fetchedArtists = await SearchArtistLastFm();
 
-        if (FetchedArtists.Count != 0)
+        if (fetchedArtists.Count() != 0)
         {
-          CurrentView = _artistResultView;
-          OnStatusUpdated(string.Format("Found {0} artists", FetchedArtists.Count));
+          // clean up old vm
+          if (_artistResultVM != null)
+          {
+            _artistResultVM.ArtistClicked -= Artist_Clicked;
+            DeactivateItem(_artistResultVM, true);
+          }
+
+          _artistResultVM = new ArtistResultViewModel(fetchedArtists);
+          _artistResultVM.ArtistClicked += Artist_Clicked;
+          ActivateItem(_artistResultVM);
+          OnStatusUpdated(string.Format("Found {0} artists", fetchedArtists.Count()));
         }
         else
           OnStatusUpdated("Found no artists");
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         OnStatusUpdated(string.Format("Fatal error while searching for artist '{0}': {1}", SearchText, ex.Message));
       }
@@ -272,31 +254,13 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// on Last.fm.
     /// </summary>
     /// <returns>Task.</returns>
-    private async Task SearchArtistLastFm()
+    private async Task<IEnumerable<Artist>> SearchArtistLastFm()
     {
       var response = await _lastfmArtistAPI.SearchAsync(SearchText, 1, MaxResults);
       if (response.Success)
-      {
-        foreach (var s in response.Content)
-        {
-          AddArtistViewModel(s.Name, s.Mbid, s.MainImage.Large);
-        }
-      }
+        return response.Content.Select(a => new Artist(a));
       else
         throw new Exception(response.Status.ToString());
-    }
-
-    /// <summary>
-    /// Adds a new <see cref="FetchedArtistViewModel"/> to the <see cref="FetchedArtists"/>.
-    /// </summary>
-    /// <param name="name">Name of the artist.</param>
-    /// <param name="mbid">Mbid of the artist.</param>
-    /// <param name="image">Image of the artist.</param>
-    private void AddArtistViewModel(string name, string mbid, Uri image)
-    {
-      FetchedArtistViewModel vm = new FetchedArtistViewModel(new Artist(name, mbid, image));
-      vm.ArtistClicked += ArtistClicked;
-      FetchedArtists.Add(vm);
     }
 
     /// <summary>
@@ -309,23 +273,21 @@ namespace Scrubbler.Scrobbling.Scrobbler
       {
         OnStatusUpdated(string.Format("Trying to search for release '{0}'", SearchText));
 
-        FetchedReleases.Clear();
-
+        IEnumerable<Release> releases = new Release[0];
         if (DatabaseToSearch == Database.LastFm)
-          await SearchReleaseLastFm();
+          releases = await SearchReleaseLastFm();
 
-        if (FetchedReleases.Count != 0)
+        if (releases.Count() != 0)
         {
-          FetchedReleaseThroughArtist = false;
-          CurrentView = _releaseResultView;
-          OnStatusUpdated(string.Format("Found {0} releases", FetchedReleases.Count));
+          ActivateNewReleaseResultViewModel(releases, false);
+          OnStatusUpdated(string.Format("Found {0} releases", releases.Count()));
         }
         else
           OnStatusUpdated("Found no releases");
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while searching for release '{0}': {1}", SearchText,  ex.Message));
+        OnStatusUpdated(string.Format("Fatal error while searching for release '{0}': {1}", SearchText, ex.Message));
       }
     }
 
@@ -334,32 +296,13 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// on Last.fm.
     /// </summary>
     /// <returns>Task.</returns>
-    private async Task SearchReleaseLastFm()
+    private async Task<IEnumerable<Release>> SearchReleaseLastFm()
     {
       var response = await _lastfmAlbumAPI.SearchAsync(SearchText, 1, MaxResults);
       if (response.Success)
-      {
-        foreach (var s in response.Content)
-        {
-          AddReleaseViewModel(s.Name, s.ArtistName, s.Mbid, s.Images.Large);
-        }
-      }
+        return response.Content.Select(r => new Release(r));
       else
         throw new Exception(response.Status.ToString());
-    }
-
-    /// <summary>
-    /// Adds a new <see cref="FetchedReleaseViewModel"/> to the <see cref="FetchedReleases"/>.
-    /// </summary>
-    /// <param name="name">Name of the release.</param>
-    /// <param name="artistName">Name of the artist.</param>
-    /// <param name="mbid">Mbid of the release.</param>
-    /// <param name="image">Image of the release.</param>
-    private void AddReleaseViewModel(string name, string artistName, string mbid, Uri image)
-    {
-      FetchedReleaseViewModel vm = new FetchedReleaseViewModel(new Release(name, artistName, mbid, image));
-      vm.ReleaseClicked += ReleaseClicked;
-      FetchedReleases.Add(vm);
     }
 
     /// <summary>
@@ -367,7 +310,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="sender">Clicked artist as <see cref="LastArtist"/>.</param>
     /// <param name="e">Ignored.</param>
-    public async void ArtistClicked(object sender, EventArgs e)
+    public async void Artist_Clicked(object sender, EventArgs e)
     {
       if (EnableControls)
       {
@@ -377,8 +320,18 @@ namespace Scrubbler.Scrobbling.Scrobbler
         {
           var artist = sender as Artist;
           OnStatusUpdated(string.Format("Trying to fetch releases from artist '{0}'", artist.Name));
+
+          IEnumerable<Release> releases = new Release[0];
           if (DatabaseToSearch == Database.LastFm)
-            await ArtistClickedLastFm(artist);
+            releases = await ArtistClickedLastFm(artist);
+
+          if (releases.Count() != 0)
+          {
+            ActivateNewReleaseResultViewModel(releases, true);
+            OnStatusUpdated(string.Format("Successfully fetched releases from artist '{0}'", artist.Name));
+          }
+          else
+            OnStatusUpdated(string.Format("Artist '{0} has no releases", artist.Name));
         }
         catch (Exception ex)
         {
@@ -392,34 +345,49 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
 
     /// <summary>
+    /// Creates and activates a new <see cref="ReleaseResultViewModel"/>.
+    /// </summary>
+    /// <param name="releases">Release to create <see cref="ReleaseResultViewModel"/> for.</param>
+    /// <param name="fetchedThroughArtist">If the <paramref name="releases"/> were fetched
+    /// by clicking an artist.</param>
+    private void ActivateNewReleaseResultViewModel(IEnumerable<Release> releases, bool fetchedThroughArtist)
+    {
+      // clean up old vm
+      if (_releaseResultVM != null)
+      {
+        _releaseResultVM.ReleaseClicked -= Release_Clicked;
+        _releaseResultVM.BackToArtistRequested -= Release_BackToArtistRequested;
+        DeactivateItem(_releaseResultVM, true);
+      }
+
+      _releaseResultVM = new ReleaseResultViewModel(releases, fetchedThroughArtist);
+      _releaseResultVM.ReleaseClicked += Release_Clicked;
+      _releaseResultVM.BackToArtistRequested += Release_BackToArtistRequested;
+      ActivateItem(_releaseResultVM);
+    }
+
+    /// <summary>
+    /// Goes back to the artist when the user requests it.s
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void Release_BackToArtistRequested(object sender, EventArgs e)
+    {
+      BackToArtist();
+    }
+
+    /// <summary>
     /// Fetches the release list of the clicked artist via Last.fm.
     /// </summary>
     /// <param name="artist"></param>
     /// <returns>Task.</returns>
-    private async Task ArtistClickedLastFm(Artist artist)
+    private async Task<IEnumerable<Release>> ArtistClickedLastFm(Artist artist)
     {
       var response = await _lastfmArtistAPI.GetTopAlbumsAsync(artist.Name, false, 1, MaxResults);
       if (response.Success && response.Status == LastResponseStatus.Successful)
-      {
-        FetchedReleases.Clear();
-        foreach (var s in response.Content)
-        {
-          FetchedReleaseViewModel vm = new FetchedReleaseViewModel(new Release(s.Name, s.ArtistName, s.Mbid, s.Images.Large));
-          vm.ReleaseClicked += ReleaseClicked;
-          FetchedReleases.Add(vm);
-        }
-
-        if (FetchedReleases.Count != 0)
-        {
-          FetchedReleaseThroughArtist = true;
-          CurrentView = _releaseResultView;
-          OnStatusUpdated(string.Format("Successfully fetched releases from artist '{0}'", artist.Name));
-        }
-        else
-          OnStatusUpdated(string.Format("Artist '{0} has no releases", artist.Name));
-      }
+        return response.Content.Select(r => new Release(r));
       else
-        OnStatusUpdated(string.Format("Error while fetching releases from artist '{0}': {1}", artist.Name, response.Status));
+        throw new Exception(response.Status.ToString());
     }
 
     /// <summary>
@@ -427,7 +395,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="sender">Clicked release as <see cref="LastAlbum"/>.</param>
     /// <param name="e">Ignored.</param>
-    public async void ReleaseClicked(object sender, EventArgs e)
+    public async void Release_Clicked(object sender, EventArgs e)
     {
       if (EnableControls)
       {
@@ -438,34 +406,22 @@ namespace Scrubbler.Scrobbling.Scrobbler
           var release = sender as Release;
           OnStatusUpdated(string.Format("Trying to fetch tracklist from release '{0}'", release.Name));
 
-          LastResponse<LastAlbum> response = null;
-          if (!string.IsNullOrEmpty(release.Mbid))
-            response = await _lastfmAlbumAPI.GetInfoByMbidAsync(release.Mbid);
-          else
-            response = await _lastfmAlbumAPI.GetInfoAsync(release.ArtistName, release.Name);
+          IEnumerable<Track> tracks = new Track[0];
+          if (DatabaseToSearch == Database.LastFm)
+            tracks = await FetchTracksLastFM(release);
 
-          if (response.Success && response.Status == LastResponseStatus.Successful)
+          foreach (var track in tracks)
           {
-            Scrobbles.Clear();
-            foreach (var t in response.Content.Tracks)
-            {
-              FetchedTrackViewModel vm = new FetchedTrackViewModel(new ScrobbleBase(t.Name, t.ArtistName, t.AlbumName, "", t.Duration), release.Image);
-              vm.ToScrobbleChanged += ToScrobbleChanged;
-              Scrobbles.Add(vm);
-            }
-
-            if (Scrobbles.Count != 0)
-            {
-              CurrentView = _trackResultView;
-              OnStatusUpdated(string.Format("Successfully fetched tracklist from release '{0}'", release.Name));
-            }
-            else
-              OnStatusUpdated(string.Format("Release '{0}' has no tracks", release.Name));
+            var vm = new FetchedTrackViewModel(new ScrobbleBase(track), track.Image);
+            Scrobbles.Add(vm);
           }
+
+          if (Scrobbles.Count != 0)
+            OnStatusUpdated(string.Format("Successfully fetched tracklist from release '{0}'", release.Name));
           else
-            OnStatusUpdated(string.Format("Error while fetching tracklist from release '{0}': {1}", release.Name, response.Status));
+            OnStatusUpdated(string.Format("Release '{0}' has no tracks", release.Name));
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
           OnStatusUpdated(string.Format("Fatal error while fetching tracklist from release: {0}", ex.Message));
         }
@@ -477,15 +433,22 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
 
     /// <summary>
-    /// Notifies that one or more
-    /// ToScrobbles have been changed.
+    /// Fetches tracks of the given <paramref name="release"/> from Last.fm.
     /// </summary>
-    /// <param name="sender">Ignored.</param>
-    /// <param name="e">Ignored.</param>
-    private void ToScrobbleChanged(object sender, EventArgs e)
+    /// <param name="release">Release to get tracks for.</param>
+    /// <returns>Enumerable tracks of the given <paramref name="release"/>.</returns>
+    private async Task<IEnumerable<Track>> FetchTracksLastFM(Release release)
     {
-      NotifyOfPropertyChange(() => CanScrobble);
-      NotifyOfPropertyChange(() => CanPreview);
+      LastResponse<LastAlbum> response = null;
+      if (!string.IsNullOrEmpty(release.Mbid))
+        response = await _lastfmAlbumAPI.GetInfoByMbidAsync(release.Mbid);
+      else
+        response = await _lastfmAlbumAPI.GetInfoAsync(release.ArtistName, release.Name);
+
+      if (response.Success && response.Status == LastResponseStatus.Successful)
+        return response.Content.Tracks.Select(t => new Track(t));
+      else
+        throw new Exception(response.Status.ToString());
     }
 
     /// <summary>
@@ -498,6 +461,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// as timestamp. The last track (track 1) will have the <see cref="ScrobbleTimeViewModel.Time"/>
     /// minus all the durations of the scrobbles before. 3 minute default duration.
     /// </remarks>
+    /// <returns>Task.</returns>
     public override async Task Scrobble()
     {
       try
@@ -542,19 +506,64 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
 
     /// <summary>
-    /// Switches the <see cref="CurrentView"/> to the <see cref="_artistResultView"/>.
+    /// Switches the <see cref="ActiveItem"/> to the artist view.
     /// </summary>
     public void BackToArtist()
     {
-      CurrentView = _artistResultView;
+      DeactivateItem(ActiveItem, true);
+      ActivateItem(_artistResultVM);
     }
 
     /// <summary>
-    /// Switches the <see cref="CurrentView"/> to the <see cref="_releaseResultView"/>.
+    /// Switches the <see cref="ActiveItem"/> to the release view.
     /// </summary>
     public void BackFromTrackResult()
     {
-      CurrentView = _releaseResultView;
+      Scrobbles.Clear();
     }
+
+    #region IConductor Implementation
+
+    /// <summary>
+    /// Activates the given <paramref name="item"/>.
+    /// </summary>
+    /// <param name="item">Item to activate.</param>
+    public void ActivateItem(object item)
+    {
+      _conductor.ActivateItem((Screen)item);
+      NotifyOfPropertyChange(() => ActiveItem);
+    }
+
+    /// <summary>
+    /// Deactivates the given <paramref name="item"/>.
+    /// </summary>
+    /// <param name="item">Item to deactivate.</param>
+    /// <param name="close">If true, the screen is closed.</param>
+    public void DeactivateItem(object item, bool close)
+    {
+      _conductor.DeactivateItem((Screen)item, close);
+      NotifyOfPropertyChange(() => ActiveItem);
+    }
+
+    /// <summary>
+    /// Gets the children.
+    /// </summary>
+    /// <returns>Children.</returns>
+    public IEnumerable GetChildren()
+    {
+      return _conductor.GetChildren();
+    }
+
+    /// <summary>
+    /// Fires the <see cref="ActivationProcessed"/> event.
+    /// </summary>
+    /// <param name="sender">Ignored.</param>
+    /// <param name="e">Ignored.</param>
+    private void _conductor_ActivationProcessed(object sender, ActivationProcessedEventArgs e)
+    {
+      ActivationProcessed?.Invoke(sender, e);
+    }
+
+    #endregion IConductor Implementation
   }
 }

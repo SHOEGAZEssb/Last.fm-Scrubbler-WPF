@@ -4,9 +4,9 @@ using System;
 namespace Scrubbler.Scrobbling.Data
 {
   /// <summary>
-  /// ViewModel for the <see cref="ReleaseResultView"/>.
+  /// ViewModel for the <see cref="FetchedReleaseView"/>.
   /// </summary>
-  public class FetchedReleaseViewModel : PropertyChangedBase
+  public class FetchedReleaseViewModel : Screen
   {
     #region Properties
 
@@ -16,20 +16,25 @@ namespace Scrubbler.Scrobbling.Data
     public event EventHandler ReleaseClicked;
 
     /// <summary>
-    /// The fetched release.
+    /// Name of this release.
     /// </summary>
-    public Release FetchedRelease
-    {
-      get { return _fetchedRelease; }
-      private set
-      {
-        _fetchedRelease = value;
-        NotifyOfPropertyChange(() => FetchedRelease);
-      }
-    }
-    private Release _fetchedRelease;
+    public string Name => _fetchedRelease.Name;
+
+    /// <summary>
+    /// Image of this release.
+    /// </summary>
+    public Uri Image => _fetchedRelease.Image;
 
     #endregion Properties
+
+    #region Member
+
+    /// <summary>
+    /// The fetched release.
+    /// </summary>
+    private readonly Release _fetchedRelease;
+
+    #endregion Member
 
     /// <summary>
     /// Constructor.
@@ -37,7 +42,7 @@ namespace Scrubbler.Scrobbling.Data
     /// <param name="fetchedRelease">The fetched release.</param>
     public FetchedReleaseViewModel(Release fetchedRelease)
     {
-      FetchedRelease = fetchedRelease;
+      _fetchedRelease = fetchedRelease;
     }
 
     /// <summary>
@@ -45,7 +50,7 @@ namespace Scrubbler.Scrobbling.Data
     /// </summary>
     public void Clicked()
     {
-      ReleaseClicked?.Invoke(FetchedRelease, EventArgs.Empty);
+      ReleaseClicked?.Invoke(_fetchedRelease, EventArgs.Empty);
     }
   }
 }

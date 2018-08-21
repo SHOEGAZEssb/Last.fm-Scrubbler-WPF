@@ -16,20 +16,27 @@ namespace Scrubbler.Scrobbling.Data
     public event EventHandler ArtistClicked;
 
     /// <summary>
-    /// The fetched artist.
+    /// Name of this artist.
     /// </summary>
-    public Artist FetchedArtist
-    {
-      get { return _fetchedArtist; }
-      private set
-      {
-        _fetchedArtist = value;
-        NotifyOfPropertyChange(() => FetchedArtist);
-      }
-    }
-    private Artist _fetchedArtist;
+    public string Name => _fetchedArtist.Name;
+
+    /// <summary>
+    /// Mbid of this artist.
+    /// </summary>
+    public Uri Image => _fetchedArtist.Image;
 
     #endregion Properties
+
+    #region Member
+
+    /// <summary>
+    /// The fetched artist.
+    /// </summary>
+    private Artist _fetchedArtist;
+
+    #endregion Member
+
+    #region Construction
 
     /// <summary>
     /// Constructor.
@@ -37,15 +44,17 @@ namespace Scrubbler.Scrobbling.Data
     /// <param name="fetchedArtist">The fetched artist.</param>
     public FetchedArtistViewModel(Artist fetchedArtist)
     {
-      FetchedArtist = fetchedArtist;
+      _fetchedArtist = fetchedArtist;
     }
+
+    #endregion Construction
 
     /// <summary>
     /// Triggers the <see cref="ArtistClicked"/> event.
     /// </summary>
     public void Clicked()
     {
-      ArtistClicked?.Invoke(FetchedArtist, EventArgs.Empty);
+      ArtistClicked?.Invoke(_fetchedArtist, EventArgs.Empty);
     }
   }
 }

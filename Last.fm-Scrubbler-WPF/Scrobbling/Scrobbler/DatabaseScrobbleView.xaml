@@ -78,15 +78,38 @@
       </Button.Style>
     </Button>
 
-    <ContentPresenter Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="14" Content="{Binding CurrentView}"/>
+    <ContentControl x:Name="ActiveItem" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="14">
+      <ContentControl.Style>
+        <Style TargetType="ContentControl">
+          <Setter Property="Visibility" Value="Collapsed"/>
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding Scrobbles.Count}" Value="0">
+              <Setter Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </ContentControl.Style>
+    </ContentControl>
+    <data:TrackResultView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="14">
+      <data:TrackResultView.Style>
+        <Style TargetType="data:TrackResultView">
+          <Setter Property="Visibility" Value="Visible"/>
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding Scrobbles.Count}" Value="0">
+              <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </data:TrackResultView.Style>
+    </data:TrackResultView>
 
     <Grid Grid.Row="4" Grid.ColumnSpan="14" HorizontalAlignment="Stretch">
       <Grid.Style>
         <Style TargetType="Grid">
-          <Setter Property="Visibility" Value="Collapsed"/>
+          <Setter Property="Visibility" Value="Visible"/>
           <Style.Triggers>
-            <DataTrigger Binding="{Binding CurrentView, Converter={StaticResource DataTypeConv}}" Value="{x:Type data:TrackResultView}">
-              <Setter Property="Visibility" Value="Visible"/>
+            <DataTrigger Binding="{Binding Scrobbles.Count}" Value="0">
+              <Setter Property="Visibility" Value="Collapsed"/>
             </DataTrigger>
           </Style.Triggers>
         </Style>

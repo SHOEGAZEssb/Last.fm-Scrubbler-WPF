@@ -167,6 +167,15 @@
     <Compile Include="Converters\DataTypeConverter.cs" />
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Scrobbling\Data\ArtistResultViewModel.cs" />
+    <Compile Include="Scrobbling\Data\FetchedArtistView.xaml.cs">
+      <DependentUpon>FetchedArtistView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Scrobbling\Data\FetchedReleaseView.xaml.cs">
+      <DependentUpon>FetchedReleaseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Scrobbling\Data\ReleaseResultViewModel.cs" />
+    <Compile Include="Scrobbling\Data\Track.cs" />
     <Compile Include="Scrobbling\IAuthScrobbler.cs" />
     <Compile Include="Scrobbling\Scrobbler\ICanSelectScrobbles.cs" />
     <Compile Include="Helper\IDirectoryOperator.cs" />
@@ -376,6 +385,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Configuration\NewVersionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Scrobbling\Data\FetchedArtistView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Scrobbling\Data\FetchedReleaseView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
