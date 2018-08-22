@@ -16,7 +16,7 @@ namespace Scrubbler.Scrobbling
     /// <summary>
     /// Scrobbles to preview.
     /// </summary>
-    public IEnumerable<ScrobbleViewModel> Scrobbles
+    public IEnumerable<DatedScrobbleViewModel> Scrobbles
     {
       get { return _scrobbles; }
       private set
@@ -25,7 +25,7 @@ namespace Scrubbler.Scrobbling
         NotifyOfPropertyChange();
       }
     }
-    private IEnumerable<ScrobbleViewModel> _scrobbles;
+    private IEnumerable<DatedScrobbleViewModel> _scrobbles;
 
     #endregion Properties
 
@@ -35,7 +35,7 @@ namespace Scrubbler.Scrobbling
     /// <param name="scrobbles">List with scrobbles to preview.</param>
     public ScrobblePreviewViewModel(IEnumerable<Scrobble> scrobbles)
     {
-      Scrobbles = scrobbles.Select(s => new ScrobbleViewModel(new ScrobbleBase(s)));
+      Scrobbles = scrobbles.Select(s => new DatedScrobbleViewModel(new DatedScrobble(s)));
     }
 
     /// <summary>

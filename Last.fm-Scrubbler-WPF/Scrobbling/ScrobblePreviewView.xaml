@@ -63,10 +63,10 @@
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
-          <GridViewColumn Header="Scrobble Time" scrub:GridViewSort.PropertyName="Played.LocalDateTime">
+          <GridViewColumn Header="Scrobble Time" scrub:GridViewSort.PropertyName="Played">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding TimePlayed.LocalDateTime}"/>
+                <Label VerticalAlignment="Center" Content="{Binding Played}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
