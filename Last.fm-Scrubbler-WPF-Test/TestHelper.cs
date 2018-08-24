@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -67,9 +68,15 @@ namespace Scrubbler.Test
     /// </summary>
     /// <param name="scrobble">The scrobble to clone with an additional second.</param>
     /// <returns>Cloned scrobble.</returns>
-    public static Scrobble CloneWithAddedSecond(this Scrobble scrobble)
+    public static Scrobble CloneWithAddedTime(this Scrobble scrobble, TimeSpan timeToAdd)
     {
-      return new Scrobble(scrobble.Artist, scrobble.Album, scrobble.Track, scrobble.TimePlayed.AddSeconds(1)) { AlbumArtist = scrobble.AlbumArtist, Duration = scrobble.Duration };
+      return new Scrobble(scrobble.Artist, scrobble.Album, scrobble.Track, scrobble.TimePlayed.Add(timeToAdd))
+                         { AlbumArtist = scrobble.AlbumArtist, Duration = scrobble.Duration };
+    }
+
+    public static IEnumerable<Scrobble> CloneWithAddedTime(this IEnumerable<Scrobble> scrobbles, TimeSpan timeToAdd)
+    {
+      return scrobbles.Select(s => s.CloneWithAddedTime(timeToAdd));
     }
 
     /// <summary>
@@ -86,6 +93,39 @@ namespace Scrubbler.Test
       }
 
       return scrobbles;
+    }
+
+    /// <summary>
+    /// Creates generic artists.
+    /// Only the name is set to "TestArtist" + ID.
+    /// </summary>
+    /// <param name="amount">Amount of artists to create.</param>
+    /// <returns>Newly created artists.</returns>
+    public static LastArtist[] CreateGenericArtists(int amount)
+    {
+      LastArtist[] artists = new LastArtist[amount];
+      for(int i = 0; i < artists.Length; i++)
+      {
+        artists[i] = new LastArtist() { Name = string.Format("TestArtist{0}", i) };
+      }
+
+      return artists;
+    }
+
+    /// <summary>
+    /// Creates generic albums.
+    /// </summary>
+    /// <param name="amount"></param>
+    /// <returns></returns>
+    public static LastAlbum[] CreateGenericAlbums(int amount)
+    {
+      LastAlbum[] albums = new LastAlbum[amount];
+      for(int i = 0; i < albums.Length; i++)
+      {
+        albums[i] = new LastAlbum() { ArtistName = string.Format("TestArtist{0}", i), Name = string.Format("TestAlbum{0}", i) };
+      }
+
+      return albums;
     }
   }
 }

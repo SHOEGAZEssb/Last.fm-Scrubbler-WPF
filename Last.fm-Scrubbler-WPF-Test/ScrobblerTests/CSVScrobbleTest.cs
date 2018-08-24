@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Scrubbler.Scrobbling.Scrobbler;
 using Scrubbler.Helper;
 using Scrubbler.Scrobbling;
+using System.Linq;
 
 namespace Scrubbler.Test.ScrobblerTests
 {
@@ -73,8 +74,7 @@ namespace Scrubbler.Test.ScrobblerTests
 
       // then: expected tracks scrobbled
       // we add 1 second to each TimePlayed of the expected because the vm does this too so you can scrobble from yourself...
-      for (int e = 0; e < expected.Count; e++)
-        expected[e] = expected[e].CloneWithAddedSecond();
+      expected = expected.CloneWithAddedTime(TimeSpan.FromSeconds(1)).ToList();
 
       Assert.That(actual.IsEqualScrobble(expected));
     }

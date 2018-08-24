@@ -47,7 +47,7 @@ namespace Scrubbler.Scrobbling.Data
     /// </summary>
     /// <param name="artist">Artist to pull info from.</param>
     public Artist(LastArtist artist)
-      : this(artist.Name, artist.Mbid, artist.MainImage.Large)
+      : this(artist.Name, artist.Mbid, artist.MainImage?.Large)
     { }
 
     #endregion Construction

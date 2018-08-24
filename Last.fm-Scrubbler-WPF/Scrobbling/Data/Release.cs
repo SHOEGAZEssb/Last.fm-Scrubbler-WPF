@@ -54,7 +54,7 @@ namespace Scrubbler.Scrobbling.Data
     /// </summary>
     /// <param name="release">Release to get data from.</param>
     public Release(LastAlbum release)
-      : this(release.Name, release.ArtistName, release.Mbid, release.Images.Large)
+      : this(release.Name, release.ArtistName, release.Mbid, release.Images?.Large)
     { }
 
     #endregion Construction

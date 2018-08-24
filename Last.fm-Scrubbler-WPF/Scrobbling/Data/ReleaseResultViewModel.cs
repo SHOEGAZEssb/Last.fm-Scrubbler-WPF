@@ -8,7 +8,7 @@ namespace Scrubbler.Scrobbling.Data
   /// <summary>
   /// ViewModel for the <see cref="ReleaseResultView"/>.
   /// </summary>
-  class ReleaseResultViewModel : Conductor<FetchedReleaseViewModel>.Collection.AllActive
+  public class ReleaseResultViewModel : Conductor<FetchedReleaseViewModel>.Collection.AllActive
   {
     #region Properties
 

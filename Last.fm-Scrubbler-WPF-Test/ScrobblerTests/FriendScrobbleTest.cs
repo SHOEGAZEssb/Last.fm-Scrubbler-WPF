@@ -56,7 +56,7 @@ namespace Scrubbler.Test.ScrobblerTests
 
       // we add 1 second to each TimePlayed of the expected because the vm does this too so you can scrobble from yourself...
       for(int i = 0; i < expected.Length; i++)
-        expected[i] = expected[i].CloneWithAddedSecond();
+        expected[i] = expected[i].CloneWithAddedTime(TimeSpan.FromSeconds(1));
 
       // then: scrobbled tracks should be equal to the given tracks.
       Assert.That(actual.IsEqualScrobble(expected), Is.True);

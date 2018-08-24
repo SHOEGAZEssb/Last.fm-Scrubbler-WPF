@@ -8,7 +8,7 @@ namespace Scrubbler.Scrobbling.Data
   /// <summary>
   /// ViewModel for the <see cref="ArtistResultView"/>.
   /// </summary>
-  class ArtistResultViewModel : Conductor<FetchedArtistViewModel>.Collection.AllActive
+  public class ArtistResultViewModel : Conductor<FetchedArtistViewModel>.Collection.AllActive
   {
     /// <summary>
     /// Event that fires when one of the displayed
