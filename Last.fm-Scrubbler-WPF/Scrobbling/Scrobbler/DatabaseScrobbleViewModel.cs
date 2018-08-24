@@ -110,21 +110,6 @@ namespace Scrubbler.Scrobbling.Scrobbler
     private int _maxResults;
 
     /// <summary>
-    /// Gets if the currently fetched releases has been fetched
-    /// through the click on an artist.
-    /// </summary>
-    public bool FetchedReleaseThroughArtist
-    {
-      get { return _fetchedReleaseThroughArtist; }
-      private set
-      {
-        _fetchedReleaseThroughArtist = value;
-        NotifyOfPropertyChange();
-      }
-    }
-    private bool _fetchedReleaseThroughArtist;
-
-    /// <summary>
     /// The currently displayed item.
     /// </summary>
     public object ActiveItem
