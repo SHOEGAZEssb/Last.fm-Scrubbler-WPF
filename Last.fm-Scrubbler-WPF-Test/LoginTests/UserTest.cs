@@ -4,7 +4,7 @@ using Scrubbler.Login;
 using System;
 using System.Linq;
 
-namespace Scrubbler.Test.ModelTests
+namespace Scrubbler.Test.LoginTests
 {
   /// <summary>
   /// Tests for a <see cref="User"/>.

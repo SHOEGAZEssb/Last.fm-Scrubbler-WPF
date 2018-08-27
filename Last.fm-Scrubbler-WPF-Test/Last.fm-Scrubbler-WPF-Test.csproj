@@ -108,18 +108,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExtraFunctionsTests\PasteYourTasteTest.cs" />
-    <Compile Include="ModelTests\UserScrobblerTest.cs" />
-    <Compile Include="ModelTests\UserTest.cs" />
+    <Compile Include="ScrobblingTests\UserScrobblerTest.cs" />
+    <Compile Include="LoginTests\UserTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScrobblerTests\CacheScrobblerTest.cs" />
-    <Compile Include="ScrobblerTests\CSVScrobbleTest.cs" />
-    <Compile Include="ScrobblerTests\DatabaseScrobblerTest.cs" />
-    <Compile Include="ScrobblerTests\FileScrobblerTest.cs" />
-    <Compile Include="ScrobblerTests\FriendScrobbleTest.cs" />
-    <Compile Include="ScrobblerTests\ManualScrobblerTest.cs" />
+    <Compile Include="ScrobblingTests\CacheScrobblerTest.cs" />
+    <Compile Include="ScrobblingTests\CSVScrobbleTest.cs" />
+    <Compile Include="ScrobblingTests\DatabaseScrobblerTest.cs" />
+    <Compile Include="ScrobblingTests\FileScrobblerTest.cs" />
+    <Compile Include="ScrobblingTests\FriendScrobbleTest.cs" />
+    <Compile Include="ScrobblingTests\ManualScrobblerTest.cs" />
     <Compile Include="TestHelper.cs" />
-    <Compile Include="UserViewModelTest.cs" />
+    <Compile Include="LoginTests\UserViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

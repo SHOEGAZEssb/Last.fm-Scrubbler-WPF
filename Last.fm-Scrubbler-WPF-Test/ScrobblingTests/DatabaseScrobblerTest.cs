@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Scrubbler.Test.ScrobblerTests
+namespace Scrubbler.Test.ScrobblingTests
 {
   /// <summary>
   /// Tests for the <see cref="DatabaseScrobbleViewModel"/>.

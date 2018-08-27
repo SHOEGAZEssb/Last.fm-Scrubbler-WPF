@@ -10,7 +10,7 @@ using Scrubbler.Helper;
 using Scrubbler.Scrobbling;
 using System.Linq;
 
-namespace Scrubbler.Test.ScrobblerTests
+namespace Scrubbler.Test.ScrobblingTests
 {
   /// <summary>
   /// Tests for the <see cref="CSVScrobbleViewModel"/>.

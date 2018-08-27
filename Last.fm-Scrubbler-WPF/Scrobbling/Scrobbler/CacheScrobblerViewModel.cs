@@ -2,11 +2,9 @@
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Helper;
 using Scrubbler.Properties;
-using Scrubbler.Scrobbling.Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Scrubbler.Scrobbling.Scrobbler

@@ -10,7 +10,7 @@ using Scrubbler.Helper;
 using Scrubbler.Scrobbling.Data;
 using Scrubbler.Scrobbling;
 
-namespace Scrubbler.Test.ScrobblerTests
+namespace Scrubbler.Test.ScrobblingTests
 {
   /// <summary>
   /// Tests if scrobbling via the <see cref="FileScrobbleViewModel"/> works.

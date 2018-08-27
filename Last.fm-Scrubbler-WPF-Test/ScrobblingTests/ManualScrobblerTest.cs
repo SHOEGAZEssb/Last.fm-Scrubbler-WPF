@@ -9,7 +9,7 @@ using Scrubbler.Scrobbling;
 using Scrubbler.Helper;
 using IF.Lastfm.Core.Api.Enums;
 
-namespace Scrubbler.Test.ScrobblerTests
+namespace Scrubbler.Test.ScrobblingTests
 {
   /// <summary>
   /// Tests for the <see cref="ManualScrobbleViewModel"/>.

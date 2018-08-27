@@ -11,7 +11,7 @@ using Scrubbler.Scrobbling.Scrobbler;
 using Scrubbler.Scrobbling;
 using Scrubbler.Helper;
 
-namespace Scrubbler.Test.ScrobblerTests
+namespace Scrubbler.Test.ScrobblingTests
 {
   /// <summary>
   /// Tests for the <see cref="FriendScrobbleViewModel"/>.

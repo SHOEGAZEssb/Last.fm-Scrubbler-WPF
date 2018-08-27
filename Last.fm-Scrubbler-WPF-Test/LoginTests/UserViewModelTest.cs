@@ -7,7 +7,7 @@ using Scrubbler.Login;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Scrubbler.Test
+namespace Scrubbler.Test.LoginTests
 {
   /// <summary>
   /// Tests for the <see cref="UserViewModel"/>.

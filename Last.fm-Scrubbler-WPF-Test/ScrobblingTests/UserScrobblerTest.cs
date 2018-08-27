@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Scrubbler.Test.ModelTests
+namespace Scrubbler.Test.ScrobblingTests
 {
   /// <summary>
   /// Tests for the <see cref="UserScrobbler"/>.
