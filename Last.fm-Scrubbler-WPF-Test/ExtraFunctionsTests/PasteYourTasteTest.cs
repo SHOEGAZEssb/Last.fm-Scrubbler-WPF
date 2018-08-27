@@ -20,7 +20,7 @@ namespace Scrubbler.Test.ExtraFunctionsTests
     /// Tests the basic creation of a taste text.
     /// </summary>
     [Test]
-    public void CreateTasteTextTest()
+    public async Task CreateTasteTextTest()
     {
       // given: user api mock
       string username = "TestUser";
@@ -45,7 +45,7 @@ namespace Scrubbler.Test.ExtraFunctionsTests
       };
 
       // when: getting the taste text
-      vm.GetTopArtists();
+      await vm.GetTopArtists();
 
       // then: taste text contains artists
       foreach(var artist in responseArtists)
