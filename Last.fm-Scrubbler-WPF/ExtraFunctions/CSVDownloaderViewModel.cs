@@ -67,7 +67,7 @@ namespace Scrubbler.ExtraFunctions
     /// </summary>
     public bool CanDownload
     {
-      get { return EnableControls && !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(FilePath) && FilePath.EndsWith(".csv"); }
+      get { return !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(FilePath) && FilePath.EndsWith(".csv"); }
     }
 
     #endregion Properties
