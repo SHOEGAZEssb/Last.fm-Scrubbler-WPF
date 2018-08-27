@@ -122,7 +122,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
 
     /// <summary>
-    /// Read the cached srobbles.
+    /// Read the cached scrobbles.
     /// </summary>
     public async Task GetCachedScrobbles()
     {

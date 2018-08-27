@@ -21,7 +21,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       set
       {
         _artistFieldIndex = value;
-        NotifyOfPropertyChange(() => ArtistFieldIndex);
+        NotifyOfPropertyChange();
       }
     }
     private int _artistFieldIndex;
@@ -35,7 +35,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       set
       {
         _albumFieldIndex = value;
-        NotifyOfPropertyChange(() => AlbumFieldIndex);
+        NotifyOfPropertyChange();
       }
     }
     private int _albumFieldIndex;
@@ -49,7 +49,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       set
       {
         _trackFieldIndex = value;
-        NotifyOfPropertyChange(() => TrackFieldIndex);
+        NotifyOfPropertyChange();
       }
     }
     private int _trackFieldIndex;
@@ -63,7 +63,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       set
       {
         _timestampFieldIndex = value;
-        NotifyOfPropertyChange(() => TimestampFieldIndex);
+        NotifyOfPropertyChange();
       }
     }
     private int _timestampFieldIndex;
@@ -77,7 +77,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       set
       {
         _albumArtistFieldIndex = value;
-        NotifyOfPropertyChange(() => AlbumArtistFieldIndex);
+        NotifyOfPropertyChange();
       }
     }
     private int _albumArtistFieldIndex;
@@ -91,7 +91,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       set
       {
         _durationFieldIndex = value;
-        NotifyOfPropertyChange(() => DurationFieldIndex);
+        NotifyOfPropertyChange();
       }
     }
     private int _durationFieldIndex;
@@ -105,7 +105,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       set
       {
         _delimiters = value;
-        NotifyOfPropertyChange(() => Delimiters);
+        NotifyOfPropertyChange();
       }
     }
     private string _delimiters;

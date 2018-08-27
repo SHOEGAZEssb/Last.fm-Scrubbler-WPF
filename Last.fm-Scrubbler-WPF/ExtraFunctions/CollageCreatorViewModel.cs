@@ -249,10 +249,9 @@ namespace Scrubbler.ExtraFunctions
     /// </summary>
     public async void CreateCollage()
     {
-      EnableControls = false;
-
       try
       {
+        EnableControls = false;
         Collage = null;
 
         int numCollageItems = 0;

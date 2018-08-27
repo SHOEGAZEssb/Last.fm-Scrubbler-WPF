@@ -136,7 +136,7 @@ namespace Scrubbler.Test.ModelTests
     /// </summary>
     /// <returns>Task.</returns>
     [Test]
-    public async Task ScrobbleChachedTest()
+    public async Task ScrobbleCachedTest()
     {
       // given: mocks
       User user = new User("TestUser", "TestToken", false);
@@ -166,7 +166,7 @@ namespace Scrubbler.Test.ModelTests
     /// </summary>
     /// <returns>Task.</returns>
     [Test]
-    public async Task ScrobbleMultipleChachedTest()
+    public async Task ScrobbleMultipleCachedTest()
     {
       // given: mocks
       User user = new User("TestUser", "TestToken", false);

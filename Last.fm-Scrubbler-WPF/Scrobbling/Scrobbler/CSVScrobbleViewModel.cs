@@ -80,7 +80,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       set
       {
         _duration = value;
-        NotifyOfPropertyChange(() => Duration);
+        NotifyOfPropertyChange();
       }
     }
     private int _duration;
