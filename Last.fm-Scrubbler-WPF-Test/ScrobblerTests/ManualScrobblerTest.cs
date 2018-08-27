@@ -7,6 +7,7 @@ using IF.Lastfm.Core.Scrobblers;
 using Scrubbler.Scrobbling.Scrobbler;
 using Scrubbler.Scrobbling;
 using Scrubbler.Helper;
+using IF.Lastfm.Core.Api.Enums;
 
 namespace Scrubbler.Test.ScrobblerTests
 {
@@ -28,7 +29,7 @@ namespace Scrubbler.Test.ScrobblerTests
       Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>();
       Scrobble actual = null;
       scrobblerMock.Setup(i => i.ScrobbleAsync(It.IsAny<Scrobble>(), false)).Callback<Scrobble, bool>((s, c) => actual = s)
-                                                                            .Returns(Task.Run(() => new ScrobbleResponse()));
+                                                                            .Returns(Task.Run(() => new ScrobbleResponse(LastResponseStatus.Successful)));
 
       Mock<IExtendedWindowManager> windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);
 
@@ -50,11 +51,12 @@ namespace Scrubbler.Test.ScrobblerTests
     }
 
     /// <summary>
-    /// Tests the <see cref="ManualScrobbleViewModel.CanScrobble"/> is false
+    /// Tests the <see cref="ManualScrobbleViewModel.CanScrobble"/>
+    /// and <see cref="ManualScrobbleViewModel.CanPreview"/> is false
     /// when no auth is done.
     /// </summary>
     [Test]
-    public void CanScrobbleNoAuthTest()
+    public void CanScrobbleAndPreviewNoAuthTest()
     {
       // given: ManualScrobbleViewModel without auth
       Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>();
@@ -71,6 +73,8 @@ namespace Scrubbler.Test.ScrobblerTests
 
       // then: CanScrobble should be false
       Assert.That(vm.CanScrobble, Is.False);
+      // CanPreview should be true
+      Assert.That(vm.CanPreview, Is.True);
 
       // make sure it really was the auth
       scrobblerMock.Setup(s => s.IsAuthenticated).Returns(true);
@@ -78,11 +82,12 @@ namespace Scrubbler.Test.ScrobblerTests
     }
 
     /// <summary>
-    /// Tests the <see cref="ManualScrobbleViewModel.CanScrobble"/> is false
+    /// Tests the <see cref="ManualScrobbleViewModel.CanScrobble"/> 
+    /// and <see cref="ManualScrobbleViewModel.CanPreview"/> is false
     /// when no artist is given.
     /// </summary>
     [Test]
-    public void CanScrobbleNoArtistTest()
+    public void CanScrobbleAndPreviewNoArtistTest()
     {
       // given: ManualScrobbleViewModel without given artist.
       Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>();
@@ -96,20 +101,23 @@ namespace Scrubbler.Test.ScrobblerTests
         Track = "TestTrack"
       };
 
-      // then: CanScrobble should be false
+      // then: CanScrobble and CanPreview should be false
       Assert.That(vm.CanScrobble, Is.False);
+      Assert.That(vm.CanPreview, Is.False);
 
       // make sure it really was the artist
       vm.Artist = "TestArtist";
       Assert.That(vm.CanScrobble, Is.True);
+      Assert.That(vm.CanPreview, Is.True);
     }
 
     /// <summary>
-    /// Tests the <see cref="ManualScrobbleViewModel.CanScrobble"/> is false
+    /// Tests that <see cref="ManualScrobbleViewModel.CanScrobble"/> 
+    /// and <see cref="ManualScrobbleViewModel.CanPreview"/> is false
     /// when no track is given.
     /// </summary>
     [Test]
-    public void CanScrobbleNoTrackTest()
+    public void CanScrobbleAndPreviewNoTrackTest()
     {
       // given: ManualScrobbleViewModel without given artist.
       Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>();
@@ -123,12 +131,14 @@ namespace Scrubbler.Test.ScrobblerTests
         Artist = "TestArtist"
       };
 
-      // then: CanScrobble should be false
+      // then: CanScrobble and CanPreview should be false
       Assert.That(vm.CanScrobble, Is.False);
+      Assert.That(vm.CanPreview, Is.False);
 
       // make sure it really was the track
       vm.Track = "TestTrack";
       Assert.That(vm.CanScrobble, Is.True);
+      Assert.That(vm.CanPreview, Is.True);
     }
   }
 }

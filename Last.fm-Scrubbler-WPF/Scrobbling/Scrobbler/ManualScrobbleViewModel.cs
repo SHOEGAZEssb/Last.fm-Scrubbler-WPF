@@ -3,6 +3,7 @@ using IF.Lastfm.Core.Objects;
 using Scrubbler.Helper;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Scrubbler.Scrobbling.Scrobbler
@@ -138,12 +139,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
         EnableControls = false;
         OnStatusUpdated(string.Format("Trying to scrobble '{0}'...", Track));
 
-        Scrobble s = new Scrobble(Artist, Album, Track, ScrobbleTimeVM.Time) { AlbumArtist = AlbumArtist, Duration = Duration };
-        var response = await Scrobbler.ScrobbleAsync(s);
+        var scrobble = CreateScrobbles().First();
+        var response = await Scrobbler.ScrobbleAsync(scrobble);
         if (response.Success && response.Status == LastResponseStatus.Successful)
-          OnStatusUpdated(string.Format("Successfully scrobbled '{0}'", s.Track));
+          OnStatusUpdated(string.Format("Successfully scrobbled '{0}'", scrobble.Track));
         else
-          OnStatusUpdated(string.Format("Error while scrobbling '{0}': {1}", s.Track, response.Status));
+          OnStatusUpdated(string.Format("Error while scrobbling '{0}': {1}", scrobble.Track, response.Status));
       }
       catch (Exception ex)
       {
