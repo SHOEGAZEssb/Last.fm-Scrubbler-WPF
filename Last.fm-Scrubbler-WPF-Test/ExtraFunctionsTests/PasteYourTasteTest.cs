@@ -24,15 +24,11 @@ namespace Scrubbler.Test.ExtraFunctionsTests
     {
       // given: user api mock
       string username = "TestUser";
-      int amount = 3;
       LastStatsTimeSpan timeSpan = LastStatsTimeSpan.Overall;
 
       // create test data
-      List<LastArtist> responseArtists = new List<LastArtist>();
-      for(int i = 0; i < amount; i++)
-      {
-        responseArtists.Add(new LastArtist() { Name = "TestArtist" + i });
-      }
+      int amount = 3;
+      IEnumerable<LastArtist> responseArtists = TestHelper.CreateGenericArtists(amount);
 
       Mock<IUserApi> userApiMock = new Mock<IUserApi>(MockBehavior.Strict);
       userApiMock.Setup(u => u.GetTopArtists(username, timeSpan, It.IsAny<int>(), amount))

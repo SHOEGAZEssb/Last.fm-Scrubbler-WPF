@@ -115,8 +115,8 @@ namespace Scrubbler.Test
     /// <summary>
     /// Creates generic albums.
     /// </summary>
-    /// <param name="amount"></param>
-    /// <returns></returns>
+    /// <param name="amount">Amount of albums to create.</param>
+    /// <returns>Newly created albums.</returns>
     public static LastAlbum[] CreateGenericAlbums(int amount)
     {
       LastAlbum[] albums = new LastAlbum[amount];
