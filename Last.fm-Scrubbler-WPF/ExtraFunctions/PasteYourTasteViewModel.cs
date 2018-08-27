@@ -1,6 +1,7 @@
 ﻿using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Api.Enums;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Scrubbler.ExtraFunctions
@@ -99,6 +100,8 @@ namespace Scrubbler.ExtraFunctions
 
     #endregion Member
 
+    #region Construction
+
     /// <summary>
     /// Constructor.
     /// </summary>
@@ -111,11 +114,13 @@ namespace Scrubbler.ExtraFunctions
       TimeSpan = LastStatsTimeSpan.Overall;
     }
 
+    #endregion Construction
+
     /// <summary>
     /// Gets the specified <see cref="Amount"/> of top artists from the given <see cref="TimeSpan"/>
     /// of the <see cref="Username"/>.
     /// </summary>
-    public async void GetTopArtists()
+    public async Task GetTopArtists()
     {
       try
       {
