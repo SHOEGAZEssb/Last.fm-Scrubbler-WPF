@@ -35,7 +35,6 @@ namespace Scrubbler.Login
     {
       _lastAuth = lastAuth;
       _messageBoxService = messageBoxService;
-      EnableControls = true;
     }
 
     /// <summary>

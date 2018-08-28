@@ -167,7 +167,6 @@ namespace Scrubbler.Test.LoginTests
       windowManagerMock.SetupGet(w => w.MessageBoxService).Returns(messageBoxServiceMock.Object);
 
       Mock<IFileOperator> fileOperatorMock = new Mock<IFileOperator>(MockBehavior.Strict);
-      fileOperatorMock.Setup(f => f.Delete(It.IsAny<string>()));
 
       Mock<IDirectoryOperator> directoryOperatorMock = new Mock<IDirectoryOperator>(MockBehavior.Strict);
       directoryOperatorMock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true);
