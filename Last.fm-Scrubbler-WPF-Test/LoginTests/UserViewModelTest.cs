@@ -144,12 +144,47 @@ namespace Scrubbler.Test.LoginTests
       CollectionAssert.AreEqual(users, vm.AvailableUsers);
     }
 
+    /// <summary>
+    /// Tests if logging a user in works.
+    /// </summary>
     [Test]
     public void LoginTest()
     {
       // given: mocks
+      Mock<ILastAuth> lastAuthMock = new Mock<ILastAuth>(MockBehavior.Strict);
+      bool isSubscriber = true;
+      string username = "TestUsername";
+      string token = "TestToken";
+      lastAuthMock.Setup(l => l.UserSession).Returns(new LastUserSession() { IsSubscriber = isSubscriber, Token = token, Username = username });
+      lastAuthMock.Setup(l => l.LoadSession(It.IsAny<LastUserSession>())).Returns(true);
+      lastAuthMock.Setup(l => l.Authenticated).Returns(true);
+
+      Mock<IMessageBoxService> messageBoxServiceMock = new Mock<IMessageBoxService>(MockBehavior.Strict);
+      messageBoxServiceMock.Setup(m => m.ShowDialog(It.IsAny<string>())).Returns(IMessageBoxServiceResult.OK);
+
+      Mock<IExtendedWindowManager> windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);
+      windowManagerMock.Setup(w => w.ShowDialog(It.IsAny<LoginViewModel>(), It.IsAny<object>(), It.IsAny<IDictionary<string, object>>())).Returns(true);
+      windowManagerMock.SetupGet(w => w.MessageBoxService).Returns(messageBoxServiceMock.Object);
+
+      Mock<IFileOperator> fileOperatorMock = new Mock<IFileOperator>(MockBehavior.Strict);
+      fileOperatorMock.Setup(f => f.Delete(It.IsAny<string>()));
+
       Mock<IDirectoryOperator> directoryOperatorMock = new Mock<IDirectoryOperator>(MockBehavior.Strict);
       directoryOperatorMock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true);
+      directoryOperatorMock.Setup(d => d.GetFiles(It.IsAny<string>())).Returns(new string[0]);
+
+      Mock<ISerializer<User>> userSerializerMock = new Mock<ISerializer<User>>(MockBehavior.Strict);
+      userSerializerMock.Setup(u => u.Serialize(It.IsAny<User>(), It.IsAny<string>()));
+
+      UserViewModel vm = new UserViewModel(windowManagerMock.Object, lastAuthMock.Object, fileOperatorMock.Object, directoryOperatorMock.Object, userSerializerMock.Object);
+      vm.AddUser();
+      vm.SelectedUser = vm.AvailableUsers.First();
+
+      // when: logging the user in
+      vm.LoginUser();
+
+      // then: active user changed
+      Assert.That(vm.ActiveUser, Is.SameAs(vm.SelectedUser));
     }
   }
 }
