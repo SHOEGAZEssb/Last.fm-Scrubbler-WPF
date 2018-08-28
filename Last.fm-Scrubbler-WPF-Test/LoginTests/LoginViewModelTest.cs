@@ -10,6 +10,9 @@ using System.Windows.Controls;
 
 namespace Scrubbler.Test.LoginTests
 {
+  /// <summary>
+  /// Tests for the <see cref="LoginViewModel"/>.
+  /// </summary>
   [TestFixture]
   class LoginViewModelTest
   {
@@ -34,6 +37,10 @@ namespace Scrubbler.Test.LoginTests
       });
       thread.SetApartmentState(ApartmentState.STA);
       thread.Start();
+
+      // wait for the pwBox to be initialized
+      while (pwBox == null)
+        await Task.Delay(10);
 
       Mock<ILastAuth> lastAuthMock = new Mock<ILastAuth>(MockBehavior.Strict);
       lastAuthMock.Setup(l => l.GetSessionTokenAsync(user, password)).Callback(() => lastAuthMock.SetupGet(l => l.Authenticated).Returns(true))
