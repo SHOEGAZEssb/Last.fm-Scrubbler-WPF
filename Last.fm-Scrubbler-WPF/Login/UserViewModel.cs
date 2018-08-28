@@ -153,6 +153,7 @@ namespace Scrubbler.Login
         _directoryOperator.CreateDirectory(USERSFOLDER);
 
       DeserializeUsers();
+      LoadLastUser();
     }
 
     /// <summary>
@@ -280,7 +281,7 @@ namespace Scrubbler.Login
     /// <summary>
     /// Loads the user that was last logged in.
     /// </summary>
-    public void LoadLastUser()
+    private void LoadLastUser()
     {
       if (Settings.Default.Username != string.Empty)
       {

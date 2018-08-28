@@ -195,7 +195,6 @@ namespace Scrubbler
     private void SetupViewModels(ILocalFileFactory localFileFactory, IDirectoryOperator directoryOperator, ISerializer<User> userSerializer)
     {
       UserViewModel = new UserViewModel(_windowManager, _client.Auth, _fileOperator, directoryOperator, userSerializer);
-      UserViewModel.LoadLastUser();
 
       _generalSettingsVM = new GeneralSettingsViewModel(_windowManager);
 
