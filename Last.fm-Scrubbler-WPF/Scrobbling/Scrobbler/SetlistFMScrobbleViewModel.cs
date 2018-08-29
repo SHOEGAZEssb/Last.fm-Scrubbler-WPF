@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Api;
+﻿using Caliburn.Micro;
+using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Helper;
@@ -29,9 +30,14 @@ namespace Scrubbler.Scrobbling.Scrobbler
   /// <summary>
   /// Viewmodel for the <see cref="SetlistFMScrobbleView"/>
   /// </summary>
-  public class SetlistFMScrobbleViewModel : ScrobbleMultipleTimeViewModelBase<FetchedTrackViewModel>
+  public class SetlistFMScrobbleViewModel : ScrobbleMultipleTimeViewModelBase<FetchedTrackViewModel>, IConductor, IHaveActiveItem
   {
     #region Properties
+
+    /// <summary>
+    /// Event that triggers when the activation of a new item has been processed.
+    /// </summary>
+    public event EventHandler<ActivationProcessedEventArgs> ActivationProcessed;
 
     /// <summary>
     /// Text to search.
@@ -107,8 +113,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
         // todo: if we ever fetch setlists other than by clicking an
         // artist we need to change this I guess.
-        if(_lastClickedArtist != null)
-          ArtistClicked(_lastClickedArtist, EventArgs.Empty);
+        if (_lastClickedArtist != null)
+          Artist_Clicked(_lastClickedArtist, EventArgs.Empty);
       }
     }
     private int _setlistResultPage;
@@ -128,61 +134,16 @@ namespace Scrubbler.Scrobbling.Scrobbler
     private int _artistResultPage;
 
     /// <summary>
-    /// List of fetched artists.
+    /// The currently displayed item.
     /// </summary>
-    public ObservableCollection<FetchedArtistViewModel> FetchedArtists
+    public object ActiveItem
     {
-      get { return _fetchedArtists; }
-      private set
+      get => _conductor.ActiveItem;
+      set
       {
-        _fetchedArtists = value;
+        _conductor.ActiveItem = (IScreen)value;
         NotifyOfPropertyChange();
       }
-    }
-    private ObservableCollection<FetchedArtistViewModel> _fetchedArtists;
-
-    /// <summary>
-    /// List of fetched setlists.
-    /// </summary>
-    public ObservableCollection<FetchedSetlistViewModel> FetchedSetlists
-    {
-      get { return _fetchedSetlists; }
-      private set
-      {
-        _fetchedSetlists = value;
-        NotifyOfPropertyChange();
-      }
-    }
-    private ObservableCollection<FetchedSetlistViewModel> _fetchedSetlists;
-
-    /// <summary>
-    /// The UserControl that is currently shown in the UI.
-    /// </summary>
-    public UserControl CurrentView
-    {
-      get { return _currentView; }
-      private set
-      {
-        _currentView = value;
-        NotifyOfPropertyChange();
-      }
-    }
-    private UserControl _currentView;
-
-    /// <summary>
-    /// Gets if the scrobble button is enabled.
-    /// </summary>
-    public override bool CanScrobble
-    {
-      get { return base.CanScrobble && Scrobbles.Any(s => s.ToScrobble); }
-    }
-
-    /// <summary>
-    /// Gets if the preview button is enabled.
-    /// </summary>
-    public override bool CanPreview
-    {
-      get { return Scrobbles.Any(i => i.ToScrobble); }
     }
 
     #endregion Properties
@@ -195,21 +156,6 @@ namespace Scrubbler.Scrobbling.Scrobbler
     private SetlistFmApi.SetlistFmApi _setlistFMClient;
 
     /// <summary>
-    /// View that shows the results of the artist search.
-    /// </summary>
-    private ArtistResultView _artistResultView;
-
-    /// <summary>
-    /// View that shows the setlists of an artist.
-    /// </summary>
-    private SetlistResultView _setlistResultView;
-
-    /// <summary>
-    /// View that shows the tracks of a setlist.
-    /// </summary>
-    private TrackResultView _trackResultView;
-
-    /// <summary>
     /// The last clicked <see cref="Artist"/>.
     /// </summary>
     private Data.Artist _lastClickedArtist;
@@ -218,6 +164,21 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// Last.fm API object for getting artist information.
     /// </summary>
     private IArtistApi _artistAPI;
+
+    /// <summary>
+    /// Conductor used for view switching.
+    /// </summary>
+    private Conductor<IScreen> _conductor;
+
+    /// <summary>
+    /// The last used artist result viewmodel.
+    /// </summary>
+    private ArtistResultViewModel _artistResultVM;
+
+    /// <summary>
+    /// The last used setlist result viewmodel.
+    /// </summary>
+    private SetlistResultViewModel _setlistResultVM;
 
     #endregion Member
 
@@ -229,15 +190,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
     public SetlistFMScrobbleViewModel(IExtendedWindowManager windowManager, IArtistApi artistAPI)
       : base(windowManager, "Setlist.fm Scrobbler")
     {
+      Scrobbles = new ObservableCollection<FetchedTrackViewModel>();
       _artistAPI = artistAPI;
       _setlistFMClient = new SetlistFmApi.SetlistFmApi("23b3fd98-f5c7-49c6-a7d2-28498c0c2283");
-      _artistResultView = new ArtistResultView() { DataContext = this };
-      _setlistResultView = new SetlistResultView() { DataContext = this };
-      _trackResultView = new TrackResultView() { DataContext = this };
+      _conductor = new Conductor<IScreen>();
       AlbumString = "";
-      FetchedArtists = new ObservableCollection<FetchedArtistViewModel>();
-      FetchedSetlists = new ObservableCollection<FetchedSetlistViewModel>();
-      Scrobbles = new ObservableCollection<FetchedTrackViewModel>();
       SetlistResultPage = 1;
       ArtistResultPage = 1;
     }
@@ -258,41 +215,27 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <returns>Task.</returns>
     private async Task SearchArtists()
     {
-      EnableControls = false;
-
       try
       {
+        EnableControls = false;
         OnStatusUpdated(string.Format("Searching for artist '{0}'", SearchText));
-        ArtistSearchResult asr = null;
-        await Task.Run(() => asr = _setlistFMClient.FindArtists(new ArtistSearchOptions() { Name = SearchText, Page = ArtistResultPage }));
+        IEnumerable<Data.Artist> artists = await GetArtists();
 
-        if (asr != null)
+        if (artists.Count() > 0)
         {
-          ObservableCollection<FetchedArtistViewModel> vms = new ObservableCollection<FetchedArtistViewModel>();
-          foreach (var artist in asr.Artists)
+          if (_artistResultVM != null)
           {
-            Uri imgUri = null;
-            var response = await _artistAPI.GetInfoAsync(artist.Name);
-            if (response.Success)
-              imgUri = response.Content.MainImage.ExtraLarge;
-
-            FetchedArtistViewModel vm = new FetchedArtistViewModel(new Data.Artist(artist.Name, artist.MbId, imgUri));
-            vm.ArtistClicked += ArtistClicked;
-            vms.Add(vm);
+            _artistResultVM.ArtistClicked -= Artist_Clicked;
+            DeactivateItem(_artistResultVM, true);
           }
 
-          if (vms.Count > 0)
-          {
-            FetchedArtists = new ObservableCollection<FetchedArtistViewModel>(vms);
-            CurrentView = _artistResultView;
-            OnStatusUpdated("Successfully fetched artists");
-          }
-          else
-            OnStatusUpdated("Found no artists");
+          _artistResultVM = new ArtistResultViewModel(artists);
+          _artistResultVM.ArtistClicked += Artist_Clicked;
+          ActivateItem(_artistResultVM);
+          OnStatusUpdated("Successfully fetched artists");
         }
         else
           OnStatusUpdated("Found no artists");
-
       }
       catch (Exception ex)
       {
@@ -305,56 +248,98 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
 
     /// <summary>
+    /// Gets the artists by searching for them.
+    /// </summary>
+    /// <returns>Found artists.</returns>
+    private async Task<IEnumerable<Data.Artist>> GetArtists()
+    {
+      ArtistSearchResult asr = null;
+      await Task.Run(() => asr = _setlistFMClient.FindArtists(new ArtistSearchOptions() { Name = SearchText, Page = ArtistResultPage }));
+
+      if (asr != null)
+      {
+        // todo: can we do a cool select query on asr.Artists to create the artist IEnumerable?
+        List<Data.Artist> artists = new List<Data.Artist>();
+        foreach (var artist in asr.Artists)
+        {
+          Uri imageUri = await GetImageForArtist(artist.Name);
+          artists.Add(new Data.Artist(artist.Name, artist.MbId, imageUri));
+        }
+
+        return artists;
+      }
+      else
+        return Enumerable.Empty<Data.Artist>();
+    }
+
+    /// <summary>
+    /// Gets the Uri of the image of the given <paramref name="artistName"/>.
+    /// </summary>
+    /// <param name="artistName">Artist to get image for.</param>
+    /// <returns>Uri of the artist image.</returns>
+    private async Task<Uri> GetImageForArtist(string artistName)
+    {
+      var response = await _artistAPI.GetInfoAsync(artistName);
+      if (response.Success && response.Status == LastResponseStatus.Successful)
+        return response.Content.MainImage?.ExtraLarge;
+      return null;
+    }
+
+    /// <summary>
     /// Shows the setlist of an artist.
     /// </summary>
     /// <param name="sender">The artist to show setlists from.</param>
     /// <param name="e">Ignored.</param>
-    private async void ArtistClicked(object sender, EventArgs e)
+    private async void Artist_Clicked(object sender, EventArgs e)
     {
-      if (EnableControls)
+      try
       {
         EnableControls = false;
+        var clickedArtist = sender as Data.Artist;
+        _lastClickedArtist = clickedArtist;
+        OnStatusUpdated(string.Format("Fetching setlists from artist '{0}'...", clickedArtist.Name));
+        IEnumerable<Setlist> setlists = await GetSetlists(clickedArtist);
 
-        try
+        if (setlists.Count() > 0)
         {
-          var clickedArtist = sender as Data.Artist;
-          OnStatusUpdated(string.Format("Fetching setlists from artist '{0}'...", clickedArtist.Name));
-          _lastClickedArtist = clickedArtist;
-
-          SetlistSearchResult ssr = null;
-          await Task.Run(() => ssr = _setlistFMClient.FindSetlistsByArtist(new SetlistByArtistSearchOptions() { MbId = clickedArtist.Mbid, Page = SetlistResultPage}));
-
-          if (ssr != null)
+          if(_setlistResultVM != null)
           {
-            ObservableCollection<FetchedSetlistViewModel> vms = new ObservableCollection<FetchedSetlistViewModel>();
-            foreach (var setlist in ssr.Setlists)
-            {
-              FetchedSetlistViewModel vm = new FetchedSetlistViewModel(setlist);
-              vm.SetlistClicked += SetlistClicked;
-              vms.Add(vm);
-            }
-
-            if (vms.Count > 0)
-            {
-              OnStatusUpdated(string.Format("Successfully fetched setlists from artist '{0}'", clickedArtist.Name));
-              FetchedSetlists = vms;
-              CurrentView = _setlistResultView;
-            }
-            else
-              OnStatusUpdated(string.Format("No setlists found for artist '{0}'", clickedArtist.Name));
+            _setlistResultVM.SetlistClicked -= Setlist_Clicked;
+            DeactivateItem(_setlistResultVM, true);
           }
-          else
-            OnStatusUpdated(string.Format("No setlists found for artist '{0}'", clickedArtist.Name));
+
+          _setlistResultVM = new SetlistResultViewModel(setlists);
+          _setlistResultVM.SetlistClicked += Setlist_Clicked;
+          ActivateItem(_setlistResultVM);
+          OnStatusUpdated(string.Format("Successfully fetched setlists from artist '{0}'", clickedArtist.Name));
         }
-        catch (Exception ex)
-        {
-          OnStatusUpdated(string.Format("Fatal error while fetching setlists: {0}", ex.Message));
-        }
-        finally
-        {
-          EnableControls = true;
-        }
+        else
+          OnStatusUpdated(string.Format("No setlists found for artist '{0}'", clickedArtist.Name));
       }
+      catch (Exception ex)
+      {
+        OnStatusUpdated(string.Format("Fatal error while fetching setlists: {0}", ex.Message));
+      }
+      finally
+      {
+        EnableControls = true;
+      }
+    }
+
+    /// <summary>
+    /// Gets the setlists for the given <paramref name="artist"/>.
+    /// </summary>
+    /// <param name="artist">Artist to get setlists for.</param>
+    /// <returns>Setlists of the given <paramref name="artist"/>.</returns>
+    private async Task<IEnumerable<Setlist>> GetSetlists(Data.Artist artist)
+    {
+      SetlistSearchResult ssr = null;
+      await Task.Run(() => ssr = _setlistFMClient.FindSetlistsByArtist(new SetlistByArtistSearchOptions() { MbId = artist.Mbid, Page = SetlistResultPage }));
+
+      if (ssr != null)
+        return ssr.Setlists;
+      else
+        return Enumerable.Empty<Setlist>();
     }
 
     /// <summary>
@@ -362,7 +347,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="sender">The setlist to get tracks from.</param>
     /// <param name="e">Ignored.</param>
-    private void SetlistClicked(object sender, EventArgs e)
+    private void Setlist_Clicked(object sender, EventArgs e)
     {
       if (EnableControls)
       {
@@ -372,9 +357,9 @@ namespace Scrubbler.Scrobbling.Scrobbler
         {
           ObservableCollection<FetchedTrackViewModel> vms = new ObservableCollection<FetchedTrackViewModel>();
           var clickedSetlist = sender as Setlist;
-          foreach(var set in clickedSetlist.Sets)
+          foreach (var set in clickedSetlist.Sets)
           {
-            foreach(var song in set.Songs)
+            foreach (var song in set.Songs)
             {
               vms.Add(new FetchedTrackViewModel(new ScrobbleBase(song.Name, clickedSetlist.Artist.Name), null));
             }
@@ -384,7 +369,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
           {
             OnStatusUpdated("Successfully got tracks from setlist");
             Scrobbles = vms;
-            CurrentView = _trackResultView;
+            //CurrentView = _trackResultView;
           }
           else
             OnStatusUpdated("Setlist has no tracks");
@@ -406,15 +391,17 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public void BackFromTrackResult()
     {
-      CurrentView = _setlistResultView;
+      DeactivateItem(ActiveItem, true);
+      ActivateItem(_setlistResultVM);
     }
 
     /// <summary>
-    /// Goes back to the <see cref="_artistResultView"/>.
+    /// Goes back to the found artists.
     /// </summary>
     public void BackToArtists()
     {
-      CurrentView = _artistResultView;
+      DeactivateItem(ActiveItem, true);
+      ActivateItem(_artistResultVM);
     }
 
     /// <summary>
@@ -434,7 +421,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         else
           OnStatusUpdated(string.Format("Error while scrobbling selected tracks: {0}", response.Status));
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         OnStatusUpdated(string.Format("Fatal error while scrobbling: {0}", ex.Message));
       }
@@ -464,5 +451,49 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
       return scrobbles;
     }
+
+    #region IConductor Implementation
+
+    /// <summary>
+    /// Activates the given <paramref name="item"/>.
+    /// </summary>
+    /// <param name="item">Item to activate.</param>
+    public void ActivateItem(object item)
+    {
+      _conductor.ActivateItem((IScreen)item);
+      NotifyOfPropertyChange(() => ActiveItem);
+    }
+
+    /// <summary>
+    /// Deactivates the given <paramref name="item"/>.
+    /// </summary>
+    /// <param name="item">Item to deactivate.</param>
+    /// <param name="close">If true, the screen is closed.</param>
+    public void DeactivateItem(object item, bool close)
+    {
+      _conductor.DeactivateItem((Screen)item, close);
+      NotifyOfPropertyChange(() => ActiveItem);
+    }
+
+    /// <summary>
+    /// Gets the children.
+    /// </summary>
+    /// <returns>Children.</returns>
+    public System.Collections.IEnumerable GetChildren()
+    {
+      return _conductor.GetChildren();
+    }
+
+    /// <summary>
+    /// Fires the <see cref="ActivationProcessed"/> event.
+    /// </summary>
+    /// <param name="sender">Ignored.</param>
+    /// <param name="e">Ignored.</param>
+    private void _conductor_ActivationProcessed(object sender, ActivationProcessedEventArgs e)
+    {
+      ActivationProcessed?.Invoke(sender, e);
+    }
+
+    #endregion IConductor Implementation
   }
 }

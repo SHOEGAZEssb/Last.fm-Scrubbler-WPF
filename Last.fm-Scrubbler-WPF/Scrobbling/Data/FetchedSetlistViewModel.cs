@@ -16,21 +16,22 @@ namespace Scrubbler.Scrobbling.Data
     /// </summary>
     public event EventHandler SetlistClicked;
 
+    public string Artist => _fetchedSetlist.Artist.Name;
+    public string City => _fetchedSetlist.Venue.City.Name;
+    public string Venue => _fetchedSetlist.Venue.Name;
+    public string Tour => _fetchedSetlist.Tour;
+    public DateTime Date => _fetchedSetlist.EventDate;
+
+    #endregion Properties
+
+    #region Member
+
     /// <summary>
     /// The fetched setlist.
     /// </summary>
-    public Setlist FetchedSetlist
-    {
-      get { return _fetchedSetlist; }
-      private set
-      {
-        _fetchedSetlist = value;
-        NotifyOfPropertyChange(() => FetchedSetlist);
-      }
-    }
-    private Setlist _fetchedSetlist;
+    private readonly Setlist _fetchedSetlist;
 
-    #endregion Properties
+    #endregion Member
 
     /// <summary>
     /// Constructor.
@@ -38,7 +39,7 @@ namespace Scrubbler.Scrobbling.Data
     /// <param name="fetchedSetlist">The fetched setlist.</param>
     public FetchedSetlistViewModel(Setlist fetchedSetlist)
     {
-      FetchedSetlist = fetchedSetlist;
+      _fetchedSetlist = fetchedSetlist;
     }
 
     /// <summary>
@@ -46,7 +47,7 @@ namespace Scrubbler.Scrobbling.Data
     /// </summary>
     public void Clicked()
     {
-      SetlistClicked?.Invoke(FetchedSetlist, EventArgs.Empty);
+      SetlistClicked?.Invoke(_fetchedSetlist, EventArgs.Empty);
     }
   }
 }

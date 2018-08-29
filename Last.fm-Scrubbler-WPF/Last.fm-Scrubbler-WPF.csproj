@@ -175,6 +175,7 @@
       <DependentUpon>FetchedReleaseView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Scrobbling\Data\ReleaseResultViewModel.cs" />
+    <Compile Include="Scrobbling\Data\SetlistResultViewModel.cs" />
     <Compile Include="Scrobbling\Data\Track.cs" />
     <Compile Include="Scrobbling\IAuthScrobbler.cs" />
     <Compile Include="Scrobbling\Scrobbler\ICanSelectScrobbles.cs" />
