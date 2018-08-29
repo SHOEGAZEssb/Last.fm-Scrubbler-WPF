@@ -22,7 +22,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public override bool CanScrobble
     {
-      get { return base.CanScrobble && Scrobbles.Any(i => i.ToScrobble); }
+      get { return base.CanScrobble && (Scrobbles?.Any(i => i.ToScrobble) ?? false); }
     }
 
     /// <summary>
@@ -30,7 +30,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public override bool CanPreview
     {
-      get { return Scrobbles.Any(i => i.ToScrobble); }
+      get { return Scrobbles?.Any(i => i.ToScrobble) ?? false; }
     }
 
     /// <summary>
