@@ -60,33 +60,33 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Gets if all scrobbles can currently be selected.
     /// </summary>
-    public bool CanCheckAll => Scrobbles.Any(s => !s.ToScrobble);
+    public bool CanCheckAll => Scrobbles?.Any(s => !s.ToScrobble) ?? false;
 
     /// <summary>
     /// Gets if all scrobbles can currently be unchecked.
     /// </summary>
-    public bool CanUncheckAll => Scrobbles.Any(s => s.ToScrobble);
+    public bool CanUncheckAll => Scrobbles?.Any(s => s.ToScrobble) ?? false;
 
     /// <summary>
     /// Gets if selected scrobbles can be checked.
     /// </summary>
-    public bool CanCheckSelected => Scrobbles.Any(s => s.IsSelected && !s.ToScrobble);
+    public bool CanCheckSelected => Scrobbles?.Any(s => s.IsSelected && !s.ToScrobble) ?? false;
 
     /// <summary>
     /// Gets if selected scrobbles can be unchecked.
     /// </summary>
-    public bool CanUncheckSelected => Scrobbles.Any(s => s.IsSelected && s.ToScrobble);
+    public bool CanUncheckSelected => Scrobbles?.Any(s => s.IsSelected && s.ToScrobble) ?? false;
 
     /// <summary>
     /// Gets the amount of scrobbles that are
     /// marked as "ToScrobble".
     /// </summary>
-    public int ToScrobbleCount => Scrobbles.Where(s => s.ToScrobble).Count();
+    public int ToScrobbleCount => Scrobbles?.Where(s => s.ToScrobble).Count() ?? 0;
 
     /// <summary>
     /// Gets the amount of selected scrobbles.
     /// </summary>
-    public int SelectedCount => Scrobbles.Where(s => s.IsSelected).Count();
+    public int SelectedCount => Scrobbles?.Where(s => s.IsSelected).Count() ?? 0;
 
     #endregion Properties
 
