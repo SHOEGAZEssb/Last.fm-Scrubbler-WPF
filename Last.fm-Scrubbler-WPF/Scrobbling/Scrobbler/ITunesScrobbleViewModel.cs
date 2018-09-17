@@ -129,7 +129,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <param name="albumAPI">Last.fm API object for getting album information.</param>
     /// <param name="lastAuth">Last.fm authentication object.</param>
     public ITunesScrobbleViewModel(IExtendedWindowManager windowManager, ITrackApi trackAPI, IAlbumApi albumAPI, ILastAuth lastAuth)
-      : base(windowManager, "ITunes Scrobbler", trackAPI, albumAPI, lastAuth)
+      : base(windowManager, "iTunes Scrobbler", trackAPI, albumAPI, lastAuth)
     {
       PercentageToScrobble = 0.5;
 
