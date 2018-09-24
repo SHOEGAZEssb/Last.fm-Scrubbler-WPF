@@ -10,7 +10,7 @@
              xmlns:data="clr-namespace:Scrubbler.Scrobbling.Data"
              xmlns:converters="clr-namespace:Scrubbler.Converters"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="350" Style="{StaticResource EnableControlsStyle}">
+             d:DesignHeight="300" d:DesignWidth="400" Style="{StaticResource EnableControlsStyle}">
 
   <UserControl.Resources>
     <ObjectDataProvider MethodName="GetValues"
@@ -22,15 +22,6 @@
     </ObjectDataProvider>
 
     <converters:DataTypeConverter x:Key="DataTypeConv"/>
-
-    <Style TargetType="FrameworkElement" x:Key="SetlistResultPageVisibilityStyle">
-      <Setter Property="Visibility" Value="Collapsed"/>
-      <Style.Triggers>
-        <DataTrigger Binding="{Binding CurrentView, Converter={StaticResource DataTypeConv}}" Value="{x:Type data:SetlistResultView}">
-          <Setter Property="Visibility" Value="Visible"/>
-        </DataTrigger>
-      </Style.Triggers>
-    </Style>
   </UserControl.Resources>
   <Grid>
     <Grid.RowDefinitions>
@@ -69,18 +60,63 @@
 
     <Button x:Name="Search" Grid.Row="0" Grid.Column="12" Content="Search"/>
 
-    <Label Grid.Row="2" Grid.Column="0" Content="Setlist Result Page:" Style="{StaticResource SetlistResultPageVisibilityStyle}"/>
-    <xctk:IntegerUpDown Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Value="{Binding SetlistResultPage}" Minimum="1" Style="{StaticResource SetlistResultPageVisibilityStyle}"/>
-
-    <ContentPresenter Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="13" Content="{Binding CurrentView}"/>
-
-    <Grid Grid.Row="6" Grid.ColumnSpan="13" HorizontalAlignment="Stretch">
+    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="13">
       <Grid.Style>
         <Style TargetType="Grid">
           <Setter Property="Visibility" Value="Collapsed"/>
           <Style.Triggers>
-            <DataTrigger Binding="{Binding CurrentView, Converter={StaticResource DataTypeConv}}" Value="{x:Type data:TrackResultView}">
+            <DataTrigger Binding="{Binding ActiveItem, Converter={StaticResource DataTypeConv}}" Value="{x:Type data:SetlistResultViewModel}">
               <Setter Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Grid.Style>
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <Button x:Name="BackToArtists" Grid.Column="0" Content="Back To Artists"/>
+      <Label Grid.Column="2" Content="Setlist Result Page:"/>
+      <xctk:IntegerUpDown Grid.Column="4" HorizontalAlignment="Left" Value="{Binding SetlistResultPage}" Minimum="1"/>
+    </Grid>
+
+    <ContentControl x:Name="ActiveItem" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="13">
+      <ContentControl.Style>
+        <Style TargetType="ContentControl">
+          <Setter Property="Visibility" Value="Collapsed"/>
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding Scrobbles.Count}" Value="0">
+              <Setter Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </ContentControl.Style>
+    </ContentControl>
+    <data:TrackResultView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="13">
+      <data:TrackResultView.Style>
+        <Style TargetType="data:TrackResultView">
+          <Setter Property="Visibility" Value="Visible"/>
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding Scrobbles.Count}" Value="0">
+              <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </data:TrackResultView.Style>
+    </data:TrackResultView>
+
+    <Grid Grid.Row="6" Grid.ColumnSpan="13" HorizontalAlignment="Stretch">
+      <Grid.Style>
+        <Style TargetType="Grid">
+          <Setter Property="Visibility" Value="Visible"/>
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding Scrobbles.Count}" Value="0">
+              <Setter Property="Visibility" Value="Collapsed"/>
             </DataTrigger>
           </Style.Triggers>
         </Style>
