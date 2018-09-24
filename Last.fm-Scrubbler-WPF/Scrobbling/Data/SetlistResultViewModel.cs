@@ -53,11 +53,6 @@ namespace Scrubbler.Scrobbling.Data
 
     #endregion Construction
 
-    public void BackToArtists()
-    {
-
-    }
-
     /// <summary>
     /// Deactivates all items.
     /// </summary>

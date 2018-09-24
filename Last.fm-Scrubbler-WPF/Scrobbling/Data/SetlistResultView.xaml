@@ -9,19 +9,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
 
   <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="5"/>
-      <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto"/>
-      <ColumnDefinition Width="*"/>
-    </Grid.ColumnDefinitions>
-
-    <Button x:Name="BackToArtists" Grid.Row="0" Grid.Column="0" Content="Back To Artists"/>
-
-    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Setlists}" scrub:GridViewSort.AutoSort="True" SelectionMode="Single">
+    <ListView ItemsSource="{Binding Setlists}" scrub:GridViewSort.AutoSort="True" SelectionMode="Single">
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Artist" scrub:GridViewSort.PropertyName="Artist">

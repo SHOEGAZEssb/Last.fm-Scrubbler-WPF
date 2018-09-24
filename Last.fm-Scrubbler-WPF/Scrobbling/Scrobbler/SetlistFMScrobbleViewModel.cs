@@ -310,6 +310,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
           _setlistResultVM = new SetlistResultViewModel(setlists);
           _setlistResultVM.SetlistClicked += Setlist_Clicked;
+
           ActivateItem(_setlistResultVM);
           OnStatusUpdated(string.Format("Successfully fetched setlists from artist '{0}'", clickedArtist.Name));
         }
@@ -368,8 +369,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
           if (vms.Count > 0)
           {
             OnStatusUpdated("Successfully got tracks from setlist");
+            DeactivateItem(ActiveItem, false);
             Scrobbles = vms;
-            //CurrentView = _trackResultView;
           }
           else
             OnStatusUpdated("Setlist has no tracks");
@@ -386,11 +387,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
 
     /// <summary>
-    /// "Back" was clicked on the <see cref="_trackResultView"/>.
-    /// Goes back to the <see cref="_setlistResultView"/>.
+    /// Goes back to the found setlists.
     /// </summary>
     public void BackFromTrackResult()
     {
+      Scrobbles.Clear();
       DeactivateItem(ActiveItem, true);
       ActivateItem(_setlistResultVM);
     }
