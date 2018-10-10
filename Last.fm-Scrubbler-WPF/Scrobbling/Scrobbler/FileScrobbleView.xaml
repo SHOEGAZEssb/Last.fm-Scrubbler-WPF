@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:local="clr-namespace:Scrubbler.Scrobbling.Scrobbler"
              xmlns:scrub="clr-namespace:Scrubbler"
              xmlns:scrobbling="clr-namespace:Scrubbler.Scrobbling"
              mc:Ignorable="d"
@@ -39,7 +38,7 @@
 
       <Button x:Name="AddFiles" Grid.Row="0" Grid.Column="0" Content="Add Files..." HorizontalAlignment="Left"/>
 
-      <Button x:Name="RemoveFiles" Grid.Row="0" Grid.Column="2" Content="Remove Selected Files" HorizontalAlignment="Left" IsEnabled="{Binding CanRemoveFiles}"/>
+      <Button x:Name="RemoveFiles" Grid.Row="0" Grid.Column="2" Content="Remove Checked Files" HorizontalAlignment="Left" IsEnabled="{Binding CanRemoveFiles}"/>
 
       <scrobbling:SelectScrobblesControl Grid.Row="0" Grid.Column="4"/>
     </Grid>

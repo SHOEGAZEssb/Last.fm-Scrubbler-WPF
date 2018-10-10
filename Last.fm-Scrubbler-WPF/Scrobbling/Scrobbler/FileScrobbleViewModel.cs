@@ -24,7 +24,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public bool CanRemoveFiles
     {
-      get { return Scrobbles.Any(i => i.IsSelected); }
+      get { return Scrobbles.Any(i => i.ToScrobble); }
     }
 
     #endregion Properties
@@ -116,7 +116,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
                 throw new Exception("No track name found");
 
               var vm = new LoadedFileViewModel(audioFile);
-              vm.IsSelectedChanged += Vm_IsSelectedChanged;
+              vm.ToScrobbleChanged += Vm_ToScrobbleChanged;
               newFiles.Add(vm);
             }
           }
@@ -217,7 +217,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public void RemoveFiles()
     {
-      Scrobbles = new ObservableCollection<LoadedFileViewModel>(Scrobbles.Where(i => !i.IsSelected).ToList());
+      Scrobbles = new ObservableCollection<LoadedFileViewModel>(Scrobbles.Where(i => !i.ToScrobble).ToList());
       NotifyOfPropertyChange(() => CanRemoveFiles);
     }
 
@@ -274,7 +274,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="sender">Ignored.</param>
     /// <param name="e">Ignored.</param>
-    private void Vm_IsSelectedChanged(object sender, EventArgs e)
+    private void Vm_ToScrobbleChanged(object sender, EventArgs e)
     {
       NotifyOfPropertyChange(() => CanRemoveFiles);
     }
