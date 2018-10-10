@@ -18,7 +18,7 @@
 
     <Label Grid.Row="0" HorizontalAlignment="Center" Content="A new Scrubbler version is available:" FontSize="20" FontWeight="Bold"/>
     <TextBlock Grid.Row="2" HorizontalAlignment="Center" Text="{Binding VersionName}"/>
-    <TextBox Grid.Row="4" IsReadOnly="True" Text="{Binding Description, Mode=OneWay}"/>
+    <TextBox Grid.Row="4" IsReadOnly="True" Text="{Binding Description, Mode=OneWay}" TextWrapping="Wrap"/>
     <Grid Grid.Row="6" HorizontalAlignment="Center">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto"/>
