@@ -5,6 +5,7 @@ using Scrubbler.Helper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Scrubbler.Scrobbling.Scrobbler
@@ -256,7 +257,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <returns>Empty scrobble collection.</returns>
     protected override IEnumerable<Scrobble> CreateScrobbles()
     {
-      return new List<Scrobble>();
+      return Enumerable.Empty<Scrobble>();
     }
 
     /// <summary>
