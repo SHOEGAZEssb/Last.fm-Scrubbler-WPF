@@ -8,7 +8,6 @@
              xmlns:local="clr-namespace:Scrubbler.Scrobbling.Scrobbler"
              xmlns:scrobbling="clr-namespace:Scrubbler.Scrobbling"
              xmlns:data="clr-namespace:Scrubbler.Scrobbling.Data"
-             xmlns:converters="clr-namespace:Scrubbler.Converters"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300" Style="{StaticResource EnableControlsStyle}">
 
@@ -27,7 +26,14 @@
         <x:Type TypeName="local:SearchType"/>
       </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
-    <converters:DataTypeConverter x:Key="DataTypeConv"/>
+
+    <Style x:Key="ScrobbleControlStyle" TargetType="FrameworkElement">
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding Scrobbles.Count}" Value="0">
+          <Setter Property="Visibility" Value="Collapsed"/>
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
   </UserControl.Resources>
 
   <Grid>
@@ -90,30 +96,9 @@
         </Style>
       </ContentControl.Style>
     </ContentControl>
-    <data:TrackResultView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="14">
-      <data:TrackResultView.Style>
-        <Style TargetType="data:TrackResultView">
-          <Setter Property="Visibility" Value="Visible"/>
-          <Style.Triggers>
-            <DataTrigger Binding="{Binding Scrobbles.Count}" Value="0">
-              <Setter Property="Visibility" Value="Collapsed"/>
-            </DataTrigger>
-          </Style.Triggers>
-        </Style>
-      </data:TrackResultView.Style>
-    </data:TrackResultView>
+    <data:TrackResultView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="14" Style="{StaticResource ScrobbleControlStyle}"/>
 
-    <Grid Grid.Row="4" Grid.ColumnSpan="14" HorizontalAlignment="Stretch">
-      <Grid.Style>
-        <Style TargetType="Grid">
-          <Setter Property="Visibility" Value="Visible"/>
-          <Style.Triggers>
-            <DataTrigger Binding="{Binding Scrobbles.Count}" Value="0">
-              <Setter Property="Visibility" Value="Collapsed"/>
-            </DataTrigger>
-          </Style.Triggers>
-        </Style>
-      </Grid.Style>
+    <Grid Grid.Row="4" Grid.ColumnSpan="14" HorizontalAlignment="Stretch" Style="{StaticResource ScrobbleControlStyle}">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="5"/>
@@ -131,7 +116,6 @@
 
       <Label Grid.Column="0" Content="Finishing Time:"/>
       <scrobbling:SelectScrobbleTimeControl Grid.Column="2" Grid.ColumnSpan="3" DataContext="{Binding ScrobbleTimeVM}"/>
-
     </Grid>
   </Grid>
 </UserControl>
