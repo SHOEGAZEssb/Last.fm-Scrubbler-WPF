@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Octokit;
 using Scrubbler.Helper;
 using Scrubbler.Scrobbling;
 
@@ -46,8 +47,9 @@ namespace Scrubbler
       IDirectoryOperator directoryOperator = new DirectoryOperator();
       ISerializer userSerializer = new DCSerializer();
       ILogger logger = new Logger("log.txt");
+      IGitHubClient gitHubClient = new GitHubClient(new ProductHeaderValue("Last.fm-Scrubbler-WPF"));
       MainViewModel mainVM = new MainViewModel(windowManager, client, scrobblerFactory, localFileFactory, fileOperator,
-                                               directoryOperator, userSerializer, logger);
+                                               directoryOperator, userSerializer, logger, gitHubClient);
 
       windowManager.ShowWindow(new SystemTrayViewModel(windowManager, mainVM));
     }

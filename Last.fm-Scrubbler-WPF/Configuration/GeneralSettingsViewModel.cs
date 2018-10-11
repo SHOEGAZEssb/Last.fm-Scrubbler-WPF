@@ -10,7 +10,7 @@ namespace Scrubbler.Configuration
   /// <summary>
   /// ViewModel for the <see cref="GeneralSettingsView"/>.
   /// </summary>
-  class GeneralSettingsViewModel : ViewModelBase
+  public class GeneralSettingsViewModel : ViewModelBase
   {
     #region Properties
 
@@ -69,6 +69,11 @@ namespace Scrubbler.Configuration
     /// </summary>
     private IExtendedWindowManager _windowManager;
 
+    /// <summary>
+    /// GitHub client to check for updates.
+    /// </summary>
+    private IGitHubClient _gitHubClient;
+
     #endregion Member
 
     #region Construction
@@ -76,9 +81,12 @@ namespace Scrubbler.Configuration
     /// <summary>
     /// Constructor.
     /// </summary>
-    public GeneralSettingsViewModel(IExtendedWindowManager windowManager)
+    /// <param name="windowManager">WindowManager used to display dialogs.</param>
+    /// <param name="gitHubClient">GitHub client to check for updates.</param>
+    public GeneralSettingsViewModel(IExtendedWindowManager windowManager, IGitHubClient gitHubClient)
     {
-      _windowManager = windowManager;
+      _windowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));
+      _gitHubClient = gitHubClient ?? throw new ArgumentNullException(nameof(windowManager));
       MinimizeToTray = Settings.Default.MinimizeToTray;
       StartMinimized = Settings.Default.StartMinimized;
       StartupUpdateCheck = Settings.Default.StartupUpdateCheck;
@@ -128,9 +136,7 @@ namespace Scrubbler.Configuration
       try
       {
         EnableControls = false;
-
-        var client = new GitHubClient(new ProductHeaderValue("Last.fm-Scrubbler-WPF"));
-        var releases = await client.Repository.Release.GetAll("coczero", "Last.fm-Scrubbler-WPF");
+        var releases = await _gitHubClient.Repository.Release.GetAll("coczero", "Last.fm-Scrubbler-WPF");
         var newest = releases[0];
 
         Version newestVersion;
