@@ -77,16 +77,6 @@ namespace Scrubbler
     private ILastFMClient _client;
 
     /// <summary>
-    /// The api key of this application.
-    /// </summary>
-    private const string APIKEY = "69fbfa5fdc2cc1a158ec3bffab4be7a7";
-
-    /// <summary>
-    /// The api secret of this application.
-    /// </summary>
-    private const string APISECRET = "30a6ed8a75dad2aa6758fa607c53adb5";
-
-    /// <summary>
     /// ViewModel managing all scrobble ViewModels.
     /// </summary>
     private ScrobblerViewModel _scrobblerVM;
@@ -100,11 +90,6 @@ namespace Scrubbler
     /// Window manager used to display dialogs etc.
     /// </summary>
     private IExtendedWindowManager _windowManager;
-
-    /// <summary>
-    /// Factory used for creating clients.
-    /// </summary>
-    private static ILastFMClientFactory _lastFMClientFactory;
 
     /// <summary>
     /// Factory used for creating scrobblers.
@@ -134,24 +119,23 @@ namespace Scrubbler
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    /// <param name="clientFactory">Factory for creating <see cref="ILastFMClient"/>s.</param>
+    /// <param name="client">Factory for creating <see cref="ILastFMClient"/>s.</param>
     /// <param name="scrobblerFactory">Factory for creating <see cref="IAuthScrobbler"/>s.</param>
     /// <param name="localFileFactory">Factory for creating <see cref="Scrobbling.Data.ILocalFile"/>s.</param>
     /// <param name="fileOperator">FileOperator for interfacing with the hard disk.</param>
     /// <param name="directoryOperator">DirectoryOperator for operating with directories.</param>
     /// <param name="serializer">Serializer for <see cref="User"/>s.</param>
     /// <param name="logger">Logger used to log status messages.</param>
-    public MainViewModel(IExtendedWindowManager windowManager, ILastFMClientFactory clientFactory, IScrobblerFactory scrobblerFactory, ILocalFileFactory localFileFactory,
+    public MainViewModel(IExtendedWindowManager windowManager, ILastFMClient client, IScrobblerFactory scrobblerFactory, ILocalFileFactory localFileFactory,
                          IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer serializer, ILogger logger)
     {
       _windowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));
-      _lastFMClientFactory = clientFactory ?? throw new ArgumentNullException(nameof(clientFactory));
+      _client = client ?? throw new ArgumentNullException(nameof(client));
       _scrobblerFactory = scrobblerFactory ?? throw new ArgumentNullException(nameof(scrobblerFactory));
       _fileOperator = fileOperator ?? throw new ArgumentNullException(nameof(fileOperator));
       _logger = logger;
-      TitleString = "Last.fm Scrubbler WPF Beta " + Assembly.GetExecutingAssembly().GetName().Version;
-      _client = _lastFMClientFactory.CreateClient(APIKEY, APISECRET);
       SetupViewModels(localFileFactory, directoryOperator, serializer);
+      TitleString = "Last.fm Scrubbler WPF Beta " + Assembly.GetExecutingAssembly().GetName().Version;
       CurrentStatus = "Waiting to scrobble...";
     }
 

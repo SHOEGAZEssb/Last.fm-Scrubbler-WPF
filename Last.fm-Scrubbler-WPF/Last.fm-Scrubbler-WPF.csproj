@@ -188,7 +188,6 @@
     <Compile Include="Helper\IFileDialog.cs" />
     <Compile Include="ILastFMApiBase.cs" />
     <Compile Include="ILastFMClient.cs" />
-    <Compile Include="ILastFMClientFactory.cs" />
     <Compile Include="Helper\ILocalFileFactory.cs" />
     <Compile Include="Helper\IOpenFileDialog.cs" />
     <Compile Include="Scrobbling\Data\IScrobbableObjectViewModel.cs" />
@@ -211,7 +210,6 @@
     <Compile Include="Scrobbling\Data\ILocalFile.cs" />
     <Compile Include="Helper\ExtendedWindowManager.cs" />
     <Compile Include="LastFMClient.cs" />
-    <Compile Include="LastFMClientFactory.cs" />
     <Compile Include="Scrobbling\Data\LocalFile.cs" />
     <Compile Include="Helper\LocalFileFactory.cs" />
     <Compile Include="Helper\MessageBoxService.cs" />
