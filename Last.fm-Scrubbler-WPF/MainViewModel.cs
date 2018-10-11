@@ -128,15 +128,16 @@ namespace Scrubbler
     /// <param name="serializer">Serializer for <see cref="User"/>s.</param>
     /// <param name="logger">Logger used to log status messages.</param>
     /// <param name="gitHubClient">GitHub client to check for updates.</param>
+    /// <param name="processManager">ProcessManager for working with processor functions.</param>
     public MainViewModel(IExtendedWindowManager windowManager, ILastFMClient client, IScrobblerFactory scrobblerFactory, ILocalFileFactory localFileFactory,
-                         IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer serializer, ILogger logger, IGitHubClient gitHubClient)
+                         IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer serializer, ILogger logger, IGitHubClient gitHubClient, IProcessManager processManager)
     {
       _windowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));
       _client = client ?? throw new ArgumentNullException(nameof(client));
       _scrobblerFactory = scrobblerFactory ?? throw new ArgumentNullException(nameof(scrobblerFactory));
       _fileOperator = fileOperator ?? throw new ArgumentNullException(nameof(fileOperator));
       _logger = logger;
-      SetupViewModels(localFileFactory, directoryOperator, serializer, gitHubClient);
+      SetupViewModels(localFileFactory, directoryOperator, serializer, gitHubClient, processManager);
       TitleString = "Last.fm Scrubbler WPF Beta " + Assembly.GetExecutingAssembly().GetName().Version;
       CurrentStatus = "Waiting to scrobble...";
     }
@@ -179,11 +180,12 @@ namespace Scrubbler
     /// <param name="directoryOperator">DirectoryOperator for operating with directories.</param>
     /// <param name="serializer">Serializer for <see cref="User"/>s.</param>
     /// <param name="gitHubClient">GitHub client to check for updates.</param>
-    private void SetupViewModels(ILocalFileFactory localFileFactory, IDirectoryOperator directoryOperator, ISerializer serializer, IGitHubClient gitHubClient)
+    /// <param name="processManager">ProcessManager for working with processor functions.</param>
+    private void SetupViewModels(ILocalFileFactory localFileFactory, IDirectoryOperator directoryOperator, ISerializer serializer, IGitHubClient gitHubClient, IProcessManager processManager)
     {
       UserViewModel = new UserViewModel(_windowManager, _client.Auth, _fileOperator, directoryOperator, serializer);
 
-      _generalSettingsVM = new GeneralSettingsViewModel(_windowManager, gitHubClient);
+      _generalSettingsVM = new GeneralSettingsViewModel(_windowManager, gitHubClient, processManager);
 
       _scrobblerVM = new ScrobblerViewModel(_windowManager, localFileFactory, _fileOperator, _client);
       _scrobblerVM.StatusUpdated += StatusUpdated;

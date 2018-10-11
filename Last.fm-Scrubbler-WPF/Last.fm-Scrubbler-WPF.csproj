@@ -168,6 +168,8 @@
     <Compile Include="Converters\DataTypeConverter.cs" />
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Helper\IProcessManager.cs" />
+    <Compile Include="Helper\ProcessManager.cs" />
     <Compile Include="Scrobbling\Data\ArtistResultViewModel.cs" />
     <Compile Include="Scrobbling\Data\FetchedArtistView.xaml.cs">
       <DependentUpon>FetchedArtistView.xaml</DependentUpon>

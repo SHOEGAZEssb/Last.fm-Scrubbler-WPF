@@ -1,7 +1,7 @@
 ﻿using Caliburn.Micro;
 using Octokit;
+using Scrubbler.Helper;
 using System;
-using System.Diagnostics;
 
 namespace Scrubbler.Configuration
 {
@@ -31,6 +31,11 @@ namespace Scrubbler.Configuration
     /// </summary>
     private Release _newRelease;
 
+    /// <summary>
+    /// ProcessManager for working with processor functions.
+    /// </summary>
+    private IProcessManager _processManager;
+
     #endregion Member
 
     #region Construction
@@ -39,10 +44,12 @@ namespace Scrubbler.Configuration
     /// Constructor.
     /// </summary>
     /// <param name="newRelease">The new release.</param>
+    /// <param name="processManager">ProcessManager for working with processor functions.</param>
     /// <exception cref="ArgumentNullException">When <paramref name="newRelease"/> is null.</exception>
-    public NewVersionViewModel(Release newRelease)
+    public NewVersionViewModel(Release newRelease, IProcessManager processManager)
     {
       _newRelease = newRelease ?? throw new ArgumentNullException(nameof(newRelease));
+      _processManager = processManager ?? throw new ArgumentNullException(nameof(processManager));
     }
 
     #endregion Construction
@@ -52,7 +59,7 @@ namespace Scrubbler.Configuration
     /// </summary>
     public void OpenReleasePage()
     {
-      Process.Start(_newRelease.HtmlUrl);
+      _processManager.Start(_newRelease.HtmlUrl);
     }
 
     /// <summary>
@@ -61,7 +68,7 @@ namespace Scrubbler.Configuration
     /// </summary>
     public void DownloadRelease()
     {
-      Process.Start(_newRelease.Assets[0].BrowserDownloadUrl);
+      _processManager.Start(_newRelease.Assets[0].BrowserDownloadUrl);
     }
 
     /// <summary>

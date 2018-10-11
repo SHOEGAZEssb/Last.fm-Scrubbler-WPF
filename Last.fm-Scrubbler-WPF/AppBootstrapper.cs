@@ -48,8 +48,9 @@ namespace Scrubbler
       ISerializer userSerializer = new DCSerializer();
       ILogger logger = new Logger("log.txt");
       IGitHubClient gitHubClient = new GitHubClient(new ProductHeaderValue("Last.fm-Scrubbler-WPF"));
+      IProcessManager processManager = new ProcessManager();
       MainViewModel mainVM = new MainViewModel(windowManager, client, scrobblerFactory, localFileFactory, fileOperator,
-                                               directoryOperator, userSerializer, logger, gitHubClient);
+                                               directoryOperator, userSerializer, logger, gitHubClient, processManager);
 
       windowManager.ShowWindow(new SystemTrayViewModel(windowManager, mainVM));
     }

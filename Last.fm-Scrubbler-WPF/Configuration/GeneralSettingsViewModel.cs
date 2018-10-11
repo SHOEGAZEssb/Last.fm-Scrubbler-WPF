@@ -74,6 +74,11 @@ namespace Scrubbler.Configuration
     /// </summary>
     private IGitHubClient _gitHubClient;
 
+    /// <summary>
+    /// ProcessManager for working with processor functions.
+    /// </summary>
+    private readonly IProcessManager _processManager;
+
     #endregion Member
 
     #region Construction
@@ -83,10 +88,12 @@ namespace Scrubbler.Configuration
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="gitHubClient">GitHub client to check for updates.</param>
-    public GeneralSettingsViewModel(IExtendedWindowManager windowManager, IGitHubClient gitHubClient)
+    /// <param name="processManager">ProcessManager for working with processor functions.</param>
+    public GeneralSettingsViewModel(IExtendedWindowManager windowManager, IGitHubClient gitHubClient, IProcessManager processManager)
     {
       _windowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));
       _gitHubClient = gitHubClient ?? throw new ArgumentNullException(nameof(windowManager));
+      _processManager = processManager ?? throw new ArgumentNullException(nameof(windowManager));
       MinimizeToTray = Settings.Default.MinimizeToTray;
       StartMinimized = Settings.Default.StartMinimized;
       StartupUpdateCheck = Settings.Default.StartupUpdateCheck;
@@ -146,7 +153,7 @@ namespace Scrubbler.Configuration
           newestVersion = new Version(newest.TagName);
 
         if (newestVersion > Assembly.GetExecutingAssembly().GetName().Version)
-          _windowManager.ShowDialog(new NewVersionViewModel(newest));
+          _windowManager.ShowDialog(new NewVersionViewModel(newest, _processManager));
         else if (manualCheck)
           _windowManager.MessageBoxService.ShowDialog("No new version available", "Update Check", IMessageBoxServiceButtons.OK);
       }
