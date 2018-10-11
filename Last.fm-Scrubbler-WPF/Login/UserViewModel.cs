@@ -127,7 +127,7 @@ namespace Scrubbler.Login
     /// <summary>
     /// Serializer used to serialize <see cref="User"/>.
     /// </summary>
-    private ISerializer<User> _userSerializer;
+    private ISerializer _userSerializer;
 
     #endregion Member
 
@@ -140,7 +140,7 @@ namespace Scrubbler.Login
     /// <param name="fileOperator">FileOperator used to write to disk.</param>
     /// <param name="directoryOperator">DirectoryOperator used to check and create directories.</param>
     /// <param name="userSerializer">Serializer used to serialize <see cref="User"/>.</param>
-    public UserViewModel(IExtendedWindowManager windowManager, ILastAuth lastAuth, IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer<User> userSerializer)
+    public UserViewModel(IExtendedWindowManager windowManager, ILastAuth lastAuth, IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer userSerializer)
     {
       _windowManager = windowManager;
       _lastAuth = lastAuth;
@@ -231,7 +231,7 @@ namespace Scrubbler.Login
         {
           try
           {
-            User usr = _userSerializer.Deserialize(file);
+            User usr = _userSerializer.Deserialize<User>(file);
             // connect and disconnect to serialize if recent scrobbles are different
             usr.RecentScrobblesChanged += User_RecentScrobblesChanged;
             usr.UpdateRecentScrobbles();

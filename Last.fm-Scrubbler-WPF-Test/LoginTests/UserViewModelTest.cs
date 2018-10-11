@@ -4,6 +4,7 @@ using Moq;
 using NUnit.Framework;
 using Scrubbler.Helper;
 using Scrubbler.Login;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -39,8 +40,8 @@ namespace Scrubbler.Test.LoginTests
       directoryOperatorMock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true);
       directoryOperatorMock.Setup(d => d.GetFiles(It.IsAny<string>())).Returns(new string[0]);
 
-      Mock<ISerializer<User>> userSerializerMock = new Mock<ISerializer<User>>(MockBehavior.Strict);
-      userSerializerMock.Setup(u => u.Serialize(It.IsAny<User>(), It.IsAny<string>()));
+      Mock<ISerializer> userSerializerMock = new Mock<ISerializer>(MockBehavior.Strict);
+      userSerializerMock.Setup(u => u.Serialize(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<IEnumerable<Type>>()));
 
       UserViewModel vm = new UserViewModel(windowManagerMock.Object, lastAuthMock.Object, null, directoryOperatorMock.Object, userSerializerMock.Object);
 
@@ -87,8 +88,8 @@ namespace Scrubbler.Test.LoginTests
       directoryOperatorMock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true);
       directoryOperatorMock.Setup(d => d.GetFiles(It.IsAny<string>())).Returns(new string[0]);
 
-      Mock<ISerializer<User>> userSerializerMock = new Mock<ISerializer<User>>(MockBehavior.Strict);
-      userSerializerMock.Setup(u => u.Serialize(It.IsAny<User>(), It.IsAny<string>()));
+      Mock<ISerializer> userSerializerMock = new Mock<ISerializer>(MockBehavior.Strict);
+      userSerializerMock.Setup(u => u.Serialize(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<IEnumerable<Type>>()));
 
       UserViewModel vm = new UserViewModel(windowManagerMock.Object, lastAuthMock.Object, fileOperatorMock.Object, directoryOperatorMock.Object, userSerializerMock.Object);
 
@@ -130,10 +131,10 @@ namespace Scrubbler.Test.LoginTests
         new User("TestUser3", "TestToken3", true)
       };
 
-      Mock<ISerializer<User>> userSerializerMock = new Mock<ISerializer<User>>(MockBehavior.Strict);
+      Mock<ISerializer> userSerializerMock = new Mock<ISerializer>(MockBehavior.Strict);
       for(int i = 0; i < users.Length; i++)
       {
-        userSerializerMock.Setup(u => u.Deserialize(files[i])).Returns(users[i]);
+        userSerializerMock.Setup(u => u.Deserialize<User>(files[i])).Returns(users[i]);
       }
 
       // when: creating the vm
@@ -172,8 +173,8 @@ namespace Scrubbler.Test.LoginTests
       directoryOperatorMock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true);
       directoryOperatorMock.Setup(d => d.GetFiles(It.IsAny<string>())).Returns(new string[0]);
 
-      Mock<ISerializer<User>> userSerializerMock = new Mock<ISerializer<User>>(MockBehavior.Strict);
-      userSerializerMock.Setup(u => u.Serialize(It.IsAny<User>(), It.IsAny<string>()));
+      Mock<ISerializer> userSerializerMock = new Mock<ISerializer>(MockBehavior.Strict);
+      userSerializerMock.Setup(u => u.Serialize(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<IEnumerable<Type>>()));
 
       UserViewModel vm = new UserViewModel(windowManagerMock.Object, lastAuthMock.Object, fileOperatorMock.Object, directoryOperatorMock.Object, userSerializerMock.Object);
       vm.AddUser();

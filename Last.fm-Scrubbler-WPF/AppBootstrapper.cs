@@ -31,7 +31,7 @@ namespace Scrubbler
       ILocalFileFactory localFileFactory = new LocalFileFactory();
       IFileOperator fileOperator = new FileOperator();
       IDirectoryOperator directoryOperator = new DirectoryOperator();
-      ISerializer<User> userSerializer = new DCSerializer<User>();
+      ISerializer userSerializer = new DCSerializer();
       ILogger logger = new Logger("log.txt");
       MainViewModel mainVM = new MainViewModel(windowManager, lastFMClientFactory, scrobblerFactory, localFileFactory, fileOperator,
                                                directoryOperator, userSerializer, logger);

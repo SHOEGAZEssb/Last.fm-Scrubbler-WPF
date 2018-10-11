@@ -139,10 +139,10 @@ namespace Scrubbler
     /// <param name="localFileFactory">Factory for creating <see cref="Scrobbling.Data.ILocalFile"/>s.</param>
     /// <param name="fileOperator">FileOperator for interfacing with the hard disk.</param>
     /// <param name="directoryOperator">DirectoryOperator for operating with directories.</param>
-    /// <param name="userSerializer">Serializer for <see cref="User"/>s.</param>
+    /// <param name="serializer">Serializer for <see cref="User"/>s.</param>
     /// <param name="logger">Logger used to log status messages.</param>
     public MainViewModel(IExtendedWindowManager windowManager, ILastFMClientFactory clientFactory, IScrobblerFactory scrobblerFactory, ILocalFileFactory localFileFactory,
-                         IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer<User> userSerializer, ILogger logger)
+                         IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer serializer, ILogger logger)
     {
       _windowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));
       _lastFMClientFactory = clientFactory ?? throw new ArgumentNullException(nameof(clientFactory));
@@ -151,7 +151,7 @@ namespace Scrubbler
       _logger = logger;
       TitleString = "Last.fm Scrubbler WPF Beta " + Assembly.GetExecutingAssembly().GetName().Version;
       _client = _lastFMClientFactory.CreateClient(APIKEY, APISECRET);
-      SetupViewModels(localFileFactory, directoryOperator, userSerializer);
+      SetupViewModels(localFileFactory, directoryOperator, serializer);
       CurrentStatus = "Waiting to scrobble...";
     }
 
@@ -191,10 +191,10 @@ namespace Scrubbler
     /// </summary>
     /// <param name="localFileFactory">Factory for creating <see cref="Scrobbling.Data.ILocalFile"/>s.</param>
     /// <param name="directoryOperator">DirectoryOperator for operating with directories.</param>
-    /// <param name="userSerializer">Serializer for <see cref="User"/>s.</param>
-    private void SetupViewModels(ILocalFileFactory localFileFactory, IDirectoryOperator directoryOperator, ISerializer<User> userSerializer)
+    /// <param name="serializer">Serializer for <see cref="User"/>s.</param>
+    private void SetupViewModels(ILocalFileFactory localFileFactory, IDirectoryOperator directoryOperator, ISerializer serializer)
     {
-      UserViewModel = new UserViewModel(_windowManager, _client.Auth, _fileOperator, directoryOperator, userSerializer);
+      UserViewModel = new UserViewModel(_windowManager, _client.Auth, _fileOperator, directoryOperator, serializer);
 
       _generalSettingsVM = new GeneralSettingsViewModel(_windowManager);
 
