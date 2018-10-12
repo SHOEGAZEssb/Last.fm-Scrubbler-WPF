@@ -144,23 +144,24 @@ namespace Scrubbler.Configuration
       {
         EnableControls = false;
         var releases = await _gitHubClient.Repository.Release.GetAll("coczero", "Last.fm-Scrubbler-WPF");
-        var newest = releases[0];
+        var newestRelease = releases[0];
 
         Version newestVersion;
-        if (newest.Prerelease)
-          newestVersion = new Version(newest.TagName.Replace("B", ""));
+        if (newestRelease.Prerelease)
+          newestVersion = new Version(newestRelease.TagName.Replace("B", ""));
         else
-          newestVersion = new Version(newest.TagName);
+          newestVersion = new Version(newestRelease.TagName);
 
         if (newestVersion > Assembly.GetExecutingAssembly().GetName().Version)
-          _windowManager.ShowDialog(new NewVersionViewModel(newest, _processManager));
+          _windowManager.ShowDialog(new NewVersionViewModel(newestRelease, _processManager));
         else if (manualCheck)
           _windowManager.MessageBoxService.ShowDialog("No new version available", "Update Check", IMessageBoxServiceButtons.OK);
       }
       catch(Exception ex)
       {
         _windowManager.MessageBoxService.ShowDialog(string.Format("Fatal error while checking for update: {0}", ex.Message, "Update Check",
-                                                    IMessageBoxServiceButtons.OK));
+                                                    IMessageBoxServiceButtons.OK), "Update Check Error", IMessageBoxServiceButtons.OK,
+                                                    IMessageBoxServiceIcon.Error);
       }
       finally
       {

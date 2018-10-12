@@ -114,6 +114,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationTest\GeneralSettingsViewModelTest.cs" />
     <Compile Include="ConfigurationTest\NewVersionViewModelTest.cs" />
     <Compile Include="ExtraFunctionsTests\PasteYourTasteTest.cs" />
     <Compile Include="LoginTests\LoginViewModelTest.cs" />

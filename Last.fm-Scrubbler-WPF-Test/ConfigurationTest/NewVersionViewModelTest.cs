@@ -20,7 +20,7 @@ namespace Scrubbler.Test.ConfigurationTest
     public void ConstructionTest()
     {
       // given: mocks
-      ReleaseMock releaseMock = new ReleaseMock("TestName", "TestBody", "TestHtmlUrl", new ReleaseAssetMock("TestBrowserDownloadUrl"));
+      ReleaseMock releaseMock = new ReleaseMock("TestName", "TestBody", "TestHtmlUrl", new ReleaseAssetMock("TestBrowserDownloadUrl"), "TestTagName");
       Mock<IProcessManager> processManagerMock = new Mock<IProcessManager>(MockBehavior.Strict);
 
       // when: creating the vm
@@ -53,7 +53,7 @@ namespace Scrubbler.Test.ConfigurationTest
     public void NoIProcessManagerConstructionTest()
     {
       // given: mocks
-      ReleaseMock releaseMock = new ReleaseMock("TestName", "TestBody", "TestHtmlUrl", new ReleaseAssetMock("TestBrowserDownloadUrl"));
+      ReleaseMock releaseMock = new ReleaseMock("TestName", "TestBody", "TestHtmlUrl", new ReleaseAssetMock("TestBrowserDownloadUrl"), "TestTagName");
 
       // when: creating the vm
       Assert.That(() => new NewVersionViewModel(releaseMock, null), Throws.ArgumentNullException);
@@ -66,7 +66,7 @@ namespace Scrubbler.Test.ConfigurationTest
     public void OpenReleasePageTest()
     {
       // given: vm with mocks
-      ReleaseMock releaseMock = new ReleaseMock("TestName", "TestBody", "TestHtmlUrl", new ReleaseAssetMock("TestBrowserDownloadUrl"));
+      ReleaseMock releaseMock = new ReleaseMock("TestName", "TestBody", "TestHtmlUrl", new ReleaseAssetMock("TestBrowserDownloadUrl"), "TestTagName");
       Mock<IProcessManager> processManagerMock = new Mock<IProcessManager>(MockBehavior.Strict);
       processManagerMock.Setup(p => p.Start(releaseMock.HtmlUrl)).Returns<Process>(null);
 
@@ -86,7 +86,7 @@ namespace Scrubbler.Test.ConfigurationTest
     public void DownloadReleaseTest()
     {
       // given: vm with mocks
-      ReleaseMock releaseMock = new ReleaseMock("TestName", "TestBody", "TestHtmlUrl", new ReleaseAssetMock("TestBrowserDownloadUrl"));
+      ReleaseMock releaseMock = new ReleaseMock("TestName", "TestBody", "TestHtmlUrl", new ReleaseAssetMock("TestBrowserDownloadUrl"), "TestTagName");
       Mock<IProcessManager> processManagerMock = new Mock<IProcessManager>(MockBehavior.Strict);
       processManagerMock.Setup(p => p.Start(releaseMock.Assets[0].BrowserDownloadUrl)).Returns<Process>(null);
 
