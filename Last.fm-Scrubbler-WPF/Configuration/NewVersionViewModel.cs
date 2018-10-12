@@ -8,7 +8,7 @@ namespace Scrubbler.Configuration
   /// <summary>
   /// ViewModel for the <see cref="NewVersionView"/>.
   /// </summary>
-  class NewVersionViewModel : Screen
+  public class NewVersionViewModel : Screen
   {
     #region Properties
 
