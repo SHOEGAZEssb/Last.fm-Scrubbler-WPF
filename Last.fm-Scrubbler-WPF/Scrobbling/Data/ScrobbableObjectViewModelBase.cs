@@ -29,7 +29,7 @@ namespace Scrubbler.Scrobbling.Data
       set
       {
         _toScrobble = value;
-        NotifyOfPropertyChange(() => ToScrobble);
+        NotifyOfPropertyChange();
         ToScrobbleChanged?.Invoke(this, EventArgs.Empty);
       }
     }
