@@ -15,13 +15,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public DateTime Time
     {
-      get
-      {
-        if (UseCurrentTime)
-          return DateTime.Now;
-        else
-          return _time;
-      }
+      get => UseCurrentTime ? DateTime.Now : _time;
       set
       {
         _time = value;
