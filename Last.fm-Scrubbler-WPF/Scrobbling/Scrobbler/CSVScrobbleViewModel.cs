@@ -338,7 +338,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     {
       foreach (var vm in Scrobbles.Where(i => i.IsEnabled && i.IsSelected))
       {
-        vm.ToScrobble = false;
+        vm.ToScrobble = true;
       }
     }
 
