@@ -6,9 +6,11 @@ using Scrubbler.Scrobbling.Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
@@ -314,10 +316,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public override void CheckAll()
     {
-      foreach (var vm in Scrobbles.Where(i => i.IsEnabled))
-      {
-        vm.ToScrobble = true;
-      }
+      SetToScrobbleState(Scrobbles.Where(i => i.IsEnabled), true);
     }
 
     /// <summary>
@@ -325,10 +324,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public override void UncheckAll()
     {
-      foreach (var vm in Scrobbles.Where(i => i.IsEnabled))
-      {
-        vm.ToScrobble = false;
-      }
+      SetToScrobbleState(Scrobbles.Where(i => i.IsEnabled), false);
     }
 
     /// <summary>
@@ -336,10 +332,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public override void CheckSelected()
     {
-      foreach (var vm in Scrobbles.Where(i => i.IsEnabled && i.IsSelected))
-      {
-        vm.ToScrobble = true;
-      }
+      SetToScrobbleState(Scrobbles.Where(i => i.IsSelected && i.IsEnabled), true);
     }
 
     /// <summary>
@@ -347,10 +340,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public override void UncheckSelected()
     {
-      foreach (var s in Scrobbles.Where(s => s.IsEnabled && s.IsSelected))
-      {
-        s.ToScrobble = false;
-      }
+      SetToScrobbleState(Scrobbles.Where(i => i.IsSelected && i.IsEnabled), false);
     }
   }
 }

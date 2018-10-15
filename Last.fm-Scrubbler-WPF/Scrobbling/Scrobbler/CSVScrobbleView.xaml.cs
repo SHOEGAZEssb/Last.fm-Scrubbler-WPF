@@ -10,7 +10,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Constructor.
     /// </summary>
-		public CSVScrobbleView()
+    public CSVScrobbleView()
     {
       InitializeComponent();
     }

@@ -15,7 +15,7 @@ namespace Scrubbler.Scrobbling.Data
     /// </summary>
     public new bool IsEnabled
     {
-      get { return Played > DateTime.Now.Subtract(TimeSpan.FromDays(14)) || _scrobbleMode == CSVScrobbleMode.ImportMode; }
+      get => _scrobbleMode == CSVScrobbleMode.ImportMode || Played > DateTime.Now.Subtract(TimeSpan.FromDays(14));
     }
 
     #endregion Properties

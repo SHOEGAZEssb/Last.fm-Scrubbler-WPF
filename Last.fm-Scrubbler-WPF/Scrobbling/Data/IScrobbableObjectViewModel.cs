@@ -29,5 +29,19 @@ namespace Scrubbler.Scrobbling.Data
     /// changes.
     /// </summary>
     event EventHandler IsSelectedChanged;
+
+    /// <summary>
+    /// Updates the value of <see cref="ToScrobble"/>
+    /// without notifying.
+    /// </summary>
+    /// <param name="toScrobble">ToScrobble value.</param>
+    void UpdateToScrobbleSilent(bool toScrobble);
+
+    /// <summary>
+    /// Updates the value of <see cref="IsSelected"/>
+    /// without notifying.
+    /// </summary>
+    /// <param name="isSelected">IsSelected value.</param>
+    void UpdateIsSelectedSilent(bool isSelected);
   }
 }

@@ -63,5 +63,25 @@ namespace Scrubbler.Scrobbling.Data
     { }
 
     #endregion Construction
+
+    /// <summary>
+    /// Updates the value of <see cref="ToScrobble"/>
+    /// without notifying.
+    /// </summary>
+    /// <param name="toScrobble">ToScrobble value.</param>
+    public void UpdateToScrobbleSilent(bool toScrobble)
+    {
+      _toScrobble = toScrobble;
+    }
+
+    /// <summary>
+    /// Updates the value of <see cref="IsSelected"/>
+    /// without notifying.
+    /// </summary>
+    /// <param name="isSelected">IsSelected value.</param>
+    public void UpdateIsSelectedSilent(bool isSelected)
+    {
+      _isSelected = isSelected;
+    }
   }
 }

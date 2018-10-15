@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:data="clr-namespace:Scrubbler.Scrobbling.Data"
              xmlns:scrub="clr-namespace:Scrubbler"
              xmlns:scrobbling="clr-namespace:Scrubbler.Scrobbling"
              mc:Ignorable="d"
@@ -43,9 +44,9 @@
       <scrobbling:SelectScrobblesControl Grid.Row="0" Grid.Column="4"/>
     </Grid>
 
-    <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"  VerticalAlignment="Stretch" ItemsSource="{Binding Scrobbles}"
+    <data:ScrobbableObjectListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"  VerticalAlignment="Stretch" ItemsSource="{Binding Scrobbles}"
               scrub:GridViewSort.AutoSort="True" AllowDrop="True" cal:Message.Attach="[Event Drop] = [Action HandleDrop($eventArgs)]" Style="{StaticResource ScrobbableObjectListViewStyle}">
-      <ListView.View>
+      <data:ScrobbableObjectListView.View>
         <GridView>
           <GridViewColumn Header="Scrobble?" scrub:GridViewSort.PropertyName="ToScrobble">
             <GridViewColumn.CellTemplate>
@@ -97,8 +98,8 @@
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
         </GridView>
-      </ListView.View>
-    </ListView>
+      </data:ScrobbableObjectListView.View>
+    </data:ScrobbableObjectListView>
 
     <scrobbling:ScrobbleButtonControl Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="5"/>
 

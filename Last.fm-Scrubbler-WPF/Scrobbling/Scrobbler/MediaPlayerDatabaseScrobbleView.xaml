@@ -8,6 +8,7 @@
              xmlns:scrobbling="clr-namespace:Scrubbler.Scrobbling"
              xmlns:scrub="clr-namespace:Scrubbler"
              xmlns:conv="clr-namespace:Scrubbler.Converters"
+             xmlns:data="clr-namespace:Scrubbler.Scrobbling.Data"
              mc:Ignorable="d"
              d:DesignHeight="330" d:DesignWidth="500" Style="{StaticResource EnableControlsStyle}">
 
@@ -70,8 +71,8 @@
 
     <scrobbling:SelectScrobblesControl Grid.Row="2" Grid.ColumnSpan="9"/>
 
-    <ListView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="9" ItemsSource="{Binding Scrobbles}" scrub:GridViewSort.AutoSort="True" Style="{StaticResource ScrobbableObjectListViewStyle}">
-      <ListView.View>
+    <data:ScrobbableObjectListView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="9" ItemsSource="{Binding Scrobbles}" scrub:GridViewSort.AutoSort="True" Style="{StaticResource ScrobbableObjectListViewStyle}">
+      <data:ScrobbableObjectListView.View>
         <GridView>
           <GridViewColumn Header="Scrobble?" scrub:GridViewSort.PropertyName="ToScrobble">
             <GridViewColumn.CellTemplate>
@@ -130,8 +131,8 @@
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
         </GridView>
-      </ListView.View>
-    </ListView>
+      </data:ScrobbableObjectListView.View>
+    </data:ScrobbableObjectListView>
 
     <scrobbling:ScrobbleButtonControl Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="10"/>
   </Grid>

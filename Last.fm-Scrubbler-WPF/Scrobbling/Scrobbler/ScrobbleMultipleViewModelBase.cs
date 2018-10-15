@@ -1,9 +1,13 @@
 ﻿using Scrubbler.Helper;
 using Scrubbler.Scrobbling.Data;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
@@ -108,10 +112,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public virtual void CheckAll()
     {
-      foreach (var s in Scrobbles)
-      {
-        s.ToScrobble = true;
-      }
+      SetToScrobbleState(Scrobbles, true);
     }
 
     /// <summary>
@@ -119,10 +120,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public virtual void UncheckAll()
     {
-      foreach (var s in Scrobbles)
-      {
-        s.ToScrobble = false;
-      }
+      SetToScrobbleState(Scrobbles, false);
     }
 
     /// <summary>
@@ -130,10 +128,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public virtual void CheckSelected()
     {
-      foreach(var s in Scrobbles.Where(s => s.IsSelected))
-      {
-        s.ToScrobble = true;
-      }
+      SetToScrobbleState(Scrobbles.Where(s => s.IsSelected), true);
     }
 
     /// <summary>
@@ -141,10 +136,60 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public virtual void UncheckSelected()
     {
-      foreach (var s in Scrobbles.Where(s => s.IsSelected))
+      SetToScrobbleState(Scrobbles.Where(s => s.IsSelected), false);
+    }
+
+    /// <summary>
+    /// Sets the "ToScrobble" state of the given <paramref name="toSet"/>.
+    /// </summary>
+    /// <param name="toSet">Items whose "ToScrobble" state to set.</param>
+    /// <param name="state">State to set.</param>
+    protected void SetToScrobbleState(IEnumerable<T> toSet, bool state)
+    {
+      Parallel.ForEach(toSet, s =>
       {
-        s.ToScrobble = false;
-      }
+        s.UpdateToScrobbleSilent(state);
+      });
+
+      NotifyCanProperties();
+      // todo: this is a workaround for the virtualization problem occurring
+      // with huge csv files.
+      ICollectionView view = CollectionViewSource.GetDefaultView(Scrobbles);
+      view.Refresh();
+    }
+
+    /// <summary>
+    /// Sets the "IsSelected" state of the given <paramref name="toSet"/>.
+    /// </summary>
+    /// <param name="toSet">Items whose "IsSelected" state to set.</param>
+    /// <param name="state">State to set.</param>
+    protected void SetIsSelectedState(IEnumerable<T> toSet, bool state)
+    {
+      Parallel.ForEach(toSet, s =>
+      {
+        s.UpdateIsSelectedSilent(state);
+      });
+
+      NotifyCanProperties();
+      // todo: this is a workaround for the virtualization problem occurring
+      // with huge csv files.
+      ICollectionView view = CollectionViewSource.GetDefaultView(Scrobbles);
+      view.Refresh();
+    }
+
+    /// <summary>
+    /// Notifies that properties have changed.
+    /// </summary>
+    protected void NotifyCanProperties()
+    {
+      NotifyOfPropertyChange(() => CanScrobble);
+      NotifyOfPropertyChange(() => CanPreview);
+      NotifyOfPropertyChange(() => CanCheckAll);
+      NotifyOfPropertyChange(() => CanUncheckAll);
+      NotifyOfPropertyChange(() => CanCheckSelected);
+      NotifyOfPropertyChange(() => CanUncheckSelected);
+      NotifyOfPropertyChange(() => ToScrobbleCount);
+      NotifyOfPropertyChange(() => SelectedCount);
     }
 
     /// <summary>
@@ -182,21 +227,6 @@ namespace Scrubbler.Scrobbling.Scrobbler
     private void Scrobble_StateChanged(object sender, EventArgs e)
     {
       NotifyCanProperties();
-    }
-
-    /// <summary>
-    /// Notifies that properties have changed.
-    /// </summary>
-    private void NotifyCanProperties()
-    {
-      NotifyOfPropertyChange(() => CanScrobble);
-      NotifyOfPropertyChange(() => CanPreview);
-      NotifyOfPropertyChange(() => CanCheckAll);
-      NotifyOfPropertyChange(() => CanUncheckAll);
-      NotifyOfPropertyChange(() => CanCheckSelected);
-      NotifyOfPropertyChange(() => CanUncheckSelected);
-      NotifyOfPropertyChange(() => ToScrobbleCount);
-      NotifyOfPropertyChange(() => SelectedCount);
     }
 
     /// <summary>
