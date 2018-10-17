@@ -54,11 +54,11 @@
     <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
     </Reference>
-    <Reference Include="IF.Lastfm.Core, Version=1.1.0.339, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Inflatable.Lastfm.1.1.0.339\lib\netstandard1.1\IF.Lastfm.Core.dll</HintPath>
+    <Reference Include="IF.Lastfm.Core, Version=1.1.999.357, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Inflatable.Lastfm.1.1.999-prerelease\lib\netstandard1.1\IF.Lastfm.Core.dll</HintPath>
     </Reference>
-    <Reference Include="IF.Lastfm.SQLite, Version=1.1.0.351, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Inflatable.Lastfm.SQLite.1.1.0.351\lib\netstandard1.1\IF.Lastfm.SQLite.dll</HintPath>
+    <Reference Include="IF.Lastfm.SQLite, Version=1.1.999.357, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Inflatable.Lastfm.SQLite.1.1.999-prerelease\lib\netstandard1.1\IF.Lastfm.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="Interop.iTunesLib">
       <HintPath>Libs\Interop.iTunesLib.dll</HintPath>
