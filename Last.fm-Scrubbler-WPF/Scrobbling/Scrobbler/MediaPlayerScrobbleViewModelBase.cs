@@ -86,6 +86,51 @@ namespace Scrubbler.Scrobbling.Scrobbler
     private Uri _currentAlbumArtwork;
 
     /// <summary>
+    /// Amount of times the user has played
+    /// the current track.
+    /// </summary>
+    public int CurrentTrackPlayCount
+    {
+      get => _currentTrackPlayCount;
+      protected set
+      {
+        _currentTrackPlayCount = value;
+        NotifyOfPropertyChange();
+      }
+    }
+    private int _currentTrackPlayCount;
+
+    /// <summary>
+    /// Amount of times the user has played
+    /// the current artist.
+    /// </summary>
+    public int CurrentArtistPlayCount
+    {
+      get => _currentArtistPlayCount;
+      protected set
+      {
+        _currentArtistPlayCount = value;
+        NotifyOfPropertyChange();
+      }
+    }
+    private int _currentArtistPlayCount;
+
+    /// <summary>
+    /// Amount of times the user has played
+    /// the current album.
+    /// </summary>
+    public int CurrentAlbumPlayCount
+    {
+      get => _currentAlbumPlayCount;
+      protected set
+      {
+        _currentAlbumPlayCount = value;
+        NotifyOfPropertyChange();
+      }
+    }
+    private int _currentAlbumPlayCount;
+
+    /// <summary>
     /// Currently amount of played seconds.
     /// </summary>
     public int CountedSeconds
@@ -143,19 +188,24 @@ namespace Scrubbler.Scrobbling.Scrobbler
     protected const string LASTFMURL = "https://www.last.fm/music/";
 
     /// <summary>
+    /// Base URL to a last.fm user.
+    /// </summary>
+    protected const string LASTFMUSERURL = "https://www.last.fm/user/";
+
+    /// <summary>
     /// Last.fm API object for getting track information.
     /// </summary>
     protected ITrackApi _trackAPI;
 
     /// <summary>
-    /// IAlbumApi albumAPI
+    /// Last.fm API object for getting album information.
     /// </summary>
     protected IAlbumApi _albumAPI;
 
     /// <summary>
-    /// Last.fm authentication object.
+    /// Last.fm API object for getting artist information.
     /// </summary>
-    protected ILastAuth _lastAuth;
+    protected IArtistApi _artistAPI;
 
     #endregion Member
 
@@ -166,13 +216,16 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <param name="displayName">Display name.</param>
     /// <param name="trackAPI">Last.fm API object for getting track information.</param>
     /// <param name="albumAPI">Last.fm API object for getting album information.</param>
-    /// <param name="lastAuth">Last.fm authentication object.</param>
-    public MediaPlayerScrobbleViewModelBase(IExtendedWindowManager windowManager, string displayName, ITrackApi trackAPI, IAlbumApi albumAPI, ILastAuth lastAuth)
+    /// <param name="artistAPI">Last.fm API object for getting artist information.</param>
+    public MediaPlayerScrobbleViewModelBase(IExtendedWindowManager windowManager, string displayName, ITrackApi trackAPI, IAlbumApi albumAPI, IArtistApi artistAPI)
       : base(windowManager, displayName)
     {
       _trackAPI = trackAPI;
       _albumAPI = albumAPI;
-      _lastAuth = lastAuth;
+      _artistAPI = artistAPI;
+      CurrentTrackPlayCount = -1;
+      CurrentAlbumPlayCount = -1;
+      CurrentArtistPlayCount = -1;
     }
 
     /// <summary>
@@ -217,7 +270,17 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public void TrackClicked()
     {
-      Process.Start(string.Format(LASTFMURL + "{0}/{1}/{2}", CurrentArtistName.Replace(' ', '+'), CurrentAlbumName.Replace(' ', '+'), CurrentTrackName.Replace(' ', '+')));
+      Process.Start(string.Format(LASTFMURL + "{0}/{1}/{2}", GetUrlConformString(CurrentArtistName), GetUrlConformString(CurrentAlbumName),
+                                  GetUrlConformString(CurrentTrackName)));
+    }
+
+    /// <summary>
+    /// Opens the Last.fm page for the playcounts of
+    /// the current track.
+    /// </summary>
+    public void TrackPlayCountClicked()
+    {
+      Process.Start($"{LASTFMUSERURL}{Scrobbler.User.Username}/library/music/{GetUrlConformString(CurrentArtistName)}/_/{GetUrlConformString(CurrentTrackName)}");
     }
 
     /// <summary>
@@ -225,7 +288,16 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public void ArtistClicked()
     {
-      Process.Start(string.Format(LASTFMURL + "{0}", CurrentArtistName.Replace(' ', '+')));
+      Process.Start(string.Format(LASTFMURL + "{0}", GetUrlConformString(CurrentArtistName)));
+    }
+
+    /// <summary>
+    /// Opens the Last.fm page for the playcounts of
+    /// the current artist.
+    /// </summary>
+    public void ArtistPlayCountClicked()
+    {
+      Process.Start($"{LASTFMUSERURL}{Scrobbler.User.Username}/library/music/{GetUrlConformString(CurrentArtistName)}");
     }
 
     /// <summary>
@@ -233,7 +305,16 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public void AlbumClicked()
     {
-      Process.Start(string.Format(LASTFMURL + "{0}/{1}", CurrentArtistName.Replace(' ', '+'), CurrentAlbumName.Replace(' ', '+')));
+      Process.Start(string.Format(LASTFMURL + "{0}/{1}", GetUrlConformString(CurrentArtistName), GetUrlConformString(CurrentAlbumName)));
+    }
+
+    /// <summary>
+    /// Opens the Last.fm page for the playcounts of
+    /// the current album.
+    /// </summary>
+    public void AlbumPlayCountClicked()
+    {
+      Process.Start($"{LASTFMUSERURL}{Scrobbler.User.Username}/library/music/{GetUrlConformString(CurrentArtistName)}/{GetUrlConformString(CurrentAlbumName)}");
     }
 
     /// <summary>
@@ -248,6 +329,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       NotifyOfPropertyChange(() => CurrentTrackLengthToScrobble);
       UpdateLovedInfo().Forget();
       UpdateNowPlaying().Forget();
+      UpdatePlayCounts().Forget();
       FetchAlbumArtwork().Forget();
     }
 
@@ -266,9 +348,9 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <returns>Task.</returns>
     private async Task UpdateLovedInfo()
     {
-      if (CurrentTrackName != null && CurrentArtistName != null && _lastAuth?.UserSession?.Username != null)
+      if (CurrentTrackName != null && CurrentArtistName != null && Scrobbler.IsAuthenticated)
       {
-        var info = await _trackAPI.GetInfoAsync(CurrentTrackName, CurrentArtistName, _lastAuth.UserSession.Username);
+        var info = await _trackAPI.GetInfoAsync(CurrentTrackName, CurrentArtistName, Scrobbler.User.Username);
         if (info.Success && info.Status == LastResponseStatus.Successful)
           CurrentTrackLoved = info.Content.IsLoved.Value;
       }
@@ -284,6 +366,33 @@ namespace Scrubbler.Scrobbling.Scrobbler
         await _trackAPI.UpdateNowPlayingAsync(new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now));
     }
 
+    private async Task UpdatePlayCounts()
+    {
+      try
+      {
+        // get track playcount
+        var trackResponse = await _trackAPI.GetInfoAsync(CurrentTrackName, CurrentArtistName, Scrobbler.User.Username);
+        if (trackResponse.Success && trackResponse.Status == LastResponseStatus.Successful)
+          CurrentTrackPlayCount = trackResponse.Content.UserPlayCount ?? -1;
+      }
+      catch
+      {
+        CurrentTrackPlayCount = -1;
+      }
+
+      try
+      {
+        // get album playcount
+        var albumReponse = await _albumAPI.GetInfoAsync(CurrentArtistName, CurrentAlbumName, false, Scrobbler.User.Username);
+        if (albumReponse.Success && albumReponse.Status == LastResponseStatus.Successful)
+          CurrentAlbumPlayCount = albumReponse.Content.UserPlayCount ?? -1;
+      }
+      catch
+      {
+        CurrentAlbumPlayCount = -1;
+      }
+    }
+
     /// <summary>
     /// Gets the album artwork of the current track.
     /// </summary>
@@ -297,6 +406,17 @@ namespace Scrubbler.Scrobbling.Scrobbler
       }
       else
         CurrentAlbumArtwork = null;
+    }
+
+    /// <summary>
+    /// Replaces special characters with the
+    /// corresponding url character.
+    /// </summary>
+    /// <param name="originalString">String to make url-conform.</param>
+    /// <returns>Url-conform string.</returns>
+    private string GetUrlConformString(string originalString)
+    {
+      return originalString.Replace(' ', '+');
     }
   }
 }

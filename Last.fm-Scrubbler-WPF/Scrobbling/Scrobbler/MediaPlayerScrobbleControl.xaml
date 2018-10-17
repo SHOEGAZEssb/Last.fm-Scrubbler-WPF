@@ -111,6 +111,8 @@
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto"/>
           <ColumnDefinition Width="5"/>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="5"/>
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -120,11 +122,39 @@
             <TextBlock Text="{Binding CurrentTrackName, Mode=OneWay}" cal:Message.Attach="[Event MouseDown] = [Action TrackClicked]"/>
           </Hyperlink>
         </TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="4" Margin="0,5,0,0">
+          <TextBlock.Style>
+            <Style TargetType="TextBlock">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding CurrentTrackPlayCount}" Value="-1">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+          <Hyperlink>
+            <TextBlock Text="{Binding CurrentTrackPlayCount, Mode=OneWay, StringFormat={}({0})}" cal:Message.Attach="[Event MouseDown] = [Action TrackPlayCountClicked]"/>
+          </Hyperlink>
+        </TextBlock>
 
         <Label Grid.Row="2" Grid.Column="0" Content="Artist:" FontWeight="Bold"/>
         <TextBlock Grid.Row="2" Grid.Column="2" Margin="0,5,0,0">
           <Hyperlink>
             <TextBlock Text="{Binding CurrentArtistName, Mode=OneWay}" cal:Message.Attach="[Event MouseDown] = [Action ArtistClicked]"/>
+          </Hyperlink>
+        </TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="4" Margin="0,5,0,0">
+          <TextBlock.Style>
+            <Style TargetType="TextBlock">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding CurrentArtistPlayCount}" Value="-1">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+          <Hyperlink>
+            <TextBlock Text="{Binding CurrentArtistPlayCount, Mode=OneWay, StringFormat={}({0})}" cal:Message.Attach="[Event MouseDown] = [Action ArtistPlayCountClicked]"/>
           </Hyperlink>
         </TextBlock>
 
@@ -134,8 +164,22 @@
             <TextBlock Text="{Binding CurrentAlbumName, Mode=OneWay}" cal:Message.Attach="[Event MouseDown] = [Action AlbumClicked]"/>
           </Hyperlink>
         </TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="4" Margin="0,5,0,0">
+          <TextBlock.Style>
+            <Style TargetType="TextBlock">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding CurrentAlbumPlayCount}" Value="-1">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+          <Hyperlink>
+            <TextBlock Text="{Binding CurrentAlbumPlayCount, Mode=OneWay, StringFormat={}({0})}" cal:Message.Attach="[Event MouseDown] = [Action AlbumPlayCountClicked]"/>
+          </Hyperlink>
+        </TextBlock>
 
-        <Separator Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3"/>
+        <Separator Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5"/>
 
         <Button x:Name="SwitchLoveState" Grid.Row="6" Grid.Column="0">
           <Button.Style>

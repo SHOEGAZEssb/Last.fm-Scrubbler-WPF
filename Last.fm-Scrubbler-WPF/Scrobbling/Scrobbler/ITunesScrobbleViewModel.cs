@@ -127,9 +127,9 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="trackAPI">Last.fm API object for getting track information.</param>
     /// <param name="albumAPI">Last.fm API object for getting album information.</param>
-    /// <param name="lastAuth">Last.fm authentication object.</param>
-    public ITunesScrobbleViewModel(IExtendedWindowManager windowManager, ITrackApi trackAPI, IAlbumApi albumAPI, ILastAuth lastAuth)
-      : base(windowManager, "iTunes Scrobbler", trackAPI, albumAPI, lastAuth)
+    /// <param name="artistAPI">Last.fm API object for getting artist information.</param>
+    public ITunesScrobbleViewModel(IExtendedWindowManager windowManager, ITrackApi trackAPI, IAlbumApi albumAPI, IArtistApi artistAPI)
+      : base(windowManager, "iTunes Scrobbler", trackAPI, albumAPI, artistAPI)
     {
       PercentageToScrobble = 0.5;
 
