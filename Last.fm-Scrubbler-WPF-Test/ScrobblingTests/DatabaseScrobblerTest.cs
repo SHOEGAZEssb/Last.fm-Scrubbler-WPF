@@ -54,7 +54,7 @@ namespace Scrubbler.Test.ScrobblingTests
       albumToScrobble.Tracks = expectedScrobbles.ToLastTracks();
 
       Mock<IAlbumApi> albumAPIMock = new Mock<IAlbumApi>(MockBehavior.Strict);
-      albumAPIMock.Setup(a => a.GetInfoAsync(albums.First().ArtistName, albums.First().Name, It.IsAny<bool>()))
+      albumAPIMock.Setup(a => a.GetInfoAsync(albums.First().ArtistName, albums.First().Name, It.IsAny<bool>(), It.IsAny<string>()))
                   .Returns(Task.Run(() => LastResponse<LastAlbum>.CreateSuccessResponse(albumToScrobble)));
 
       IEnumerable<Scrobble> actual = null;
