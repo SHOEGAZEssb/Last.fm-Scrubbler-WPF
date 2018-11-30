@@ -35,7 +35,7 @@
         <ColumnDefinition Width="Auto"/>
       </Grid.ColumnDefinitions>
 
-      <Button x:Name="OK" Grid.Column="0" Content="OK"/>
+      <Button x:Name="OK" Grid.Column="0" Content="Confirm"/>
       <Button x:Name="Cancel" Grid.Column="2" Content="Cancel"/>
       <Button x:Name="LoadDefaults" Grid.Column="4" Content="Restore Defaults"/>
     </Grid>
