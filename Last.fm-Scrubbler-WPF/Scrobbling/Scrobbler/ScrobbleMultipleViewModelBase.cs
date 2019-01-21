@@ -146,16 +146,14 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <param name="state">State to set.</param>
     protected void SetToScrobbleState(IEnumerable<T> toSet, bool state)
     {
-      Parallel.ForEach(toSet, s =>
+      Parallel.ForEach(toSet.Take(toSet.Count() - 1), s =>
       {
         s.UpdateToScrobbleSilent(state);
       });
 
-      NotifyCanProperties();
-      // todo: this is a workaround for the virtualization problem occurring
-      // with huge csv files.
-      ICollectionView view = CollectionViewSource.GetDefaultView(Scrobbles);
-      view.Refresh();
+      // set last one manually to trigger the event
+      toSet.Last().ToScrobble = state;
+      UpdateView();
     }
 
     /// <summary>
@@ -165,16 +163,14 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <param name="state">State to set.</param>
     protected void SetIsSelectedState(IEnumerable<T> toSet, bool state)
     {
-      Parallel.ForEach(toSet, s =>
+      Parallel.ForEach(toSet.Take(toSet.Count() - 1), s =>
       {
         s.UpdateIsSelectedSilent(state);
       });
 
-      NotifyCanProperties();
-      // todo: this is a workaround for the virtualization problem occurring
-      // with huge csv files.
-      ICollectionView view = CollectionViewSource.GetDefaultView(Scrobbles);
-      view.Refresh();
+      // set last one manually to trigger the event
+      toSet.Last().ToScrobble = state;
+      UpdateView();
     }
 
     /// <summary>
@@ -190,6 +186,19 @@ namespace Scrubbler.Scrobbling.Scrobbler
       NotifyOfPropertyChange(() => CanUncheckSelected);
       NotifyOfPropertyChange(() => ToScrobbleCount);
       NotifyOfPropertyChange(() => SelectedCount);
+    }
+
+    /// <summary>
+    /// Notifies the ui of property changes
+    /// and manually refreshes it.
+    /// </summary>
+    private void UpdateView()
+    {
+      NotifyCanProperties();
+      // todo: this is a workaround for the virtualization problem occurring
+      // with huge csv files.
+      ICollectionView view = CollectionViewSource.GetDefaultView(Scrobbles);
+      view.Refresh();
     }
 
     /// <summary>
