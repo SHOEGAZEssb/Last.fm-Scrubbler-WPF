@@ -25,12 +25,15 @@ namespace Scrubbler.Scrobbling.Data
     /// </summary>
     public bool ToScrobble
     {
-      get { return _toScrobble; }
+      get => _toScrobble;
       set
       {
-        _toScrobble = value;
-        NotifyOfPropertyChange();
-        ToScrobbleChanged?.Invoke(this, EventArgs.Empty);
+        if (ToScrobble != value)
+        {
+          _toScrobble = value;
+          NotifyOfPropertyChange();
+          ToScrobbleChanged?.Invoke(this, EventArgs.Empty);
+        }
       }
     }
     private bool _toScrobble;
@@ -40,12 +43,15 @@ namespace Scrubbler.Scrobbling.Data
     /// </summary>
     public bool IsSelected
     {
-      get { return _isSelected; }
+      get => _isSelected;
       set
       {
-        _isSelected = value;
-        NotifyOfPropertyChange();
-        IsSelectedChanged?.Invoke(this, EventArgs.Empty);
+        if (IsSelected != value)
+        {
+          _isSelected = value;
+          NotifyOfPropertyChange();
+          IsSelectedChanged?.Invoke(this, EventArgs.Empty);
+        }
       }
     }
     private bool _isSelected;

@@ -1,4 +1,6 @@
 ﻿using Caliburn.Micro;
+using DiscogsClient;
+using DiscogsClient.Data.Query;
 using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Api.Helpers;
@@ -23,6 +25,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// Search Last.fm.
     /// </summary>
     LastFm,
+
+    /// <summary>
+    /// Search Discogs.com
+    /// </summary>
+    Discogs
   }
 
   /// <summary>
@@ -136,6 +143,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     private IAlbumApi _lastfmAlbumAPI;
 
+    private IDiscogsDataBaseClient _discogsClient;
+
     /// <summary>
     /// Conductor used for view switching.
     /// </summary>
@@ -161,11 +170,13 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="lastfmArtistAPI">Last.fm artist api used to search for artists.</param>
     /// <param name="lastfmAlbumAPI">Last.fm album api used to search for albums.</param>
-    public DatabaseScrobbleViewModel(IExtendedWindowManager windowManager, IArtistApi lastfmArtistAPI, IAlbumApi lastfmAlbumAPI)
+    /// <param name="discogsClient">Client used to interact with Discogs.com</param>
+    public DatabaseScrobbleViewModel(IExtendedWindowManager windowManager, IArtistApi lastfmArtistAPI, IAlbumApi lastfmAlbumAPI, IDiscogsDataBaseClient discogsClient)
       : base(windowManager, "Database Scrobbler")
     {
       _lastfmArtistAPI = lastfmArtistAPI;
       _lastfmAlbumAPI = lastfmAlbumAPI;
+      _discogsClient = discogsClient ?? throw new ArgumentNullException(nameof(discogsClient));
       _conductor = new Conductor<IScreen>();
       _conductor.ActivationProcessed += _conductor_ActivationProcessed;
       DatabaseToSearch = Database.LastFm;
@@ -210,6 +221,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
         IEnumerable<Artist> fetchedArtists = new Artist[0];
         if (DatabaseToSearch == Database.LastFm)
           fetchedArtists = await SearchArtistLastFm();
+        else if (DatabaseToSearch == Database.Discogs)
+          fetchedArtists = await SearchArtistDiscogs();
 
         if (fetchedArtists.Count() != 0)
         {
@@ -246,6 +259,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
         return response.Content.Select(a => new Artist(a));
       else
         throw new Exception(response.Status.ToString());
+    }
+
+    private async Task<IEnumerable<Artist>> SearchArtistDiscogs()
+    {
+      var result = await Task.Run(() => _discogsClient.SearchAsEnumerable(new DiscogsSearch() { artist = SearchText }));
+      return result.Select(i => new Artist(i.title, "", null));
     }
 
     /// <summary>
