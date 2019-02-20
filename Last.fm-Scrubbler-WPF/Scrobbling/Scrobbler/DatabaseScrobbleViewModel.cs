@@ -23,6 +23,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// Search Last.fm.
     /// </summary>
     LastFm,
+
+    /// <summary>
+    /// search musicbrainz.org
+    /// </summary>
+    MusicBrainz
   }
 
   /// <summary>
@@ -210,6 +215,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
         IEnumerable<Artist> fetchedArtists = new Artist[0];
         if (DatabaseToSearch == Database.LastFm)
           fetchedArtists = await SearchArtistLastFm();
+        else if (DatabaseToSearch == Database.MusicBrainz)
+          fetchedArtists = await SearchArtistMusicBrainz();
 
         if (fetchedArtists.Count() != 0)
         {
@@ -248,6 +255,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
         throw new Exception(response.Status.ToString());
     }
 
+    private async Task<IEnumerable<Artist>> SearchArtistMusicBrainz()
+    {
+      var found = await Hqub.MusicBrainz.API.Entities.Artist.SearchAsync(SearchText, MaxResults);
+      return found.Select(i => new Artist(i.Name, i.Id, null));
+    }
+
     /// <summary>
     /// Searches for releases with the entered <see cref="SearchText"/>.
     /// </summary>
@@ -261,6 +274,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
         IEnumerable<Release> releases = new Release[0];
         if (DatabaseToSearch == Database.LastFm)
           releases = await SearchReleaseLastFm();
+        else if (DatabaseToSearch == Database.MusicBrainz)
+          releases = await SearchReleaseMusicBrainz();
 
         if (releases.Count() != 0)
         {
@@ -290,6 +305,13 @@ namespace Scrubbler.Scrobbling.Scrobbler
         throw new Exception(response.Status.ToString());
     }
 
+    private async Task<IEnumerable<Release>> SearchReleaseMusicBrainz()
+    {
+      var found = await Hqub.MusicBrainz.API.Entities.Release.SearchAsync(SearchText, MaxResults);
+      return found.Select(i => new Release(i.Title, i.Credits.FirstOrDefault().Artist.Name, i.Id,
+                                           i.CoverArtArchive?.Front ?? false ? GetMusicBrainzCoverArtUri(i.Id) : null));
+    }
+
     /// <summary>
     /// Fetches the release list of the clicked artist.
     /// </summary>
@@ -309,6 +331,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
           IEnumerable<Release> releases = new Release[0];
           if (DatabaseToSearch == Database.LastFm)
             releases = await ArtistClickedLastFm(artist);
+          else if(DatabaseToSearch == Database.MusicBrainz)
+
 
           if (releases.Count() != 0)
           {
@@ -373,6 +397,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
         return response.Content.Select(r => new Release(r));
       else
         throw new Exception(response.Status.ToString());
+    }
+
+    private async Task<IEnumerable<Release>> ArtistClickedMusicBrainz(Artist artist)
+    {
+      var a = await Hqub.MusicBrainz.API.Entities.Artist.GetAsync(artist.Mbid);
     }
 
     /// <summary>
@@ -505,6 +534,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
     public void BackFromTrackResult()
     {
       Scrobbles.Clear();
+    }
+
+    private Uri GetMusicBrainzCoverArtUri(string releaseId)
+    {
+      string url = "https://coverartarchive.org/release/" + releaseId + "/front-250.jpg";
+      return new Uri(url, UriKind.RelativeOrAbsolute);
     }
 
     #region IConductor Implementation
