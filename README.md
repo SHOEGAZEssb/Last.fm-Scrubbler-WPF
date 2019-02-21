@@ -25,7 +25,6 @@ This tool will always be free, but if it was helpful to you, consider donating t
 - [File Scrobbling](#file-scrobbling)
 - [Media Player Database Scrobbling](#media-player-database-scrobbling)
 - [iTunes Scrobbling](#itunes-scrobbling)
-- [Spotify Desktop Scrobbling](#spotify-desktop-scrobbling)
 - [Setlist.fm Scrobbling](#setlistfm-scrobbling)
 
 **Extra Functions**
@@ -45,7 +44,7 @@ Allows you to fetch recent scrobbles of any last.fm user and scrobble them to yo
 ![FriendScrobble](https://i.imgur.com/UdgKIDT.png)
 
 ### Database Scrobbling
-Search Last.fm for artists and albums and scrobble one or more tracks from it.
+Search Last.fm or musicbrainz for artists and albums and scrobble one or more tracks from it.
 
 ![ManualScrobble Artist Search](https://i.imgur.com/quuzcDw.png)
 
@@ -105,12 +104,6 @@ Once you click "Scrobble", all selected songs will be scrobbled to your last.fm 
 This basically works like the normal Last.fm desktop app. Once you connected to iTunes a timer will measure how long you listened to that song. If you play 50% of the track (tracks under 30 seconds will work), it will be scrobbled. The ProgressBar on the bottom indicates when the track will be scrobbled.
 
 ![iTunes Scrobbling](https://i.imgur.com/cxMIrvl.png)
-
-### Spotify Desktop Scrobbling
-With this you can scrobble a local desktop client just like iTunes. Scrobbling songs shorter than 30 seconds will work.
-Important note: scrobblings songs on repeat does NOT work currently.
-
-![Spotify Desktop Scrobbling](https://i.imgur.com/m8uk7hB.png)
 
 ### SetlistFM Scrobbling
 This feature allows you to search for artists on [Setlist.fm](https://setlist.fm) and scrobble their live sets. The search is still very basic. 
