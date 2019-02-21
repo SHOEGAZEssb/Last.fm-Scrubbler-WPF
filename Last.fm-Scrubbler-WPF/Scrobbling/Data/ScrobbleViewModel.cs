@@ -13,22 +13,60 @@ namespace Scrubbler.Scrobbling.Data
     /// <summary>
     /// Name of the artist.
     /// </summary>
-    public string ArtistName => _scrobble.ArtistName;
+    public string ArtistName
+    {
+      get => _scrobble.ArtistName;
+      set
+      {
+        if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
+          return;
+
+        _scrobble.ArtistName = value;
+        NotifyOfPropertyChange();
+      }
+    }
 
     /// <summary>
     /// Name of the track.
     /// </summary>
-    public string TrackName => _scrobble.TrackName;
+    public string TrackName
+    {
+      get => _scrobble.TrackName;
+      set
+      {
+        if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
+          return;
+
+        _scrobble.TrackName = value;
+        NotifyOfPropertyChange();
+      }
+    }
 
     /// <summary>
     /// Name of the album.
     /// </summary>
-    public string AlbumName => _scrobble.AlbumName;
+    public string AlbumName
+    {
+      get => _scrobble.AlbumName;
+      set
+      {
+        _scrobble.AlbumName = value;
+        NotifyOfPropertyChange();
+      }
+    }
 
     /// <summary>
     /// Name of the album artist.
     /// </summary>
-    public string AlbumArtist => _scrobble.AlbumArtist;
+    public string AlbumArtist
+    {
+      get => _scrobble.AlbumArtist;
+      set
+      {
+        _scrobble.AlbumArtist = value;
+        NotifyOfPropertyChange();
+      }
+    }
 
     /// <summary>
     /// Length of this track.

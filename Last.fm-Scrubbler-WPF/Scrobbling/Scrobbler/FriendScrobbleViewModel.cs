@@ -130,7 +130,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       List<Scrobble> scrobbles = new List<Scrobble>();
       foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
       {
-        scrobbles.Add(new Scrobble(vm.Track.ArtistName, vm.Track.AlbumName, vm.Track.Name, vm.Track.TimePlayed.Value.LocalDateTime.AddSeconds(1)) { Duration = vm.Track.Duration });
+        scrobbles.Add(new Scrobble(vm.ArtistName, vm.AlbumName, vm.TrackName, vm.TimePlayed.AddSeconds(1)) { Duration = vm.Duration });
       }
 
       return scrobbles;
