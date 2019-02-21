@@ -258,7 +258,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     private async Task<IEnumerable<Artist>> SearchArtistMusicBrainz()
     {
       var found = await Hqub.MusicBrainz.API.Entities.Artist.SearchAsync(SearchText, MaxResults);
-      return found.Select(i => new Artist(i.Name, i.Id, null));
+      return found.Items.Select(i => new Artist(i.Name, i.Id, null));
     }
 
     /// <summary>
@@ -305,11 +305,15 @@ namespace Scrubbler.Scrobbling.Scrobbler
         throw new Exception(response.Status.ToString());
     }
 
+    /// <summary>
+    /// Searches for releases with the entered <see cref="SearchText"/>
+    /// on musicbrainz.org
+    /// </summary>
+    /// <returns></returns>
     private async Task<IEnumerable<Release>> SearchReleaseMusicBrainz()
     {
-      var found = await Hqub.MusicBrainz.API.Entities.Release.SearchAsync(SearchText, MaxResults);
-      return found.Select(i => new Release(i.Title, i.Credits.FirstOrDefault().Artist.Name, i.Id,
-                                           i.CoverArtArchive?.Front ?? false ? GetMusicBrainzCoverArtUri(i.Id) : null));
+      var found = await Hqub.MusicBrainz.API.Entities.ReleaseGroup.SearchAsync(SearchText, MaxResults);
+      return found.Items.Select(i => new Release(i));
     }
 
     /// <summary>
@@ -331,8 +335,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
           IEnumerable<Release> releases = new Release[0];
           if (DatabaseToSearch == Database.LastFm)
             releases = await ArtistClickedLastFm(artist);
-          else if(DatabaseToSearch == Database.MusicBrainz)
-
+          else if (DatabaseToSearch == Database.MusicBrainz)
+            releases = await ArtistClickedMusicBrainz(artist);
 
           if (releases.Count() != 0)
           {
@@ -388,7 +392,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Fetches the release list of the clicked artist via Last.fm.
     /// </summary>
-    /// <param name="artist"></param>
+    /// <param name="artist">Artist to fetch releases of.</param>
     /// <returns>Task.</returns>
     private async Task<IEnumerable<Release>> ArtistClickedLastFm(Artist artist)
     {
@@ -399,9 +403,15 @@ namespace Scrubbler.Scrobbling.Scrobbler
         throw new Exception(response.Status.ToString());
     }
 
+    /// <summary>
+    /// Fetches the release list of the clicked artist via musicbrainz.org.
+    /// </summary>
+    /// <param name="artist">Artist to fetch releases of.</param>
+    /// <returns>Task.</returns>
     private async Task<IEnumerable<Release>> ArtistClickedMusicBrainz(Artist artist)
     {
-      var a = await Hqub.MusicBrainz.API.Entities.Artist.GetAsync(artist.Mbid);
+      var r = await Hqub.MusicBrainz.API.Entities.ReleaseGroup.BrowseAsync("artist", artist.Mbid, MaxResults, 0, "artist-credits");
+      return r.Items.Select(i => new Release(i));
     }
 
     /// <summary>
@@ -423,6 +433,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
           IEnumerable<Track> tracks = new Track[0];
           if (DatabaseToSearch == Database.LastFm)
             tracks = await FetchTracksLastFM(release);
+          else if (DatabaseToSearch == Database.MusicBrainz)
+            tracks = await FetchTracksMusicBrainz(release);
 
           foreach (var track in tracks)
           {
@@ -463,6 +475,18 @@ namespace Scrubbler.Scrobbling.Scrobbler
         return response.Content.Tracks.Select(t => new Track(t));
       else
         throw new Exception(response.Status.ToString());
+    }
+
+    /// <summary>
+    /// Fetches tracks of the given <paramref name="release"/> from musicbrainz.org.
+    /// </summary>
+    /// <param name="release">Release to get tracks for.</param>
+    /// <returns>Enumerable tracks of the given <paramref name="release"/>.</returns>
+    private async Task<IEnumerable<Track>> FetchTracksMusicBrainz(Release release)
+    {
+      var t = await Hqub.MusicBrainz.API.Entities.ReleaseGroup.GetAsync(release.Mbid, "releases");
+      var r = await Hqub.MusicBrainz.API.Entities.Release.GetAsync(t.Releases.First().Id, "media", "recordings");
+      return r.Media.First().Tracks.Select(i => new Track(i.Recording.Title, release.ArtistName, release.Name, release.Image));
     }
 
     /// <summary>
@@ -534,12 +558,6 @@ namespace Scrubbler.Scrobbling.Scrobbler
     public void BackFromTrackResult()
     {
       Scrobbles.Clear();
-    }
-
-    private Uri GetMusicBrainzCoverArtUri(string releaseId)
-    {
-      string url = "https://coverartarchive.org/release/" + releaseId + "/front-250.jpg";
-      return new Uri(url, UriKind.RelativeOrAbsolute);
     }
 
     #region IConductor Implementation

@@ -1,5 +1,6 @@
 ﻿using IF.Lastfm.Core.Objects;
 using System;
+using System.Linq;
 
 namespace Scrubbler.Scrobbling.Data
 {
@@ -55,6 +56,14 @@ namespace Scrubbler.Scrobbling.Data
     /// <param name="release">Release to get data from.</param>
     public Release(LastAlbum release)
       : this(release.Name, release.ArtistName, release.Mbid, release.Images?.Large)
+    { }
+
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="release">Release to get data from.</param>
+    public Release(Hqub.MusicBrainz.API.Entities.ReleaseGroup release)
+      : this(release.Title, release.Credits.First().Artist.Name, release.Id, null)
     { }
 
     #endregion Construction
