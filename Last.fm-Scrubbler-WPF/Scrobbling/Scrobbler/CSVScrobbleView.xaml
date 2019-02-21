@@ -76,28 +76,28 @@
           <GridViewColumn Header="Artist" scrub:GridViewSort.PropertyName="ArtistName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding ArtistName}"/>
+                <TextBox VerticalAlignment="Center" Text="{Binding ArtistName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
           <GridViewColumn Header="Album" scrub:GridViewSort.PropertyName="AlbumName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding AlbumName}"/>
+                <TextBox VerticalAlignment="Center" Text="{Binding AlbumName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
           <GridViewColumn Header="Track Title" scrub:GridViewSort.PropertyName="TrackName">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding TrackName}"/>
+                <TextBox VerticalAlignment="Center" Text="{Binding TrackName}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
           <GridViewColumn Header="Album Artist" scrub:GridViewSort.PropertyName="AlbumArtist">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding AlbumArtist}"/>
+                <TextBox VerticalAlignment="Center" Text="{Binding AlbumArtist}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
