@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using Hqub.MusicBrainz.API.Entities;
+using System;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace Scrubbler
 {
@@ -14,5 +17,19 @@ namespace Scrubbler
     /// <param name="t">Task whose result to forget.</param>
     public static void Forget(this Task t)
     { }
+  }
+
+  static class MusicBrainzReleaseExtensions
+  {
+    public static Uri GetMusicBrainzCoverArtUri(this ReleaseGroup release)
+    {
+      if (release.Releases.First()?.CoverArtArchive?.Front ?? false)
+      {
+        string url = "https://coverartarchive.org/release/" + release.Id + "/front-250.jpg";
+        return new Uri(url, UriKind.RelativeOrAbsolute);
+      }
+
+      return null;
+    }
   }
 }

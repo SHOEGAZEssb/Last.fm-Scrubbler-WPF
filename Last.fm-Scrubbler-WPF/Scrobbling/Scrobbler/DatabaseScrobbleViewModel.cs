@@ -29,7 +29,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Search Discogs.com
     /// </summary>
-    Discogs
+    Discogs,
+
+    /// <summary>
+    /// search musicbrainz.org
+    /// </summary>
+    MusicBrainz
   }
 
   /// <summary>
@@ -223,6 +228,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
           fetchedArtists = await SearchArtistLastFm();
         else if (DatabaseToSearch == Database.Discogs)
           fetchedArtists = await SearchArtistDiscogs();
+        else if (DatabaseToSearch == Database.MusicBrainz)
+          fetchedArtists = await SearchArtistMusicBrainz();
 
         if (fetchedArtists.Count() != 0)
         {
@@ -267,6 +274,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
       return result.Select(i => new Artist(i.title, "", null));
     }
 
+    private async Task<IEnumerable<Artist>> SearchArtistMusicBrainz()
+    {
+      var found = await Hqub.MusicBrainz.API.Entities.Artist.SearchAsync(SearchText, MaxResults);
+      return found.Items.Select(i => new Artist(i.Name, i.Id, null));
+    }
+
     /// <summary>
     /// Searches for releases with the entered <see cref="SearchText"/>.
     /// </summary>
@@ -280,6 +293,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
         IEnumerable<Release> releases = new Release[0];
         if (DatabaseToSearch == Database.LastFm)
           releases = await SearchReleaseLastFm();
+        else if (DatabaseToSearch == Database.MusicBrainz)
+          releases = await SearchReleaseMusicBrainz();
 
         if (releases.Count() != 0)
         {
@@ -310,6 +325,17 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
 
     /// <summary>
+    /// Searches for releases with the entered <see cref="SearchText"/>
+    /// on musicbrainz.org
+    /// </summary>
+    /// <returns></returns>
+    private async Task<IEnumerable<Release>> SearchReleaseMusicBrainz()
+    {
+      var found = await Hqub.MusicBrainz.API.Entities.ReleaseGroup.SearchAsync(SearchText, MaxResults);
+      return found.Items.Select(i => new Release(i));
+    }
+
+    /// <summary>
     /// Fetches the release list of the clicked artist.
     /// </summary>
     /// <param name="sender">Clicked artist as <see cref="LastArtist"/>.</param>
@@ -328,6 +354,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
           IEnumerable<Release> releases = new Release[0];
           if (DatabaseToSearch == Database.LastFm)
             releases = await ArtistClickedLastFm(artist);
+          else if (DatabaseToSearch == Database.MusicBrainz)
+            releases = await ArtistClickedMusicBrainz(artist);
 
           if (releases.Count() != 0)
           {
@@ -383,7 +411,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Fetches the release list of the clicked artist via Last.fm.
     /// </summary>
-    /// <param name="artist"></param>
+    /// <param name="artist">Artist to fetch releases of.</param>
     /// <returns>Task.</returns>
     private async Task<IEnumerable<Release>> ArtistClickedLastFm(Artist artist)
     {
@@ -392,6 +420,17 @@ namespace Scrubbler.Scrobbling.Scrobbler
         return response.Content.Select(r => new Release(r));
       else
         throw new Exception(response.Status.ToString());
+    }
+
+    /// <summary>
+    /// Fetches the release list of the clicked artist via musicbrainz.org.
+    /// </summary>
+    /// <param name="artist">Artist to fetch releases of.</param>
+    /// <returns>Task.</returns>
+    private async Task<IEnumerable<Release>> ArtistClickedMusicBrainz(Artist artist)
+    {
+      var r = await Hqub.MusicBrainz.API.Entities.ReleaseGroup.BrowseAsync("artist", artist.Mbid, MaxResults, 0, "artist-credits");
+      return r.Items.Select(i => new Release(i));
     }
 
     /// <summary>
@@ -413,6 +452,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
           IEnumerable<Track> tracks = new Track[0];
           if (DatabaseToSearch == Database.LastFm)
             tracks = await FetchTracksLastFM(release);
+          else if (DatabaseToSearch == Database.MusicBrainz)
+            tracks = await FetchTracksMusicBrainz(release);
 
           foreach (var track in tracks)
           {
@@ -453,6 +494,18 @@ namespace Scrubbler.Scrobbling.Scrobbler
         return response.Content.Tracks.Select(t => new Track(t));
       else
         throw new Exception(response.Status.ToString());
+    }
+
+    /// <summary>
+    /// Fetches tracks of the given <paramref name="release"/> from musicbrainz.org.
+    /// </summary>
+    /// <param name="release">Release to get tracks for.</param>
+    /// <returns>Enumerable tracks of the given <paramref name="release"/>.</returns>
+    private async Task<IEnumerable<Track>> FetchTracksMusicBrainz(Release release)
+    {
+      var t = await Hqub.MusicBrainz.API.Entities.ReleaseGroup.GetAsync(release.Mbid, "releases");
+      var r = await Hqub.MusicBrainz.API.Entities.Release.GetAsync(t.Releases.First().Id, "media", "recordings");
+      return r.Media.First().Tracks.Select(i => new Track(i.Recording.Title, release.ArtistName, release.Name, release.Image));
     }
 
     /// <summary>

@@ -13,22 +13,22 @@ namespace Scrubbler.Scrobbling.Data
     /// <summary>
     /// Name of this track.
     /// </summary>
-    public string Name { get; private set; }
+    public string Name { get; set; }
 
     /// <summary>
     /// Name of the artist of this track.
     /// </summary>
-    public string ArtistName { get; private set; }
+    public string ArtistName { get; set; }
 
     /// <summary>
     /// Name of the album this track is on.
     /// </summary>
-    public string AlbumName { get; private set; }
+    public string AlbumName { get; set; }
 
     /// <summary>
     /// Cover image of this track.
     /// </summary>
-    public Uri Image { get; private set; }
+    public Uri Image { get; set; }
 
     #endregion Properties
 

@@ -16,7 +16,7 @@ namespace Scrubbler.Scrobbling.Data
     public string TrackName
     {
       get { return _trackName; }
-      private set
+      set
       {
         if (value == string.Empty)
           throw new ArgumentException("TrackName can't be empty.");
@@ -32,7 +32,7 @@ namespace Scrubbler.Scrobbling.Data
     public string ArtistName
     {
       get { return _artistName; }
-      private set
+      set
       {
         if (value == string.Empty)
           throw new ArgumentException("ArtistName can't be empty.");
@@ -45,12 +45,12 @@ namespace Scrubbler.Scrobbling.Data
     /// <summary>
     /// Name of the album.
     /// </summary>
-    public string AlbumName { get; private set; }
+    public string AlbumName { get; set; }
 
     /// <summary>
     /// Name of the album artist.
     /// </summary>
-    public string AlbumArtist { get; private set; }
+    public string AlbumArtist { get; set; }
 
     /// <summary>
     /// Length of this track.

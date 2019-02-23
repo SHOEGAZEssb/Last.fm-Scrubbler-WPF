@@ -12,29 +12,30 @@ namespace Scrubbler.Scrobbling.Data
     #region Properties
 
     /// <summary>
-    /// Gets the fetched scrobble.
-    /// </summary>
-    public LastTrack Track
-    {
-      get { return _scrobble; }
-      private set
-      {
-        _scrobble = value;
-        NotifyOfPropertyChange();
-        NotifyOfPropertyChange(() => IsEnabled);
-      }
-    }
-    private LastTrack _scrobble;
-
-    /// <summary>
     /// Gets if the "Scrobble?" CheckBox is enabled.
     /// </summary>
-    public bool IsEnabled
-    {
-      get { return Track.TimePlayed.Value.LocalDateTime > DateTime.Now.Subtract(TimeSpan.FromDays(14)); }
-    }
+    public bool IsEnabled => TimePlayed > DateTime.Now.Subtract(TimeSpan.FromDays(14));
+
+    /// <summary>
+    /// The time this friend track was played.
+    /// </summary>
+    public DateTime TimePlayed => _track.TimePlayed.Value.LocalDateTime;
+
+    /// <summary>
+    /// The image of the track.
+    /// </summary>
+    public Uri Image => _track.Images.Largest;
 
     #endregion Properties
+
+    #region Member
+
+    /// <summary>
+    /// The fetched scrobble.
+    /// </summary>
+    private LastTrack _track;
+
+    #endregion Member
 
     /// <summary>
     /// Constructor.
@@ -43,7 +44,7 @@ namespace Scrubbler.Scrobbling.Data
     public FetchedFriendTrackViewModel(LastTrack scrobble)
       : base(new ScrobbleBase(scrobble.Name, scrobble.ArtistName, scrobble.AlbumName, "", scrobble.Duration))
     {
-      Track = scrobble;
+      _track = scrobble;
     }
   }
 }
