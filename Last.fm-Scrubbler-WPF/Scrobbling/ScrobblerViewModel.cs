@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using DiscogsClient;
 using Scrubbler.Helper;
 using Scrubbler.Scrobbling.Scrobbler;
 using System;
@@ -27,10 +28,12 @@ namespace Scrubbler.Scrobbling
     /// <param name="localFileFactory">Factory used to create <see cref="Scrobbling.Data.ILocalFile"/>s.</param>
     /// <param name="fileOperator">FileOperator used to interface with files.</param>
     /// <param name="lastFMClient">Last.fm client.</param>
-    public ScrobblerViewModel(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory, IFileOperator fileOperator, ILastFMClient lastFMClient)
+    /// <param name="discogsClient">Client used to interact with Discogs.com</param>
+    public ScrobblerViewModel(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory, IFileOperator fileOperator, ILastFMClient lastFMClient,
+                              IDiscogsDataBaseClient discogsClient)
     {
       DisplayName = "Scrobbler";
-      CreateViewModels(windowManager, localFileFactory, fileOperator, lastFMClient);
+      CreateViewModels(windowManager, localFileFactory, fileOperator, lastFMClient, discogsClient);
     }
 
     public void UpdateScrobblers(IUserScrobbler scrobbler)
@@ -45,16 +48,18 @@ namespace Scrubbler.Scrobbling
     /// Creates the ViewModels.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    /// <param name="localFileFactory">Factory used to create <see cref="Scrobbling.Data.ILocalFile"/>s.</param>
+    /// <param name="localFileFactory">Factory used to create <see cref="Data.ILocalFile"/>s.</param>
     /// <param name="fileOperator">FileOperator used to interface with files.</param>
     /// <param name="lastFMClient">Last.fm client.</param>
-    private void CreateViewModels(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory, IFileOperator fileOperator, ILastFMClient lastFMClient)
+    /// <param name="discogsClient">Client used to interact with Discogs.com</param>
+    private void CreateViewModels(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory, IFileOperator fileOperator, ILastFMClient lastFMClient,
+                                  IDiscogsDataBaseClient discogsClient)
     {
       var manualScrobbleViewModel = new ManualScrobbleViewModel(windowManager);
       manualScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
       var friendScrobbleViewModel = new FriendScrobbleViewModel(windowManager, lastFMClient.User);
       friendScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
-      var databaseScrobbleViewModel = new DatabaseScrobbleViewModel(windowManager, lastFMClient.Artist, lastFMClient.Album);
+      var databaseScrobbleViewModel = new DatabaseScrobbleViewModel(windowManager, lastFMClient.Artist, lastFMClient.Album, discogsClient);
       databaseScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
       var csvScrobbleViewModel = new CSVScrobbleViewModel(windowManager, new CSVTextFieldParserFactory(), fileOperator);
       csvScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;

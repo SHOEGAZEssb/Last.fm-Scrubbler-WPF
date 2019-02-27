@@ -1,4 +1,6 @@
 ﻿using Caliburn.Micro;
+using DiscogsClient;
+using DiscogsClient.Data.Query;
 using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Api.Helpers;
@@ -23,6 +25,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// Search Last.fm.
     /// </summary>
     LastFm,
+
+    /// <summary>
+    /// Search Discogs.com
+    /// </summary>
+    Discogs,
 
     /// <summary>
     /// search musicbrainz.org
@@ -141,6 +148,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     private IAlbumApi _lastfmAlbumAPI;
 
+    private IDiscogsDataBaseClient _discogsClient;
+
     /// <summary>
     /// Conductor used for view switching.
     /// </summary>
@@ -166,11 +175,13 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="lastfmArtistAPI">Last.fm artist api used to search for artists.</param>
     /// <param name="lastfmAlbumAPI">Last.fm album api used to search for albums.</param>
-    public DatabaseScrobbleViewModel(IExtendedWindowManager windowManager, IArtistApi lastfmArtistAPI, IAlbumApi lastfmAlbumAPI)
+    /// <param name="discogsClient">Client used to interact with Discogs.com</param>
+    public DatabaseScrobbleViewModel(IExtendedWindowManager windowManager, IArtistApi lastfmArtistAPI, IAlbumApi lastfmAlbumAPI, IDiscogsDataBaseClient discogsClient)
       : base(windowManager, "Database Scrobbler")
     {
       _lastfmArtistAPI = lastfmArtistAPI;
       _lastfmAlbumAPI = lastfmAlbumAPI;
+      _discogsClient = discogsClient ?? throw new ArgumentNullException(nameof(discogsClient));
       _conductor = new Conductor<IScreen>();
       _conductor.ActivationProcessed += _conductor_ActivationProcessed;
       DatabaseToSearch = Database.LastFm;
@@ -215,6 +226,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
         IEnumerable<Artist> fetchedArtists = new Artist[0];
         if (DatabaseToSearch == Database.LastFm)
           fetchedArtists = await SearchArtistLastFm();
+        else if (DatabaseToSearch == Database.Discogs)
+          fetchedArtists = await SearchArtistDiscogs();
         else if (DatabaseToSearch == Database.MusicBrainz)
           fetchedArtists = await SearchArtistMusicBrainz();
 
@@ -255,6 +268,28 @@ namespace Scrubbler.Scrobbling.Scrobbler
         throw new Exception(response.Status.ToString());
     }
 
+    /// <summary>
+    /// Searches for artists with the entered <see cref="SearchText"/>
+    /// on discogs.com.
+    /// </summary>
+    /// <returns>Task.</returns>
+    private async Task<IEnumerable<Artist>> SearchArtistDiscogs()
+    {
+      var result = _discogsClient.SearchAsEnumerable(new DiscogsSearch() { query = SearchText, type = DiscogsEntityType.artist }, MaxResults);
+      var artists = new List<Artist>();
+      await Task.Run(() =>
+      {
+        foreach (var a in result)
+          artists.Add(new Artist(a.title, a.id.ToString(), string.IsNullOrEmpty(a.thumb) ? null : new Uri(a.thumb)));
+      });
+      return artists;
+    }
+
+    /// <summary>
+    /// Searches for artists with the entered <see cref="SearchText"/>
+    /// on musicbrainz.org.
+    /// </summary>
+    /// <returns>Task.</returns>
     private async Task<IEnumerable<Artist>> SearchArtistMusicBrainz()
     {
       var found = await Hqub.MusicBrainz.API.Entities.Artist.SearchAsync(SearchText, MaxResults);
@@ -274,6 +309,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
         IEnumerable<Release> releases = new Release[0];
         if (DatabaseToSearch == Database.LastFm)
           releases = await SearchReleaseLastFm();
+        else if (DatabaseToSearch == Database.Discogs)
+          releases = await SearchReleaseDiscogs();
         else if (DatabaseToSearch == Database.MusicBrainz)
           releases = await SearchReleaseMusicBrainz();
 
@@ -307,6 +344,32 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
     /// <summary>
     /// Searches for releases with the entered <see cref="SearchText"/>
+    /// on discogs.com.
+    /// </summary>
+    /// <returns>Task.</returns>
+    private async Task<IEnumerable<Release>> SearchReleaseDiscogs()
+    {
+      var searchResults = _discogsClient.SearchAsEnumerable(new DiscogsSearch() { query = SearchText, type = DiscogsEntityType.master }, MaxResults);
+      var releases = new List<Release>();
+      await Task.Run(async () =>
+      {
+        foreach (var r in searchResults)
+        {
+          int id = r.id;
+          if (r.type == DiscogsEntityType.master)
+          {
+            var rel = await _discogsClient.GetMasterAsync(r.id);
+            if (rel.main_release != 0)
+              id = rel.main_release;
+          }
+          releases.Add(new Release(r.title, null, id.ToString(), string.IsNullOrEmpty(r.thumb) ? null : new Uri(r.thumb)));
+        }
+      });
+      return releases;
+    }
+
+    /// <summary>
+    /// Searches for releases with the entered <see cref="SearchText"/>
     /// on musicbrainz.org
     /// </summary>
     /// <returns></returns>
@@ -335,6 +398,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
           IEnumerable<Release> releases = new Release[0];
           if (DatabaseToSearch == Database.LastFm)
             releases = await ArtistClickedLastFm(artist);
+          else if (DatabaseToSearch == Database.Discogs)
+            releases = await ArtistClickedDiscogs(artist);
           else if (DatabaseToSearch == Database.MusicBrainz)
             releases = await ArtistClickedMusicBrainz(artist);
 
@@ -404,6 +469,24 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
 
     /// <summary>
+    /// Fetches the release list of the clicked artist via discogs.
+    /// </summary>
+    /// <param name="artist">Artist to fetch releases of.</param>
+    /// <returns>Task.</returns>
+    private async Task<IEnumerable<Release>> ArtistClickedDiscogs(Artist artist)
+    {
+      var a = _discogsClient.GetArtistReleaseAsEnumerable(int.Parse(artist.Mbid), null, MaxResults);
+      var releases = new List<Release>();
+      await Task.Run(() =>
+      {
+        foreach (var r in a)
+          releases.Add(new Release(r.title, r.artist, (r.type == "master" && r.main_release != 0) ? r.main_release.ToString() : r.id.ToString(), string.IsNullOrEmpty(r.thumb) ? null : new Uri(r.thumb)));
+      });
+
+      return releases;
+    }
+
+    /// <summary>
     /// Fetches the release list of the clicked artist via musicbrainz.org.
     /// </summary>
     /// <param name="artist">Artist to fetch releases of.</param>
@@ -433,6 +516,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
           IEnumerable<Track> tracks = new Track[0];
           if (DatabaseToSearch == Database.LastFm)
             tracks = await FetchTracksLastFM(release);
+          else if (DatabaseToSearch == Database.Discogs)
+            tracks = await FetchTracksDiscogs(release);
           else if (DatabaseToSearch == Database.MusicBrainz)
             tracks = await FetchTracksMusicBrainz(release);
 
@@ -475,6 +560,17 @@ namespace Scrubbler.Scrobbling.Scrobbler
         return response.Content.Tracks.Select(t => new Track(t));
       else
         throw new Exception(response.Status.ToString());
+    }
+
+    /// <summary>
+    /// Fetches tracks of the given <paramref name="release"/> from discogs.com.
+    /// </summary>
+    /// <param name="release">Release to get tracks for.</param>
+    /// <returns>Enumerable tracks of the given <paramref name="release"/>.</returns>
+    private async Task<IEnumerable<Track>> FetchTracksDiscogs(Release release)
+    {
+      var r = await _discogsClient.GetReleaseAsync(int.Parse(release.Mbid));
+      return r.tracklist.Select(i => new Track(i.title, i.artists?.FirstOrDefault()?.name ?? r.artists.First().name, r.title, string.IsNullOrEmpty(r.thumb) ? null : new Uri(r.thumb)));
     }
 
     /// <summary>

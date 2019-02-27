@@ -80,7 +80,7 @@ namespace Scrubbler.Scrobbling.Data
     /// <summary>
     /// The actual scrobble.
     /// </summary>
-    private ScrobbleBase _scrobble;
+    private readonly ScrobbleBase _scrobble;
 
     #endregion Member
 

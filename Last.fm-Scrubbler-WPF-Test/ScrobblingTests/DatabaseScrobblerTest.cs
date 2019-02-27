@@ -48,7 +48,7 @@ namespace Scrubbler.Test.ScrobblingTests
       {
         // -3 minutes because that is the default if the song has no duration
         expectedScrobbles.Add(new Scrobble("TestArtist", "TestAlbum", "TestTrack", scrobbleTime.Subtract(TimeSpan.FromMinutes(i * 3))));
-      }      
+      }
 
       LastAlbum albumToScrobble = albums.First();
       albumToScrobble.Tracks = expectedScrobbles.ToLastTracks();
@@ -63,7 +63,7 @@ namespace Scrubbler.Test.ScrobblingTests
                                                                                   .Returns(Task.Run(() => new ScrobbleResponse()));
       scrobblerMock.Setup(u => u.IsAuthenticated).Returns(true);
 
-      var vm = new DatabaseScrobbleViewModel(windowManagerMock.Object, artistAPIMock.Object, albumAPIMock.Object)
+      var vm = new DatabaseScrobbleViewModel(windowManagerMock.Object, artistAPIMock.Object, albumAPIMock.Object, null)
       {
         DatabaseToSearch = Database.LastFm,
         Scrobbler = scrobblerMock.Object,
