@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Api;
+﻿using DiscogsClient;
+using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Api.Helpers;
 using IF.Lastfm.Core.Objects;
 using IF.Lastfm.Core.Scrobblers;
@@ -63,7 +64,9 @@ namespace Scrubbler.Test.ScrobblingTests
                                                                                   .Returns(Task.Run(() => new ScrobbleResponse()));
       scrobblerMock.Setup(u => u.IsAuthenticated).Returns(true);
 
-      var vm = new DatabaseScrobbleViewModel(windowManagerMock.Object, artistAPIMock.Object, albumAPIMock.Object, null)
+      var discocsClientMock = new Mock<IDiscogsDataBaseClient>(MockBehavior.Strict);
+
+      var vm = new DatabaseScrobbleViewModel(windowManagerMock.Object, artistAPIMock.Object, albumAPIMock.Object, discocsClientMock.Object)
       {
         DatabaseToSearch = Database.LastFm,
         Scrobbler = scrobblerMock.Object,
