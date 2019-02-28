@@ -44,7 +44,7 @@ Allows you to fetch recent scrobbles of any last.fm user and scrobble them to yo
 ![FriendScrobble](https://i.imgur.com/UdgKIDT.png)
 
 ### Database Scrobbling
-Search Last.fm or musicbrainz for artists and albums and scrobble one or more tracks from it.
+Search Last.fm, Discogs or MusicBrainz for artists and albums and scrobble one or more tracks from it.
 
 ![ManualScrobble Artist Search](https://i.imgur.com/quuzcDw.png)
 
