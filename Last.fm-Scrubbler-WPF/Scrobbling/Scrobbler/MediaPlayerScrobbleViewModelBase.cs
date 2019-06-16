@@ -418,7 +418,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="originalString">String to make url-conform.</param>
     /// <returns>Url-conform string.</returns>
-    private string GetUrlEncodedString(string originalString)
+    private static string GetUrlEncodedString(string originalString)
     {
       return HttpUtility.UrlEncode(originalString);
     }
