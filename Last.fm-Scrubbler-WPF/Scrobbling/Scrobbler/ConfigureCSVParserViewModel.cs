@@ -169,7 +169,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
       if (errors != string.Empty)
       {
-        if (MessageBox.Show("There are errors:\r" + errors + "\rAre you sure you want to save these values?", "Errors",
+        if (MessageBox.Show($"There are errors:\r{errors}\rAre you sure you want to save these values?", "Errors",
            MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
           return false;
       }

@@ -25,7 +25,7 @@ namespace Scrubbler
     {
       if (release.Releases.First()?.CoverArtArchive?.Front ?? false)
       {
-        string url = "https://coverartarchive.org/release/" + release.Id + "/front-250.jpg";
+        string url = $"https://coverartarchive.org/release/{release.Id}/front-250.jpg";
         return new Uri(url, UriKind.RelativeOrAbsolute);
       }
 

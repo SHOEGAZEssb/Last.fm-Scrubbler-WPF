@@ -182,7 +182,7 @@ namespace Scrubbler.Login
           ActiveUser = null;
 
         // remove xml file
-        _fileOperator.Delete(Path.Combine(USERSFOLDER, SelectedUser.Username) + ".xml");
+        _fileOperator.Delete($"{Path.Combine(USERSFOLDER, SelectedUser.Username)}.xml");
         AvailableUsers.Remove(SelectedUser);
       }
       catch (Exception ex)
@@ -275,7 +275,7 @@ namespace Scrubbler.Login
     /// <param name="user">User to serialize.</param>
     private void SerializeUser(User user)
     {
-      _userSerializer.Serialize(user, Path.Combine(USERSFOLDER, user.Username) + ".xml");
+      _userSerializer.Serialize(user, $"{Path.Combine(USERSFOLDER, user.Username)}.xml");
     }
 
     /// <summary>

@@ -199,10 +199,10 @@ namespace Scrubbler.Scrobbling.Scrobbler
               }
               catch (Exception ex)
               {
-                string errorString = "CSV line number: " + parser.LineNumber + ",";
+                string errorString = $"CSV line number: {parser.LineNumber},";
                 foreach (string s in fields)
                 {
-                  errorString += s + ",";
+                  errorString += $"{s},";
                 }
 
                 errorString += ex.Message;

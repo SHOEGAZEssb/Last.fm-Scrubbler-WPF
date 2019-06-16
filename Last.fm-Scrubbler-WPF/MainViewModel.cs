@@ -76,7 +76,7 @@ namespace Scrubbler
     /// <summary>
     /// The client used for all last.fm actions.
     /// </summary>
-    private ILastFMClient _client;
+    private readonly ILastFMClient _client;
 
     /// <summary>
     /// ViewModel managing all scrobble ViewModels.
@@ -91,12 +91,12 @@ namespace Scrubbler
     /// <summary>
     /// Window manager used to display dialogs etc.
     /// </summary>
-    private IExtendedWindowManager _windowManager;
+    private readonly IExtendedWindowManager _windowManager;
 
     /// <summary>
     /// Factory used for creating scrobblers.
     /// </summary>
-    private IScrobblerFactory _scrobblerFactory;
+    private readonly IScrobblerFactory _scrobblerFactory;
 
     /// <summary>
     /// FileOperator for interfacing with the hard disk.
@@ -234,7 +234,7 @@ namespace Scrubbler
       IAuthScrobbler cachingScrobbler;
       if (_client.Auth.UserSession != null)
       {
-        string dbFile = _client.Auth.UserSession.Username + ".db";
+        string dbFile = $"{_client.Auth.UserSession.Username}.db";
 
         try
         {

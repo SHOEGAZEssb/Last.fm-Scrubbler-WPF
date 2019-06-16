@@ -458,7 +458,7 @@ namespace Scrubbler.ExtraFunctions
       using (var w = new WebClient())
       {
         w.Proxy = null;
-        w.Headers.Add("Authorization", "Client-ID " + "80dfa34b8899ce5");
+        w.Headers.Add("Authorization", "Client-ID 80dfa34b8899ce5");
 
         var values = new NameValueCollection
           {
