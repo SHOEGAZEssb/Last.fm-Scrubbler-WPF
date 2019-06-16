@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
@@ -416,7 +417,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <returns>Url-conform string.</returns>
     private string GetUrlConformString(string originalString)
     {
-      return originalString.Replace(' ', '+');
+      return HttpUtility.UrlEncode(originalString);
     }
   }
 }
