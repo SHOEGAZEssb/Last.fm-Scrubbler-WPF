@@ -106,11 +106,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
         if (response.Success && response.Status == LastResponseStatus.Successful)
           OnStatusUpdated("Successfully scrobbled cached tracks");
         else
-          OnStatusUpdated(string.Format("Error scrobbling cached tracks: {0}", response.Status));
+          OnStatusUpdated($"Error scrobbling cached tracks: {response.Status}");
       }
       catch(Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while trying to scrobble cached tracks: {0}", ex.Message));
+        OnStatusUpdated($"Fatal error while trying to scrobble cached tracks: {ex.Message}");
       }
       finally
       {
@@ -129,12 +129,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
         EnableControls = false;
         OnStatusUpdated("Trying to get cached scrobbles...");
         Scrobbles = new ObservableCollection<Scrobble>(await Scrobbler.GetCachedAsync());
-        OnStatusUpdated(string.Format("Successfully got cached scrobbles ({0})", Scrobbles.Count));
+        OnStatusUpdated($"Successfully got cached scrobbles ({Scrobbles.Count})");
       }
       catch(Exception ex)
       {
         Scrobbles.Clear();
-        OnStatusUpdated(string.Format("Fatal error getting cached scrobbles: {0}", ex.Message));
+        OnStatusUpdated($"Fatal error getting cached scrobbles: {ex.Message}");
       }
       finally
       {

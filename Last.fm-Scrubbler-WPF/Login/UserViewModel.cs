@@ -107,27 +107,27 @@ namespace Scrubbler.Login
     /// <summary>
     /// WindowManager used to display dialogs.
     /// </summary>
-    private IExtendedWindowManager _windowManager;
+    private readonly IExtendedWindowManager _windowManager;
 
     /// <summary>
     /// FileOperator used to write to disk.
     /// </summary>
-    private IFileOperator _fileOperator;
+    private readonly IFileOperator _fileOperator;
 
     /// <summary>
     /// DirectoryOperator used to check and create directories.
     /// </summary>
-    private IDirectoryOperator _directoryOperator;
+    private readonly IDirectoryOperator _directoryOperator;
 
     /// <summary>
     /// Last.fm authentication object.
     /// </summary>
-    private ILastAuth _lastAuth;
+    private readonly ILastAuth _lastAuth;
 
     /// <summary>
     /// Serializer used to serialize <see cref="User"/>.
     /// </summary>
-    private ISerializer _userSerializer;
+    private readonly ISerializer _userSerializer;
 
     #endregion Member
 
@@ -240,7 +240,7 @@ namespace Scrubbler.Login
           }
           catch (Exception ex)
           {
-            Debug.WriteLine(string.Format("Error deserializing {0}: {1}", file, ex.Message));
+            Debug.WriteLine($"Error deserializing {file}: {ex.Message}");
           }
         }
       }
@@ -264,7 +264,7 @@ namespace Scrubbler.Login
         }
         catch (Exception ex)
         {
-          Debug.WriteLine(string.Format("Error serializing User {0}: {1}", usr.Username, ex.Message));
+          Debug.WriteLine($"Error serializing User {usr.Username}: {ex.Message}");
         }
       }
     }

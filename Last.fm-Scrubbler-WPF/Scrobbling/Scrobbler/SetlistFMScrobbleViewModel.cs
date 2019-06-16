@@ -152,7 +152,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Object used to communicate with the Setlist.fm api.
     /// </summary>
-    private SetlistFmApi.SetlistFmApi _setlistFMClient;
+    private readonly SetlistFmApi.SetlistFmApi _setlistFMClient;
 
     /// <summary>
     /// The last clicked <see cref="Artist"/>.
@@ -162,12 +162,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Last.fm API object for getting artist information.
     /// </summary>
-    private IArtistApi _artistAPI;
+    private readonly IArtistApi _artistAPI;
 
     /// <summary>
     /// Conductor used for view switching.
     /// </summary>
-    private Conductor<IScreen> _conductor;
+    private readonly Conductor<IScreen> _conductor;
 
     /// <summary>
     /// The last used artist result viewmodel.
@@ -217,7 +217,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       try
       {
         EnableControls = false;
-        OnStatusUpdated(string.Format("Searching for artist '{0}'", SearchText));
+        OnStatusUpdated($"Searching for artist '{SearchText}'");
         IEnumerable<Data.Artist> artists = await GetArtists();
 
         if (artists.Count() > 0)
@@ -238,7 +238,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while searching for artist '{0}': {1}", SearchText, ex.Message));
+        OnStatusUpdated($"Fatal error while searching for artist '{SearchText}': {ex.Message}");
       }
       finally
       {
@@ -296,7 +296,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         EnableControls = false;
         var clickedArtist = sender as Data.Artist;
         _lastClickedArtist = clickedArtist;
-        OnStatusUpdated(string.Format("Fetching setlists from artist '{0}'...", clickedArtist.Name));
+        OnStatusUpdated($"Fetching setlists from artist '{clickedArtist.Name}'...");
         IEnumerable<Setlist> setlists = await GetSetlists(clickedArtist);
 
         if (setlists.Count() > 0)
@@ -311,14 +311,14 @@ namespace Scrubbler.Scrobbling.Scrobbler
           _setlistResultVM.SetlistClicked += Setlist_Clicked;
 
           ActivateItem(_setlistResultVM);
-          OnStatusUpdated(string.Format("Successfully fetched setlists from artist '{0}'", clickedArtist.Name));
+          OnStatusUpdated($"Successfully fetched setlists from artist '{clickedArtist.Name}'");
         }
         else
-          OnStatusUpdated(string.Format("No setlists found for artist '{0}'", clickedArtist.Name));
+          OnStatusUpdated($"No setlists found for artist '{clickedArtist.Name}'");
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while fetching setlists: {0}", ex.Message));
+        OnStatusUpdated($"Fatal error while fetching setlists: {ex.Message}");
       }
       finally
       {
@@ -376,7 +376,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         }
         catch (Exception ex)
         {
-          OnStatusUpdated(string.Format("Fatal error while getting setlist tracks: {0}", ex.Message));
+          OnStatusUpdated($"Fatal error while getting setlist tracks: {ex.Message}");
         }
         finally
         {
@@ -419,11 +419,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
         if (response.Success && response.Status == LastResponseStatus.Successful)
           OnStatusUpdated("Successfully scrobbled selected tracks");
         else
-          OnStatusUpdated(string.Format("Error while scrobbling selected tracks: {0}", response.Status));
+          OnStatusUpdated($"Error while scrobbling selected tracks: {response.Status}");
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while scrobbling: {0}", ex.Message));
+        OnStatusUpdated($"Fatal error while scrobbling: {ex.Message}");
       }
       finally
       {
@@ -489,7 +489,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="sender">Ignored.</param>
     /// <param name="e">Ignored.</param>
-    private void _conductor_ActivationProcessed(object sender, ActivationProcessedEventArgs e)
+    private void Conductor_ActivationProcessed(object sender, ActivationProcessedEventArgs e)
     {
       ActivationProcessed?.Invoke(sender, e);
     }

@@ -217,12 +217,12 @@ namespace Scrubbler.ExtraFunctions
     /// <summary>
     /// WindowManager used to display dialogs.
     /// </summary>
-    private IExtendedWindowManager _windowManager;
+    private readonly IExtendedWindowManager _windowManager;
 
     /// <summary>
     /// Last.fm user api used to fetch top artists and albums.
     /// </summary>
-    private IUserApi _userAPI;
+    private readonly IUserApi _userAPI;
 
     #endregion Member
 
@@ -267,7 +267,7 @@ namespace Scrubbler.ExtraFunctions
           if (response.Success && response.Status == LastResponseStatus.Successful)
             collage = await StitchImagesTogether(response.Content.Select(a => new Tuple<Uri, string>(a.MainImage.ExtraLarge, CreateArtistText(a))).ToList());
           else
-            OnStatusUpdated(string.Format("Error while fetching top artists: {0}", response.Status));
+            OnStatusUpdated($"Error while fetching top artists: {response.Status}");
         }
         else if (SelectedCollageType == CollageType.Albums)
         {
@@ -276,7 +276,7 @@ namespace Scrubbler.ExtraFunctions
           if (response.Success && response.Status == LastResponseStatus.Successful)
             collage = await StitchImagesTogether(response.Content.Select(a => new Tuple<Uri, string>(a.Images.ExtraLarge, CreateAlbumText(a))).ToList());
           else
-            OnStatusUpdated(string.Format("Error while fetching top albums: {0}", response.Status));
+            OnStatusUpdated($"Error while fetching top albums: {response.Status}");
         }
 
         using (MemoryStream ms = new MemoryStream())
@@ -292,7 +292,7 @@ namespace Scrubbler.ExtraFunctions
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while creating collage: {0}", ex.Message));
+        OnStatusUpdated($"Fatal error while creating collage: {ex.Message}");
       }
       finally
       {
@@ -321,7 +321,7 @@ namespace Scrubbler.ExtraFunctions
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while saving collage to file: {0}", ex.Message));
+        OnStatusUpdated($"Fatal error while saving collage to file: {ex.Message}");
       }
     }
 
@@ -350,11 +350,11 @@ namespace Scrubbler.ExtraFunctions
     private string CreateArtistText(LastArtist a)
     {
       if (ShowNames && ShowPlaycounts)
-        return string.Format("{0}{1}Plays: {2}", a.Name, Environment.NewLine, a.PlayCount);
+        return $"{a.Name}{Environment.NewLine}Plays: {a.PlayCount}";
       else if (ShowNames)
-        return string.Format("{0}", a.Name);
+        return a.Name;
       else if (ShowPlaycounts)
-        return string.Format("Plays: {0}", a.PlayCount);
+        return $"Plays: {a.PlayCount}";
       else
         return string.Empty;
     }
@@ -367,11 +367,11 @@ namespace Scrubbler.ExtraFunctions
     private string CreateAlbumText(LastAlbum a)
     {
       if (ShowNames && ShowPlaycounts)
-        return string.Format("{0}{1}{2}{3}Plays: {4}", a.ArtistName, Environment.NewLine, a.Name, Environment.NewLine, a.PlayCount);
+        return $"{a.ArtistName}{Environment.NewLine}{a.Name}{Environment.NewLine}Plays: {a.PlayCount}";
       else if (ShowNames)
-        return string.Format("{0}{1}{2}", a.ArtistName, Environment.NewLine, a.Name);
+        return $"{a.ArtistName}{Environment.NewLine}{a.Name}";
       else if (ShowPlaycounts)
-        return string.Format("Plays: {0}", a.PlayCount);
+        return $"Plays: {a.PlayCount}";
       else
         return string.Empty;
     }

@@ -97,12 +97,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// The factory used to create <see cref="ITextFieldParser"/>.
     /// </summary>
-    private ITextFieldParserFactory _parserFactory;
+    private readonly ITextFieldParserFactory _parserFactory;
 
     /// <summary>
     /// FileOperator used to write to disk.
     /// </summary>
-    private IFileOperator _fileOperator;
+    private readonly IFileOperator _fileOperator;
 
     #endregion Member
 
@@ -212,10 +212,10 @@ namespace Scrubbler.Scrobbling.Scrobbler
           });
 
           if (errors.Count == 0)
-            OnStatusUpdated(string.Format("Successfully parsed CSV file. Parsed {0} rows", parsedScrobbles.Count));
+            OnStatusUpdated($"Successfully parsed CSV file. Parsed {parsedScrobbles.Count} rows");
           else
           {
-            OnStatusUpdated(string.Format("Partially parsed CSV file. {0} rows could not be parsed", errors.Count));
+            OnStatusUpdated($"Partially parsed CSV file. {errors.Count} rows could not be parsed");
             if (_windowManager.MessageBoxService.ShowDialog("Some rows could not be parsed. Do you want to save a text file with the rows that could not be parsed?",
                                                             "Error parsing rows", IMessageBoxServiceButtons.YesNo) == IMessageBoxServiceResult.Yes)
             {
@@ -232,7 +232,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       catch (Exception ex)
       {
         Scrobbles.Clear();
-        OnStatusUpdated(string.Format("Error parsing CSV file: {0}", ex.Message));
+        OnStatusUpdated($"Error parsing CSV file: {ex.Message}");
       }
       finally
       {
@@ -255,11 +255,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
         if (response.Success && response.Status == LastResponseStatus.Successful)
           OnStatusUpdated("Successfully scrobbled selected tracks");
         else
-          OnStatusUpdated(string.Format("Error while scrobbling selected tracks: {0}", response.Status));
+          OnStatusUpdated($"Error while scrobbling selected tracks: {response.Status}");
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while scrobbling selected tracks: {0}", ex.Message));
+        OnStatusUpdated($"Fatal error while scrobbling selected tracks: {ex.Message}");
       }
       finally
       {

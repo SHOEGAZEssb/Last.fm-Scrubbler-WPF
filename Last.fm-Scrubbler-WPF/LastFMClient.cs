@@ -63,7 +63,7 @@ namespace Scrubbler
     /// <summary>
     /// The last.fm client.
     /// </summary>
-    private LastfmClient _client;
+    private readonly LastfmClient _client;
 
     /// <summary>
     /// Constructor.

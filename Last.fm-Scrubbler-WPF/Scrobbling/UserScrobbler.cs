@@ -35,12 +35,12 @@ namespace Scrubbler.Scrobbling
     /// <summary>
     /// Actual normal scrobbler.
     /// </summary>
-    private IAuthScrobbler _scrobbler;
+    private readonly IAuthScrobbler _scrobbler;
 
     /// <summary>
     /// Actual caching scrobbler.
     /// </summary>
-    private IAuthScrobbler _cachingScrobbler;
+    private readonly IAuthScrobbler _cachingScrobbler;
 
     #endregion Member
 
@@ -84,15 +84,10 @@ namespace Scrubbler.Scrobbling
     {
       User.UpdateRecentScrobbles();
       if (User.RecentScrobbles.Count + scrobbles.Count() > User.MAXSCROBBLESPERDAY)
-        throw new InvalidOperationException(string.Format("Scrobbling these tracks would break the daily scrobble cap! ({0})\r\nYou have scrobbled {1} tracks in the past 24 hours.",
-                                          User.MAXSCROBBLESPERDAY, User.RecentScrobbles.Count));
+        throw new InvalidOperationException($"Scrobbling these tracks would break the daily scrobble cap! " +
+                                            $"({User.MAXSCROBBLESPERDAY})\r\nYou have scrobbled {User.RecentScrobbles.Count} tracks in the past 24 hours.");
 
-      ScrobbleResponse response;
-      if (needCaching)
-        response = await _cachingScrobbler.ScrobbleAsync(scrobbles);
-      else
-        response = await _scrobbler.ScrobbleAsync(scrobbles);
-
+      ScrobbleResponse response = needCaching ? await _cachingScrobbler.ScrobbleAsync(scrobbles) : await _scrobbler.ScrobbleAsync(scrobbles);
       if (response.Success && response.Status == LastResponseStatus.Successful)
         User.AddScrobbles(scrobbles, DateTime.Now);
       return response;

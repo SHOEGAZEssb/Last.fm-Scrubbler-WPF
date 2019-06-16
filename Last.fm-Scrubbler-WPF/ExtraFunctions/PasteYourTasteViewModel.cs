@@ -96,7 +96,7 @@ namespace Scrubbler.ExtraFunctions
     /// <summary>
     /// The last.fm api object to get the scrobbles of an user.
     /// </summary>
-    private IUserApi _userAPI;
+    private readonly IUserApi _userAPI;
 
     #endregion Member
 
@@ -125,7 +125,7 @@ namespace Scrubbler.ExtraFunctions
       try
       {
         EnableControls = false;
-        OnStatusUpdated(string.Format("Fetching top artists of '{0}'...", Username));
+        OnStatusUpdated($"Fetching top artists of '{Username}'...");
 
         var response = await _userAPI.GetTopArtists(Username, TimeSpan, 1, Amount);
         if (response.Success && response.Status == LastResponseStatus.Successful)
@@ -143,14 +143,14 @@ namespace Scrubbler.ExtraFunctions
           }
 
           TasteText = tasteText;
-          OnStatusUpdated(string.Format("Successfully fetched top artists of '{0}'", Username));
+          OnStatusUpdated($"Successfully fetched top artists of '{Username}'");
         }
         else
-          OnStatusUpdated(string.Format("Error fetching top artists of '{0}': {1}", Username, response.Status));
+          OnStatusUpdated($"Error fetching top artists of '{Username}': {response.Status}");
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while fetching top artists of '{0}': {1}", Username, ex.Message));
+        OnStatusUpdated($"Fatal error while fetching top artists of '{Username}': {ex.Message}");
       }
       finally
       {

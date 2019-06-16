@@ -121,7 +121,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         catch (Exception ex)
         {
           EnableControls = true;
-          OnStatusUpdated(string.Format("Could not load database file: {0}", ex.Message));
+          OnStatusUpdated($"Could not load database file: {ex.Message}");
           return;
         }
 
@@ -136,7 +136,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         catch (Exception ex)
         {
           EnableControls = true;
-          OnStatusUpdated(string.Format("Error parsing database file: {0}", ex.Message));
+          OnStatusUpdated($"Error parsing database file: {ex.Message}");
           return;
         }
 
@@ -171,7 +171,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
             }
             finally
             {
-              OnStatusUpdated(string.Format("Parsing database file... {0} / {1}", count++, dictNodes.Count()));
+              OnStatusUpdated($"Parsing database file... {count++} / {dictNodes.Count()}");
             }
           });
         }
@@ -181,7 +181,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while parsing database file: {0}", ex.Message));
+        OnStatusUpdated($"Fatal error while parsing database file: {ex.Message}");
       }
       finally
       {
@@ -219,7 +219,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while parsing Windows Media Player library: {0}", ex.Message));
+        OnStatusUpdated($"Fatal error while parsing Windows Media Player library: {ex.Message}");
       }
       finally
       {
@@ -242,11 +242,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
         if (response.Success && response.Status == LastResponseStatus.Successful)
           OnStatusUpdated("Successfully scrobbled selected tracks");
         else
-          OnStatusUpdated(string.Format("Error while scrobbling selected tracks: {0}", response.Status));
+          OnStatusUpdated($"Error while scrobbling selected tracks: {response.Status}");
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while trying to scrobble selected tracks: {0}", ex.Message));
+        OnStatusUpdated($"Fatal error while trying to scrobble selected tracks: {ex.Message}");
       }
       finally
       {

@@ -258,7 +258,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while loving/unloving '{0}': {1}", CurrentTrackName, ex.Message));
+        OnStatusUpdated($"Fatal error while loving/unloving '{CurrentTrackName}': {ex.Message}");
       }
       finally
       {
@@ -271,8 +271,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public void TrackClicked()
     {
-      Process.Start(string.Format(LASTFMURL + "{0}/{1}/{2}", GetUrlConformString(CurrentArtistName), GetUrlConformString(CurrentAlbumName),
-                                  GetUrlConformString(CurrentTrackName)));
+      Process.Start($"{LASTFMURL}{GetUrlEncodedString(CurrentArtistName)}/{ GetUrlEncodedString(CurrentAlbumName)}/{GetUrlEncodedString(CurrentTrackName)}");
     }
 
     /// <summary>
@@ -281,7 +280,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public void TrackPlayCountClicked()
     {
-      Process.Start($"{LASTFMUSERURL}{Scrobbler.User.Username}/library/music/{GetUrlConformString(CurrentArtistName)}/_/{GetUrlConformString(CurrentTrackName)}");
+      Process.Start($"{LASTFMUSERURL}{Scrobbler.User.Username}/library/music/{GetUrlEncodedString(CurrentArtistName)}/_/{GetUrlEncodedString(CurrentTrackName)}");
     }
 
     /// <summary>
@@ -289,7 +288,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public void ArtistClicked()
     {
-      Process.Start(string.Format(LASTFMURL + "{0}", GetUrlConformString(CurrentArtistName)));
+      Process.Start($"{LASTFMURL}{GetUrlEncodedString(CurrentArtistName)}");
     }
 
     /// <summary>
@@ -298,7 +297,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public void ArtistPlayCountClicked()
     {
-      Process.Start($"{LASTFMUSERURL}{Scrobbler.User.Username}/library/music/{GetUrlConformString(CurrentArtistName)}");
+      Process.Start($"{LASTFMUSERURL}{Scrobbler.User.Username}/library/music/{GetUrlEncodedString(CurrentArtistName)}");
     }
 
     /// <summary>
@@ -306,7 +305,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public void AlbumClicked()
     {
-      Process.Start(string.Format(LASTFMURL + "{0}/{1}", GetUrlConformString(CurrentArtistName), GetUrlConformString(CurrentAlbumName)));
+      Process.Start($"{LASTFMURL}{GetUrlEncodedString(CurrentArtistName)}/{GetUrlEncodedString(CurrentAlbumName)}");
     }
 
     /// <summary>
@@ -315,7 +314,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public void AlbumPlayCountClicked()
     {
-      Process.Start($"{LASTFMUSERURL}{Scrobbler.User.Username}/library/music/{GetUrlConformString(CurrentArtistName)}/{GetUrlConformString(CurrentAlbumName)}");
+      Process.Start($"{LASTFMUSERURL}{Scrobbler.User.Username}/library/music/{GetUrlEncodedString(CurrentArtistName)}/{GetUrlEncodedString(CurrentAlbumName)}");
     }
 
     /// <summary>
@@ -367,6 +366,10 @@ namespace Scrubbler.Scrobbling.Scrobbler
         await _trackAPI.UpdateNowPlayingAsync(new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now));
     }
 
+    /// <summary>
+    /// Updates the play count of the current playing track.
+    /// </summary>
+    /// <returns>Task.</returns>
     private async Task UpdatePlayCounts()
     {
       try
@@ -415,7 +418,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="originalString">String to make url-conform.</param>
     /// <returns>Url-conform string.</returns>
-    private string GetUrlConformString(string originalString)
+    private string GetUrlEncodedString(string originalString)
     {
       return HttpUtility.UrlEncode(originalString);
     }

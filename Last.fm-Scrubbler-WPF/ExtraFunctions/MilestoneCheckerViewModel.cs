@@ -127,7 +127,7 @@ namespace Scrubbler.ExtraFunctions
     /// <summary>
     /// Last.fm user api object with which to get user data.
     /// </summary>
-    private IUserApi _userAPI;
+    private readonly IUserApi _userAPI;
 
     #endregion Member
 
@@ -172,7 +172,7 @@ namespace Scrubbler.ExtraFunctions
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while getting milestones: {0}", ex.Message));
+        OnStatusUpdated($"Fatal error while getting milestones: {ex.Message}");
       }
       finally
       {
@@ -189,7 +189,7 @@ namespace Scrubbler.ExtraFunctions
       try
       {
         EnableControls = false;
-        OnStatusUpdated(string.Format("Getting user info of '{0}'...", Username));
+        OnStatusUpdated($"Getting user info of '{Username}'...");
         var response = await _userAPI.GetInfoAsync(Username);
         if (response.Success && response.Status == LastResponseStatus.Successful)
         {
@@ -199,26 +199,26 @@ namespace Scrubbler.ExtraFunctions
           List<LastTrack> tracks = new List<LastTrack>();
           for (int i = 1; i <= pagesToFetch; i++)
           {
-            OnStatusUpdated(string.Format("Getting scrobble data of '{0}'... ({1} / {2}) pages", Username, i, pagesToFetch));
+            OnStatusUpdated($"Getting scrobble data of '{Username}'... ({i} / {pagesToFetch}) pages");
             var pageResponse = await _userAPI.GetRecentScrobbles(Username, null, i, 1000);
             if (pageResponse.Success && pageResponse.Status == LastResponseStatus.Successful)
               tracks.AddRange(pageResponse.Content.Where(c => !c.IsNowPlaying.HasValue || !c.IsNowPlaying.Value).Reverse().ToList());
             else
             {
-              OnStatusUpdated(string.Format("Error getting scrobble data of '{0}': {1}", Username, pageResponse.Status));
+              OnStatusUpdated($"Error getting scrobble data of '{Username}': {pageResponse.Status}");
               return;
             }
           }
 
           ScrobbleData = tracks;
-          OnStatusUpdated(string.Format("Successfully got scrobble data of '{0}'", Username));
+          OnStatusUpdated($"Successfully got scrobble data of '{Username}'");
         }
         else
-          OnStatusUpdated(string.Format("Error getting user info: {0}", response.Status));
+          OnStatusUpdated($"Error getting user info: {response.Status}");
       }
       catch(Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while getting scrobble data of '{0}': {1}", Username, ex.Message));
+        OnStatusUpdated($"Fatal error while getting scrobble data of '{Username}': {ex.Message}");
       }
       finally
       {

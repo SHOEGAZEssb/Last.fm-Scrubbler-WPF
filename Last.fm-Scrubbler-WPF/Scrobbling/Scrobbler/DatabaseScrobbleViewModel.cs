@@ -141,19 +141,19 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Last.fm artist api used to search for artists.
     /// </summary>
-    private IArtistApi _lastfmArtistAPI;
+    private readonly IArtistApi _lastfmArtistAPI;
 
     /// <summary>
     /// Last.fm album api used to search for albums.
     /// </summary>
-    private IAlbumApi _lastfmAlbumAPI;
+    private readonly IAlbumApi _lastfmAlbumAPI;
 
-    private IDiscogsDataBaseClient _discogsClient;
+    private readonly IDiscogsDataBaseClient _discogsClient;
 
     /// <summary>
     /// Conductor used for view switching.
     /// </summary>
-    private Conductor<IScreen> _conductor;
+    private readonly Conductor<IScreen> _conductor;
 
     /// <summary>
     /// The last <see cref="ArtistResultViewModel"/>.
@@ -183,7 +183,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       _lastfmAlbumAPI = lastfmAlbumAPI;
       _discogsClient = discogsClient ?? throw new ArgumentNullException(nameof(discogsClient));
       _conductor = new Conductor<IScreen>();
-      _conductor.ActivationProcessed += _conductor_ActivationProcessed;
+      _conductor.ActivationProcessed += Conductor_ActivationProcessed;
       DatabaseToSearch = Database.LastFm;
       SearchType = SearchType.Artist;
       MaxResults = 25;
@@ -221,7 +221,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     {
       try
       {
-        OnStatusUpdated(string.Format("Trying to search for artist '{0}'...", SearchText));
+        OnStatusUpdated($"Trying to search for artist '{SearchText}'...");
 
         IEnumerable<Artist> fetchedArtists = new Artist[0];
         if (DatabaseToSearch == Database.LastFm)
@@ -243,14 +243,14 @@ namespace Scrubbler.Scrobbling.Scrobbler
           _artistResultVM = new ArtistResultViewModel(fetchedArtists);
           _artistResultVM.ArtistClicked += Artist_Clicked;
           ActivateItem(_artistResultVM);
-          OnStatusUpdated(string.Format("Found {0} artists", fetchedArtists.Count()));
+          OnStatusUpdated($"Found {fetchedArtists.Count()} artists");
         }
         else
           OnStatusUpdated("Found no artists");
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while searching for artist '{0}': {1}", SearchText, ex.Message));
+        OnStatusUpdated($"Fatal error while searching for artist '{SearchText}': {ex.Message}");
       }
     }
 
@@ -304,7 +304,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     {
       try
       {
-        OnStatusUpdated(string.Format("Trying to search for release '{0}'", SearchText));
+        OnStatusUpdated($"Trying to search for release '{SearchText}'");
 
         IEnumerable<Release> releases = new Release[0];
         if (DatabaseToSearch == Database.LastFm)
@@ -317,14 +317,14 @@ namespace Scrubbler.Scrobbling.Scrobbler
         if (releases.Count() != 0)
         {
           ActivateNewReleaseResultViewModel(releases, false);
-          OnStatusUpdated(string.Format("Found {0} releases", releases.Count()));
+          OnStatusUpdated($"Found {releases.Count()} releases");
         }
         else
           OnStatusUpdated("Found no releases");
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while searching for release '{0}': {1}", SearchText, ex.Message));
+        OnStatusUpdated($"Fatal error while searching for release '{SearchText}': {ex.Message}");
       }
     }
 
@@ -389,11 +389,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
       if (EnableControls)
       {
         EnableControls = false;
+        var artist = sender as Artist;
 
         try
         {
-          var artist = sender as Artist;
-          OnStatusUpdated(string.Format("Trying to fetch releases from artist '{0}'", artist.Name));
+          OnStatusUpdated($"Trying to fetch releases from artist '{artist.Name}'");
 
           IEnumerable<Release> releases = new Release[0];
           if (DatabaseToSearch == Database.LastFm)
@@ -406,14 +406,14 @@ namespace Scrubbler.Scrobbling.Scrobbler
           if (releases.Count() != 0)
           {
             ActivateNewReleaseResultViewModel(releases, true);
-            OnStatusUpdated(string.Format("Successfully fetched releases from artist '{0}'", artist.Name));
+            OnStatusUpdated($"Successfully fetched releases from artist '{artist.Name}'");
           }
           else
-            OnStatusUpdated(string.Format("Artist '{0} has no releases", artist.Name));
+            OnStatusUpdated($"Artist '{artist.Name}' has no releases");
         }
         catch (Exception ex)
         {
-          OnStatusUpdated(string.Format("Fatal error while fetching releases from artist: {0}", ex.Message));
+          OnStatusUpdated($"Fatal error while fetching releases from artist '{artist.Name}': {ex.Message}");
         }
         finally
         {
@@ -507,11 +507,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
       if (EnableControls)
       {
         EnableControls = false;
+        var release = sender as Release;
 
         try
         {
-          var release = sender as Release;
-          OnStatusUpdated(string.Format("Trying to fetch tracklist from release '{0}'", release.Name));
+          OnStatusUpdated($"Trying to fetch tracklist from release '{release.Name}'");
 
           IEnumerable<Track> tracks = new Track[0];
           if (DatabaseToSearch == Database.LastFm)
@@ -528,13 +528,13 @@ namespace Scrubbler.Scrobbling.Scrobbler
           }
 
           if (Scrobbles.Count != 0)
-            OnStatusUpdated(string.Format("Successfully fetched tracklist from release '{0}'", release.Name));
+            OnStatusUpdated($"Successfully fetched tracklist from release '{release.Name}'");
           else
-            OnStatusUpdated(string.Format("Release '{0}' has no tracks", release.Name));
+            OnStatusUpdated($"Release '{release.Name}' has no tracks");
         }
         catch (Exception ex)
         {
-          OnStatusUpdated(string.Format("Fatal error while fetching tracklist from release: {0}", ex.Message));
+          OnStatusUpdated($"Fatal error while fetching tracklist from release '{release.Name}': {ex.Message}");
         }
         finally
         {
@@ -607,11 +607,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
         if (response.Success && response.Status == LastResponseStatus.Successful)
           OnStatusUpdated("Successfully scrobbled selected tracks");
         else
-          OnStatusUpdated(string.Format("Error while scrobbling selected tracks: {0}", response.Status));
+          OnStatusUpdated($"Error while scrobbling selected tracks: {response.Status}");
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while scrobbling selected tracks: {0}", ex.Message));
+        OnStatusUpdated($"Fatal error while scrobbling selected tracks: {ex.Message}");
       }
       finally
       {
@@ -630,10 +630,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       foreach (FetchedTrackViewModel vm in Scrobbles.Where(i => i.ToScrobble).Reverse())
       {
         scrobbles.Add(new Scrobble(vm.ArtistName, vm.AlbumName, vm.TrackName, finishingTime));
-        if (vm.Duration.HasValue)
-          finishingTime = finishingTime.Subtract(vm.Duration.Value);
-        else
-          finishingTime = finishingTime.Subtract(TimeSpan.FromMinutes(3.0));
+        finishingTime = vm.Duration.HasValue ? finishingTime.Subtract(vm.Duration.Value) : finishingTime.Subtract(TimeSpan.FromMinutes(3.0));
       }
 
       return scrobbles;
@@ -693,7 +690,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="sender">Ignored.</param>
     /// <param name="e">Ignored.</param>
-    private void _conductor_ActivationProcessed(object sender, ActivationProcessedEventArgs e)
+    private void Conductor_ActivationProcessed(object sender, ActivationProcessedEventArgs e)
     {
       ActivationProcessed?.Invoke(sender, e);
     }

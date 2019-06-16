@@ -67,12 +67,12 @@ namespace Scrubbler.Configuration
     /// <summary>
     /// WindowManager used to display dialogs.
     /// </summary>
-    private IExtendedWindowManager _windowManager;
+    private readonly IExtendedWindowManager _windowManager;
 
     /// <summary>
     /// GitHub client to check for updates.
     /// </summary>
-    private IGitHubClient _gitHubClient;
+    private readonly IGitHubClient _gitHubClient;
 
     /// <summary>
     /// ProcessManager for working with processor functions.
@@ -159,9 +159,7 @@ namespace Scrubbler.Configuration
       }
       catch(Exception ex)
       {
-        _windowManager.MessageBoxService.ShowDialog(string.Format("Fatal error while checking for update: {0}", ex.Message, "Update Check",
-                                                    IMessageBoxServiceButtons.OK), "Update Check Error", IMessageBoxServiceButtons.OK,
-                                                    IMessageBoxServiceIcon.Error);
+        _windowManager.MessageBoxService.ShowDialog($"Fatal error while checking for update: {ex.Message}", "Update Check Error", IMessageBoxServiceButtons.OK, IMessageBoxServiceIcon.Error);
       }
       finally
       {

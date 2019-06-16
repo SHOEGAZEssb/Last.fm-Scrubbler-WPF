@@ -70,7 +70,7 @@ namespace Scrubbler.Helper
         try
         {
           if (AddTimestamp)
-            text = string.Format("[{0}]: {1}", DateTime.Now, text);
+            text = $"[{DateTime.Now}]: {text}";
 
           _streamWriter.WriteLine(text);
           _streamWriter.Flush();
@@ -101,7 +101,6 @@ namespace Scrubbler.Helper
         {
           if (_streamWriter != null)
           {
-            _streamWriter.Close();
             _streamWriter.Dispose();
             _streamWriter = null;
           }

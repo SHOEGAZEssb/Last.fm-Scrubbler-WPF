@@ -68,12 +68,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Timer counting the played seconds.
     /// </summary>
-    private Timer _counterTimer;
+    private readonly Timer _counterTimer;
 
     /// <summary>
     /// Timer updating the <see cref="_currentResponse"/>.
     /// </summary>
-    private Timer _refreshTimer;
+    private readonly Timer _refreshTimer;
 
     /// <summary>
     /// Uri of the last played track.
@@ -99,9 +99,9 @@ namespace Scrubbler.Scrobbling.Scrobbler
     {
       PercentageToScrobble = 0.5;
       _counterTimer = new Timer(1000);
-      _counterTimer.Elapsed += _counterTimer_Elapsed;
+      _counterTimer.Elapsed += CounterTimer_Elapsed;
       _refreshTimer = new Timer(1000);
-      _refreshTimer.Elapsed += _refreshTimer_Elapsed;
+      _refreshTimer.Elapsed += RefreshTimer_Elapsed;
 
       if (AutoConnect)
         Connect();
@@ -157,7 +157,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error connecting to Spotify: {0}", ex.Message));
+        OnStatusUpdated($"Fatal error connecting to Spotify: {ex.Message}");
       }
       finally
       {
@@ -187,7 +187,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     private void ConnectEvents()
     {
       _spotify.ListenForEvents = true;
-      _spotify.OnPlayStateChange += _spotify_OnPlayStateChange;
+      _spotify.OnPlayStateChange += Spotify_OnPlayStateChange;
     }
 
     /// <summary>
@@ -196,7 +196,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     private void DisconnectEvents()
     {
       _spotify.ListenForEvents = false;
-      _spotify.OnPlayStateChange -= _spotify_OnPlayStateChange;
+      _spotify.OnPlayStateChange -= Spotify_OnPlayStateChange;
     }
 
     /// <summary>
@@ -205,7 +205,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="sender">Ignored.</param>
     /// <param name="e">EventArgs containing the current play state.</param>
-    private void _spotify_OnPlayStateChange(object sender, PlayStateEventArgs e)
+    private void Spotify_OnPlayStateChange(object sender, PlayStateEventArgs e)
     {
       if (e.Playing)
         _counterTimer.Start();
@@ -219,7 +219,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="sender">Ignored.</param>
     /// <param name="e">Ignored.</param>
-    private void _counterTimer_Elapsed(object sender, ElapsedEventArgs e)
+    private void CounterTimer_Elapsed(object sender, ElapsedEventArgs e)
     {
       if (++CountedSeconds == CurrentTrackLengthToScrobble)
       {
@@ -234,7 +234,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="sender">Ignored.</param>
     /// <param name="e">Ignored.</param>
-    private void _refreshTimer_Elapsed(object sender, ElapsedEventArgs e)
+    private void RefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
     {
       lock (_lockAnchor)
       {
@@ -266,7 +266,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         Scrobble s = null;
         try
         {
-          OnStatusUpdated(string.Format("Trying to scrobble '{0}'...", CurrentTrackName));
+          OnStatusUpdated($"Trying to scrobble '{CurrentTrackName}'...");
           // lock while acquiring current data
           lock (_lockAnchor)
           {
@@ -278,15 +278,15 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
           var response = await Scrobbler.ScrobbleAsync(s, true);
           if (response.Success && response.Status == LastResponseStatus.Successful)
-            OnStatusUpdated(string.Format("Successfully scrobbled '{0}'", s.Track));
+            OnStatusUpdated($"Successfully scrobbled '{s.Track}'");
           else if(response.Status == LastResponseStatus.Cached)
-            OnStatusUpdated(string.Format("Scrobbling '{0}' failed. Scrobble has been cached", s.Track));
+            OnStatusUpdated($"Scrobbling '{s.Track}' failed. Scrobble has been cached");
           else
-            OnStatusUpdated(string.Format("Error while scrobbling '{0}': {1}", s.Track, response.Status));
+            OnStatusUpdated($"Error while scrobbling '{s.Track}': {response.Status}");
         }
         catch (Exception ex)
         {
-          OnStatusUpdated(string.Format("Fatal error while trying to scrobble '{0}: {1}", s.Track, ex.Message));
+          OnStatusUpdated($"Fatal error while trying to scrobble '{s.Track}: {ex.Message}");
         }
         finally
         {

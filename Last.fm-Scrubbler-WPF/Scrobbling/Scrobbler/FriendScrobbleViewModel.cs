@@ -53,7 +53,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// The last.fm api object to get the scrobbles of an user.
     /// </summary>
-    private IUserApi _userApi;
+    private readonly IUserApi _userApi;
 
     #endregion Member
 
@@ -78,7 +78,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       try
       {
         EnableControls = false;
-        OnStatusUpdated(string.Format("Trying to fetch scrobbles of '{0}' ...", Username));
+        OnStatusUpdated($"Trying to fetch scrobbles of '{Username}'...");
         Scrobbles.Clear();
         var response = await _userApi.GetRecentScrobbles(Username, null, 1, Amount);
         if (response.Success)
@@ -93,14 +93,14 @@ namespace Scrubbler.Scrobbling.Scrobbler
             }
           }
 
-          OnStatusUpdated(string.Format("Successfully fetched scrobbles of '{0}'", Username));
+          OnStatusUpdated($"Successfully fetched scrobbles of '{Username}'");
         }
         else
-          OnStatusUpdated(string.Format("Failed to fetch scrobbles of '{0}': {1}", Username, response.Status));
+          OnStatusUpdated($"Failed to fetch scrobbles of '{Username}': {response.Status}");
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while fetching scrobbles of '{0}': {1}", Username, ex.Message));
+        OnStatusUpdated($"Fatal error while fetching scrobbles of '{Username}': {ex.Message}");
       }
       finally
       {
@@ -150,11 +150,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
         if (response.Success && response.Status == LastResponseStatus.Successful)
           OnStatusUpdated("Successfully scrobbled selected tracks");
         else
-          OnStatusUpdated(string.Format("Error while scrobbling selected tracks: {0}", response.Status));
+          OnStatusUpdated($"Error while scrobbling selected tracks: {response.Status}");
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while trying to scrobble selected tracks: {0}", ex.Message));
+        OnStatusUpdated($"Fatal error while trying to scrobble selected tracks: {ex.Message}");
       }
       finally
       {

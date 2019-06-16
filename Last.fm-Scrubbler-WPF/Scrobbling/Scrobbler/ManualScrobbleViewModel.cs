@@ -137,18 +137,18 @@ namespace Scrubbler.Scrobbling.Scrobbler
       try
       {
         EnableControls = false;
-        OnStatusUpdated(string.Format("Trying to scrobble '{0}'...", Track));
+        OnStatusUpdated($"Trying to scrobble '{Track}'...");
 
         var scrobble = CreateScrobbles().First();
         var response = await Scrobbler.ScrobbleAsync(scrobble);
         if (response.Success && response.Status == LastResponseStatus.Successful)
-          OnStatusUpdated(string.Format("Successfully scrobbled '{0}'", scrobble.Track));
+          OnStatusUpdated($"Successfully scrobbled '{scrobble.Track}'");
         else
-          OnStatusUpdated(string.Format("Error while scrobbling '{0}': {1}", scrobble.Track, response.Status));
+          OnStatusUpdated($"Error while scrobbling '{scrobble.Track}': {response.Status}");
       }
       catch (Exception ex)
       {
-        OnStatusUpdated("Fatal error while trying to scrobble: " + ex.Message);
+        OnStatusUpdated($"Fatal error while trying to scrobble: {ex.Message}");
       }
       finally
       {

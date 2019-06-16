@@ -17,12 +17,12 @@ namespace Scrubbler.Login
     /// <summary>
     /// Last.fm authentication object.
     /// </summary>
-    private ILastAuth _lastAuth;
+    private readonly ILastAuth _lastAuth;
 
     /// <summary>
     /// Service for showing MessageBoxes.
     /// </summary>
-    private IMessageBoxService _messageBoxService;
+    private readonly IMessageBoxService _messageBoxService;
 
     #endregion Member
 

@@ -106,7 +106,7 @@ namespace Scrubbler.Test
       LastArtist[] artists = new LastArtist[amount];
       for(int i = 0; i < artists.Length; i++)
       {
-        artists[i] = new LastArtist() { Name = string.Format("TestArtist{0}", i) };
+        artists[i] = new LastArtist() { Name = $"TestArtist{i}" };
       }
 
       return artists;
@@ -122,7 +122,7 @@ namespace Scrubbler.Test
       LastAlbum[] albums = new LastAlbum[amount];
       for(int i = 0; i < albums.Length; i++)
       {
-        albums[i] = new LastAlbum() { ArtistName = string.Format("TestArtist{0}", i), Name = string.Format("TestAlbum{0}", i) };
+        albums[i] = new LastAlbum() { ArtistName = $"TestArtist{i}", Name = $"TestAlbum{i}" };
       }
 
       return albums;

@@ -82,17 +82,17 @@ namespace Scrubbler.ExtraFunctions
     /// <summary>
     /// WindowManager used to display dialogs.
     /// </summary>
-    private IExtendedWindowManager _windowManager;
+    private readonly IExtendedWindowManager _windowManager;
 
     /// <summary>
     /// Last.fm user api used to fetch top artists and albums.
     /// </summary>
-    private IUserApi _userAPI;
+    private readonly IUserApi _userAPI;
 
     /// <summary>
     /// FileOperator used to write to disk.
     /// </summary>
-    private IFileOperator _fileOperator;
+    private readonly IFileOperator _fileOperator;
 
     #endregion Member
 
@@ -140,7 +140,7 @@ namespace Scrubbler.ExtraFunctions
           IReadOnlyList<LastTrack>[] scrobbles = new IReadOnlyList<LastTrack>[pages];
           for (int i = 1; i <= pages; i++)
           {
-            OnStatusUpdated(string.Format("Fetching page {0} / {1}", i, pages));
+            OnStatusUpdated($"Fetching page {i} / {pages}");
             var pageResponse = await _userAPI.GetRecentScrobbles(Username, null, i, TRACKSPERPAGE);
             if (pageResponse.Success && pageResponse.Status == LastResponseStatus.Successful)
               scrobbles[i - 1] = pageResponse.Content.Where(s => !s.IsNowPlaying.HasValue || !s.IsNowPlaying.Value).ToArray();
@@ -152,7 +152,7 @@ namespace Scrubbler.ExtraFunctions
           }
 
           if (!string.IsNullOrEmpty(error))
-            OnStatusUpdated(string.Format("Error while fetching scrobble data: {0}", error));
+            OnStatusUpdated($"Error while fetching scrobble data: {error}");
           else
           {
             try
@@ -169,7 +169,7 @@ namespace Scrubbler.ExtraFunctions
                   string duration = EncloseComma(scrobble.Duration.ToString());
                   var timeStamp = scrobble.TimePlayed;
 
-                  string newLine = string.Format("{0},{1},{2},{3},{4},{5}", artist, album, track, timeStamp, "", duration);
+                  string newLine = $"{artist},{album},{track},{timeStamp},{""},{duration}";
                   csv.AppendLine(newLine);
                 }
               }
@@ -179,12 +179,12 @@ namespace Scrubbler.ExtraFunctions
             }
             catch (Exception ex)
             {
-              OnStatusUpdated(string.Format("Error writing .csv file: {0}", ex.Message));
+              OnStatusUpdated($"Error writing .csv file: {ex.Message}");
             }
           }
         }
         else
-          OnStatusUpdated(string.Format("Error while fetching user info: {0}", userResponse.Status));
+          OnStatusUpdated($"Error while fetching user info: {userResponse.Status}");
       }
       finally
       {
@@ -200,9 +200,7 @@ namespace Scrubbler.ExtraFunctions
     /// <returns>Enclosed string.</returns>
     private string EncloseComma(string str)
     {
-      if (str.Contains(','))
-        return "\"" + str + "\"";
-      return str;
+      return str.Contains(',') ? $"\"{str}\"" : str;
     }
   }
 }

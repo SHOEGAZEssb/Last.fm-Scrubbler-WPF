@@ -39,12 +39,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Factory used to create <see cref="ILocalFile"/>s.
     /// </summary>
-    private ILocalFileFactory _localFileFactory;
+    private readonly ILocalFileFactory _localFileFactory;
 
     /// <summary>
     /// FileOperator used to write to disk.
     /// </summary>
-    private IFileOperator _fileOperator;
+    private readonly IFileOperator _fileOperator;
 
     #endregion Member
 
@@ -81,7 +81,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while trying to add files: {0}", ex.Message));
+        OnStatusUpdated($"Fatal error while trying to add files: {ex.Message}");
       }
       finally
       {
@@ -122,7 +122,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
           }
           catch (Exception ex)
           {
-            errors.Add(string.Format("{0} {1}", file, ex.Message));
+            errors.Add($"{file} {ex.Message}");
           }
         }
       });
@@ -131,7 +131,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
       if (errors.Count > 0)
       {
-        OnStatusUpdated(string.Format("Finished parsing selected files. {0} files could not be parsed", errors.Count));
+        OnStatusUpdated($"Finished parsing selected files. {errors.Count} files could not be parsed");
         if (_windowManager.MessageBoxService.ShowDialog("Some files could not be parsed. Do you want to save a text file with the files that could not be parsed?",
                                                         "Error parsing files", IMessageBoxServiceButtons.YesNo) == IMessageBoxServiceResult.Yes)
         {
@@ -168,7 +168,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while adding dropped files: {0}", ex.Message));
+        OnStatusUpdated($"Fatal error while adding dropped files: {ex.Message}");
       }
       finally
       {
@@ -235,11 +235,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
         if (response.Success && response.Status == LastResponseStatus.Successful)
           OnStatusUpdated("Successfully scrobbled selected tracks");
         else
-          OnStatusUpdated(string.Format("Error while scrobbling selected tracks: {0}", response.Status));
+          OnStatusUpdated($"Error while scrobbling selected tracks: {response.Status}");
       }
       catch (Exception ex)
       {
-        OnStatusUpdated(string.Format("Fatal error while trying to scrobble the selected tracks: {0}", ex.Message));
+        OnStatusUpdated($"Fatal error while trying to scrobble the selected tracks: {ex.Message}");
       }
       finally
       {

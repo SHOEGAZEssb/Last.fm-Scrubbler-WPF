@@ -155,7 +155,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
         CountedSeconds = 0;
         _countTimer = new Timer(1000);
-        _countTimer.Elapsed += _countTimer_Elapsed;
+        _countTimer.Elapsed += CountTimer_Elapsed;
         _countTimer.Start();
 
         NotifyOfPropertyChange(() => CanDisconnect);
@@ -163,7 +163,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         UpdateCurrentTrackInfo();
 
         _refreshTimer = new Timer(100);
-        _refreshTimer.Elapsed += _refreshTimer_Elapsed;
+        _refreshTimer.Elapsed += RefreshTimer_Elapsed;
         _refreshTimer.Start();
       }
       catch (Exception ex)
@@ -208,7 +208,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="sender">Ignored.</param>
     /// <param name="e">Ignored.</param>
-    private void _refreshTimer_Elapsed(object sender, ElapsedEventArgs e)
+    private void RefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
     {
       lock (_lockAnchor)
       {
@@ -230,7 +230,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="sender">Ignored.</param>
     /// <param name="e">Ignored.</param>
-    private void _countTimer_Elapsed(object sender, ElapsedEventArgs e)
+    private void CountTimer_Elapsed(object sender, ElapsedEventArgs e)
     {
       // we check the playerstate manually because the events don't work.
       if (ITunesApp?.PlayerState == ITPlayerState.ITPlayerStatePlaying)
@@ -247,7 +247,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Disconnect when iTunes is about to close.
     /// </summary>
-    private void _app_AboutToQuitEvent()
+    private void App_AboutToQuitEvent()
     {
       Disconnect();
     }
@@ -260,9 +260,9 @@ namespace Scrubbler.Scrobbling.Scrobbler
       if (ITunesApp != null)
       {
         // unlink events
-        ITunesApp.OnAboutToPromptUserToQuitEvent -= _app_AboutToQuitEvent;
-        _countTimer.Elapsed -= _countTimer_Elapsed;
-        _refreshTimer.Elapsed -= _refreshTimer_Elapsed;
+        ITunesApp.OnAboutToPromptUserToQuitEvent -= App_AboutToQuitEvent;
+        _countTimer.Elapsed -= CountTimer_Elapsed;
+        _refreshTimer.Elapsed -= RefreshTimer_Elapsed;
 
         // release resources
         Marshal.ReleaseComObject(ITunesApp);
@@ -282,7 +282,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         Scrobble s = null;
         try
         {
-          OnStatusUpdated(string.Format("Trying to scrobble '{0}'...", CurrentTrackName));
+          OnStatusUpdated($"Trying to scrobble '{CurrentTrackName}'...");
 
           // lock while acquiring current data
           lock (_lockAnchor)
@@ -307,15 +307,15 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
           var response = await Scrobbler.ScrobbleAsync(s, true);
           if (response.Success && response.Status == LastResponseStatus.Successful)
-            OnStatusUpdated(string.Format("Successfully scrobbled '{0}'", s.Track));
+            OnStatusUpdated($"Successfully scrobbled '{s.Track}'");
           else if (response.Status == LastResponseStatus.Cached)
-            OnStatusUpdated(string.Format("Scrobbling '{0}' failed. Scrobble has been cached", s.Track));
+            OnStatusUpdated($"Scrobbling '{s.Track}' failed. Scrobble has been cached");
           else
-            OnStatusUpdated(string.Format("Error while scrobbling '{0}': {1}", s.Track, response.Status));
+            OnStatusUpdated($"Error while scrobbling '{s.Track}': {response.Status}");
         }
         catch (Exception ex)
         {
-          OnStatusUpdated(string.Format("Fatal error while trying to scrobble '{0}': {1}", s?.Track, ex.Message));
+          OnStatusUpdated($"Fatal error while trying to scrobble '{s?.Track}': {ex.Message}");
         }
         finally
         {
