@@ -32,7 +32,7 @@ namespace Scrubbler.Helper
     /// <summary>
     /// Actual text field parser.
     /// </summary>
-    private TextFieldParser _parser;
+    private readonly TextFieldParser _parser;
 
     #endregion Member
 

@@ -14,42 +14,42 @@ namespace Scrubbler.Scrobbling.Data
     /// <summary>
     /// Reference to the windows media player.
     /// </summary>
-    private WindowsMediaPlayer _mediaPlayer;
+    private readonly WindowsMediaPlayer _mediaPlayer;
 
     /// <summary>
     /// Reference to the media collection.
     /// </summary>
-    private IWMPMediaCollection _media;
+    private readonly IWMPMediaCollection _media;
 
     /// <summary>
     /// Access index of the track name.
     /// </summary>
-    private int _titleIndex;
+    private readonly int _titleIndex;
 
     /// <summary>
     /// Access index of the (album) artist name.
     /// </summary>
-    private int _albumArtistIndex;
+    private readonly int _albumArtistIndex;
 
     /// <summary>
     /// Access index of the artist name.
     /// </summary>
-    private int _authorIndex;
+    private readonly int _authorIndex;
 
     /// <summary>
     /// Access index of the album name.
     /// </summary>
-    private int _albumIndex;
+    private readonly int _albumIndex;
 
     /// <summary>
     /// Access index of the play count.
     /// </summary>
-    private int _playCountIndex;
+    private readonly int _playCountIndex;
 
     /// <summary>
     /// Access index of the last played date.
     /// </summary>
-    private int _userLastPlayedTimeIndex;
+    private readonly int _userLastPlayedTimeIndex;
 
     #endregion Member
 
