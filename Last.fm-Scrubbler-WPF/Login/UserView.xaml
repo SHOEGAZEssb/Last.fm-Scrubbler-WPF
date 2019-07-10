@@ -45,9 +45,9 @@
     </Grid.ColumnDefinitions>
 
     <TextBlock Grid.Row="1" Grid.Column="1" Text="Active User:" FontWeight="Bold"/>
-    <TextBlock Grid.Row="1" Grid.Column="3">
+    <TextBlock Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3">
       <TextBlock.Text>
-        <MultiBinding StringFormat="{}{0} ({1} / {2})">
+        <MultiBinding StringFormat="{}{0} ({1} / {2} daily scrobbles)">
           <Binding Path="Username" TargetNullValue='No active user'/>
           <Binding Path="RecentScrobbleCount" FallbackValue="0"/>
           <Binding Source="{x:Static local:User.MAXSCROBBLESPERDAY}"/>
@@ -57,7 +57,7 @@
 
     <Separator Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5"/>
 
-    <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Text="Available Users:" FontWeight="Bold"/>
+    <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="5" Text="Available Users:" FontWeight="Bold"/>
     <ListBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding AvailableUsers}" DisplayMemberPath="Username" SelectedItem="{Binding SelectedUser}"/>
 
     <StackPanel Grid.Row="5" Grid.Column="5" Orientation="Vertical">
