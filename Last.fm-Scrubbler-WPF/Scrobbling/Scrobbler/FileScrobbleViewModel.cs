@@ -66,6 +66,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// Shows a dialog to select music files.
     /// Parses the selected files.
     /// </summary>
+    /// <returns>Task.</returns>
     public async Task AddFiles()
     {
       EnableControls = false;
@@ -97,7 +98,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     private async Task ParseFiles(string[] files)
     {
       OnStatusUpdated("Trying to parse selected files...");
-      List<string> errors = new List<string>();
+      var errors = new List<string>();
 
       var newFiles = new List<LoadedFileViewModel>();
       await Task.Run(() =>
@@ -141,6 +142,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
             _fileOperator.WriteAllLines(sfd.FileName, errors.ToArray());
         }
       }
+      else if (Scrobbles.Count == 0)
+        OnStatusUpdated("No compatible files");
       else
         OnStatusUpdated("Successfully parsed selected files");
     }
@@ -188,7 +191,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       while (files.Any(i => !Path.HasExtension(i)))
       {
         var tempList1 = files.Where(i => !Path.HasExtension(i)).ToList();
-        List<string> tempList2 = new List<string>();
+        var tempList2 = new List<string>();
 
         foreach (var ex in tempList1)
         {
@@ -224,6 +227,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Scrobbles the selected tracks.
     /// </summary>
+    /// <returns>Task.</returns>
     public override async Task Scrobble()
     {
       try
@@ -262,6 +266,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
           AlbumArtist = vm.AlbumArtist,
           Duration = vm.Duration
         });
+
         timePlayed = timePlayed.Subtract(vm.Duration ?? TimeSpan.FromSeconds(1));
       }
 
