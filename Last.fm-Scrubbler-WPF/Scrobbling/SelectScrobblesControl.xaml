@@ -29,7 +29,7 @@
       <TextBlock.Text>
         <MultiBinding StringFormat="{}Num to scrobble: {0} / {1} | Selected: {2}">
           <Binding Path="ToScrobbleCount"/>
-          <Binding Path="Scrobbles.Count"/>
+          <Binding Path="MaxToScrobbleCount"/>
           <Binding Path="SelectedCount"/>
         </MultiBinding>
       </TextBlock.Text>

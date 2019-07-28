@@ -56,7 +56,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         ConnectExistingToScrobbleEvent();
 
         NotifyOfPropertyChange();
-        NotifyCanProperties();
+        NotifyProperties();
       }
     }
     private ObservableCollection<T> _scrobbles;
@@ -85,7 +85,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// Gets the amount of scrobbles that are
     /// marked as "ToScrobble".
     /// </summary>
-    public int ToScrobbleCount => Scrobbles?.Where(s => s.ToScrobble).Count() ?? 0;
+    public virtual int ToScrobbleCount => Scrobbles?.Where(s => s.ToScrobble).Count() ?? 0;
+
+    /// <summary>
+    /// Max amount of scrobbable scrobbles.
+    /// </summary>
+    public virtual int MaxToScrobbleCount => Scrobbles?.Count ?? 0;
 
     /// <summary>
     /// Gets the amount of selected scrobbles.
@@ -176,7 +181,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Notifies that properties have changed.
     /// </summary>
-    protected void NotifyCanProperties()
+    protected void NotifyProperties()
     {
       NotifyOfPropertyChange(() => CanScrobble);
       NotifyOfPropertyChange(() => CanPreview);
@@ -185,6 +190,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       NotifyOfPropertyChange(() => CanCheckSelected);
       NotifyOfPropertyChange(() => CanUncheckSelected);
       NotifyOfPropertyChange(() => ToScrobbleCount);
+      NotifyOfPropertyChange(() => MaxToScrobbleCount);
       NotifyOfPropertyChange(() => SelectedCount);
     }
 
@@ -194,7 +200,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     private void UpdateView()
     {
-      NotifyCanProperties();
+      NotifyProperties();
       // todo: this is a workaround for the virtualization problem occurring
       // with huge csv files.
       ICollectionView view = CollectionViewSource.GetDefaultView(Scrobbles);
@@ -225,7 +231,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         }
       }
 
-      NotifyCanProperties();
+      NotifyProperties();
     }
 
     /// <summary>
@@ -235,7 +241,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <param name="e">Ignored.</param>
     private void Scrobble_StateChanged(object sender, EventArgs e)
     {
-      NotifyCanProperties();
+      NotifyProperties();
     }
 
     /// <summary>

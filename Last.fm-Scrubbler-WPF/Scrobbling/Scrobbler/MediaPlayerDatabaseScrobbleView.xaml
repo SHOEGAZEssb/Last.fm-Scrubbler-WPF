@@ -38,6 +38,8 @@
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
       <RowDefinition Height="*"/>
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
@@ -55,7 +57,7 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="DB File Path:"/>
-    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding DBFilePath}" Style="{StaticResource CanSelectPathStyle}"/>
+    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding DBFilePath, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CanSelectPathStyle}"/>
     <Button x:Name="SelectFile" Grid.Row="0" Grid.Column="4" Content="..." MinWidth="25" Style="{StaticResource CanSelectPathStyle}"/>
 
     <ComboBox Grid.Row="0" Grid.Column="6" ItemsSource="{Binding Source={StaticResource MPDDataProvider}}"
@@ -67,11 +69,32 @@
       </ComboBox.ItemTemplate>
     </ComboBox>
 
-    <Button x:Name="ParseFile" Grid.Row="0" Grid.Column="8" Content="Parse"/>
+    <Button x:Name="ParseFile" Grid.Row="0" Grid.Column="8" Content="Parse">
+      <Button.Style>
+        <Style TargetType="Button">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding DBFilePath}" Value="{x:Null}">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DBFilePath}" Value="">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Button.Style>
+    </Button>
 
-    <scrobbling:SelectScrobblesControl Grid.Row="2" Grid.ColumnSpan="9"/>
+    <CheckBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9" Content="Scrobble Playcounts" IsChecked="{Binding ScrobblePlaycounts}">
+      <CheckBox.ToolTip>
+        <ToolTip>
+          <TextBlock Text="If checked will scrobble a track the amount of times it was played instead of just once"/>
+        </ToolTip>
+      </CheckBox.ToolTip>
+    </CheckBox>
 
-    <data:ScrobbableObjectListView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="9" ItemsSource="{Binding Scrobbles}" scrub:GridViewSort.AutoSort="True" Style="{StaticResource ScrobbableObjectListViewStyle}">
+    <scrobbling:SelectScrobblesControl Grid.Row="4" Grid.ColumnSpan="9"/>
+
+    <data:ScrobbableObjectListView Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="9" ItemsSource="{Binding Scrobbles}" scrub:GridViewSort.AutoSort="True" Style="{StaticResource ScrobbableObjectListViewStyle}">
       <data:ScrobbableObjectListView.View>
         <GridView>
           <GridViewColumn Header="Scrobble?" scrub:GridViewSort.PropertyName="ToScrobble">
@@ -106,13 +129,6 @@
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <TextBox VerticalAlignment="Center" Text="{Binding AlbumArtist}"/>
-              </DataTemplate>
-            </GridViewColumn.CellTemplate>
-          </GridViewColumn>
-          <GridViewColumn Header="Album Duration" scrub:GridViewSort.PropertyName="Duration">
-            <GridViewColumn.CellTemplate>
-              <DataTemplate>
-                <Label VerticalAlignment="Center" Content="{Binding Duration}"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>

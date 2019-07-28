@@ -65,6 +65,32 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
     private MediaPlayerDatabaseType _mediaPlayerDatabaseType;
 
+    public bool ScrobblePlaycounts
+    {
+      get => _scrobblePlaycounts;
+      set
+      {
+        if(ScrobblePlaycounts != value)
+        {
+          _scrobblePlaycounts = value;
+          NotifyOfPropertyChange();
+          NotifyOfPropertyChange(() => ToScrobbleCount);
+          NotifyOfPropertyChange(() => MaxToScrobbleCount);
+        }
+      }
+    }
+    private bool _scrobblePlaycounts;
+
+    /// <summary>
+    /// Gets the amount of scrobbles that will be scrobbled.
+    /// </summary>
+    public override int ToScrobbleCount => ScrobblePlaycounts ? Scrobbles.Where(i => i.ToScrobble).Sum(i => i.PlayCount) : base.ToScrobbleCount;
+
+    /// <summary>
+    /// Maximum amount of scrobbable scrobbles.
+    /// </summary>
+    public override int MaxToScrobbleCount => ScrobblePlaycounts ? Scrobbles.Sum(i => i.PlayCount) : base.MaxToScrobbleCount;
+
     #endregion Properties
 
     /// <summary>
@@ -75,6 +101,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       : base(windowManager, "Media Player Database Scrobbler")
     {
       Scrobbles = new ObservableCollection<MediaDBScrobbleViewModel>();
+      ScrobblePlaycounts = true;
     }
 
     /// <summary>
@@ -260,12 +287,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <returns>List with scrobbles.</returns>
     protected override IEnumerable<Scrobble> CreateScrobbles()
     {
-      List<Scrobble> scrobbles = new List<Scrobble>();
+      var scrobbles = new List<Scrobble>();
 
       DateTime time = DateTime.Now; ;
       foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
       {
-        for (int i = 0; i < vm.PlayCount; i++)
+        for (int i = 0; i < (ScrobblePlaycounts ? vm.PlayCount : 1); i++)
         {
           scrobbles.Add(new Scrobble(vm.ArtistName, vm.AlbumName, vm.TrackName, time) { AlbumArtist = vm.AlbumArtist, Duration = vm.Duration });
           time = time.Subtract(TimeSpan.FromSeconds(1));
