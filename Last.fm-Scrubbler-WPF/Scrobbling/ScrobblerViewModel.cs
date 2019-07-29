@@ -25,7 +25,7 @@ namespace Scrubbler.Scrobbling
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    /// <param name="localFileFactory">Factory used to create <see cref="Scrobbling.Data.ILocalFile"/>s.</param>
+    /// <param name="localFileFactory">Factory used to create <see cref="Data.ILocalFile"/>s.</param>
     /// <param name="fileOperator">FileOperator used to interface with files.</param>
     /// <param name="lastFMClient">Last.fm client.</param>
     /// <param name="discogsClient">Client used to interact with Discogs.com</param>
@@ -36,6 +36,10 @@ namespace Scrubbler.Scrobbling
       CreateViewModels(windowManager, localFileFactory, fileOperator, lastFMClient, discogsClient);
     }
 
+    /// <summary>
+    /// Update the scrobbler used by the ScrobbleViewModels.
+    /// </summary>
+    /// <param name="scrobbler">Scrobbler to use.</param>
     public void UpdateScrobblers(IUserScrobbler scrobbler)
     {
       foreach(var vm in Items)
@@ -96,7 +100,7 @@ namespace Scrubbler.Scrobbling
     /// Fires the <see cref="StatusUpdated"/> event.
     /// </summary>
     /// <param name="sender">Ignored.</param>
-    /// <param name="e">New status message.</param>
+    /// <param name="e">EventArgs containing the new status message.</param>
     private void Scrobbler_StatusUpdated(object sender, UpdateStatusEventArgs e)
     {
       StatusUpdated?.Invoke(this, e);

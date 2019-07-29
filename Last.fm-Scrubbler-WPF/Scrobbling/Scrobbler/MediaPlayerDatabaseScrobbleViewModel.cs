@@ -18,7 +18,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
   public enum MediaPlayerDatabaseType
   {
     /// <summary>
-    /// Scrobble from iTunes database (.xml).
+    /// Scrobble from iTunes or Winamp database (.xml).
     /// </summary>
     [Description("iTunes / Winamp")]
     iTunes_Or_Winamp,
@@ -65,6 +65,10 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
     private MediaPlayerDatabaseType _mediaPlayerDatabaseType;
 
+    /// <summary>
+    /// If true will scrobble a track the amount of times
+    /// it was played instead of just once.
+    /// </summary>
     public bool ScrobblePlaycounts
     {
       get => _scrobblePlaycounts;
@@ -140,16 +144,14 @@ namespace Scrubbler.Scrobbling.Scrobbler
       {
         EnableControls = false;
 
-        XmlDocument xmlDocument = new XmlDocument();
+        var xmlDocument = new XmlDocument();
         try
         {
           xmlDocument.Load(DBFilePath);
         }
         catch (Exception ex)
         {
-          EnableControls = true;
-          OnStatusUpdated($"Could not load database file: {ex.Message}");
-          return;
+          throw new Exception($"Could not load database file: {ex.Message}");
         }
 
         // node that points to all tracks
@@ -162,9 +164,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         }
         catch (Exception ex)
         {
-          EnableControls = true;
-          OnStatusUpdated($"Error parsing database file: {ex.Message}");
-          return;
+          throw new Exception($"Error parsing database file: {ex.Message}");
         }
 
         List<MediaDBScrobbleViewModel> scrobbles = new List<MediaDBScrobbleViewModel>();
@@ -187,7 +187,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
               TimeSpan duration = TimeSpan.FromMilliseconds(int.Parse(xmlNodes.FirstOrDefault(i => i.InnerText == "Total Time")?.NextSibling.InnerText));
               DateTime lastPlayed = DateTime.Parse(xmlNodes.FirstOrDefault(i => i.InnerText == "Play Date UTC")?.NextSibling.InnerText);
 
-              MediaDBScrobbleViewModel vm = new MediaDBScrobbleViewModel(new MediaDBScrobble(playCount, lastPlayed, trackName, artistName, albumName, albumArtist, duration));
+              var vm = new MediaDBScrobbleViewModel(new MediaDBScrobble(playCount, lastPlayed, trackName, artistName, albumName, albumArtist, duration));
               vm.ToScrobbleChanged += ToScrobbleChanged;
               scrobbles.Add(vm);
             }
@@ -208,7 +208,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       }
       catch (Exception ex)
       {
-        OnStatusUpdated($"Fatal error while parsing database file: {ex.Message}");
+        OnStatusUpdated(ex.Message);
       }
       finally
       {
@@ -227,7 +227,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         await Task.Run(() =>
         {
           OnStatusUpdated("Parsing Windows Media Player library...");
-          using (WMP wmp = new WMP())
+          using (var wmp = new WMP())
           {
             // todo: this can be better
             var scrobbles = wmp.GetMusicLibrary();
@@ -241,6 +241,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
             Scrobbles = new ObservableCollection<MediaDBScrobbleViewModel>(scrobbleVMs);
           }
+
           OnStatusUpdated("Successfully parsed Windows Media Player library");
         });
       }
@@ -289,7 +290,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     {
       var scrobbles = new List<Scrobble>();
 
-      DateTime time = DateTime.Now; ;
+      var time = DateTime.Now; ;
       foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
       {
         for (int i = 0; i < (ScrobblePlaycounts ? vm.PlayCount : 1); i++)

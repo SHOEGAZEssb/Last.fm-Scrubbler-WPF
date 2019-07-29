@@ -141,7 +141,7 @@ namespace Scrubbler
       _fileOperator = fileOperator ?? throw new ArgumentNullException(nameof(fileOperator));
       _logger = logger;
       SetupViewModels(localFileFactory, directoryOperator, serializer, gitHubClient, processManager, discogsClient);
-      TitleString = "Last.fm Scrubbler WPF Beta " + Assembly.GetExecutingAssembly().GetName().Version;
+      TitleString = $"Last.fm Scrubbler WPF Beta {Assembly.GetExecutingAssembly().GetName().Version}";
       CurrentStatus = "Waiting to scrobble...";
     }
 
@@ -234,7 +234,7 @@ namespace Scrubbler
       IAuthScrobbler cachingScrobbler;
       if (_client.Auth.UserSession != null)
       {
-        string dbFile = $"{_client.Auth.UserSession.Username}.db";
+        var dbFile = $"{_client.Auth.UserSession.Username}.db";
 
         try
         {
@@ -243,7 +243,7 @@ namespace Scrubbler
         }
         catch (Exception ex)
         {
-          CurrentStatus = "Error creating cache database. Error: " + ex.Message;
+          CurrentStatus = $"Error creating cache database. Error: {ex.Message}";
         }
 
         scrobbler = _scrobblerFactory.CreateScrobbler(_client.Auth);
@@ -262,7 +262,7 @@ namespace Scrubbler
     /// Updates the status.
     /// </summary>
     /// <param name="sender">Ignored.</param>
-    /// <param name="e">Contains the new status.</param>
+    /// <param name="e">EventArgs containing the new status message.</param>
     private void StatusUpdated(object sender, UpdateStatusEventArgs e)
     {
       CurrentStatus = e.NewStatus;
