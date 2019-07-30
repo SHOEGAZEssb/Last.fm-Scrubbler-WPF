@@ -29,12 +29,12 @@ namespace Scrubbler.Configuration
     /// <summary>
     /// The new release.
     /// </summary>
-    private Release _newRelease;
+    private readonly Release _newRelease;
 
     /// <summary>
     /// ProcessManager for working with processor functions.
     /// </summary>
-    private IProcessManager _processManager;
+    private readonly IProcessManager _processManager;
 
     #endregion Member
 

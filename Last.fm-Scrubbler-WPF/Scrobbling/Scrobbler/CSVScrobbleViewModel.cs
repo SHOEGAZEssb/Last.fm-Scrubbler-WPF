@@ -129,7 +129,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     {
       IOpenFileDialog ofd = _windowManager.CreateOpenFileDialog();
       ofd.Filter = "CSV Files|*.csv";
-      if(ofd.ShowDialog())
+      if (ofd.ShowDialog())
         CSVFilePath = ofd.FileName;
     }
 
@@ -143,91 +143,35 @@ namespace Scrubbler.Scrobbling.Scrobbler
       {
         EnableControls = false;
         OnStatusUpdated("Reading CSV file...");
-        Scrobbles.Clear();
 
-        using (ITextFieldParser parser = _parserFactory.CreateParser(CSVFilePath))
+        IEnumerable<string> errors = null;
+        ObservableCollection<ParsedCSVScrobbleViewModel> parsedScrobbles = null;
+
+        await Task.Run(() =>
         {
+          var pparser = new CSVFileParser();
+          var res = pparser.Parse(CSVFilePath, ScrobbleMode);
+          errors = res.Errors;
+          parsedScrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>(res.Scrobbles.Select(i => new ParsedCSVScrobbleViewModel(i, ScrobbleMode)));
+        });
 
-          parser.SetDelimiters(Settings.Default.CSVDelimiters.Select(x => new string(x, 1)).ToArray());
-
-          string[] fields = null;
-          List<string> errors = new List<string>();
-          ObservableCollection<ParsedCSVScrobbleViewModel> parsedScrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>();
-
-          await Task.Run(() =>
+        if (errors.Count() == 0)
+          OnStatusUpdated($"Successfully parsed CSV file. Parsed {parsedScrobbles.Count} rows");
+        else
+        {
+          OnStatusUpdated($"Partially parsed CSV file. {errors.Count()} rows could not be parsed");
+          if (_windowManager.MessageBoxService.ShowDialog("Some rows could not be parsed. Do you want to save a text file with the rows that could not be parsed?",
+                                                          "Error parsing rows", IMessageBoxServiceButtons.YesNo) == IMessageBoxServiceResult.Yes)
           {
-            while (!parser.EndOfData)
-            {
-              try
-              {
-                fields = parser.ReadFields();
-
-                string dateString = fields[Settings.Default.TimestampFieldIndex];
-
-                // check for 'now playing'
-                if (dateString == "" && ScrobbleMode == CSVScrobbleMode.Normal)
-                  continue;
-
-                DateTime date = DateTime.Now;
-                if (!DateTime.TryParse(dateString, out date))
-                {
-                  bool parsed = false;
-                  // try different formats until succeeded
-                  foreach (string format in _formats)
-                  {
-                    parsed = DateTime.TryParseExact(dateString, format, CultureInfo.CurrentCulture, DateTimeStyles.None, out date);
-                    if (parsed)
-                      break;
-                  }
-
-                  if (!parsed && ScrobbleMode == CSVScrobbleMode.Normal)
-                    throw new Exception("Timestamp could not be parsed!");
-                }
-
-                // try to get optional parameters first
-                string album = fields.ElementAtOrDefault(Settings.Default.AlbumFieldIndex);
-                string albumArtist = fields.ElementAtOrDefault(Settings.Default.AlbumArtistFieldIndex);
-                string duration = fields.ElementAtOrDefault(Settings.Default.DurationFieldIndex);
-                TimeSpan time = TimeSpan.FromSeconds(Duration);
-                TimeSpan.TryParse(duration, out time);
-
-                DatedScrobble parsedScrobble = new DatedScrobble(date.AddSeconds(1), fields[Settings.Default.TrackFieldIndex],
-                                                                fields[Settings.Default.ArtistFieldIndex], album,
-                                                                albumArtist, time);
-
-                parsedScrobbles.Add(new ParsedCSVScrobbleViewModel(parsedScrobble, ScrobbleMode));
-              }
-              catch (Exception ex)
-              {
-                string errorString = $"CSV line number: {parser.LineNumber},";
-                foreach (string s in fields)
-                {
-                  errorString += $"{s},";
-                }
-
-                errorString += ex.Message;
-                errors.Add(errorString);
-              }
-            }
-          });
-
-          if (errors.Count == 0)
-            OnStatusUpdated($"Successfully parsed CSV file. Parsed {parsedScrobbles.Count} rows");
-          else
-          {
-            OnStatusUpdated($"Partially parsed CSV file. {errors.Count} rows could not be parsed");
-            if (_windowManager.MessageBoxService.ShowDialog("Some rows could not be parsed. Do you want to save a text file with the rows that could not be parsed?",
-                                                            "Error parsing rows", IMessageBoxServiceButtons.YesNo) == IMessageBoxServiceResult.Yes)
-            {
-              IFileDialog sfd = _windowManager.CreateSaveFileDialog();
-              sfd.Filter = "Text Files|*.txt";
-              if (sfd.ShowDialog())
-                _fileOperator.WriteAllLines(sfd.FileName, errors.ToArray());
-            }
+            IFileDialog sfd = _windowManager.CreateSaveFileDialog();
+            sfd.Filter = "Text Files|*.txt";
+            if (sfd.ShowDialog())
+              _fileOperator.WriteAllLines(sfd.FileName, errors.ToArray());
           }
-
-          Scrobbles = parsedScrobbles;
         }
+
+        Scrobbles = parsedScrobbles;
+
       }
       catch (Exception ex)
       {
@@ -273,7 +217,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <returns>List with scrobbles.</returns>
     protected override IEnumerable<Scrobble> CreateScrobbles()
     {
-      List<Scrobble> scrobbles = new List<Scrobble>();
+      var scrobbles = new List<Scrobble>();
 
       if (ScrobbleMode == CSVScrobbleMode.Normal)
       {
