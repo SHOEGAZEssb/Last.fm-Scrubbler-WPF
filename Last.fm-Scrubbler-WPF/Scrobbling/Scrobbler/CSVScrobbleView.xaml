@@ -17,7 +17,7 @@
                     ObjectType="{x:Type sys:Enum}"
                     x:Key="ScrobbleModeKeyDataProvider">
       <ObjectDataProvider.MethodParameters>
-        <x:Type TypeName="local:CSVScrobbleMode"/>
+        <x:Type TypeName="local:ScrobbleMode"/>
       </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
 
@@ -141,7 +141,7 @@
           <Style TargetType="Grid">
             <Setter Property="Visibility" Value="Collapsed"/>
             <Style.Triggers>
-              <DataTrigger Binding="{Binding ScrobbleMode}" Value="{x:Static local:CSVScrobbleMode.ImportMode}">
+              <DataTrigger Binding="{Binding ScrobbleMode}" Value="{x:Static local:ScrobbleMode.ImportMode}">
                 <Setter Property="Visibility" Value="Visible"/>
               </DataTrigger>
             </Style.Triggers>

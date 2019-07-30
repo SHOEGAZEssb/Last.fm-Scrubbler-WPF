@@ -5,8 +5,17 @@ using System.Collections.Generic;
 
 namespace Scrubbler.Helper
 {
+  /// <summary>
+  /// Interface for an object that parses files to scrobbles.
+  /// </summary>
   interface IFileParser
   {
-    FileParseResult Parse(string file, CSVScrobbleMode scrobbleMode);
+    /// <summary>
+    /// Parses the given <paramref name="file"/>.
+    /// </summary>
+    /// <param name="file">File to parse.</param>
+    /// <param name="scrobbleMode">Scrobble mode to use.</param>
+    /// <returns>Parse result.</returns>
+    FileParseResult Parse(string file, ScrobbleMode scrobbleMode);
   }
 }

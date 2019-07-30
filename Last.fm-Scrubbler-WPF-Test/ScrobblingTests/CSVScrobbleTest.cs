@@ -19,7 +19,7 @@ namespace Scrubbler.Test.ScrobblingTests
   class CSVScrobbleTest
   {
     /// <summary>
-    /// Tests scrobbling with <see cref="CSVScrobbleMode.Normal"/>.
+    /// Tests scrobbling with <see cref="ScrobbleMode.Normal"/>.
     /// </summary>
     /// <returns></returns>
     [Test]
@@ -63,7 +63,7 @@ namespace Scrubbler.Test.ScrobblingTests
       {
         Scrobbler = scrobblerMock.Object,
         CSVFilePath = "C:\\TestFile.csv",
-        ScrobbleMode = CSVScrobbleMode.Normal
+        ScrobbleMode = ScrobbleMode.Normal
       };
 
       await vm.ParseCSVFile();

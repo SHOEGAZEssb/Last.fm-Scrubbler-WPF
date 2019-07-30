@@ -15,7 +15,7 @@ namespace Scrubbler.Scrobbling.Data
     /// </summary>
     public new bool IsEnabled
     {
-      get => _scrobbleMode == CSVScrobbleMode.ImportMode || Played > DateTime.Now.Subtract(TimeSpan.FromDays(14));
+      get => _scrobbleMode == ScrobbleMode.ImportMode || Played > DateTime.Now.Subtract(TimeSpan.FromDays(14));
     }
 
     #endregion Properties
@@ -25,7 +25,7 @@ namespace Scrubbler.Scrobbling.Data
     /// <summary>
     /// The used scrobble mode.
     /// </summary>
-    private readonly CSVScrobbleMode _scrobbleMode;
+    private readonly ScrobbleMode _scrobbleMode;
 
     #endregion Member
 
@@ -34,7 +34,7 @@ namespace Scrubbler.Scrobbling.Data
     /// </summary>
     /// <param name="parsedScrobble">The scrobble parsed from the csv file.</param>
     /// <param name="scrobbleMode">The current scrobble mode.</param>
-    public ParsedCSVScrobbleViewModel(DatedScrobble parsedScrobble, CSVScrobbleMode scrobbleMode)
+    public ParsedCSVScrobbleViewModel(DatedScrobble parsedScrobble, ScrobbleMode scrobbleMode)
       : base(parsedScrobble)
     {
       _scrobbleMode = scrobbleMode;

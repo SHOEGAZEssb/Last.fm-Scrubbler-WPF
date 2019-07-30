@@ -197,6 +197,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Helper\CSVFileParser.cs" />
     <Compile Include="Helper\FileParserBase.cs" />
+    <Compile Include="Helper\FileParseResult.cs" />
     <Compile Include="Helper\IFileParser.cs" />
     <Compile Include="Helper\IProcessManager.cs" />
     <Compile Include="Helper\ProcessManager.cs" />

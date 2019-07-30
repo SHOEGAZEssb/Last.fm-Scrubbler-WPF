@@ -16,7 +16,7 @@ namespace Scrubbler.Helper
     /// </summary>
     private static readonly string[] _formats = new string[] { "M/dd/yyyy h:mm" };
 
-    public abstract FileParseResult Parse(string file, CSVScrobbleMode scrobbleMode);
+    public abstract FileParseResult Parse(string file, ScrobbleMode scrobbleMode);
 
     public static bool TryParseDateString(string dateString, out DateTime dateTime)
     {

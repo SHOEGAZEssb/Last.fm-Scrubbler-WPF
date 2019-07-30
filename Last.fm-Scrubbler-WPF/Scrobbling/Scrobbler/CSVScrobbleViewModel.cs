@@ -15,7 +15,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
   /// <summary>
   /// Scrobble mode.
   /// </summary>
-  public enum CSVScrobbleMode
+  public enum ScrobbleMode
   {
     /// <summary>
     /// Scrobble the tracks based on the parsed timestamp.
@@ -50,9 +50,9 @@ namespace Scrubbler.Scrobbling.Scrobbler
     private string _csvFilePath;
 
     /// <summary>
-    /// The selected <see cref="CSVScrobbleMode"/>.
+    /// The selected <see cref="Scrobbler.ScrobbleMode"/>.
     /// </summary>
-    public CSVScrobbleMode ScrobbleMode
+    public ScrobbleMode ScrobbleMode
     {
       get { return _scrobbleMode; }
       set
@@ -69,7 +69,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         NotifyOfPropertyChange();
       }
     }
-    private CSVScrobbleMode _scrobbleMode;
+    private ScrobbleMode _scrobbleMode;
 
     /// <summary>
     /// Duration between scrobbles in seconds.
@@ -88,11 +88,6 @@ namespace Scrubbler.Scrobbling.Scrobbler
     #endregion Properties
 
     #region Member
-
-    /// <summary>
-    /// Different formats to try in case TryParse fails.
-    /// </summary>
-    private static readonly string[] _formats = new string[] { "M/dd/yyyy h:mm" };
 
     /// <summary>
     /// The factory used to create <see cref="ITextFieldParser"/>.
@@ -119,7 +114,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       _fileOperator = fileOperator;
       Scrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>();
       Duration = 1;
-      ScrobbleMode = CSVScrobbleMode.ImportMode;
+      ScrobbleMode = ScrobbleMode.ImportMode;
     }
 
     /// <summary>
@@ -219,7 +214,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     {
       var scrobbles = new List<Scrobble>();
 
-      if (ScrobbleMode == CSVScrobbleMode.Normal)
+      if (ScrobbleMode == ScrobbleMode.Normal)
       {
         foreach (var vm in Scrobbles.Where(i => i.ToScrobble))
         {
@@ -227,7 +222,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
           { AlbumArtist = vm.AlbumArtist, Duration = vm.Duration });
         }
       }
-      else if (ScrobbleMode == CSVScrobbleMode.ImportMode)
+      else if (ScrobbleMode == ScrobbleMode.ImportMode)
       {
         DateTime time = ScrobbleTimeVM.Time;
         foreach (var vm in Scrobbles.Where(i => i.ToScrobble))

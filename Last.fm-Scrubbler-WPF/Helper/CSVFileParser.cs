@@ -1,20 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualBasic.FileIO;
+﻿using Microsoft.VisualBasic.FileIO;
 using Scrubbler.Properties;
 using Scrubbler.Scrobbling.Data;
 using Scrubbler.Scrobbling.Scrobbler;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Scrubbler.Helper
 {
+  /// <summary>
+  /// Parses a .csv file.
+  /// </summary>
   class CSVFileParser : IFileParser
   {
-    public FileParseResult Parse(string file, CSVScrobbleMode scrobbleMode)
+    /// <summary>
+    /// Parses the given <paramref name="file"/>.
+    /// </summary>
+    /// <param name="file">File to parse.</param>
+    /// <param name="scrobbleMode"></param>
+    /// <returns>Parse result.</returns>
+    public FileParseResult Parse(string file, ScrobbleMode scrobbleMode)
     {
+      if (string.IsNullOrEmpty(file))
+        throw new ArgumentNullException(nameof(file));
+
       var scrobbles = new List<DatedScrobble>();
       var errors = new List<string>();
       string[] fields = null;
@@ -29,22 +38,22 @@ namespace Scrubbler.Helper
 
           try
           {
-            string dateString = fields[Settings.Default.TimestampFieldIndex];
+            string dateString = fields.ElementAtOrDefault(Settings.Default.TimestampFieldIndex);
 
             // check for 'now playing'
-            if (dateString == "" && scrobbleMode == CSVScrobbleMode.Normal)
+            if (dateString == "" && scrobbleMode == ScrobbleMode.Normal)
               continue;
 
             DateTime date = DateTime.Now;
-            if(!FileParserBase.TryParseDateString(dateString, out date) && scrobbleMode == CSVScrobbleMode.Normal)
+            if (!FileParserBase.TryParseDateString(dateString, out date) && scrobbleMode == ScrobbleMode.Normal)
               throw new Exception("Timestamp could not be parsed!");
 
             // try to get optional parameters first
             string album = fields.ElementAtOrDefault(Settings.Default.AlbumFieldIndex);
             string albumArtist = fields.ElementAtOrDefault(Settings.Default.AlbumArtistFieldIndex);
             string duration = fields.ElementAtOrDefault(Settings.Default.DurationFieldIndex);
-            TimeSpan time; 
-            if(!TimeSpan.TryParse(duration, out time))
+            TimeSpan time;
+            if (!TimeSpan.TryParse(duration, out time))
               time = TimeSpan.FromSeconds(3); // todo: use user provided duration
 
             scrobbles.Add(new DatedScrobble(date.AddSeconds(1), fields[Settings.Default.TrackFieldIndex],
