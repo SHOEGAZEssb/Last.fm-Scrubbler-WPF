@@ -3,7 +3,7 @@ using Scrubbler.Scrobbling.Scrobbler;
 using System;
 using System.Collections.Generic;
 
-namespace Scrubbler.Helper
+namespace Scrubbler.Helper.FileParser
 {
   /// <summary>
   /// Interface for an object that parses files to scrobbles.

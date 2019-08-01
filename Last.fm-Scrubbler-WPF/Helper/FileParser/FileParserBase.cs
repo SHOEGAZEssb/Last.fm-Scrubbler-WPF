@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Scrubbler.Scrobbling.Data;
 using Scrubbler.Scrobbling.Scrobbler;
 
-namespace Scrubbler.Helper
+namespace Scrubbler.Helper.FileParser
 {
   public abstract class FileParserBase : IFileParser
   {

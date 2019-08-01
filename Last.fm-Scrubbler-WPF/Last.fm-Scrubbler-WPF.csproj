@@ -195,10 +195,13 @@
     <Compile Include="Converters\DataTypeConverter.cs" />
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Helper\CSVFileParser.cs" />
-    <Compile Include="Helper\FileParserBase.cs" />
-    <Compile Include="Helper\FileParseResult.cs" />
-    <Compile Include="Helper\IFileParser.cs" />
+    <Compile Include="Helper\FileParser\CSVFileParser.cs" />
+    <Compile Include="Helper\FileParser\CSVFileParserViewModel.cs" />
+    <Compile Include="Helper\FileParser\FileParserBase.cs" />
+    <Compile Include="Helper\FileParser\FileParseResult.cs" />
+    <Compile Include="Helper\FileParser\IFileParserViewModel.cs" />
+    <Compile Include="Helper\FileParser\IFileParser.cs" />
+    <Compile Include="Helper\FileParser\IHaveSettings.cs" />
     <Compile Include="Helper\IProcessManager.cs" />
     <Compile Include="Helper\ProcessManager.cs" />
     <Compile Include="Scrobbling\Data\ArtistResultViewModel.cs" />

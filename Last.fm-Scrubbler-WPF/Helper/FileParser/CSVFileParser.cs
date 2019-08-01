@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Scrubbler.Helper
+namespace Scrubbler.Helper.FileParser
 {
   /// <summary>
   /// Parses a .csv file.

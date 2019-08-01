@@ -29,6 +29,8 @@
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
       <RowDefinition Height="*"/>
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
@@ -45,10 +47,19 @@
       <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
 
-    <Label Grid.Row="0" Grid.Column="0" Content="CSV File:"/>
-    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding CSVFilePath, UpdateSourceTrigger=PropertyChanged}"/>
-    <Button x:Name="LoadCSVFileDialog" Grid.Row="0" Grid.Column="4" Content=" ... "/>
-    <Button x:Name="ParseCSVFile" Grid.Row="0" Grid.Column="6" Content="Parse">
+    <TextBlock Grid.Row="0" Grid.Column="0" Text="Parser:" VerticalAlignment="Center"/>
+    <ComboBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="5" ItemsSource="{Binding AvailableParser}" SelectedItem="{Binding SelectedParser}">
+      <ComboBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding Name}"/>
+        </DataTemplate>
+      </ComboBox.ItemTemplate>
+    </ComboBox>
+
+    <TextBlock Grid.Row="2" Grid.Column="0" Text="File:" VerticalAlignment="Center"/>
+    <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding CSVFilePath, UpdateSourceTrigger=PropertyChanged}"/>
+    <Button x:Name="LoadCSVFileDialog" Grid.Row="2" Grid.Column="4" Content=" ... "/>
+    <Button x:Name="ParseCSVFile" Grid.Row="2" Grid.Column="6" Content="Parse">
       <Button.Style>
         <Style TargetType="Button">
           <Style.Triggers>
@@ -61,9 +72,9 @@
     </Button>
     <Button x:Name="OpenCSVParserSettings" Grid.Row="0" Grid.Column="8" Content="Settings"/>
 
-    <scrobbling:SelectScrobblesControl Grid.Row="2" Grid.ColumnSpan="9"/>
+    <scrobbling:SelectScrobblesControl Grid.Row="4" Grid.ColumnSpan="9"/>
 
-    <data:ScrobbableObjectListView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="9" ItemsSource="{Binding Scrobbles}" scrub:GridViewSort.AutoSort="True" Style="{StaticResource ScrobbableObjectListViewStyle}">
+    <data:ScrobbableObjectListView Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="9" ItemsSource="{Binding Scrobbles}" scrub:GridViewSort.AutoSort="True" Style="{StaticResource ScrobbableObjectListViewStyle}">
       <data:ScrobbableObjectListView.View>
         <GridView>
           <GridViewColumn Header="Scrobble?" scrub:GridViewSort.PropertyName="ToScrobble">
@@ -119,7 +130,7 @@
       </data:ScrobbableObjectListView.View>
     </data:ScrobbableObjectListView>
 
-    <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="9">
+    <Grid Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="9">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="5"/>

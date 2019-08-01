@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Scrubbler.Helper
+namespace Scrubbler.Helper.FileParser
 {
   public class FileParseResult
   {

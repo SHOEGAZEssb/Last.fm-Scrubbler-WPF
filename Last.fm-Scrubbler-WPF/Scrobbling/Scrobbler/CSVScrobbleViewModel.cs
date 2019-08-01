@@ -1,6 +1,7 @@
 ﻿using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Helper;
+using Scrubbler.Helper.FileParser;
 using Scrubbler.Properties;
 using Scrubbler.Scrobbling.Data;
 using System;
@@ -34,6 +35,28 @@ namespace Scrubbler.Scrobbling.Scrobbler
   public class CSVScrobbleViewModel : ScrobbleMultipleTimeViewModelBase<ParsedCSVScrobbleViewModel>
   {
     #region Properties
+
+    /// <summary>
+    /// List of available file parser.
+    /// </summary>
+    public IEnumerable<IFileParserViewModel> AvailableParser { get; }
+
+    /// <summary>
+    /// The selected file parser.
+    /// </summary>
+    public IFileParserViewModel SelectedParser
+    {
+      get => _selectedParser;
+      set
+      {
+        if(SelectedParser != value)
+        {
+          _selectedParser = value;
+          NotifyOfPropertyChange();
+        }
+      }
+    }
+    private IFileParserViewModel _selectedParser;
 
     /// <summary>
     /// The path to the csv file.
@@ -90,11 +113,6 @@ namespace Scrubbler.Scrobbling.Scrobbler
     #region Member
 
     /// <summary>
-    /// The factory used to create <see cref="ITextFieldParser"/>.
-    /// </summary>
-    private readonly ITextFieldParserFactory _parserFactory;
-
-    /// <summary>
     /// FileOperator used to write to disk.
     /// </summary>
     private readonly IFileOperator _fileOperator;
@@ -110,8 +128,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
     public CSVScrobbleViewModel(IExtendedWindowManager windowManager, ITextFieldParserFactory parserFactory, IFileOperator fileOperator)
       : base(windowManager, "CSV Scrobbler")
     {
-      _parserFactory = parserFactory;
       _fileOperator = fileOperator;
+      AvailableParser = new List<IFileParserViewModel>()
+      { new CSVFileParserViewModel(_windowManager)};
+      SelectedParser = AvailableParser.FirstOrDefault();
+
       Scrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>();
       Duration = 1;
       ScrobbleMode = ScrobbleMode.ImportMode;
@@ -123,7 +144,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     public void LoadCSVFileDialog()
     {
       IOpenFileDialog ofd = _windowManager.CreateOpenFileDialog();
-      ofd.Filter = "CSV Files|*.csv";
+      ofd.Filter = SelectedParser.FileFilter;
       if (ofd.ShowDialog())
         CSVFilePath = ofd.FileName;
     }
@@ -245,7 +266,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public void OpenCSVParserSettings()
     {
-      _windowManager.ShowDialog(new ConfigureCSVParserViewModel());
+      if (SelectedParser is IHaveSettings s)
+        s.ShowSettings();
     }
 
     /// <summary>
