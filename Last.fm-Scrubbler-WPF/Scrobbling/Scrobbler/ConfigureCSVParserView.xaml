@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Configure CSV Parser" Height="270" Width="300" ResizeMode="NoResize" Loaded="Window_Loaded" >
+        Title="Configure CSV Parser" Height="300" Width="300" ResizeMode="NoResize" Loaded="Window_Loaded" >
 
   <Grid>
     <Grid.RowDefinitions>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="5"/>
@@ -58,9 +60,12 @@
     <TextBlock Grid.Row="13" Grid.Column="1" Text="Delimiters:"/>
     <TextBox Grid.Row="13" Grid.Column="3" Text="{Binding Delimiters}"/>
 
-    <Button x:Name="LoadDefaults" Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="4" Content="Load Defaults" HorizontalAlignment="Right"/>
+    <TextBlock Grid.Row="15" Grid.Column="1" Text="Encoding:"/>
+    <ComboBox Grid.Row="15" Grid.Column="3" ItemsSource="{Binding AvailableEncodings}" SelectedItem="{Binding SelectedEncoding}" DisplayMemberPath="EncodingName"/>
 
-    <StackPanel Grid.Row="17" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
+    <Button x:Name="LoadDefaults" Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="4" Content="Load Defaults" HorizontalAlignment="Right"/>
+
+    <StackPanel Grid.Row="19" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
       <Button x:Name="SaveAndClose" Content="Save &amp; Close" HorizontalAlignment="Right" Margin="0,0,5,0"/>
       <Button x:Name="Cancel" Content="Cancel" HorizontalAlignment="Right"/>
     </StackPanel>

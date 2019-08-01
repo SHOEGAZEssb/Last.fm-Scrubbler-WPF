@@ -8,7 +8,7 @@ namespace Scrubbler.Helper.FileParser
   /// <summary>
   /// Interface for an object that parses files to scrobbles.
   /// </summary>
-  interface IFileParser
+  public interface IFileParser
   {
     /// <summary>
     /// Parses the given <paramref name="file"/>.

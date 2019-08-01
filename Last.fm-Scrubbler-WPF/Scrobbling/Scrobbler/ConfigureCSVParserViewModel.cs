@@ -1,6 +1,8 @@
 ﻿using Caliburn.Micro;
 using Scrubbler.Properties;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows;
 
 namespace Scrubbler.Scrobbling.Scrobbler
@@ -110,6 +112,34 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
     private string _delimiters;
 
+    /// <summary>
+    /// Gets available encodings.
+    /// </summary>
+    public IEnumerable<Encoding> AvailableEncodings => typeof(Encoding).GetProperties().Where(i => i.PropertyType == typeof(Encoding)).Select(i => (Encoding)i.GetValue(null));
+
+    /// <summary>
+    /// The currently selected encoding.
+    /// </summary>
+    public Encoding SelectedEncoding
+    {
+      get => _selectedEncoding;
+      set
+      {
+        if(SelectedEncoding != value)
+        {
+          _selectedEncoding = value;
+          _encodingID = SelectedEncoding.CodePage;
+          NotifyOfPropertyChange();
+        }
+      }
+    }
+    private Encoding _selectedEncoding;
+
+    /// <summary>
+    /// The code page of the <see cref="SelectedEncoding"/>
+    /// </summary>
+    private int _encodingID;
+
     #endregion Properties
 
     /// <summary>
@@ -132,6 +162,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
       AlbumArtistFieldIndex = Settings.Default.AlbumArtistFieldIndex;
       DurationFieldIndex = Settings.Default.DurationFieldIndex;
       Delimiters = Settings.Default.CSVDelimiters;
+      _encodingID = Settings.Default.CSVEncoding;
+      SelectedEncoding = Encoding.GetEncoding(_encodingID);
     }
 
     /// <summary>
@@ -148,6 +180,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         Settings.Default.AlbumArtistFieldIndex = AlbumArtistFieldIndex;
         Settings.Default.DurationFieldIndex = DurationFieldIndex;
         Settings.Default.CSVDelimiters = Delimiters;
+        Settings.Default.CSVEncoding = _encodingID;
         TryClose(true);
       }
     }
@@ -197,6 +230,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
       AlbumArtistFieldIndex = int.Parse(Settings.Default.Properties["AlbumArtistFieldIndex"].DefaultValue.ToString());
       DurationFieldIndex = int.Parse(Settings.Default.Properties["DurationFieldIndex"].DefaultValue.ToString());
       Delimiters = Settings.Default.Properties["CSVDelimiters"].DefaultValue.ToString();
+      _encodingID = int.Parse(Settings.Default.Properties["CSVEncoding"].DefaultValue.ToString());
+      SelectedEncoding = Encoding.GetEncoding(_encodingID);
     }
   }
 }

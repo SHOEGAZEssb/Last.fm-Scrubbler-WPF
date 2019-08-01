@@ -4,6 +4,7 @@ using DiscogsClient.Data.Query;
 using DiscogsClient.Internal;
 using Octokit;
 using Scrubbler.Helper;
+using Scrubbler.Helper.FileParser;
 using Scrubbler.Scrobbling;
 
 namespace Scrubbler
@@ -53,9 +54,10 @@ namespace Scrubbler
       IGitHubClient gitHubClient = new GitHubClient(new ProductHeaderValue("Last.fm-Scrubbler-WPF"));
       IProcessManager processManager = new ProcessManager();
       IDiscogsDataBaseClient discogsClient = new DiscogsClient.DiscogsClient(new TokenAuthenticationInformation("vcrTuxlCPCANcLDUDcbGSYBxbODkeyywIUtYAMxg"));
+      IFileParserFactory fileParserFactory = new FileParserFactory();
 
       MainViewModel mainVM = new MainViewModel(windowManager, client, scrobblerFactory, localFileFactory, fileOperator,
-                                               directoryOperator, userSerializer, logger, gitHubClient, processManager, discogsClient);
+                                               directoryOperator, userSerializer, logger, gitHubClient, processManager, discogsClient, fileParserFactory);
 
       windowManager.ShowWindow(new SystemTrayViewModel(windowManager, mainVM));
     }

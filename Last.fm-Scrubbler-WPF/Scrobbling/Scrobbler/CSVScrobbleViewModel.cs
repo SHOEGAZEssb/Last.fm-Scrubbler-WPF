@@ -123,14 +123,14 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    /// <param name="parserFactory">The factory used to create <see cref="ITextFieldParser"/>.</param>
+    /// <param name="parserFactory">The factory used to create <see cref="IFileParser"/>.</param>
     /// <param name="fileOperator">FileOperator used to write to disk.</param>
-    public CSVScrobbleViewModel(IExtendedWindowManager windowManager, ITextFieldParserFactory parserFactory, IFileOperator fileOperator)
+    public CSVScrobbleViewModel(IExtendedWindowManager windowManager, IFileParserFactory parserFactory, IFileOperator fileOperator)
       : base(windowManager, "CSV Scrobbler")
     {
       _fileOperator = fileOperator;
       AvailableParser = new List<IFileParserViewModel>()
-      { new CSVFileParserViewModel(_windowManager)};
+      { new CSVFileParserViewModel(parserFactory.CreateCSVFileParser(), _windowManager)};
       SelectedParser = AvailableParser.FirstOrDefault();
 
       Scrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>();
@@ -165,8 +165,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
         await Task.Run(() =>
         {
-          var pparser = new CSVFileParser();
-          var res = pparser.Parse(CSVFilePath, ScrobbleMode);
+          var res = SelectedParser.Parse(CSVFilePath, ScrobbleMode);
           errors = res.Errors;
           parsedScrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>(res.Scrobbles.Select(i => new ParsedCSVScrobbleViewModel(i, ScrobbleMode)));
         });

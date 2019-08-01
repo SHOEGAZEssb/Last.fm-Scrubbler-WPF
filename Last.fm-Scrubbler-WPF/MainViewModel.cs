@@ -4,6 +4,7 @@ using Octokit;
 using Scrubbler.Configuration;
 using Scrubbler.ExtraFunctions;
 using Scrubbler.Helper;
+using Scrubbler.Helper.FileParser;
 using Scrubbler.Login;
 using Scrubbler.Scrobbling;
 using System;
@@ -131,16 +132,17 @@ namespace Scrubbler
     /// <param name="gitHubClient">GitHub client to check for updates.</param>
     /// <param name="processManager">ProcessManager for working with processor functions.</param>
     /// <param name="discogsClient">Client used to interact with Discogs.com</param>
+    /// <param name="fileParserFactory">Factory for creating <see cref="IFileParser"/></param>
     public MainViewModel(IExtendedWindowManager windowManager, ILastFMClient client, IScrobblerFactory scrobblerFactory, ILocalFileFactory localFileFactory,
                          IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer serializer, ILogger logger, IGitHubClient gitHubClient,
-                         IProcessManager processManager, IDiscogsDataBaseClient discogsClient)
+                         IProcessManager processManager, IDiscogsDataBaseClient discogsClient, IFileParserFactory fileParserFactory)
     {
       _windowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));
       _client = client ?? throw new ArgumentNullException(nameof(client));
       _scrobblerFactory = scrobblerFactory ?? throw new ArgumentNullException(nameof(scrobblerFactory));
       _fileOperator = fileOperator ?? throw new ArgumentNullException(nameof(fileOperator));
       _logger = logger;
-      SetupViewModels(localFileFactory, directoryOperator, serializer, gitHubClient, processManager, discogsClient);
+      SetupViewModels(localFileFactory, directoryOperator, serializer, gitHubClient, processManager, discogsClient, fileParserFactory);
       TitleString = $"Last.fm Scrubbler WPF Beta {Assembly.GetExecutingAssembly().GetName().Version}";
       CurrentStatus = "Waiting to scrobble...";
     }
@@ -185,14 +187,15 @@ namespace Scrubbler
     /// <param name="gitHubClient">GitHub client to check for updates.</param>
     /// <param name="processManager">ProcessManager for working with processor functions.</param>
     /// <param name="discogsClient">Client used to interact with Discogs.com</param>
+    /// <param name="fileParserFactory">Factory for creating <see cref="IFileParser"/></param>
     private void SetupViewModels(ILocalFileFactory localFileFactory, IDirectoryOperator directoryOperator, ISerializer serializer, IGitHubClient gitHubClient,
-                                 IProcessManager processManager, IDiscogsDataBaseClient discogsClient)
+                                 IProcessManager processManager, IDiscogsDataBaseClient discogsClient, IFileParserFactory fileParserFactory)
     {
       UserViewModel = new UserViewModel(_windowManager, _client.Auth, _fileOperator, directoryOperator, serializer);
 
       _generalSettingsVM = new GeneralSettingsViewModel(_windowManager, gitHubClient, processManager);
 
-      _scrobblerVM = new ScrobblerViewModel(_windowManager, localFileFactory, _fileOperator, _client, discogsClient);
+      _scrobblerVM = new ScrobblerViewModel(_windowManager, localFileFactory, _fileOperator, _client, discogsClient, fileParserFactory);
       _scrobblerVM.StatusUpdated += StatusUpdated;
       ActivateItem(_scrobblerVM);
 

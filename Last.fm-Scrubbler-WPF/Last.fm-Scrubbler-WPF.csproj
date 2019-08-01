@@ -199,9 +199,11 @@
     <Compile Include="Helper\FileParser\CSVFileParserViewModel.cs" />
     <Compile Include="Helper\FileParser\FileParserBase.cs" />
     <Compile Include="Helper\FileParser\FileParseResult.cs" />
+    <Compile Include="Helper\FileParser\FileParserFactory.cs" />
     <Compile Include="Helper\FileParser\IFileParserViewModel.cs" />
     <Compile Include="Helper\FileParser\IFileParser.cs" />
     <Compile Include="Helper\FileParser\IHaveSettings.cs" />
+    <Compile Include="Helper\FileParser\IFileParserFactory.cs" />
     <Compile Include="Helper\IProcessManager.cs" />
     <Compile Include="Helper\ProcessManager.cs" />
     <Compile Include="Scrobbling\Data\ArtistResultViewModel.cs" />
@@ -230,8 +232,6 @@
     <Compile Include="Scrobbling\Data\IScrobbableObjectViewModel.cs" />
     <Compile Include="Scrobbling\IScrobblerFactory.cs" />
     <Compile Include="Helper\ISerializer.cs" />
-    <Compile Include="Helper\ITextFieldParser.cs" />
-    <Compile Include="Helper\ITextFieldParserFactory.cs" />
     <Compile Include="Scrobbling\IUserScrobbler.cs" />
     <Compile Include="Helper\DCSerializer.cs" />
     <Compile Include="Helper\DirectoryOperator.cs" />
@@ -242,8 +242,6 @@
     <Compile Include="Scrobbling\Data\Artist.cs" />
     <Compile Include="Scrobbling\AuthScrobbler.cs" />
     <Compile Include="Scrobbling\AuthSQLiteScrobbler.cs" />
-    <Compile Include="Helper\CSVTextFieldParser.cs" />
-    <Compile Include="Helper\CSVTextFieldParserFactory.cs" />
     <Compile Include="Scrobbling\Data\ILocalFile.cs" />
     <Compile Include="Helper\ExtendedWindowManager.cs" />
     <Compile Include="LastFMClient.cs" />
