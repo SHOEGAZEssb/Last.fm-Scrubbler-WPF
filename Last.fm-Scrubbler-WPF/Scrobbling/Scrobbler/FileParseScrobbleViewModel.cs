@@ -2,12 +2,11 @@
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Helper;
 using Scrubbler.Helper.FileParser;
-using Scrubbler.Properties;
 using Scrubbler.Scrobbling.Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,9 +29,9 @@ namespace Scrubbler.Scrobbling.Scrobbler
   }
 
   /// <summary>
-  /// ViewModel for the <see cref="CSVScrobbleView"/>.
+  /// ViewModel for the <see cref="FileParseScrobbleView"/>.
   /// </summary>
-  public class CSVScrobbleViewModel : ScrobbleMultipleTimeViewModelBase<ParsedCSVScrobbleViewModel>
+  public class FileParseScrobbleViewModel : ScrobbleMultipleTimeViewModelBase<ParsedCSVScrobbleViewModel>
   {
     #region Properties
 
@@ -49,25 +48,28 @@ namespace Scrubbler.Scrobbling.Scrobbler
       get => _selectedParser;
       set
       {
-        if(SelectedParser != value)
+        if (SelectedParser != value)
         {
           _selectedParser = value;
           NotifyOfPropertyChange();
+          NotifyOfPropertyChange(() => CanParse);
+          NotifyOfPropertyChange(() => CanShowSettings);
         }
       }
     }
     private IFileParserViewModel _selectedParser;
 
     /// <summary>
-    /// The path to the csv file.
+    /// The path to the file.
     /// </summary>
-    public string CSVFilePath
+    public string FilePath
     {
       get { return _csvFilePath; }
       set
       {
         _csvFilePath = value;
         NotifyOfPropertyChange();
+        NotifyOfPropertyChange(() => CanParse);
       }
     }
     private string _csvFilePath;
@@ -86,7 +88,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         {
           if (_windowManager.MessageBoxService.ShowDialog("Do you want to switch the Scrobble Mode? The CSV file will be parsed again!",
                                                           "Change Scrobble Mode", IMessageBoxServiceButtons.YesNo) == IMessageBoxServiceResult.Yes)
-            ParseCSVFile().Forget();
+            ParseFile().Forget();
         }
 
         NotifyOfPropertyChange();
@@ -108,6 +110,16 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
     private int _duration;
 
+    /// <summary>
+    /// Gets if the current configuration can be parsed.
+    /// </summary>
+    public bool CanParse => !string.IsNullOrEmpty(FilePath) && SelectedParser.SupportedExtensions.Contains(Path.GetExtension(FilePath));
+
+    /// <summary>
+    /// Gets if the <see cref="SelectedParser"/> has settings.
+    /// </summary>
+    public bool CanShowSettings => SelectedParser is IHaveSettings;
+
     #endregion Properties
 
     #region Member
@@ -125,8 +137,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="parserFactory">The factory used to create <see cref="IFileParser"/>.</param>
     /// <param name="fileOperator">FileOperator used to write to disk.</param>
-    public CSVScrobbleViewModel(IExtendedWindowManager windowManager, IFileParserFactory parserFactory, IFileOperator fileOperator)
-      : base(windowManager, "CSV Scrobbler")
+    public FileParseScrobbleViewModel(IExtendedWindowManager windowManager, IFileParserFactory parserFactory, IFileOperator fileOperator)
+      : base(windowManager, "File Parse Scrobbler")
     {
       _fileOperator = fileOperator;
       AvailableParser = new List<IFileParserViewModel>()
@@ -139,44 +151,47 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
 
     /// <summary>
-    /// Shows a dialog to open a csv file.
+    /// Shows a dialog to open a file.
     /// </summary>
-    public void LoadCSVFileDialog()
+    public void LoadFileDialog()
     {
       IOpenFileDialog ofd = _windowManager.CreateOpenFileDialog();
       ofd.Filter = SelectedParser.FileFilter;
       if (ofd.ShowDialog())
-        CSVFilePath = ofd.FileName;
+        FilePath = ofd.FileName;
     }
 
     /// <summary>
-    /// Loads and parses a csv file.
+    /// Loads and parses the <see cref="FilePath"/>.
     /// </summary>
     /// <returns>Task.</returns>
-    public async Task ParseCSVFile()
+    public async Task ParseFile()
     {
+      if (!CanParse)
+        return;
+
       try
       {
         EnableControls = false;
-        OnStatusUpdated("Reading CSV file...");
+        OnStatusUpdated("Parsing file...");
 
         IEnumerable<string> errors = null;
         ObservableCollection<ParsedCSVScrobbleViewModel> parsedScrobbles = null;
 
         await Task.Run(() =>
         {
-          var res = SelectedParser.Parse(CSVFilePath, ScrobbleMode);
+          var res = SelectedParser.Parse(FilePath, ScrobbleMode);
           errors = res.Errors;
           parsedScrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>(res.Scrobbles.Select(i => new ParsedCSVScrobbleViewModel(i, ScrobbleMode)));
         });
 
         if (errors.Count() == 0)
-          OnStatusUpdated($"Successfully parsed CSV file. Parsed {parsedScrobbles.Count} rows");
+          OnStatusUpdated($"Successfully parsed file. Parsed {parsedScrobbles.Count} scrobbles");
         else
         {
-          OnStatusUpdated($"Partially parsed CSV file. {errors.Count()} rows could not be parsed");
-          if (_windowManager.MessageBoxService.ShowDialog("Some rows could not be parsed. Do you want to save a text file with the rows that could not be parsed?",
-                                                          "Error parsing rows", IMessageBoxServiceButtons.YesNo) == IMessageBoxServiceResult.Yes)
+          OnStatusUpdated($"Partially parsed file. Scrobbles: {parsedScrobbles.Count} | Errors: {errors.Count()}");
+          if (_windowManager.MessageBoxService.ShowDialog("Some scrobbles could not be parsed. Do you want to save a text file with the rows that could not be parsed?",
+                                                          "Error parsing scrobbles", IMessageBoxServiceButtons.YesNo) == IMessageBoxServiceResult.Yes)
           {
             IFileDialog sfd = _windowManager.CreateSaveFileDialog();
             sfd.Filter = "Text Files|*.txt";
@@ -186,12 +201,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
         }
 
         Scrobbles = parsedScrobbles;
-
       }
       catch (Exception ex)
       {
         Scrobbles.Clear();
-        OnStatusUpdated($"Error parsing CSV file: {ex.Message}");
+        OnStatusUpdated($"Fatal error parsing file: {ex.Message}");
       }
       finally
       {
@@ -261,12 +275,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
 
     /// <summary>
-    /// Opens the <see cref="ConfigureCSVParserView"/>
+    /// Opens the settings of the <see cref="SelectedParser"/>.
     /// </summary>
-    public void OpenCSVParserSettings()
+    public void OpenParserSettings()
     {
-      if (SelectedParser is IHaveSettings s)
-        s.ShowSettings();
+      if(CanShowSettings)
+        (SelectedParser as IHaveSettings).ShowSettings();
     }
 
     /// <summary>

@@ -13,7 +13,7 @@ using System.Linq;
 namespace Scrubbler.Test.ScrobblingTests
 {
   /// <summary>
-  /// Tests for the <see cref="CSVScrobbleViewModel"/>.
+  /// Tests for the <see cref="FileParseScrobbleViewModel"/>.
   /// </summary>
   [TestFixture]
   class CSVScrobbleTest
@@ -59,14 +59,14 @@ namespace Scrubbler.Test.ScrobblingTests
       Mock<IFileOperator> fileOperatorMock = new Mock<IFileOperator>(MockBehavior.Strict);
       Mock<IExtendedWindowManager> windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);
 
-      CSVScrobbleViewModel vm = new CSVScrobbleViewModel(windowManagerMock.Object, factoryMock.Object, fileOperatorMock.Object)
+      FileParseScrobbleViewModel vm = new FileParseScrobbleViewModel(windowManagerMock.Object, factoryMock.Object, fileOperatorMock.Object)
       {
         Scrobbler = scrobblerMock.Object,
-        CSVFilePath = "C:\\TestFile.csv",
+        FilePath = "C:\\TestFile.csv",
         ScrobbleMode = ScrobbleMode.Normal
       };
 
-      await vm.ParseCSVFile();
+      await vm.ParseFile();
       vm.CheckAll();
 
       // when: scrobbling

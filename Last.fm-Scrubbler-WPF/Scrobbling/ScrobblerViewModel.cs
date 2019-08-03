@@ -68,7 +68,7 @@ namespace Scrubbler.Scrobbling
       friendScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
       var databaseScrobbleViewModel = new DatabaseScrobbleViewModel(windowManager, lastFMClient.Artist, lastFMClient.Album, discogsClient);
       databaseScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
-      var csvScrobbleViewModel = new CSVScrobbleViewModel(windowManager, fileParserFactory, fileOperator);
+      var csvScrobbleViewModel = new FileParseScrobbleViewModel(windowManager, fileParserFactory, fileOperator);
       csvScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
       var fileScrobbleViewModel = new FileScrobbleViewModel(windowManager, localFileFactory, fileOperator);
       fileScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;

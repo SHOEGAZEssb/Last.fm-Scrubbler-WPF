@@ -24,6 +24,11 @@ namespace Scrubbler.Helper.FileParser
     string FileFilter { get; }
 
     /// <summary>
+    /// Gets a list of supported file extensions.
+    /// </summary>
+    IEnumerable<string> SupportedExtensions { get; }
+
+    /// <summary>
     /// Parses the given <paramref name="file"/>.
     /// </summary>
     /// <param name="file">File to parse.</param>

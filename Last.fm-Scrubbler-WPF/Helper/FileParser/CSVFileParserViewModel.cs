@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Scrubbler.Scrobbling.Scrobbler;
 using System;
+using System.Collections.Generic;
 
 namespace Scrubbler.Helper.FileParser
 {
@@ -20,6 +21,11 @@ namespace Scrubbler.Helper.FileParser
     /// Filter for file dialogs.
     /// </summary>
     public string FileFilter => "CSV Files (.csv)|*.csv";
+
+    /// <summary>
+    /// Gets a list of supported file extensions.
+    /// </summary>
+    public IEnumerable<string> SupportedExtensions => new[] { ".csv" };
 
     #endregion Properties
 

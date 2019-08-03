@@ -3,14 +3,14 @@
 namespace Scrubbler.Scrobbling.Scrobbler
 {
   /// <summary>
-  /// Interaction logic for CSVScrobbleView.xaml
+  /// Interaction logic for FileParseScrobbleView.xaml
   /// </summary>
-  public partial class CSVScrobbleView : UserControl
+  public partial class FileParseScrobbleView : UserControl
   {
     /// <summary>
     /// Constructor.
     /// </summary>
-    public CSVScrobbleView()
+    public FileParseScrobbleView()
     {
       InitializeComponent();
     }

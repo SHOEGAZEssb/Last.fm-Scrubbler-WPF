@@ -202,7 +202,7 @@
     <Compile Include="Helper\FileParser\FileParserFactory.cs" />
     <Compile Include="Helper\FileParser\IFileParserViewModel.cs" />
     <Compile Include="Helper\FileParser\IFileParser.cs" />
-    <Compile Include="Helper\FileParser\IHaveSettings.cs" />
+    <Compile Include="Helper\IHaveSettings.cs" />
     <Compile Include="Helper\FileParser\IFileParserFactory.cs" />
     <Compile Include="Helper\IProcessManager.cs" />
     <Compile Include="Helper\ProcessManager.cs" />
@@ -300,7 +300,7 @@
     <Compile Include="Scrobbling\Data\DatedScrobble.cs" />
     <Compile Include="Scrobbling\Data\MediaDBScrobble.cs" />
     <Compile Include="Scrobbling\Data\WMP.cs" />
-    <Compile Include="Scrobbling\Scrobbler\CSVScrobbleViewModel.cs" />
+    <Compile Include="Scrobbling\Scrobbler\FileParseScrobbleViewModel.cs" />
     <Compile Include="Scrobbling\Scrobbler\DatabaseScrobbleViewModel.cs" />
     <Compile Include="Scrobbling\Data\FetchedArtistViewModel.cs" />
     <Compile Include="Scrobbling\Data\FetchedReleaseViewModel.cs" />
@@ -350,8 +350,8 @@
     <Compile Include="Scrobbling\Data\ArtistResultView.xaml.cs">
       <DependentUpon>ArtistResultView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Scrobbling\Scrobbler\CSVScrobbleView.xaml.cs">
-      <DependentUpon>CSVScrobbleView.xaml</DependentUpon>
+    <Compile Include="Scrobbling\Scrobbler\FileParseScrobbleView.xaml.cs">
+      <DependentUpon>FileParseScrobbleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Scrobbling\Scrobbler\DatabaseScrobbleView.xaml.cs">
       <DependentUpon>DatabaseScrobbleView.xaml</DependentUpon>
@@ -467,7 +467,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Scrobbling\Scrobbler\CSVScrobbleView.xaml">
+    <Page Include="Scrobbling\Scrobbler\FileParseScrobbleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
