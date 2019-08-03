@@ -2,9 +2,6 @@
 using Scrubbler.Scrobbling.Scrobbler;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Scrubbler.Helper.FileParser
 {
@@ -32,8 +29,9 @@ namespace Scrubbler.Helper.FileParser
     /// Parses the given <paramref name="file"/>.
     /// </summary>
     /// <param name="file">File to parse.</param>
+    /// <param name="defaultDuration">Default duration for tracks.</param>
     /// <param name="scrobbleMode">Scrobble mode to use.</param>
     /// <returns>Parse result.</returns>
-    FileParseResult Parse(string file, ScrobbleMode scrobbleMode);
+    FileParseResult Parse(string file, TimeSpan defaultDuration, ScrobbleMode scrobbleMode);
   }
 }

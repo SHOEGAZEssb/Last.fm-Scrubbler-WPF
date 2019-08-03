@@ -202,5 +202,17 @@ namespace Scrubbler.Properties {
                 this["CSVEncoding"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CSVHasFieldsInQuotes {
+            get {
+                return ((bool)(this["CSVHasFieldsInQuotes"]));
+            }
+            set {
+                this["CSVHasFieldsInQuotes"] = value;
+            }
+        }
     }
 }

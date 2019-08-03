@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
 using DiscogsClient;
-using DiscogsClient.Data.Query;
 using DiscogsClient.Internal;
 using Octokit;
 using Scrubbler.Helper;

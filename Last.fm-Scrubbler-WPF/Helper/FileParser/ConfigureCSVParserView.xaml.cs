@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Interop;
 
-namespace Scrubbler.Scrobbling.Scrobbler
+namespace Scrubbler.Helper.FileParser
 {
   /// <summary>
   /// Interaction logic for ConfigureCSVParserView.xaml

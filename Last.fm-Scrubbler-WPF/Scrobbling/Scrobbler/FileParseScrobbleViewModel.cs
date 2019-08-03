@@ -180,7 +180,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
         await Task.Run(() =>
         {
-          var res = SelectedParser.Parse(FilePath, ScrobbleMode);
+          var res = SelectedParser.Parse(FilePath, TimeSpan.FromSeconds(Duration), ScrobbleMode);
           errors = res.Errors;
           parsedScrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>(res.Scrobbles.Select(i => new ParsedCSVScrobbleViewModel(i, ScrobbleMode)));
         });

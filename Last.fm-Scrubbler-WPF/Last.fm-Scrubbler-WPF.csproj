@@ -274,7 +274,7 @@
     <Compile Include="Scrobbling\Scrobbler\ScrobbleTimeViewModel.cs" />
     <Compile Include="Scrobbling\Scrobbler\SetlistFMScrobbleViewModel.cs" />
     <Compile Include="Scrobbling\Scrobbler\SpotifyScrobbleViewModel.cs" />
-    <Compile Include="Scrobbling\Scrobbler\ConfigureCSVParserViewModel.cs" />
+    <Compile Include="Helper\FileParser\ConfigureCSVParserViewModel.cs" />
     <Compile Include="Scrobbling\Data\DatedScrobbleViewModel.cs" />
     <Compile Include="Scrobbling\Data\FetchedSetlistViewModel.cs" />
     <Compile Include="Scrobbling\Data\ScrobbleViewModel.cs" />
@@ -326,7 +326,7 @@
     <Compile Include="Scrobbling\Scrobbler\CacheScrobblerView.xaml.cs">
       <DependentUpon>CacheScrobblerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Scrobbling\Scrobbler\ConfigureCSVParserView.xaml.cs">
+    <Compile Include="Helper\FileParser\ConfigureCSVParserView.xaml.cs">
       <DependentUpon>ConfigureCSVParserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Scrobbling\Scrobbler\ITunesScrobbleView.xaml.cs">
@@ -435,7 +435,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Scrobbling\Scrobbler\ConfigureCSVParserView.xaml">
+    <Page Include="Helper\FileParser\ConfigureCSVParserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

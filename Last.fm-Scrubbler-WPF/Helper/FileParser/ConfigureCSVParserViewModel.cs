@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 
-namespace Scrubbler.Scrobbling.Scrobbler
+namespace Scrubbler.Helper.FileParser
 {
   /// <summary>
   /// ViewModel for the <see cref="ConfigureCSVParserView"/>
@@ -112,6 +112,20 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
     private string _delimiters;
 
+    public bool HasFieldsEnclosedInQuotes
+    {
+      get => _hasFieldsEnclosedInQuotes;
+      set
+      {
+        if(HasFieldsEnclosedInQuotes != value)
+        {
+          _hasFieldsEnclosedInQuotes = value;
+          NotifyOfPropertyChange();
+        }
+      }
+    }
+    private bool _hasFieldsEnclosedInQuotes;
+
     /// <summary>
     /// Gets available encodings.
     /// </summary>
@@ -162,6 +176,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       AlbumArtistFieldIndex = Settings.Default.AlbumArtistFieldIndex;
       DurationFieldIndex = Settings.Default.DurationFieldIndex;
       Delimiters = Settings.Default.CSVDelimiters;
+      HasFieldsEnclosedInQuotes = Settings.Default.CSVHasFieldsInQuotes;
       _encodingID = Settings.Default.CSVEncoding;
       SelectedEncoding = Encoding.GetEncoding(_encodingID);
     }
@@ -180,6 +195,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         Settings.Default.AlbumArtistFieldIndex = AlbumArtistFieldIndex;
         Settings.Default.DurationFieldIndex = DurationFieldIndex;
         Settings.Default.CSVDelimiters = Delimiters;
+        Settings.Default.CSVHasFieldsInQuotes = HasFieldsEnclosedInQuotes;
         Settings.Default.CSVEncoding = _encodingID;
         TryClose(true);
       }
@@ -230,6 +246,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       AlbumArtistFieldIndex = int.Parse(Settings.Default.Properties["AlbumArtistFieldIndex"].DefaultValue.ToString());
       DurationFieldIndex = int.Parse(Settings.Default.Properties["DurationFieldIndex"].DefaultValue.ToString());
       Delimiters = Settings.Default.Properties["CSVDelimiters"].DefaultValue.ToString();
+      HasFieldsEnclosedInQuotes = bool.Parse(Settings.Default.Properties["CSVHasFieldsInQuotes"].DefaultValue.ToString());
       _encodingID = int.Parse(Settings.Default.Properties["CSVEncoding"].DefaultValue.ToString());
       SelectedEncoding = Encoding.GetEncoding(_encodingID);
     }

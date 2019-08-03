@@ -18,9 +18,10 @@ namespace Scrubbler.Helper.FileParser
     /// Parses the given <paramref name="file"/>.
     /// </summary>
     /// <param name="file">File to parse.</param>
+    /// <param name="defaultDuration">Default duration for tracks.</param>
     /// <param name="scrobbleMode"></param>
     /// <returns>Parse result.</returns>
-    public FileParseResult Parse(string file, ScrobbleMode scrobbleMode)
+    public FileParseResult Parse(string file, TimeSpan defaultDuration, ScrobbleMode scrobbleMode)
     {
       if (string.IsNullOrEmpty(file))
         throw new ArgumentNullException(nameof(file));
@@ -32,13 +33,13 @@ namespace Scrubbler.Helper.FileParser
       using (var parser = new TextFieldParser(file, Encoding.GetEncoding(Settings.Default.CSVEncoding)))
       {
         parser.SetDelimiters(Settings.Default.CSVDelimiters.Select(x => new string(x, 1)).ToArray());
+        parser.HasFieldsEnclosedInQuotes = Settings.Default.CSVHasFieldsInQuotes;
 
         while (!parser.EndOfData)
         {
-          fields = parser.ReadFields();
-
           try
           {
+            fields = parser.ReadFields();
             string dateString = fields.ElementAtOrDefault(Settings.Default.TimestampFieldIndex);
 
             // check for 'now playing'
@@ -63,10 +64,15 @@ namespace Scrubbler.Helper.FileParser
           }
           catch (Exception ex)
           {
-            string errorString = $"CSV line number: {parser.LineNumber},";
-            foreach (string s in fields)
+            string errorString = $"CSV line number: {parser.LineNumber - 1},";
+
+            // fields is old in this case
+            if (!(ex is MalformedLineException))
             {
-              errorString += $"{s},";
+              foreach (string s in fields)
+              {
+                errorString += $"{s},";
+              }
             }
 
             errorString += ex.Message;
