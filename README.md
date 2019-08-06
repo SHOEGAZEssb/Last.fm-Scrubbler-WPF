@@ -21,7 +21,7 @@ This tool will always be free, but if it was helpful to you, consider donating t
 - [Manual Single Track Scrobbling](#manual-single-track-scrobbling)
 - [Friend Scrobbling](#friend-scrobbling)
 - [Database Scrobbling](#database-scrobbling)
-- [CSV Scrobbling](#csv-scrobbling)
+- [File Parse Scrobbling](#file-parse-scrobbling)
 - [File Scrobbling](#file-scrobbling)
 - [Media Player Database Scrobbling](#media-player-database-scrobbling)
 - [iTunes Scrobbling](#itunes-scrobbling)
@@ -52,33 +52,41 @@ Search Last.fm, Discogs or MusicBrainz for artists and albums and scrobble one o
 
 ![ManualScrobble Tracklist](https://i.imgur.com/Yfjx75a.png)
 
-### CSV Scrobbling
-Allows you to load a .csv file and scrobble the info contained in it.
+### File Parse Scrobbling
+Allows you to load a file and scrobble the info contained in it.
+Currently supported are .csv and .json.
+
+CSV:
 You can download the csv of any account with the built-in [CSV Downloader](#csv-downloader).
 If the .csv file you have has a different data sequence, you can configure the field indexes via the "Settings" button.
 
-![CSV Scrobbling Settings](https://i.imgur.com/RZUvCvZ.png)
+![CSV Scrobbling Settings](https://i.imgur.com/cZkdfRF.png)
 
 Individual fields can be enclosed by quotes and NEED to be enclosed by quotes if the field contains any of the set delimiters.
 For example:
 
 "ArtistWith, CommaInTheName", Album, Track, 06/13/2016 19:54, AlbumArtist, 00:02:33 
 
-CSV scrobbling has two modes. They can be changed with the "Scrobbling Mode" ComboBox.
+
+JSON:
+The .json parser currently expects the following property names: trackName, artistName, albumName, time, albumArtist, duration (these are not case sensitive)
+
+
+File parse scrobbling has two modes. They can be changed with the "Scrobbling Mode" ComboBox.
 
 Normal Mode:
 
-In this mode the tracks will be scrobbled with the timestamp from the csv field. Only scrobbles newer than 14 days can be scrobbled.
+In this mode the tracks will be scrobbled with the timestamp from the parsed scrobble. Only scrobbles newer than 14 days can be scrobbled.
 
 
 Import Mode:
 
-In this mode the tracks will be scrobbled with the timestamp calculated from the "Finish Time" and the selected duration between each track. This allows the scrobbling of the tracks even if the timestamp in the csv is older than 14 days. Therefore the first (upmost) track in the csv file will be scrobbled with the "Finish Time".
+In this mode the tracks will be scrobbled with the timestamp calculated from the "Finish Time" and the selected duration between each track. This allows the scrobbling of the tracks even if the timestamp of the parsed scrobble is older than 14 days. Therefore the first (upmost) track in the csv file will be scrobbled with the "Finish Time".
 
-![CSV Scrobbling](https://i.imgur.com/4M5J0V4.png)
+![File Parse Scrobbling Normal Mode](https://i.imgur.com/whM2zOl.png)
 Normal Mode
 
-![CSV Scrobbling Import Mode](https://i.imgur.com/nnBh7os.png)
+![File Parse Scrobbling Import Mode](https://i.imgur.com/GEdIYpv.png)
 Import Mode
 
 ### File Scrobbling
