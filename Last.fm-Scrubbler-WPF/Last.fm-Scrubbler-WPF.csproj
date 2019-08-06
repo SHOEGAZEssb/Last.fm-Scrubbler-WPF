@@ -51,8 +51,8 @@
     <Reference Include="Caliburn.Micro.Platform.Core, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.4.0.0-alpha.1\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
     </Reference>
-    <Reference Include="ComposableAsync.Core, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ComposableAsync.Core.1.0.3\lib\netstandard2.0\ComposableAsync.Core.dll</HintPath>
+    <Reference Include="ComposableAsync.Core, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ComposableAsync.Core.1.1.0\lib\netstandard2.0\ComposableAsync.Core.dll</HintPath>
     </Reference>
     <Reference Include="DiscogsClient, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DiscogsClient.2.5.1\lib\net461\DiscogsClient.dll</HintPath>
@@ -89,8 +89,8 @@
       <HintPath>..\packages\taglib.2.1.0.0\lib\policy.2.0.taglib-sharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RateLimiter, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RateLimiter.2.0.0\lib\netstandard2.0\RateLimiter.dll</HintPath>
+    <Reference Include="RateLimiter, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RateLimiter.2.1.0\lib\netstandard2.0\RateLimiter.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=106.6.10.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.106.6.10\lib\net452\RestSharp.dll</HintPath>
@@ -197,11 +197,14 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Helper\FileParser\CSVFileParser.cs" />
     <Compile Include="Helper\FileParser\CSVFileParserViewModel.cs" />
+    <Compile Include="Helper\FileParser\CustomContractResolver.cs" />
     <Compile Include="Helper\FileParser\FileParserBase.cs" />
     <Compile Include="Helper\FileParser\FileParseResult.cs" />
     <Compile Include="Helper\FileParser\FileParserFactory.cs" />
     <Compile Include="Helper\FileParser\IFileParserViewModel.cs" />
     <Compile Include="Helper\FileParser\IFileParser.cs" />
+    <Compile Include="Helper\FileParser\JSONFileParser.cs" />
+    <Compile Include="Helper\FileParser\JSONParserViewModel.cs" />
     <Compile Include="Helper\IHaveSettings.cs" />
     <Compile Include="Helper\FileParser\IFileParserFactory.cs" />
     <Compile Include="Helper\IProcessManager.cs" />

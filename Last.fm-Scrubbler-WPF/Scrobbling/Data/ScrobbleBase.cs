@@ -18,7 +18,7 @@ namespace Scrubbler.Scrobbling.Data
       get { return _trackName; }
       set
       {
-        if (value == string.Empty)
+        if (string.IsNullOrEmpty(value))
           throw new ArgumentException("TrackName can't be empty.");
 
         _trackName = value;
@@ -34,7 +34,7 @@ namespace Scrubbler.Scrobbling.Data
       get { return _artistName; }
       set
       {
-        if (value == string.Empty)
+        if (string.IsNullOrEmpty(value))
           throw new ArgumentException("ArtistName can't be empty.");
 
         _artistName = value;

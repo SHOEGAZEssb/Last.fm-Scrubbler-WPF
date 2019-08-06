@@ -10,5 +10,11 @@
     /// </summary>
     /// <returns>Parser that can parse .csv files.</returns>
     IFileParser CreateCSVFileParser();
+
+    /// <summary>
+    /// Creates a parser that can parse .json files.
+    /// </summary>
+    /// <returns>Parser that can parse .json files.</returns>
+    IFileParser CreateJSONFileParser();
   }
 }

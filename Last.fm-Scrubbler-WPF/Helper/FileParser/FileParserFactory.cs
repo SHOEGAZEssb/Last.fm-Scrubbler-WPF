@@ -13,5 +13,14 @@
     {
       return new CSVFileParser();
     }
+
+    /// <summary>
+    /// Creates a parser that can parse .json files.
+    /// </summary>
+    /// <returns>Parser that can parse .json files.</returns>
+    public IFileParser CreateJSONFileParser()
+    {
+      return new JSONFileParser();
+    }
   }
 }

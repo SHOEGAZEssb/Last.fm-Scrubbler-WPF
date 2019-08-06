@@ -142,7 +142,10 @@ namespace Scrubbler.Scrobbling.Scrobbler
     {
       _fileOperator = fileOperator;
       AvailableParser = new List<IFileParserViewModel>()
-      { new CSVFileParserViewModel(parserFactory.CreateCSVFileParser(), _windowManager)};
+      {
+        new CSVFileParserViewModel(parserFactory.CreateCSVFileParser(), _windowManager),
+        new JSONParserViewModel(parserFactory.CreateJSONFileParser())
+      };
       SelectedParser = AvailableParser.FirstOrDefault();
 
       Scrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>();

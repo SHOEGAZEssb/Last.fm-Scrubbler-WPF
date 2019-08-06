@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Objects;
+using Newtonsoft.Json;
 using System;
 
 namespace Scrubbler.Scrobbling.Data
@@ -27,6 +28,7 @@ namespace Scrubbler.Scrobbling.Data
     /// <param name="albumName">Name of the album.</param>
     /// <param name="albumArtist">Name of the album artist.</param>
     /// <param name="duration">Length of this track.</param>
+    [JsonConstructor]
     public DatedScrobble(DateTime played, string trackName, string artistName, string albumName = "", string albumArtist = "", TimeSpan? duration = null)
       : base(trackName, artistName, albumName, albumArtist, duration)
     {
