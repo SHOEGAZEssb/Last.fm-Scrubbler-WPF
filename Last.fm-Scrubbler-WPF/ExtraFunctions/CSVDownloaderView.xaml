@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" Style="{StaticResource EnableControlsStyle}">
 
   <Grid>
     <Grid.RowDefinitions>
@@ -23,11 +23,11 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="Username:"/>
-    <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource EnableControlsStyle}"/>
+    <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
 
     <Label Grid.Row="2" Grid.Column="0" Content="File Path:"/>
-    <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource EnableControlsStyle}"/>
-    <Button x:Name="SelectFilePath" Grid.Row="2" Grid.Column="4" Content="..." Width="25" Style="{StaticResource EnableControlsStyle}"/>
+    <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}"/>
+    <Button x:Name="SelectFilePath" Grid.Row="2" Grid.Column="4" Content="..." Width="25"/>
 
     <Button x:Name="Download" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" HorizontalAlignment="Right" Content="Download Scrobbles" IsEnabled="{Binding CanDownload}"/>
   </Grid>
