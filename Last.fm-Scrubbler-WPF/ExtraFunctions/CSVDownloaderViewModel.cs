@@ -49,20 +49,6 @@ namespace Scrubbler.ExtraFunctions
     private string _filePath;
 
     /// <summary>
-    /// Gets if certain controls on the ui are enabled.
-    /// </summary>
-    public override bool EnableControls
-    {
-      get { return _enableControls; }
-      protected set
-      {
-        _enableControls = value;
-        NotifyOfPropertyChange();
-        NotifyOfPropertyChange(() => CanDownload);
-      }
-    }
-
-    /// <summary>
     /// Gets if the 'Download' button is enabled on the ui.
     /// </summary>
     public bool CanDownload
