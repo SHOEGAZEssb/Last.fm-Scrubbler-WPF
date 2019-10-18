@@ -52,7 +52,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
         }
 
         _scrobbles = value;
-        _scrobbles.CollectionChanged += Scrobbles_CollectionChanged;
+        if(Scrobbles != null)
+          _scrobbles.CollectionChanged += Scrobbles_CollectionChanged;
         ConnectExistingToScrobbleEvent();
 
         NotifyOfPropertyChange();

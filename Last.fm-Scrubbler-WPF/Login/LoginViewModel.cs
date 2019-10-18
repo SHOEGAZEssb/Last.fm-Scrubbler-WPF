@@ -75,6 +75,9 @@ namespace Scrubbler.Login
     /// <param name="password">The <see cref="PasswordBox"/> containing the password.</param>
     public async void ButtonPressed(KeyEventArgs e, string username, PasswordBox password)
     {
+      if (e == null)
+        throw new ArgumentNullException(nameof(e));
+
       if (e.Key == Key.Enter)
         await Login(username, password);
     }

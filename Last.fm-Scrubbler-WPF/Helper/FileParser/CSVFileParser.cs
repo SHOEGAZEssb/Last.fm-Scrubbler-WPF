@@ -43,7 +43,7 @@ namespace Scrubbler.Helper.FileParser
             string dateString = fields.ElementAtOrDefault(Settings.Default.TimestampFieldIndex);
 
             // check for 'now playing'
-            if (dateString == "" && scrobbleMode == ScrobbleMode.Normal)
+            if (string.IsNullOrEmpty(dateString) && scrobbleMode == ScrobbleMode.Normal)
               continue;
 
             DateTime date = DateTime.Now;

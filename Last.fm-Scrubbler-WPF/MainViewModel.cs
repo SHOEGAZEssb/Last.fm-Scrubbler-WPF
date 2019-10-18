@@ -242,7 +242,7 @@ namespace Scrubbler
         try
         {
           if (!File.Exists(dbFile))
-            File.Create(dbFile);
+            File.Create(dbFile).Close();
         }
         catch (Exception ex)
         {
@@ -276,10 +276,12 @@ namespace Scrubbler
     /// </summary>
     public void Dispose()
     {
-      foreach (IDisposable disposableVM in Items.Where(i => i is IDisposable))
+      foreach (IDisposable disposableVM in Items.OfType<IDisposable>())
       {
         disposableVM.Dispose();
       }
+
+      _scrobblerVM.Dispose();
     }
   }
 }

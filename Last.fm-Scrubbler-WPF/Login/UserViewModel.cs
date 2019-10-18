@@ -283,7 +283,7 @@ namespace Scrubbler.Login
     /// </summary>
     private void LoadLastUser()
     {
-      if (Settings.Default.Username != string.Empty)
+      if (!string.IsNullOrEmpty(Settings.Default.Username))
       {
         User usr = AvailableUsers.Where(i => i.Username == Settings.Default.Username).FirstOrDefault();
         if (usr != null)

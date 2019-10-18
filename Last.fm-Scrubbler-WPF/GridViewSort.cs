@@ -340,9 +340,9 @@ namespace Scrubbler
 
     private class SortGlyphAdorner : Adorner
     {
-      private GridViewColumnHeader _columnHeader;
-      private ListSortDirection _direction;
-      private ImageSource _sortGlyph;
+      private readonly GridViewColumnHeader _columnHeader;
+      private readonly ListSortDirection _direction;
+      private readonly ImageSource _sortGlyph;
 
       public SortGlyphAdorner(GridViewColumnHeader columnHeader, ListSortDirection direction, ImageSource sortGlyph)
           : base(columnHeader)

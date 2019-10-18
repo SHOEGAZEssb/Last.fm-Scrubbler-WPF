@@ -95,7 +95,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="files">Files whose metadata to parse.</param>
     /// <returns>Task.</returns>
-    private async Task ParseFiles(string[] files)
+    private async Task ParseFiles(IEnumerable<string> files)
     {
       OnStatusUpdated("Trying to parse selected files...");
       var errors = new List<string>();
@@ -185,7 +185,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="files">Files to "extract".</param>
     /// <returns>Array containing all files.</returns>
-    private string[] ReadDroppedFiles(string[] files)
+    private static string[] ReadDroppedFiles(string[] files)
     {
       // todo: this can be way better.
       while (files.Any(i => !Path.HasExtension(i)))

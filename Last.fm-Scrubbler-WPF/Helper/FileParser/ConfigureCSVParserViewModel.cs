@@ -129,7 +129,7 @@ namespace Scrubbler.Helper.FileParser
     /// <summary>
     /// Gets available encodings.
     /// </summary>
-    public IEnumerable<Encoding> AvailableEncodings => typeof(Encoding).GetProperties().Where(i => i.PropertyType == typeof(Encoding)).Select(i => (Encoding)i.GetValue(null));
+    public static IEnumerable<Encoding> AvailableEncodings => typeof(Encoding).GetProperties().Where(i => i.PropertyType == typeof(Encoding)).Select(i => (Encoding)i.GetValue(null));
 
     /// <summary>
     /// The currently selected encoding.
@@ -213,10 +213,10 @@ namespace Scrubbler.Helper.FileParser
       if (vals.Distinct().Count() != vals.Length)
         errors += "Some of the indexes are equal!";
 
-      if (Delimiters == string.Empty)
+      if (string.IsNullOrEmpty(Delimiters))
         errors += "\rThere are no delimiters defined!";
 
-      if (errors != string.Empty)
+      if (!string.IsNullOrEmpty(errors))
       {
         if (MessageBox.Show($"There are errors:\r{errors}\rAre you sure you want to save these values?", "Errors",
            MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)

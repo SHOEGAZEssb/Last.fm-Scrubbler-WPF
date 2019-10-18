@@ -140,7 +140,10 @@ namespace Scrubbler.Scrobbling.Scrobbler
     public FileParseScrobbleViewModel(IExtendedWindowManager windowManager, IFileParserFactory parserFactory, IFileOperator fileOperator)
       : base(windowManager, "File Parse Scrobbler")
     {
-      _fileOperator = fileOperator;
+      if (parserFactory == null)
+        throw new ArgumentNullException(nameof(parserFactory));
+
+      _fileOperator = fileOperator ?? throw new ArgumentNullException(nameof(fileOperator));
       AvailableParser = new List<IFileParserViewModel>()
       {
         new CSVFileParserViewModel(parserFactory.CreateCSVFileParser(), _windowManager),

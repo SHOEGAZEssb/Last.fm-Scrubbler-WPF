@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Scrubbler.Helper.FileParser
 {
   /// <summary>
-  /// The result of a <see cref="IFileParser.Parse(string, Scrobbling.Scrobbler.ScrobbleMode)"/> operation.
+  /// The result of a <see cref="IFileParser.Parse(string, TimeSpan, Scrobbling.Scrobbler.ScrobbleMode)"/> operation.
   /// </summary>
   public class FileParseResult
   {

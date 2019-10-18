@@ -44,7 +44,7 @@
       <TextBlock Grid.Row="0" Grid.Column="0" Text="Username:"/>
       <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Username}"/>
 
-      <Button Grid.Row="0" Grid.Column="4" x:Name="GetScrobbleData" Content="Get Scrobble Data"/>
+      <Button Grid.Row="0" Grid.Column="4" x:Name="CreateScrobbleData" Content="Get Scrobble Data"/>
     </Grid>
 
     <Grid Grid.Row="2">
@@ -87,7 +87,7 @@
 
       <CheckBox Grid.Row="0" Grid.Column="8" Content="Ignore Broken Timestamps" IsChecked="{Binding IgnoreBrokenTimestamps}" VerticalAlignment="Center"/>
 
-      <Button Grid.Row="0" Grid.Column="10" x:Name="GetMilestones" Content="Get Milestones"/>
+      <Button Grid.Row="0" Grid.Column="10" x:Name="CreateMilestones" Content="Get Milestones"/>
     </Grid>
 
     <ListView Grid.Row="4" VerticalAlignment="Stretch" ItemsSource="{Binding Milestones}" scrub:GridViewSort.AutoSort="True">

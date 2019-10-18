@@ -30,7 +30,7 @@ namespace Scrubbler.Scrobbling.Data
     /// <summary>
     /// The actual scrobble.
     /// </summary>
-    private DatedScrobble _scrobble;
+    private readonly DatedScrobble _scrobble;
 
     #endregion Member
 

@@ -90,6 +90,9 @@ namespace Scrubbler.Login
     /// Leave null if you want to use the TimePlayed of the scrobble.</param>
     public void AddScrobbles(IEnumerable<Scrobble> scrobbles, DateTime? timeScrobbled = null)
     {
+      if (scrobbles == null)
+        throw new ArgumentNullException(nameof(scrobbles));
+
       foreach (var scrobble in scrobbles)
         _recentScrobbles.Add(new Tuple<Scrobble, DateTime>(scrobble, timeScrobbled ?? scrobble.TimePlayed.DateTime));
       RecentScrobblesChanged?.Invoke(this, EventArgs.Empty);

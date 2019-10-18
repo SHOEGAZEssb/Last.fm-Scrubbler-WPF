@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System.Collections.Generic;
 
 namespace Scrubbler.Helper
 {
@@ -17,7 +18,7 @@ namespace Scrubbler.Helper
     /// <summary>
     /// The selected files.
     /// </summary>
-    public string[] FileNames => _openFileDialog.FileNames;
+    public IEnumerable<string> FileNames => _openFileDialog.FileNames;
 
     /// <summary>
     /// The file from the last <see cref="ShowDialog"/> operation.
@@ -36,7 +37,7 @@ namespace Scrubbler.Helper
     /// <summary>
     /// The actual <see cref="OpenFileDialog"/>.
     /// </summary>
-    private OpenFileDialog _openFileDialog;
+    private readonly OpenFileDialog _openFileDialog;
 
     #endregion Member
 

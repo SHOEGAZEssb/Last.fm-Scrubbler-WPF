@@ -184,7 +184,7 @@ namespace Scrubbler.ExtraFunctions
     /// </summary>
     /// <param name="str">String to enclose.</param>
     /// <returns>Enclosed string.</returns>
-    private string EncloseComma(string str)
+    private static string EncloseComma(string str)
     {
       return str.Contains(',') ? $"\"{str}\"" : str;
     }

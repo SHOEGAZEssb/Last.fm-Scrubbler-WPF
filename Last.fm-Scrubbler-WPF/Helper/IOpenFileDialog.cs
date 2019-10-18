@@ -1,4 +1,6 @@
-﻿namespace Scrubbler.Helper
+﻿using System.Collections.Generic;
+
+namespace Scrubbler.Helper
 {
   /// <summary>
   /// Interface for an OpenFileDialog.
@@ -13,6 +15,6 @@
     /// <summary>
     /// The selected files.
     /// </summary>
-    string[] FileNames { get; }
+    IEnumerable<string> FileNames { get; }
   }
 }

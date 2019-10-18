@@ -144,7 +144,7 @@ namespace Scrubbler.ExtraFunctions
     /// <summary>
     /// Gets the defined milestones from the <see cref="ScrobbleData"/>.
     /// </summary>
-    public void GetMilestones()
+    public void CreateMilestones()
     {
       try
       {
@@ -158,7 +158,7 @@ namespace Scrubbler.ExtraFunctions
           Milestones = new ObservableCollection<MilestoneViewModel>() { new MilestoneViewModel(tracksToProcess[Number - 1], Number) };
         else
         {
-          List<MilestoneViewModel> milestones = new List<MilestoneViewModel>();
+          var milestones = new List<MilestoneViewModel>();
           for(int i = 0; i < tracksToProcess.Count; i++)
           {
             if((i + 1) % Number == 0)
@@ -184,7 +184,7 @@ namespace Scrubbler.ExtraFunctions
     /// Gets the scrobble data from the <see cref="Username"/>.
     /// </summary>
     /// <returns>Task.</returns>
-    public async Task GetScrobbleData()
+    public async Task CreateScrobbleData()
     {
       try
       {
