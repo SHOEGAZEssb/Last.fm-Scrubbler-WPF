@@ -223,7 +223,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       {
         OnStatusUpdated($"Trying to search for artist '{SearchText}'...");
 
-        IEnumerable<Artist> fetchedArtists = new Artist[0];
+        var fetchedArtists = Enumerable.Empty<Artist>();
         if (DatabaseToSearch == Database.LastFm)
           fetchedArtists = await SearchArtistLastFm();
         else if (DatabaseToSearch == Database.Discogs)
@@ -306,7 +306,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       {
         OnStatusUpdated($"Trying to search for release '{SearchText}'");
 
-        IEnumerable<Release> releases = new Release[0];
+        var releases = Enumerable.Empty<Release>();
         if (DatabaseToSearch == Database.LastFm)
           releases = await SearchReleaseLastFm();
         else if (DatabaseToSearch == Database.Discogs)
@@ -395,7 +395,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         {
           OnStatusUpdated($"Trying to fetch releases from artist '{artist.Name}'");
 
-          IEnumerable<Release> releases = new Release[0];
+          var releases = Enumerable.Empty<Release>();
           if (DatabaseToSearch == Database.LastFm)
             releases = await ArtistClickedLastFm(artist);
           else if (DatabaseToSearch == Database.Discogs)
@@ -513,7 +513,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         {
           OnStatusUpdated($"Trying to fetch tracklist from release '{release.Name}'");
 
-          IEnumerable<Track> tracks = new Track[0];
+          var tracks = Enumerable.Empty<Track>();
           if (DatabaseToSearch == Database.LastFm)
             tracks = await FetchTracksLastFM(release);
           else if (DatabaseToSearch == Database.Discogs)
