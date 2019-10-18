@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Timers;
+using System.Threading.Tasks;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
@@ -34,12 +34,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       set
       {
         if (!value)
-        {
-          _currentTimeTimer.Stop();
           Time = DateTime.Now;
-        }
-        else
-          _currentTimeTimer.Start();
 
         _useCurrentTime = value;
         NotifyOfPropertyChange();
@@ -50,33 +45,29 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
     #endregion Properties
 
-    #region Member
-
-    /// <summary>
-    /// Timer used to update the current time.
-    /// </summary>
-    private Timer _currentTimeTimer;
-
-    #endregion Member
-
     /// <summary>
     /// Constructor.
     /// </summary>
     public ScrobbleTimeViewModel()
     {
-      _currentTimeTimer = new Timer(1000);
-      _currentTimeTimer.Elapsed += _currentTimeTimer_Elapsed;
       UseCurrentTime = true;
+      UpdateCurrentTimeAsync().Forget();
     }
 
     /// <summary>
-    /// Notifies the UI that the current time has changed.
+    /// Task for notifying the UI that
+    /// the <see cref="Time"/> has changed.
     /// </summary>
-    /// <param name="sender">Ignored.</param>
-    /// <param name="e">Ignored.</param>
-    private void _currentTimeTimer_Elapsed(object sender, ElapsedEventArgs e)
+    /// <returns>Task.</returns>
+    private async Task UpdateCurrentTimeAsync()
     {
-      NotifyOfPropertyChange(() => Time);
+      while(true)
+      {
+        if(UseCurrentTime)
+          NotifyOfPropertyChange(() => Time);
+
+        await Task.Delay(1000);
+      }
     }
   }
 }
