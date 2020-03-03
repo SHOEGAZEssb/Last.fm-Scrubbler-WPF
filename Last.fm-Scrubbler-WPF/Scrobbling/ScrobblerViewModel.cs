@@ -1,9 +1,9 @@
-﻿using Caliburn.Micro;
-using DiscogsClient;
+﻿using DiscogsClient;
 using Scrubbler.Helper;
 using Scrubbler.Helper.FileParser;
 using Scrubbler.Scrobbling.Scrobbler;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Scrubbler.Scrobbling
@@ -11,14 +11,14 @@ namespace Scrubbler.Scrobbling
   /// <summary>
   /// ViewModel managing all Scrobbler ViewModels.
   /// </summary>
-  class ScrobblerViewModel : Conductor<ScrobbleViewModelBase>.Collection.OneActive, IDisposable
+  class ScrobblerViewModel : TabViewModel, IDisposable
   {
     #region Properties
 
     /// <summary>
-    /// Event that triggers when the status of a ViewModel changes.
+    /// The available scrobblers.
     /// </summary>
-    public event EventHandler<UpdateStatusEventArgs> StatusUpdated;
+    public IEnumerable<ScrobbleViewModelBase> Scrobblers { get; }
 
     #endregion Properties
 
@@ -33,9 +33,9 @@ namespace Scrubbler.Scrobbling
     /// <param name="fileParserFactory">Factory for creating <see cref="IFileParser"/></param>
     public ScrobblerViewModel(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory, IFileOperator fileOperator, ILastFMClient lastFMClient,
                               IDiscogsDataBaseClient discogsClient, IFileParserFactory fileParserFactory)
+      : base("Scrobbler")
     {
-      DisplayName = "Scrobbler";
-      CreateViewModels(windowManager, localFileFactory, fileOperator, lastFMClient, discogsClient, fileParserFactory);
+      Scrobblers = CreateViewModels(windowManager, localFileFactory, fileOperator, lastFMClient, discogsClient, fileParserFactory);
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ namespace Scrubbler.Scrobbling
     /// <param name="scrobbler">Scrobbler to use.</param>
     public void UpdateScrobblers(IUserScrobbler scrobbler)
     {
-      foreach(var vm in Items)
+      foreach(var vm in Scrobblers)
       {
         vm.Scrobbler = scrobbler;
       }
@@ -59,7 +59,7 @@ namespace Scrubbler.Scrobbling
     /// <param name="lastFMClient">Last.fm client.</param>
     /// <param name="discogsClient">Client used to interact with Discogs.com</param>
     /// <param name="fileParserFactory">Factory for creating <see cref="IFileParser"/></param>
-    private void CreateViewModels(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory, IFileOperator fileOperator, ILastFMClient lastFMClient,
+    private ScrobbleViewModelBase[] CreateViewModels(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory, IFileOperator fileOperator, ILastFMClient lastFMClient,
                                   IDiscogsDataBaseClient discogsClient, IFileParserFactory fileParserFactory)
     {
       var manualScrobbleViewModel = new ManualScrobbleViewModel(windowManager);
@@ -84,29 +84,18 @@ namespace Scrubbler.Scrobbling
       var cacheScrobblerVM = new CacheScrobblerViewModel(windowManager);
       cacheScrobblerVM.StatusUpdated += Scrobbler_StatusUpdated;
 
-      ActivateItem(manualScrobbleViewModel);
-      ActivateItem(friendScrobbleViewModel);
-      ActivateItem(databaseScrobbleViewModel);
-      ActivateItem(csvScrobbleViewModel);
-      ActivateItem(fileScrobbleViewModel);
-      ActivateItem(mediaPlayerDatabaseScrobbleViewModel);
-      ActivateItem(iTunesScrobbleVM);
-      //ActivateItem(spotifyScrobbleVM);
-      ActivateItem(setlistFMScrobbleVM);
-      ActivateItem(cacheScrobblerVM);
-
-      // this one should be selected
-      ActivateItem(manualScrobbleViewModel);
+      return new ScrobbleViewModelBase[] { manualScrobbleViewModel, friendScrobbleViewModel, databaseScrobbleViewModel, csvScrobbleViewModel,
+                                           fileScrobbleViewModel, mediaPlayerDatabaseScrobbleViewModel, iTunesScrobbleVM, setlistFMScrobbleVM, cacheScrobblerVM };
     }
 
     /// <summary>
-    /// Fires the <see cref="StatusUpdated"/> event.
+    /// Fires the StatusUpdated event.
     /// </summary>
     /// <param name="sender">Ignored.</param>
     /// <param name="e">EventArgs containing the new status message.</param>
     private void Scrobbler_StatusUpdated(object sender, UpdateStatusEventArgs e)
     {
-      StatusUpdated?.Invoke(this, e);
+      OnStatusUpdated(e.NewStatus);
     }
 
     /// <summary>
@@ -114,7 +103,7 @@ namespace Scrubbler.Scrobbling
     /// </summary>
     public void Dispose()
     {
-      foreach (IDisposable disposableVM in Items.Where(i => i is IDisposable))
+      foreach (IDisposable disposableVM in Scrobblers.Where(i => i is IDisposable))
       {
         disposableVM.Dispose();
       }

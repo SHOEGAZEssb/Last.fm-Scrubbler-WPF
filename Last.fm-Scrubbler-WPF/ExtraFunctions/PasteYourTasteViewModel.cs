@@ -9,7 +9,7 @@ namespace Scrubbler.ExtraFunctions
   /// <summary>
   /// ViewModel for the <see cref="PasteYourTasteView"/>.
   /// </summary>
-  public class PasteYourTasteViewModel : ExtraFunctionViewModelBase
+  public class PasteYourTasteViewModel : TabViewModel
   {
     #region Properties
 

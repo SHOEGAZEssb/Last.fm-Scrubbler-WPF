@@ -1,14 +1,21 @@
 ﻿using Caliburn.Micro;
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Scrubbler
 {
   /// <summary>
   /// Base class for all ViewModels.
   /// </summary>
-  public abstract class ViewModelBase : Screen
+  public abstract class ViewModelBase : Screen, INotifyPropertyChanged
   {
     #region Properties
+
+    /// <summary>
+    /// Event that is fired when a property changed.
+    /// </summary>
+    //public event PropertyChangedEventHandler PropertyChanged;
 
     /// <summary>
     /// Event that triggers when the status should be changed.
@@ -36,6 +43,8 @@ namespace Scrubbler
 
     #endregion Properties
 
+    #region Construction
+
     /// <summary>
     /// Constructor.
     /// </summary>
@@ -43,6 +52,17 @@ namespace Scrubbler
     {
       EnableControls = true;
     }
+
+    #endregion Construction
+
+    /// <summary>
+    /// Fires the <see cref="PropertyChanged"/> event.
+    /// </summary>
+    /// <param name="propertyName">Name of the property that changed.</param>
+    //protected void NotifyOfPropertyChange([CallerMemberName] string propertyName = "")
+    //{
+    //  PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    //}
 
     /// <summary>
     /// Updates the status.

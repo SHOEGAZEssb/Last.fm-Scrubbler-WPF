@@ -68,7 +68,7 @@ namespace Scrubbler.ExtraFunctions
   /// <summary>
   /// ViewModel for the <see cref="CollageCreatorView"/>
   /// </summary>
-  public class CollageCreatorViewModel : ExtraFunctionViewModelBase
+  public class CollageCreatorViewModel : TabViewModel
   {
     #region Properties
 

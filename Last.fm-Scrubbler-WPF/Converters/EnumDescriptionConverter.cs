@@ -37,7 +37,9 @@ namespace Scrubbler.Converters
     /// <returns></returns>
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      Enum myEnum = (Enum)value;
+      if (value == null || !(value is Enum myEnum))
+        return "";
+
       string description = GetEnumDescription(myEnum);
       return description;
     }

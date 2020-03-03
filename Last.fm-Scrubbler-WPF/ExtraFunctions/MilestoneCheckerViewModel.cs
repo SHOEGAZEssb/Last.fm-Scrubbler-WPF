@@ -31,7 +31,7 @@ namespace Scrubbler.ExtraFunctions
   /// <summary>
   /// ViewModel for the <see cref="MilestoneCheckerView"/>
   /// </summary>
-  public class MilestoneCheckerViewModel : ExtraFunctionViewModelBase
+  public class MilestoneCheckerViewModel : TabViewModel
   {
     #region Properties
 

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace Scrubbler.Scrobbling.Scrobbler
 {
   /// <summary>
-  /// Base class for all scrobblers.
+  /// Base class for all scrobbler ViewModels.
   /// </summary>
-  public abstract class ScrobbleViewModelBase : ViewModelBase
+  public abstract class ScrobbleViewModelBase : TabViewModel
   {
     #region Properties
 
@@ -55,6 +55,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="displayName">Display name.</param>
     public ScrobbleViewModelBase(IExtendedWindowManager windowManager, string displayName)
+      : base(displayName)
     {
       DisplayName = displayName;
       _windowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));

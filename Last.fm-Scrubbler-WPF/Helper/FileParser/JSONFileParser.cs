@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Scrubbler.Scrobbling.Data;
 using Scrubbler.Scrobbling.Scrobbler;
 

@@ -3,14 +3,35 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Scrubbler.ExtraFunctions"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
 
-  <TabControl x:Name="Items">
+  <TabControl ItemsSource="{Binding ExtraFunctions}" SelectedIndex="0">
     <TabControl.ItemTemplate>
       <DataTemplate>
-        <TextBlock Text="{Binding DisplayName}"/>
+        <TextBlock Text="{Binding Header}"/>
       </DataTemplate>
     </TabControl.ItemTemplate>
+    <TabControl.ContentTemplate>
+      <DataTemplate>
+        <ContentControl Content="{Binding}">
+          <ContentControl.Resources>
+            <DataTemplate DataType="{x:Type local:PasteYourTasteViewModel}">
+              <local:PasteYourTasteView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type local:CSVDownloaderViewModel}">
+              <local:CSVDownloaderView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type local:CollageCreatorViewModel}">
+              <local:CollageCreatorView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type local:MilestoneCheckerViewModel}">
+              <local:MilestoneCheckerView/>
+            </DataTemplate>
+          </ContentControl.Resources>
+        </ContentControl>
+      </DataTemplate>
+    </TabControl.ContentTemplate>
   </TabControl>
 </UserControl>

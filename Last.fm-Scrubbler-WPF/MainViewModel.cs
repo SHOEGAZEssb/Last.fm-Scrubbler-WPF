@@ -1,5 +1,4 @@
-﻿using Caliburn.Micro;
-using DiscogsClient;
+﻿using DiscogsClient;
 using Octokit;
 using Scrubbler.Configuration;
 using Scrubbler.ExtraFunctions;
@@ -8,6 +7,7 @@ using Scrubbler.Helper.FileParser;
 using Scrubbler.Login;
 using Scrubbler.Scrobbling;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -17,7 +17,7 @@ namespace Scrubbler
   /// <summary>
   /// ViewModel for the <see cref="MainView"/>.
   /// </summary>
-  public class MainViewModel : Conductor<Screen>.Collection.OneActive, IDisposable
+  public sealed class MainViewModel : ViewModelBase, IDisposable
   {
     #region Properties
 
@@ -39,6 +39,11 @@ namespace Scrubbler
       }
     }
     private string _titleString;
+
+    /// <summary>
+    /// Available program tabs.
+    /// </summary>
+    public IEnumerable<TabViewModel> Tabs { get; }
 
     /// <summary>
     /// ViewModel for the <see cref="UserView"/>.
@@ -142,7 +147,7 @@ namespace Scrubbler
       _scrobblerFactory = scrobblerFactory ?? throw new ArgumentNullException(nameof(scrobblerFactory));
       _fileOperator = fileOperator ?? throw new ArgumentNullException(nameof(fileOperator));
       _logger = logger;
-      SetupViewModels(localFileFactory, directoryOperator, serializer, gitHubClient, processManager, discogsClient, fileParserFactory);
+      Tabs = SetupViewModels(localFileFactory, directoryOperator, serializer, gitHubClient, processManager, discogsClient, fileParserFactory);
       TitleString = $"Last.fm Scrubbler WPF Beta {Assembly.GetExecutingAssembly().GetName().Version}";
       CurrentStatus = "Waiting to scrobble...";
     }
@@ -165,17 +170,6 @@ namespace Scrubbler
       _windowManager.ShowDialog(UserViewModel);
     }
 
-    /// <summary>
-    /// Cleanup before exiting.
-    /// </summary>
-    /// <param name="close">True if the application is closed.</param>
-    protected override void OnDeactivate(bool close)
-    {
-      // we need to override this because the default
-      // implementation disposes the items on deactivation.
-      // but we want to dispose manually.
-    }
-
     #region Setup
 
     /// <summary>
@@ -188,7 +182,7 @@ namespace Scrubbler
     /// <param name="processManager">ProcessManager for working with processor functions.</param>
     /// <param name="discogsClient">Client used to interact with Discogs.com</param>
     /// <param name="fileParserFactory">Factory for creating <see cref="IFileParser"/></param>
-    private void SetupViewModels(ILocalFileFactory localFileFactory, IDirectoryOperator directoryOperator, ISerializer serializer, IGitHubClient gitHubClient,
+    private TabViewModel[] SetupViewModels(ILocalFileFactory localFileFactory, IDirectoryOperator directoryOperator, ISerializer serializer, IGitHubClient gitHubClient,
                                  IProcessManager processManager, IDiscogsDataBaseClient discogsClient, IFileParserFactory fileParserFactory)
     {
       UserViewModel = new UserViewModel(_windowManager, _client.Auth, _fileOperator, directoryOperator, serializer);
@@ -196,12 +190,10 @@ namespace Scrubbler
       _generalSettingsVM = new GeneralSettingsViewModel(_windowManager, gitHubClient, processManager);
 
       _scrobblerVM = new ScrobblerViewModel(_windowManager, localFileFactory, _fileOperator, _client, discogsClient, fileParserFactory);
-      _scrobblerVM.StatusUpdated += StatusUpdated;
-      ActivateItem(_scrobblerVM);
+      _scrobblerVM.StatusUpdated += MainStatusUpdated;
 
       _extraFunctionsVM = new ExtraFunctionsViewModel(_windowManager, _client.User, _fileOperator);
-      _extraFunctionsVM.StatusUpdated += StatusUpdated;
-      ActivateItem(_extraFunctionsVM);
+      _extraFunctionsVM.StatusUpdated += MainStatusUpdated;
 
       // we do this later to stop a NullReferenceException (we create scrobblers here anyways!)
       UserViewModel.ActiveUserChanged += UserViewModel_ActiveUserChanged;
@@ -209,8 +201,7 @@ namespace Scrubbler
       if(UserViewModel.ActiveUser != null)
         CreateScrobblers();
 
-      // should be active
-      ActivateItem(_scrobblerVM);
+      return new TabViewModel[] { _scrobblerVM, _extraFunctionsVM };
     }
 
     #endregion Setup
@@ -266,7 +257,7 @@ namespace Scrubbler
     /// </summary>
     /// <param name="sender">Ignored.</param>
     /// <param name="e">EventArgs containing the new status message.</param>
-    private void StatusUpdated(object sender, UpdateStatusEventArgs e)
+    private void MainStatusUpdated(object sender, UpdateStatusEventArgs e)
     {
       CurrentStatus = e.NewStatus;
     }
@@ -276,7 +267,7 @@ namespace Scrubbler
     /// </summary>
     public void Dispose()
     {
-      foreach (IDisposable disposableVM in Items.OfType<IDisposable>())
+      foreach (IDisposable disposableVM in Tabs.OfType<IDisposable>())
       {
         disposableVM.Dispose();
       }
