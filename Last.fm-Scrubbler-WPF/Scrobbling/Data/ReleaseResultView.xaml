@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Scrubbler.Scrobbling.Data"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
 
@@ -17,11 +18,11 @@
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
-    <Button x:Name="BackToArtist" Grid.Row="0" Content="Back To Artists" HorizontalAlignment="Left"
+    <Button Grid.Row="0" Content="Back To Artists" HorizontalAlignment="Left" Command="{Binding BackToArtistCommand}"
             Visibility="{Binding FetchedThroughArtist, Converter={StaticResource boolToVis}}"/>
 
     <ScrollViewer Grid.Row="2">
-      <ItemsControl x:Name="Items">
+      <ItemsControl ItemsSource="{Binding Results}">
         <ItemsControl.ItemContainerStyle>
           <Style>
             <Setter Property="FrameworkElement.Margin" Value="5"/>
@@ -32,6 +33,11 @@
             <UniformGrid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
           </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <local:FetchedReleaseView/>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
       </ItemsControl>
     </ScrollViewer>
   </Grid>

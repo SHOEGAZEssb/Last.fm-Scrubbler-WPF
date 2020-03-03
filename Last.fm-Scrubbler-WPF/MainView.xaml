@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:scrobbling="clr-namespace:Scrubbler.Scrobbling"
         xmlns:ef="clr-namespace:Scrubbler.ExtraFunctions"
         mc:Ignorable="d"
@@ -43,7 +43,13 @@
           <Label Content="Logged in as:" FontWeight="Bold"/>
           <TextBlock Margin="0,5,0,0">
             <Hyperlink>
-              <TextBlock Text="{Binding UserViewModel.Username, Mode=OneWay, TargetNullValue='Not logged in'}" cal:Message.Attach="[Event MouseDown] = [Action ShowUserView]"/>
+              <TextBlock Text="{Binding UserViewModel.Username, Mode=OneWay, TargetNullValue='Not logged in'}">
+                <beh:Interaction.Triggers>
+                  <beh:EventTrigger EventName="MouseLeftButtonDown">
+                    <beh:CallMethodAction TargetObject="{Binding}" MethodName="ShowUserView"/>
+                  </beh:EventTrigger>
+                </beh:Interaction.Triggers>
+              </TextBlock>
             </Hyperlink>
           </TextBlock>
         </StackPanel>
@@ -53,7 +59,13 @@
 
       <StatusBarItem>
         <Hyperlink>
-          <TextBlock Text="Settings" cal:Message.Attach="[Event MouseDown] = [Action ShowSettings]"/>
+          <TextBlock Text="Settings">
+            <beh:Interaction.Triggers>
+              <beh:EventTrigger EventName="MouseLeftButtonDown">
+                <beh:CallMethodAction TargetObject="{Binding}" MethodName="ShowSettings"/>
+              </beh:EventTrigger>
+            </beh:Interaction.Triggers>
+          </TextBlock>
         </Hyperlink>
       </StatusBarItem>
 

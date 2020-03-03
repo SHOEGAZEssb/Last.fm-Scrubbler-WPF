@@ -72,7 +72,7 @@
     <Label Grid.Row="0" Grid.Column="8" Content="Max Results:"/>
     <xctk:IntegerUpDown Grid.Row="0" Grid.Column="10" Minimum="1" Maximum="1000" Value="{Binding MaxResults}"/>
 
-    <Button x:Name="Search" Grid.Row="0" Grid.Column="12" Content="Search">
+    <Button Grid.Row="0" Grid.Column="12" Command="{Binding SearchCommand}" Content="Search">
       <Button.Style>
         <Style TargetType="Button">
           <Style.Triggers>
@@ -84,7 +84,7 @@
       </Button.Style>
     </Button>
 
-    <ContentControl x:Name="ActiveItem" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="14">
+    <ContentControl Content="{Binding ActiveResult}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="14">
       <ContentControl.Style>
         <Style TargetType="ContentControl">
           <Setter Property="Visibility" Value="Collapsed"/>
@@ -95,6 +95,14 @@
           </Style.Triggers>
         </Style>
       </ContentControl.Style>
+      <ContentControl.Resources>
+        <DataTemplate DataType="{x:Type data:ArtistResultViewModel}">
+          <data:ArtistResultView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type data:ReleaseResultViewModel}">
+          <data:ReleaseResultView/>
+        </DataTemplate>
+      </ContentControl.Resources>
     </ContentControl>
     <data:TrackResultView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="14" Style="{StaticResource ScrobbleControlStyle}"/>
 

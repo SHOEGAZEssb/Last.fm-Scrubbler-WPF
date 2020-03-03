@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:scrub="clr-namespace:Scrubbler"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -15,35 +15,65 @@
           <GridViewColumn Header="Artist" scrub:GridViewSort.PropertyName="Artist">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Content="{Binding Artist}" cal:Message.Attach="[Event MouseLeftButtonDown] = [Action Clicked]"/>
+                <Label Content="{Binding Artist}">
+                  <beh:Interaction.Triggers>
+                    <beh:EventTrigger EventName="MouseLeftButtonDown">
+                      <beh:CallMethodAction TargetObject="{Binding}" MethodName="Clicked"/>
+                    </beh:EventTrigger>
+                  </beh:Interaction.Triggers>
+                </Label>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
           <GridViewColumn Header="City" scrub:GridViewSort.PropertyName="City">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Content="{Binding City}" cal:Message.Attach="[Event MouseLeftButtonDown] = [Action Clicked]"/>
+                <Label Content="{Binding City}">
+                  <beh:Interaction.Triggers>
+                    <beh:EventTrigger EventName="MouseLeftButtonDown">
+                      <beh:CallMethodAction TargetObject="{Binding}" MethodName="Clicked"/>
+                    </beh:EventTrigger>
+                  </beh:Interaction.Triggers>
+                </Label>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
           <GridViewColumn Header="Venue" scrub:GridViewSort.PropertyName="Venue">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Content="{Binding Venue}" cal:Message.Attach="[Event MouseLeftButtonDown] = [Action Clicked]"/>
+                <Label Content="{Binding Venue}">
+                  <beh:Interaction.Triggers>
+                    <beh:EventTrigger EventName="MouseLeftButtonDown">
+                      <beh:CallMethodAction TargetObject="{Binding}" MethodName="Clicked"/>
+                    </beh:EventTrigger>
+                  </beh:Interaction.Triggers>
+                </Label>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
           <GridViewColumn Header="Tour" scrub:GridViewSort.PropertyName="Tour">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Content="{Binding Tour}" cal:Message.Attach="[Event MouseLeftButtonDown] = [Action Clicked]"/>
+                <Label Content="{Binding Tour}">
+                  <beh:Interaction.Triggers>
+                    <beh:EventTrigger EventName="MouseLeftButtonDown">
+                      <beh:CallMethodAction TargetObject="{Binding}" MethodName="Clicked"/>
+                    </beh:EventTrigger>
+                  </beh:Interaction.Triggers>
+                </Label>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>
           <GridViewColumn Header="Date" scrub:GridViewSort.PropertyName="Date">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <Label Content="{Binding Date}" cal:Message.Attach="[Event MouseLeftButtonDown] = [Action Clicked]"/>
+                <Label Content="{Binding Date}">
+                  <beh:Interaction.Triggers>
+                    <beh:EventTrigger EventName="MouseLeftButtonDown">
+                      <beh:CallMethodAction TargetObject="{Binding}" MethodName="Clicked"/>
+                    </beh:EventTrigger>
+                  </beh:Interaction.Triggers>
+                </Label>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>

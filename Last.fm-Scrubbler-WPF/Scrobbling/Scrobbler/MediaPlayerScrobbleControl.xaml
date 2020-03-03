@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="700" cal:Bind.Model="{Binding}" Style="{StaticResource EnableControlsStyle}">
 
@@ -119,7 +120,13 @@
         <Label Grid.Row="0" Grid.Column="0" Content="Track:" FontWeight="Bold"/>
         <TextBlock Grid.Row="0" Grid.Column="2" Margin="0,5,0,0">
           <Hyperlink>
-            <TextBlock Text="{Binding CurrentTrackName, Mode=OneWay}" cal:Message.Attach="[Event MouseDown] = [Action TrackClicked]"/>
+            <TextBlock Text="{Binding CurrentTrackName, Mode=OneWay}">
+              <beh:Interaction.Triggers>
+                <beh:EventTrigger EventName="MouseDown">
+                  <beh:CallMethodAction TargetObject="{Binding}" MethodName="TrackClicked"/>
+                </beh:EventTrigger>
+              </beh:Interaction.Triggers>
+            </TextBlock>
           </Hyperlink>
         </TextBlock>
         <TextBlock Grid.Row="0" Grid.Column="4" Margin="0,5,0,0">
@@ -133,14 +140,26 @@
             </Style>
           </TextBlock.Style>
           <Hyperlink>
-            <TextBlock Text="{Binding CurrentTrackPlayCount, Mode=OneWay, StringFormat={}({0})}" cal:Message.Attach="[Event MouseDown] = [Action TrackPlayCountClicked]"/>
+            <TextBlock Text="{Binding CurrentTrackPlayCount, Mode=OneWay, StringFormat={}({0})}">
+              <beh:Interaction.Triggers>
+                <beh:EventTrigger EventName="MouseDown">
+                  <beh:CallMethodAction TargetObject="{Binding}" MethodName="TrackPlayCountClicked"/>
+                </beh:EventTrigger>
+              </beh:Interaction.Triggers>
+            </TextBlock>
           </Hyperlink>
         </TextBlock>
 
         <Label Grid.Row="2" Grid.Column="0" Content="Artist:" FontWeight="Bold"/>
         <TextBlock Grid.Row="2" Grid.Column="2" Margin="0,5,0,0">
           <Hyperlink>
-            <TextBlock Text="{Binding CurrentArtistName, Mode=OneWay}" cal:Message.Attach="[Event MouseDown] = [Action ArtistClicked]"/>
+            <TextBlock Text="{Binding CurrentArtistName, Mode=OneWay}">
+              <beh:Interaction.Triggers>
+                <beh:EventTrigger EventName="MouseDown">
+                  <beh:CallMethodAction TargetObject="{Binding}" MethodName="ArtistClicked"/>
+                </beh:EventTrigger>
+              </beh:Interaction.Triggers>
+            </TextBlock>
           </Hyperlink>
         </TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="4" Margin="0,5,0,0">
@@ -154,14 +173,26 @@
             </Style>
           </TextBlock.Style>
           <Hyperlink>
-            <TextBlock Text="{Binding CurrentArtistPlayCount, Mode=OneWay, StringFormat={}({0})}" cal:Message.Attach="[Event MouseDown] = [Action ArtistPlayCountClicked]"/>
+            <TextBlock Text="{Binding CurrentArtistPlayCount, Mode=OneWay, StringFormat={}({0})}">
+              <beh:Interaction.Triggers>
+                <beh:EventTrigger EventName="MouseDown">
+                  <beh:CallMethodAction TargetObject="{Binding}" MethodName="ArtistPlayCountClicked"/>
+                </beh:EventTrigger>
+              </beh:Interaction.Triggers>
+            </TextBlock>
           </Hyperlink>
         </TextBlock>
 
         <Label Grid.Row="4" Grid.Column="0" Content="Album:" FontWeight="Bold"/>
         <TextBlock Grid.Row="4" Grid.Column="2" Margin="0,5,0,0">
           <Hyperlink>
-            <TextBlock Text="{Binding CurrentAlbumName, Mode=OneWay}" cal:Message.Attach="[Event MouseDown] = [Action AlbumClicked]"/>
+            <TextBlock Text="{Binding CurrentAlbumName, Mode=OneWay}">
+              <beh:Interaction.Triggers>
+                <beh:EventTrigger EventName="MouseDown">
+                  <beh:CallMethodAction TargetObject="{Binding}" MethodName="AlbumClicked"/>
+                </beh:EventTrigger>
+              </beh:Interaction.Triggers>
+            </TextBlock>
           </Hyperlink>
         </TextBlock>
         <TextBlock Grid.Row="4" Grid.Column="4" Margin="0,5,0,0">
@@ -175,7 +206,13 @@
             </Style>
           </TextBlock.Style>
           <Hyperlink>
-            <TextBlock Text="{Binding CurrentAlbumPlayCount, Mode=OneWay, StringFormat={}({0})}" cal:Message.Attach="[Event MouseDown] = [Action AlbumPlayCountClicked]"/>
+            <TextBlock Text="{Binding CurrentAlbumPlayCount, Mode=OneWay, StringFormat={}({0})}">
+              <beh:Interaction.Triggers>
+                <beh:EventTrigger EventName="MouseDown">
+                  <beh:CallMethodAction TargetObject="{Binding}" MethodName="AlbumPlayCountClicked"/>
+                </beh:EventTrigger>
+              </beh:Interaction.Triggers>
+            </TextBlock>
           </Hyperlink>
         </TextBlock>
 

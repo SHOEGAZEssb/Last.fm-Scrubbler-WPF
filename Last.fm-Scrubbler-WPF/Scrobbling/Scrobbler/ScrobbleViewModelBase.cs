@@ -3,6 +3,7 @@ using Scrubbler.Helper;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
@@ -38,6 +39,16 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
     private IUserScrobbler _scrobbler;
 
+    /// <summary>
+    /// Command for scrobbling.
+    /// </summary>
+    public ICommand ScrobbleCommand { get; }
+
+    /// <summary>
+    /// Command for previewing the scrobbles.
+    /// </summary>
+    public ICommand PreviewCommand { get; }
+
     #endregion Properties
 
     #region Member
@@ -54,11 +65,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="displayName">Display name.</param>
-    public ScrobbleViewModelBase(IExtendedWindowManager windowManager, string displayName)
+    protected ScrobbleViewModelBase(IExtendedWindowManager windowManager, string displayName)
       : base(displayName)
     {
-      DisplayName = displayName;
       _windowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));
+      ScrobbleCommand = new DelegateCommand((o) => Scrobble().Forget());
+      PreviewCommand = new DelegateCommand((o) => Preview());
     }
 
     /// <summary>

@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
-             d:DesignHeight="25" d:DesignWidth="300" cal:Bind.Model="{Binding}">
+             d:DesignHeight="25" d:DesignWidth="300">
 
   <Grid>
     <Grid.ColumnDefinitions>
@@ -14,8 +14,19 @@
       <ColumnDefinition Width="75"/>
     </Grid.ColumnDefinitions>
 
-    <Button x:Name="Scrobble" Grid.Column="0" Content="Scrobble" IsEnabled="{Binding CanScrobble}"/>
-    <Button x:Name="Preview" Grid.Column="2" Content="Preview" IsEnabled="{Binding CanPreview}">
+    <Button Grid.Column="0" Content="Scrobble" IsEnabled="{Binding CanScrobble}">
+      <beh:Interaction.Triggers>
+        <beh:EventTrigger EventName="Click">
+          <beh:CallMethodAction TargetObject="{Binding}" MethodName="Scrobble"/>
+        </beh:EventTrigger>
+      </beh:Interaction.Triggers>
+    </Button>
+    <Button Grid.Column="2" Content="Preview" IsEnabled="{Binding CanPreview}">
+      <beh:Interaction.Triggers>
+        <beh:EventTrigger EventName="Click">
+          <beh:CallMethodAction TargetObject="{Binding}" MethodName="Preview"/>
+        </beh:EventTrigger>
+      </beh:Interaction.Triggers>
       <Button.ToolTip>
         <ToolTip>Preview the tracks that will be scrobbled.</ToolTip>
       </Button.ToolTip>

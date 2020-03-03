@@ -81,11 +81,11 @@ namespace Scrubbler.Test.ScrobblingTests
 
       // now we should have artists
       // we "click" the first one, this should trigger the album search
-      (vm.ActiveItem as ArtistResultViewModel).Items.First().Clicked();
+      (vm.ActiveResult as ArtistResultViewModel).Results.First().Clicked();
 
       // now we should have albums
       // we "click" the first one, this should trigger the tracklist fetching
-      (vm.ActiveItem as ReleaseResultViewModel).Items.First().Clicked();
+      (vm.ActiveResult as ReleaseResultViewModel).Results.First().Clicked();
 
       vm.CheckAll();
       await vm.Scrobble();

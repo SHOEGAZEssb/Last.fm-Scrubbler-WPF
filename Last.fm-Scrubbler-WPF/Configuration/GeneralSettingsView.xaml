@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              Width="300" Height="160" Title="General Settings" Style="{StaticResource EnableControlsStyle}">
 
@@ -24,7 +24,7 @@
     <CheckBox Grid.Row="2" Content="Start Minimized" IsChecked="{Binding StartMinimized}"/>
 
     <CheckBox Content="Check For Updates At Startup" Grid.Row="4" VerticalAlignment="Center" IsChecked="{Binding StartupUpdateCheck}"/>
-    <Button cal:Message.Attach="[Event Click] = [Action CheckForUpdates('true')]" Grid.Row="6" Content="Check For Updates" Grid.Column="2" HorizontalAlignment="Left"/>
+    <Button Grid.Row="6" Command="{Binding CheckForUpdatesCommand}" Content="Check For Updates" Grid.Column="2" HorizontalAlignment="Left"/>
 
     <Grid Grid.Row="8" HorizontalAlignment="Right">
       <Grid.ColumnDefinitions>
