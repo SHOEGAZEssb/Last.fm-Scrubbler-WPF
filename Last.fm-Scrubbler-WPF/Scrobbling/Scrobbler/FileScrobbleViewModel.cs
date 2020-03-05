@@ -9,6 +9,7 @@ using System.Windows;
 using IF.Lastfm.Core.Api.Enums;
 using Scrubbler.Scrobbling.Data;
 using Scrubbler.Helper;
+using System.Windows.Input;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
@@ -26,6 +27,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
     {
       get { return Scrobbles.Any(i => i.ToScrobble); }
     }
+
+    /// <summary>
+    /// Command for loading and parsing files.
+    /// </summary>
+    public ICommand AddFilesCommand { get; }
 
     #endregion Properties
 
@@ -58,8 +64,9 @@ namespace Scrubbler.Scrobbling.Scrobbler
       : base(windowManager, "File Scrobbler")
     {
       Scrobbles = new ObservableCollection<LoadedFileViewModel>();
-      _localFileFactory = localFileFactory;
-      _fileOperator = fileOperator;
+      _localFileFactory = localFileFactory ?? throw new ArgumentNullException(nameof(localFileFactory));
+      _fileOperator = fileOperator ?? throw new ArgumentNullException(nameof(fileOperator));
+      AddFilesCommand = new DelegateCommand((o) => AddFiles().Forget());
     }
 
     /// <summary>

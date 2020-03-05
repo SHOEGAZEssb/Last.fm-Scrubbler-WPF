@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Scrubbler.Scrobbling.Data"
+             xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
 
@@ -18,8 +19,14 @@
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
-    <Button Grid.Row="0" Content="Back To Artists" HorizontalAlignment="Left" Command="{Binding BackToArtistCommand}"
-            Visibility="{Binding FetchedThroughArtist, Converter={StaticResource boolToVis}}"/>
+    <Button Grid.Row="0" Content="Back To Artists" HorizontalAlignment="Left"
+            Visibility="{Binding FetchedThroughArtist, Converter={StaticResource boolToVis}}">
+      <beh:Interaction.Triggers>
+        <beh:EventTrigger EventName="Click">
+          <beh:CallMethodAction TargetObject="{Binding}" MethodName="BackToArtist"/>
+        </beh:EventTrigger>
+      </beh:Interaction.Triggers>
+    </Button>
 
     <ScrollViewer Grid.Row="2">
       <ItemsControl ItemsSource="{Binding Results}">

@@ -14,19 +14,8 @@
       <ColumnDefinition Width="75"/>
     </Grid.ColumnDefinitions>
 
-    <Button Grid.Column="0" Content="Scrobble" IsEnabled="{Binding CanScrobble}">
-      <beh:Interaction.Triggers>
-        <beh:EventTrigger EventName="Click">
-          <beh:CallMethodAction TargetObject="{Binding}" MethodName="Scrobble"/>
-        </beh:EventTrigger>
-      </beh:Interaction.Triggers>
-    </Button>
-    <Button Grid.Column="2" Content="Preview" IsEnabled="{Binding CanPreview}">
-      <beh:Interaction.Triggers>
-        <beh:EventTrigger EventName="Click">
-          <beh:CallMethodAction TargetObject="{Binding}" MethodName="Preview"/>
-        </beh:EventTrigger>
-      </beh:Interaction.Triggers>
+    <Button Grid.Column="0" Command="{Binding ScrobbleCommand}" Content="Scrobble" IsEnabled="{Binding CanScrobble}"/>
+    <Button Grid.Column="2" Command="{Binding PreviewCommand}" Content="Preview" IsEnabled="{Binding CanPreview}">
       <Button.ToolTip>
         <ToolTip>Preview the tracks that will be scrobbled.</ToolTip>
       </Button.ToolTip>

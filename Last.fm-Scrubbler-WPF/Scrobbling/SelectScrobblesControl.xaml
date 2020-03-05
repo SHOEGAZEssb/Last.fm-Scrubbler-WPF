@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
-             d:DesignHeight="30" d:DesignWidth="400" cal:Bind.Model="{Binding}">
+             d:DesignHeight="30" d:DesignWidth="400">
 
   <Grid>
     <Grid.ColumnDefinitions>
@@ -20,10 +20,34 @@
       <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
 
-    <Button x:Name="CheckAll" Grid.Column="0" Content="Check All" IsEnabled="{Binding CanCheckAll}"/>
-    <Button x:Name="UncheckAll" Grid.Column="2" Content="Uncheck All" IsEnabled="{Binding CanUncheckAll}"/>
-    <Button x:Name="CheckSelected" Grid.Column="4" Content="Check Selected" IsEnabled="{Binding CanCheckSelected}"/>
-    <Button x:Name="UncheckSelected" Grid.Column="6" Content="Uncheck Selected" IsEnabled="{Binding CanUncheckSelected}"/>
+    <Button Grid.Column="0" Content="Check All" IsEnabled="{Binding CanCheckAll}">
+      <beh:Interaction.Triggers>
+        <beh:EventTrigger EventName="Click">
+          <beh:CallMethodAction TargetObject="{Binding}" MethodName="CheckAll"/>
+        </beh:EventTrigger>
+      </beh:Interaction.Triggers>
+    </Button>
+    <Button Grid.Column="2" Content="Uncheck All" IsEnabled="{Binding CanUncheckAll}">
+      <beh:Interaction.Triggers>
+        <beh:EventTrigger EventName="Click">
+          <beh:CallMethodAction TargetObject="{Binding}" MethodName="UncheckAll"/>
+        </beh:EventTrigger>
+      </beh:Interaction.Triggers>
+    </Button>
+    <Button Grid.Column="4" Content="Check Selected" IsEnabled="{Binding CanCheckSelected}">
+      <beh:Interaction.Triggers>
+        <beh:EventTrigger EventName="Click">
+          <beh:CallMethodAction TargetObject="{Binding}" MethodName="CheckSelected"/>
+        </beh:EventTrigger>
+      </beh:Interaction.Triggers>
+    </Button>
+    <Button Grid.Column="6" Content="Uncheck Selected" IsEnabled="{Binding CanUncheckSelected}">
+      <beh:Interaction.Triggers>
+        <beh:EventTrigger EventName="Click">
+          <beh:CallMethodAction TargetObject="{Binding}" MethodName="UncheckSelected"/>
+        </beh:EventTrigger>
+      </beh:Interaction.Triggers>
+    </Button>
 
     <TextBlock Grid.Column="9" VerticalAlignment="Center">
       <TextBlock.Text>

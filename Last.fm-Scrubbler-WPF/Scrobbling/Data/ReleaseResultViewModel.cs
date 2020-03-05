@@ -44,11 +44,6 @@ namespace Scrubbler.Scrobbling.Data
     }
     private bool _fetchedThroughArtist;
 
-    /// <summary>
-    /// Command for going back to the fetched artist.
-    /// </summary>
-    public ICommand BackToArtistCommand { get; }
-
     #endregion Properties
 
     #region Construction
@@ -66,7 +61,6 @@ namespace Scrubbler.Scrobbling.Data
 
       FetchedThroughArtist = fetchedThroughArtist;
       Results = CreateResultViewModels(releases);
-      BackToArtistCommand = new DelegateCommand((o) => BackToArtist());
     }
 
     #endregion Construction

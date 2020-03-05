@@ -9,6 +9,7 @@
              xmlns:scrub="clr-namespace:Scrubbler"
              xmlns:conv="clr-namespace:Scrubbler.Converters"
              xmlns:data="clr-namespace:Scrubbler.Scrobbling.Data"
+             xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DesignHeight="330" d:DesignWidth="500" Style="{StaticResource EnableControlsStyle}">
 
@@ -58,7 +59,13 @@
 
     <Label Grid.Row="0" Grid.Column="0" Content="DB File Path:"/>
     <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding DBFilePath, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CanSelectPathStyle}"/>
-    <Button x:Name="SelectFile" Grid.Row="0" Grid.Column="4" Content="..." MinWidth="25" Style="{StaticResource CanSelectPathStyle}"/>
+    <Button Grid.Row="0" Grid.Column="4" Content="..." MinWidth="25" Style="{StaticResource CanSelectPathStyle}">
+      <beh:Interaction.Triggers>
+        <beh:EventTrigger EventName="Click">
+          <beh:CallMethodAction TargetObject="{Binding}" MethodName="SelectFile"/>
+        </beh:EventTrigger>
+      </beh:Interaction.Triggers>
+    </Button>
 
     <ComboBox Grid.Row="0" Grid.Column="6" ItemsSource="{Binding Source={StaticResource MPDDataProvider}}"
               SelectedValue="{Binding MediaPlayerDatabaseType}">
@@ -69,7 +76,7 @@
       </ComboBox.ItemTemplate>
     </ComboBox>
 
-    <Button x:Name="ParseFile" Grid.Row="0" Grid.Column="8" Content="Parse">
+    <Button Grid.Row="0" Grid.Column="8" Command="{Binding ParseFileCommand}" Content="Parse">
       <Button.Style>
         <Style TargetType="Button">
           <Style.Triggers>

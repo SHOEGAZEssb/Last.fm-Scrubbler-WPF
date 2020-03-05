@@ -643,7 +643,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
 
     /// <summary>
-    /// Switches the <see cref="ActiveItem"/> to the artist view.
+    /// Switches the <see cref="ActiveResult"/> to the artist view.
     /// </summary>
     public void BackToArtist()
     {
@@ -653,7 +653,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
 
     /// <summary>
-    /// Switches the <see cref="ActiveItem"/> to the release view.
+    /// Switches the <see cref="ActiveResult"/> to the release view.
     /// </summary>
     public void BackFromTrackResult()
     {

@@ -3,10 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:cal="http://www.caliburnproject.org"
              xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="700" cal:Bind.Model="{Binding}" Style="{StaticResource EnableControlsStyle}">
+             d:DesignHeight="300" d:DesignWidth="700" Style="{StaticResource EnableControlsStyle}">
 
   <UserControl.Resources>
     <BitmapImage x:Key="noalbumimage" UriSource="/Resources/noalbumimage.png"/>
@@ -43,7 +42,7 @@
         </Style>
       </Label.Style>
     </Label>
-    <Button x:Name="Connect" Grid.Row="0" Grid.Column="4">
+    <Button Grid.Row="0" Grid.Column="4">
       <Button.Style>
         <Style TargetType="Button">
           <Setter Property="Content" Value="Reconnect"/>
@@ -54,9 +53,14 @@
           </Style.Triggers>
         </Style>
       </Button.Style>
+      <beh:Interaction.Triggers>
+        <beh:EventTrigger EventName="Click">
+          <beh:CallMethodAction TargetObject="{Binding}" MethodName="Connect"/>
+        </beh:EventTrigger>
+      </beh:Interaction.Triggers>
     </Button>
 
-    <Button x:Name="Disconnect" Grid.Row="0" Grid.Column="6" Content="Disconnect">
+    <Button Grid.Row="0" Grid.Column="6" Content="Disconnect">
       <Button.Style>
         <Style TargetType="Button">
           <Setter Property="IsEnabled" Value="False"/>
@@ -67,6 +71,11 @@
           </Style.Triggers>
         </Style>
       </Button.Style>
+      <beh:Interaction.Triggers>
+        <beh:EventTrigger EventName="Click">
+          <beh:CallMethodAction TargetObject="{Binding}" MethodName="Disconnect"/>
+        </beh:EventTrigger>
+      </beh:Interaction.Triggers>
     </Button>
 
     <CheckBox Grid.Row="0" Grid.Column="8" VerticalAlignment="Center" Content="Auto-Connect" IsChecked="{Binding AutoConnect}">
@@ -218,7 +227,7 @@
 
         <Separator Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5"/>
 
-        <Button x:Name="SwitchLoveState" Grid.Row="6" Grid.Column="0">
+        <Button Grid.Row="6" Grid.Column="0" Command="{Binding SwitchLoveStateCommand}">
           <Button.Style>
             <Style TargetType="Button">
               <Setter Property="Content" Value="Love"/>

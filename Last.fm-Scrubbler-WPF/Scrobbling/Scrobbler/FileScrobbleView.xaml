@@ -7,8 +7,9 @@
              xmlns:data="clr-namespace:Scrubbler.Scrobbling.Data"
              xmlns:scrub="clr-namespace:Scrubbler"
              xmlns:scrobbling="clr-namespace:Scrubbler.Scrobbling"
+             xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="325" Style="{StaticResource EnableControlsStyle}">
+             d:DesignHeight="300" d:DesignWidth="600" Style="{StaticResource EnableControlsStyle}">
 
   <Grid>
     <Grid.RowDefinitions>
@@ -37,9 +38,15 @@
         <ColumnDefinition Width="Auto"/>
       </Grid.ColumnDefinitions>
 
-      <Button x:Name="AddFiles" Grid.Row="0" Grid.Column="0" Content="Add Files..." HorizontalAlignment="Left"/>
+      <Button Grid.Row="0" Grid.Column="0" Command="{Binding AddFilesCommand}" Content="Add Files..." HorizontalAlignment="Left"/>
 
-      <Button x:Name="RemoveFiles" Grid.Row="0" Grid.Column="2" Content="Remove Checked Files" HorizontalAlignment="Left" IsEnabled="{Binding CanRemoveFiles}"/>
+      <Button Grid.Row="0" Grid.Column="2" Content="Remove Checked Files" HorizontalAlignment="Left" IsEnabled="{Binding CanRemoveFiles}">
+        <beh:Interaction.Triggers>
+          <beh:EventTrigger EventName="Click">
+            <beh:CallMethodAction TargetObject="{Binding}" MethodName="RemoveFiles"/>
+          </beh:EventTrigger>
+        </beh:Interaction.Triggers>
+      </Button>
 
       <scrobbling:SelectScrobblesControl Grid.Row="0" Grid.Column="4"/>
     </Grid>

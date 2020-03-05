@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
@@ -120,6 +121,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public bool CanShowSettings => SelectedParser is IHaveSettings;
 
+    /// <summary>
+    /// Command for parsing the file.
+    /// </summary>
+    public ICommand ParseCommand { get; }
+
     #endregion Properties
 
     #region Member
@@ -154,6 +160,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       Scrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>();
       Duration = 1;
       ScrobbleMode = ScrobbleMode.ImportMode;
+      ParseCommand = new DelegateCommand((o) => ParseFile().Forget());
     }
 
     /// <summary>

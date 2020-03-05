@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Xml;
 
 namespace Scrubbler.Scrobbling.Scrobbler
@@ -95,6 +96,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public override int MaxToScrobbleCount => ScrobblePlaycounts ? Scrobbles.Sum(i => i.PlayCount) : base.MaxToScrobbleCount;
 
+    /// <summary>
+    /// Command for parsing the file.
+    /// </summary>
+    public ICommand ParseFileCommand { get; }
+
     #endregion Properties
 
     /// <summary>
@@ -106,6 +112,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     {
       Scrobbles = new ObservableCollection<MediaDBScrobbleViewModel>();
       ScrobblePlaycounts = true;
+      ParseFileCommand = new DelegateCommand((o) => ParseFile().Forget());
     }
 
     /// <summary>
@@ -126,19 +133,19 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Parses the <see cref="DBFilePath"/>.
     /// </summary>
-    public void ParseFile()
+    public async Task ParseFile()
     {
       if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.iTunes_Or_Winamp)
-        ParseItunesConformXML();
+        await ParseItunesConformXML();
       else if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.WMP)
-        ParseWMPDatabase();
+        await ParseWMPDatabase();
     }
 
     /// <summary>
     /// Parse the <see cref="DBFilePath"/>.
     /// A lot of media players use the same xml format.
     /// </summary>
-    private async void ParseItunesConformXML()
+    private async Task ParseItunesConformXML()
     {
       try
       {
@@ -219,7 +226,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Parses the windows media player database.
     /// </summary>
-    private async void ParseWMPDatabase()
+    private async Task ParseWMPDatabase()
     {
       try
       {

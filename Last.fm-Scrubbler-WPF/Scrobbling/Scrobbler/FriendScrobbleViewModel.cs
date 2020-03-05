@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
@@ -46,6 +47,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
     private int _amount;
 
+    /// <summary>
+    /// Command for fetching the scrobbles.
+    /// </summary>
+    public ICommand FetchCommand { get; }
+
     #endregion Properties
 
     #region Member
@@ -68,6 +74,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       _userApi = userApi;
       Scrobbles = new ObservableCollection<FetchedFriendTrackViewModel>();
       Amount = 20;
+      FetchCommand = new DelegateCommand((o) => FetchScrobbles().Forget());
     }
 
     /// <summary>
