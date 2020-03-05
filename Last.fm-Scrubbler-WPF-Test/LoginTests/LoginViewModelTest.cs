@@ -49,10 +49,13 @@ namespace Scrubbler.Test.LoginTests
       Mock<IMessageBoxService> messageBoxServiceMock = new Mock<IMessageBoxService>(MockBehavior.Strict);
       messageBoxServiceMock.Setup(m => m.ShowDialog(It.IsAny<string>())).Returns(IMessageBoxServiceResult.OK);
 
-      LoginViewModel vm = new LoginViewModel(lastAuthMock.Object, messageBoxServiceMock.Object);
+      LoginViewModel vm = new LoginViewModel(lastAuthMock.Object, messageBoxServiceMock.Object)
+      {
+        Username = user
+      };
 
       // when: logging in
-      await vm.Login(user, pwBox);
+      await vm.Login(pwBox);
 
       // then: user is authenticated
       Assert.That(lastAuthMock.Object.Authenticated, Is.True);

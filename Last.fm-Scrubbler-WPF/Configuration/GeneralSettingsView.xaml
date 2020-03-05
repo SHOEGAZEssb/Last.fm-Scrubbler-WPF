@@ -35,9 +35,27 @@
         <ColumnDefinition Width="Auto"/>
       </Grid.ColumnDefinitions>
 
-      <Button x:Name="OK" Grid.Column="0" Content="Confirm"/>
-      <Button x:Name="Cancel" Grid.Column="2" Content="Cancel"/>
-      <Button x:Name="LoadDefaults" Grid.Column="4" Content="Restore Defaults"/>
+      <Button Grid.Column="0" Content="Confirm">
+        <beh:Interaction.Triggers>
+          <beh:EventTrigger EventName="Click">
+            <beh:CallMethodAction TargetObject="{Binding}" MethodName="OK"/>
+          </beh:EventTrigger>
+        </beh:Interaction.Triggers>
+      </Button>
+      <Button Grid.Column="2" Content="Cancel">
+        <beh:Interaction.Triggers>
+          <beh:EventTrigger EventName="Click">
+            <beh:CallMethodAction TargetObject="{Binding}" MethodName="Cancel"/>
+          </beh:EventTrigger>
+        </beh:Interaction.Triggers>
+      </Button>
+      <Button Grid.Column="4" Content="Restore Defaults">
+        <beh:Interaction.Triggers>
+          <beh:EventTrigger EventName="Click">
+            <beh:CallMethodAction TargetObject="{Binding}" MethodName="LoadDefaults"/>
+          </beh:EventTrigger>
+        </beh:Interaction.Triggers>
+      </Button>
     </Grid>
   </Grid>
 </Window>

@@ -12,6 +12,32 @@ namespace Scrubbler.Login
   /// </summary>
   public class LoginViewModel : ViewModelBase
   {
+    #region Properties
+
+    /// <summary>
+    /// The name of the user to login.
+    /// </summary>
+    public string Username
+    {
+      get => _username;
+      set
+      {
+        if(Username != value)
+        {
+          _username = value;
+          NotifyOfPropertyChange();
+        }
+      }
+    }
+    private string _username;
+
+    /// <summary>
+    /// Command to login.
+    /// </summary>
+    public ICommand LoginCommand { get; }
+
+    #endregion Properties
+
     #region Member
 
     /// <summary>
@@ -33,21 +59,21 @@ namespace Scrubbler.Login
     /// <param name="messageBoxService">Service for showing MessageBoxes.</param>
     public LoginViewModel(ILastAuth lastAuth, IMessageBoxService messageBoxService)
     {
-      _lastAuth = lastAuth;
-      _messageBoxService = messageBoxService;
+      _lastAuth = lastAuth ?? throw new ArgumentNullException(nameof(lastAuth));
+      _messageBoxService = messageBoxService ?? throw new ArgumentNullException(nameof(messageBoxService));
+      LoginCommand = new DelegateCommand((o) => Login(o as PasswordBox).Forget());
     }
 
     /// <summary>
     /// Tries to log the user in with the given credentials.
     /// </summary>
-    /// <param name="username">The username.</param>
     /// <param name="password">The <see cref="PasswordBox"/> containing the password.</param>
-    public async Task Login(string username, PasswordBox password)
+    public async Task Login(PasswordBox password)
     {
       try
       {
         EnableControls = false;
-        var response = await _lastAuth.GetSessionTokenAsync(username, password.Password);
+        var response = await _lastAuth.GetSessionTokenAsync(Username, password.Password);
 
         if (response.Success && _lastAuth.Authenticated)
         {
@@ -65,21 +91,6 @@ namespace Scrubbler.Login
       {
         EnableControls = true;
       }
-    }
-
-    /// <summary>
-    /// Logs the user in if the enter key is pressed.
-    /// </summary>
-    /// <param name="e">EventArgs containing the pressed key.</param>
-    /// <param name="username">The username.</param>
-    /// <param name="password">The <see cref="PasswordBox"/> containing the password.</param>
-    public async void ButtonPressed(KeyEventArgs e, string username, PasswordBox password)
-    {
-      if (e == null)
-        throw new ArgumentNullException(nameof(e));
-
-      if (e.Key == Key.Enter)
-        await Login(username, password);
     }
   }
 }
