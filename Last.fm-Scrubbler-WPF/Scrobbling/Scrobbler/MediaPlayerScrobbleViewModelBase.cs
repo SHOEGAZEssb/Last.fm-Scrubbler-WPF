@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Windows.Input;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
@@ -179,6 +180,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public override bool CanPreview => false;
 
+    /// <summary>
+    /// Command for switching the love state of a track.
+    /// </summary>
+    public ICommand SwitchLoveStateCommand { get; }
+
     #endregion Properties
 
     #region Member
@@ -227,6 +233,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       CurrentTrackPlayCount = -1;
       CurrentAlbumPlayCount = -1;
       CurrentArtistPlayCount = -1;
+      SwitchLoveStateCommand = new DelegateCommand((o) => SwitchLoveState().Forget());
     }
 
     /// <summary>

@@ -84,6 +84,9 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -211,6 +214,7 @@
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Converters\DataTypeConverter.cs" />
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
+    <Compile Include="DelegateCommand.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Helper\FileParser\CSVFileParser.cs" />
     <Compile Include="Helper\FileParser\CSVFileParserViewModel.cs" />
@@ -277,7 +281,6 @@
     <Compile Include="ExtraFunctions\CollageCreatorViewModel.cs" />
     <Compile Include="ExtraFunctions\CSVDownloaderViewModel.cs" />
     <Compile Include="ExtraFunctions\ExtraFunctionsViewModel.cs" />
-    <Compile Include="ExtraFunctions\ExtraFunctionViewModelBase.cs" />
     <Compile Include="ExtraFunctions\MilestoneCheckerViewModel.cs" />
     <Compile Include="ExtraFunctions\PasteYourTasteViewModel.cs" />
     <Compile Include="Configuration\GeneralSettingsViewModel.cs" />
@@ -300,6 +303,7 @@
     <Compile Include="Scrobbling\Data\ScrobbleViewModel.cs" />
     <Compile Include="SystemTrayViewModel.cs" />
     <Compile Include="Login\UserViewModel.cs" />
+    <Compile Include="TabViewModel.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="ExtraFunctions\CollageCreatorView.xaml.cs">
       <DependentUpon>CollageCreatorView.xaml</DependentUpon>

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:tb="http://www.hardcodet.net/taskbar"
              mc:Ignorable="d"
              Height="0" Width="0"
@@ -13,11 +13,28 @@
              Background="Transparent"
              Visibility="Hidden">
   <Grid>
-    <tb:TaskbarIcon IconSource="Resources\scrubbler_64.ico" cal:Message.Attach="[Event TrayMouseDoubleClick] = [Action ShowScreen]" ToolTipText="Last.fm Scrubbler WPF">
+    <tb:TaskbarIcon IconSource="Resources\scrubbler_64.ico" ToolTipText="Last.fm Scrubbler WPF">
+      <beh:Interaction.Triggers>
+        <beh:EventTrigger EventName="TrayMouseDoubleClick">
+          <beh:CallMethodAction TargetObject="{Binding}" MethodName="ShowScreen"/>
+        </beh:EventTrigger>
+      </beh:Interaction.Triggers>
       <tb:TaskbarIcon.ContextMenu>
         <ContextMenu>
-          <MenuItem cal:Message.Attach="ShowScreen" Header="Show Application"/>
-          <MenuItem cal:Message.Attach="Exit" Header="Exit"/>
+          <MenuItem Header="Show Application">
+            <beh:Interaction.Triggers>
+              <beh:EventTrigger EventName="Click">
+                <beh:CallMethodAction TargetObject="{Binding}" MethodName="ShowScreen"/>
+              </beh:EventTrigger>
+            </beh:Interaction.Triggers>
+          </MenuItem>
+          <MenuItem Header="Exit">
+            <beh:Interaction.Triggers>
+              <beh:EventTrigger EventName="Click">
+                <beh:CallMethodAction TargetObject="{Binding}" MethodName="Exit"/>
+              </beh:EventTrigger>
+            </beh:Interaction.Triggers>
+          </MenuItem>
         </ContextMenu>
       </tb:TaskbarIcon.ContextMenu>
     </tb:TaskbarIcon>

@@ -1,21 +1,20 @@
-﻿using Caliburn.Micro;
-using IF.Lastfm.Core.Api;
+﻿using IF.Lastfm.Core.Api;
 using Scrubbler.Helper;
-using System;
+using System.Collections.Generic;
 
 namespace Scrubbler.ExtraFunctions
 {
   /// <summary>
   /// ViewModel managing all extra function ViewModels.
   /// </summary>
-  class ExtraFunctionsViewModel : Conductor<ViewModelBase>.Collection.OneActive
+  class ExtraFunctionsViewModel : TabViewModel
   {
     #region Properties
 
     /// <summary>
-    /// Event that fires when the status of a ViewModel changes.
+    /// Available extra functions.
     /// </summary>
-    public event EventHandler<UpdateStatusEventArgs> StatusUpdated;
+    public IEnumerable<TabViewModel> ExtraFunctions { get; }
 
     #endregion Properties
 
@@ -26,9 +25,9 @@ namespace Scrubbler.ExtraFunctions
     /// <param name="userAPI">Last.fm user API.</param>
     /// <param name="fileOperator">FileOperator used to interface with files.</param>
     public ExtraFunctionsViewModel(IExtendedWindowManager windowManager, IUserApi userAPI, IFileOperator fileOperator)
+      : base("Extra Functions")
     {
-      DisplayName = "Extra Functions";
-      CreateViewModels(windowManager, userAPI, fileOperator);
+      ExtraFunctions = CreateViewModels(windowManager, userAPI, fileOperator);
     }
 
     /// <summary>
@@ -37,7 +36,7 @@ namespace Scrubbler.ExtraFunctions
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="userAPI">Last.fm user API.</param>
     /// <param name="fileOperator">FileOperator used to interface with files.</param>
-    private void CreateViewModels(IExtendedWindowManager windowManager, IUserApi userAPI, IFileOperator fileOperator)
+    private TabViewModel[] CreateViewModels(IExtendedWindowManager windowManager, IUserApi userAPI, IFileOperator fileOperator)
     {
       var pasteYourTasteVM = new PasteYourTasteViewModel(userAPI);
       pasteYourTasteVM.StatusUpdated += VM_StatusUpdated; ;
@@ -48,23 +47,17 @@ namespace Scrubbler.ExtraFunctions
       var milestoneCheckerVM = new MilestoneCheckerViewModel(userAPI);
       milestoneCheckerVM.StatusUpdated += VM_StatusUpdated;
 
-      ActivateItem(pasteYourTasteVM);
-      ActivateItem(csvDownloaderVM);
-      ActivateItem(collageCreatorVM);
-      ActivateItem(milestoneCheckerVM);
-
-      // should be selected
-      ActivateItem(pasteYourTasteVM);
+      return new TabViewModel[] { pasteYourTasteVM, csvDownloaderVM, collageCreatorVM, milestoneCheckerVM };
     }
 
     /// <summary>
-    /// Fires the <see cref="StatusUpdated"/> event.
+    /// Fires the StatusUpdated event.
     /// </summary>
     /// <param name="sender">Ignored.</param>
     /// <param name="e">NEw status.</param>
     private void VM_StatusUpdated(object sender, UpdateStatusEventArgs e)
     {
-      StatusUpdated?.Invoke(this, e);
+      OnStatusUpdated(e.NewStatus);
     }
   }
 }

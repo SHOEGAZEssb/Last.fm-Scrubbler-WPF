@@ -3,14 +3,50 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:scrobbler="clr-namespace:Scrubbler.Scrobbling.Scrobbler"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
 
-  <TabControl x:Name="Items">
+  <TabControl ItemsSource="{Binding Scrobblers}" SelectedIndex="0">
     <TabControl.ItemTemplate>
       <DataTemplate>
-        <TextBlock Text="{Binding DisplayName}"/>
+        <TextBlock Text="{Binding Header}"/>
       </DataTemplate>
     </TabControl.ItemTemplate>
+    <TabControl.ContentTemplate>
+      <DataTemplate>
+        <ContentControl Content="{Binding}">
+          <ContentControl.Resources>
+            <DataTemplate DataType="{x:Type scrobbler:ManualScrobbleViewModel}">
+              <scrobbler:ManualScrobbleView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type scrobbler:FriendScrobbleViewModel}">
+              <scrobbler:FriendScrobbleView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type scrobbler:DatabaseScrobbleViewModel}">
+              <scrobbler:DatabaseScrobbleView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type scrobbler:FileParseScrobbleViewModel}">
+              <scrobbler:FileParseScrobbleView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type scrobbler:FileScrobbleViewModel}">
+              <scrobbler:FileScrobbleView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type scrobbler:MediaPlayerDatabaseScrobbleViewModel}">
+              <scrobbler:MediaPlayerDatabaseScrobbleView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type scrobbler:ITunesScrobbleViewModel}">
+              <scrobbler:ITunesScrobbleView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type scrobbler:SetlistFMScrobbleViewModel}">
+              <scrobbler:SetlistFMScrobbleView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type scrobbler:CacheScrobblerViewModel}">
+              <scrobbler:CacheScrobblerView/>
+            </DataTemplate>
+          </ContentControl.Resources>
+        </ContentControl>
+      </DataTemplate>
+    </TabControl.ContentTemplate>
   </TabControl>
 </UserControl>

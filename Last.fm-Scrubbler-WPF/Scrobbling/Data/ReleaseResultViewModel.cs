@@ -1,14 +1,14 @@
-﻿using Caliburn.Micro;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 
 namespace Scrubbler.Scrobbling.Data
 {
   /// <summary>
   /// ViewModel for the <see cref="ReleaseResultView"/>.
   /// </summary>
-  public class ReleaseResultViewModel : Conductor<FetchedReleaseViewModel>.Collection.AllActive
+  public class ReleaseResultViewModel : ViewModelBase, IDisposable
   {
     #region Properties
 
@@ -23,6 +23,11 @@ namespace Scrubbler.Scrobbling.Data
     /// artist results should be shown.
     /// </summary>
     public event EventHandler BackToArtistRequested;
+
+    /// <summary>
+    /// Fetched results.
+    /// </summary>
+    public IEnumerable<FetchedReleaseViewModel> Results { get; }
 
     /// <summary>
     /// If true, the release data was fetched
@@ -51,13 +56,11 @@ namespace Scrubbler.Scrobbling.Data
     /// fetched by clicking an artist.</param>
     public ReleaseResultViewModel(IEnumerable<Release> releases, bool fetchedThroughArtist)
     {
+      if (releases == null)
+        throw new ArgumentNullException(nameof(releases));
+
       FetchedThroughArtist = fetchedThroughArtist;
-      foreach(var release in releases)
-      {
-        var vm = new FetchedReleaseViewModel(release);
-        vm.ReleaseClicked += Release_Clicked;
-        ActivateItem(vm);
-      }
+      Results = CreateResultViewModels(releases);
     }
 
     #endregion Construction
@@ -71,18 +74,17 @@ namespace Scrubbler.Scrobbling.Data
         BackToArtistRequested?.Invoke(this, EventArgs.Empty);
     }
 
-    /// <summary>
-    /// Deactivates all items.
-    /// </summary>
-    /// <param name="close">True if the items should be
-    /// closed completely.</param>
-    protected override void OnDeactivate(bool close)
+    private List<FetchedReleaseViewModel> CreateResultViewModels(IEnumerable<Release> releases)
     {
-      foreach (var item in Items.ToList())
+      var vms = new List<FetchedReleaseViewModel>();
+      foreach (var release in releases)
       {
-        item.ReleaseClicked -= ReleaseClicked;
-        DeactivateItem(item, close);
+        var vm = new FetchedReleaseViewModel(release);
+        vm.ReleaseClicked += Release_Clicked;
+        vms.Add(vm);
       }
+
+      return vms;
     }
 
     /// <summary>
@@ -94,5 +96,51 @@ namespace Scrubbler.Scrobbling.Data
     {
       ReleaseClicked?.Invoke(sender, e);
     }
+
+    #region IDisposable Implementation
+
+    /// <summary>
+    /// Used to detect redundant dispose calls.
+    /// </summary>
+    private bool _disposedValue = false;
+
+    /// <summary>
+    /// Disposes this object.
+    /// </summary>
+    /// <param name="disposing">If called by the user.</param>
+    protected virtual void Dispose(bool disposing)
+    {
+      if (!_disposedValue)
+      {
+        if (disposing)
+        {
+          foreach (var item in Results.ToList())
+          {
+            item.ReleaseClicked -= ReleaseClicked;
+          }
+        }
+
+        _disposedValue = true;
+      }
+    }
+
+    /// <summary>
+    /// Finalizer.
+    /// </summary>
+    ~ReleaseResultViewModel()
+    {
+      Dispose(false);
+    }
+
+    /// <summary>
+    /// Disposes this object.
+    /// </summary>
+    public void Dispose()
+    {
+      Dispose(true);
+      GC.SuppressFinalize(this);
+    }
+
+    #endregion IDisposable Implementation
   }
 }

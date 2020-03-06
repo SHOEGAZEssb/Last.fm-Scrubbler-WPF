@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="New Version Available" Height="450" Width="600">
   <Grid Margin="5,5,5,5">
@@ -28,8 +29,20 @@
         <ColumnDefinition Width="Auto"/>
       </Grid.ColumnDefinitions>
 
-      <Button x:Name="OpenReleasePage" Grid.Column="0" Content="Open Release Page"/>
-      <Button x:Name="DownloadRelease" Grid.Column="2" Content="Download Release"/>
+      <Button Grid.Column="0" Content="Open Release Page">
+        <beh:Interaction.Triggers>
+          <beh:EventTrigger EventName="Click">
+            <beh:CallMethodAction TargetObject="{Binding}" MethodName="OpenReleasePage"/>
+          </beh:EventTrigger>
+        </beh:Interaction.Triggers>
+      </Button>
+      <Button x:Name="DownloadRelease" Grid.Column="2" Content="Download Release">
+        <beh:Interaction.Triggers>
+          <beh:EventTrigger EventName="Click">
+            <beh:CallMethodAction TargetObject="{Binding}" MethodName="UncheckAll"/>
+          </beh:EventTrigger>
+        </beh:Interaction.Triggers>
+      </Button>
       <Button x:Name="Cancel" Grid.Column="4" Content="Cancel"/>
     </Grid>
   </Grid>

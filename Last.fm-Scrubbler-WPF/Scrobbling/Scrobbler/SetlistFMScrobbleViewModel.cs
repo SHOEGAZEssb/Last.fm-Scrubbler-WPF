@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
@@ -29,7 +30,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
   /// <summary>
   /// Viewmodel for the <see cref="SetlistFMScrobbleView"/>
   /// </summary>
-  public class SetlistFMScrobbleViewModel : ScrobbleMultipleTimeViewModelBase<FetchedTrackViewModel>, IConductor, IHaveActiveItem
+  public class SetlistFMScrobbleViewModel : ScrobbleMultipleTimeViewModelBase<FetchedTrackViewModel>
   {
     #region Properties
 
@@ -37,6 +38,23 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// Event that triggers when the activation of a new item has been processed.
     /// </summary>
     public event EventHandler<ActivationProcessedEventArgs> ActivationProcessed;
+
+    /// <summary>
+    /// The result that should be displayed.
+    /// </summary>
+    public ViewModelBase ActiveResult
+    {
+      get => _activeResult;
+      private set
+      {
+        if (ActiveResult != value)
+        {
+          _activeResult = value;
+          NotifyOfPropertyChange();
+        }
+      }
+    }
+    private ViewModelBase _activeResult;
 
     /// <summary>
     /// Text to search.
@@ -133,17 +151,9 @@ namespace Scrubbler.Scrobbling.Scrobbler
     private int _artistResultPage;
 
     /// <summary>
-    /// The currently displayed item.
+    /// Command for executing the search.
     /// </summary>
-    public object ActiveItem
-    {
-      get => _conductor.ActiveItem;
-      set
-      {
-        _conductor.ActiveItem = (IScreen)value;
-        NotifyOfPropertyChange();
-      }
-    }
+    public ICommand SearchCommand { get; }
 
     #endregion Properties
 
@@ -163,11 +173,6 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// Last.fm API object for getting artist information.
     /// </summary>
     private readonly IArtistApi _artistAPI;
-
-    /// <summary>
-    /// Conductor used for view switching.
-    /// </summary>
-    private readonly Conductor<IScreen> _conductor;
 
     /// <summary>
     /// The last used artist result viewmodel.
@@ -192,10 +197,10 @@ namespace Scrubbler.Scrobbling.Scrobbler
       Scrobbles = new ObservableCollection<FetchedTrackViewModel>();
       _artistAPI = artistAPI;
       _setlistFMClient = new SetlistFmApi.SetlistFmApi("23b3fd98-f5c7-49c6-a7d2-28498c0c2283");
-      _conductor = new Conductor<IScreen>();
       AlbumString = "";
       SetlistResultPage = 1;
       ArtistResultPage = 1;
+      SearchCommand = new DelegateCommand((o) => Search().Forget());
     }
 
     /// <summary>
@@ -220,17 +225,17 @@ namespace Scrubbler.Scrobbling.Scrobbler
         OnStatusUpdated($"Searching for artist '{SearchText}'");
         IEnumerable<Data.Artist> artists = await GetArtists();
 
-        if (artists.Count() > 0)
+        if (artists.Any())
         {
           if (_artistResultVM != null)
           {
             _artistResultVM.ArtistClicked -= Artist_Clicked;
-            DeactivateItem(_artistResultVM, true);
+            _artistResultVM.Dispose();
           }
 
           _artistResultVM = new ArtistResultViewModel(artists);
           _artistResultVM.ArtistClicked += Artist_Clicked;
-          ActivateItem(_artistResultVM);
+          ActiveResult = _artistResultVM;
           OnStatusUpdated("Successfully fetched artists");
         }
         else
@@ -299,18 +304,17 @@ namespace Scrubbler.Scrobbling.Scrobbler
         OnStatusUpdated($"Fetching setlists from artist '{clickedArtist.Name}'...");
         IEnumerable<Setlist> setlists = await GetSetlists(clickedArtist);
 
-        if (setlists.Count() > 0)
+        if (setlists.Any())
         {
           if(_setlistResultVM != null)
           {
             _setlistResultVM.SetlistClicked -= Setlist_Clicked;
-            DeactivateItem(_setlistResultVM, true);
+            _setlistResultVM.Dispose();
           }
 
           _setlistResultVM = new SetlistResultViewModel(setlists);
           _setlistResultVM.SetlistClicked += Setlist_Clicked;
-
-          ActivateItem(_setlistResultVM);
+          ActiveResult = _setlistResultVM;
           OnStatusUpdated($"Successfully fetched setlists from artist '{clickedArtist.Name}'");
         }
         else
@@ -368,7 +372,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
           if (vms.Count > 0)
           {
             OnStatusUpdated("Successfully got tracks from setlist");
-            DeactivateItem(ActiveItem, false);
+            if (ActiveResult is IDisposable d)
+              d.Dispose();
             Scrobbles = vms;
           }
           else
@@ -391,8 +396,9 @@ namespace Scrubbler.Scrobbling.Scrobbler
     public void BackFromTrackResult()
     {
       Scrobbles.Clear();
-      DeactivateItem(ActiveItem, true);
-      ActivateItem(_setlistResultVM);
+      if (ActiveResult is IDisposable d)
+        d.Dispose();
+      ActiveResult = _setlistResultVM;
     }
 
     /// <summary>
@@ -400,8 +406,9 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public void BackToArtists()
     {
-      DeactivateItem(ActiveItem, true);
-      ActivateItem(_artistResultVM);
+      if (ActiveResult is IDisposable d)
+        d.Dispose();
+      ActiveResult = _artistResultVM;
     }
 
     /// <summary>
@@ -451,49 +458,5 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
       return scrobbles;
     }
-
-    #region IConductor Implementation
-
-    /// <summary>
-    /// Activates the given <paramref name="item"/>.
-    /// </summary>
-    /// <param name="item">Item to activate.</param>
-    public void ActivateItem(object item)
-    {
-      _conductor.ActivateItem((IScreen)item);
-      NotifyOfPropertyChange(() => ActiveItem);
-    }
-
-    /// <summary>
-    /// Deactivates the given <paramref name="item"/>.
-    /// </summary>
-    /// <param name="item">Item to deactivate.</param>
-    /// <param name="close">If true, the screen is closed.</param>
-    public void DeactivateItem(object item, bool close)
-    {
-      _conductor.DeactivateItem((Screen)item, close);
-      NotifyOfPropertyChange(() => ActiveItem);
-    }
-
-    /// <summary>
-    /// Gets the children.
-    /// </summary>
-    /// <returns>Children.</returns>
-    public System.Collections.IEnumerable GetChildren()
-    {
-      return _conductor.GetChildren();
-    }
-
-    /// <summary>
-    /// Fires the <see cref="ActivationProcessed"/> event.
-    /// </summary>
-    /// <param name="sender">Ignored.</param>
-    /// <param name="e">Ignored.</param>
-    private void Conductor_ActivationProcessed(object sender, ActivationProcessedEventArgs e)
-    {
-      ActivationProcessed?.Invoke(sender, e);
-    }
-
-    #endregion IConductor Implementation
   }
 }

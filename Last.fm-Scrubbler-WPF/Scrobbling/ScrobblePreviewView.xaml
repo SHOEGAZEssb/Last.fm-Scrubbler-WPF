@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:scrub="clr-namespace:Scrubbler"
+        xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="Scrobble Preview" Height="300" Width="500">
 
@@ -74,6 +75,12 @@
       </ListView.View>
     </ListView>
 
-    <Button x:Name="OK" Grid.Row="5" Grid.Column="2" HorizontalAlignment="Right" Content="OK" Width="50"/>
+    <Button Grid.Row="5" Grid.Column="2" HorizontalAlignment="Right" Content="OK" Width="50">
+      <beh:Interaction.Triggers>
+        <beh:EventTrigger EventName="Click">
+          <beh:CallMethodAction TargetObject="{Binding}" MethodName="OK"/>
+        </beh:EventTrigger>
+      </beh:Interaction.Triggers>
+    </Button>
   </Grid>
 </Window>

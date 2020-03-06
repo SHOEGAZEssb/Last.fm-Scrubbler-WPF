@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
@@ -56,7 +57,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
   /// <summary>
   /// ViewModel for the <see cref="DatabaseScrobbleView"/>.
   /// </summary>
-  public class DatabaseScrobbleViewModel : ScrobbleMultipleTimeViewModelBase<FetchedTrackViewModel>, IConductor, IHaveActiveItem
+  public class DatabaseScrobbleViewModel : ScrobbleMultipleTimeViewModelBase<FetchedTrackViewModel>
   {
     #region Properties
 
@@ -64,6 +65,23 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// Event that triggers when the activation of a new item has been processed.
     /// </summary>
     public event EventHandler<ActivationProcessedEventArgs> ActivationProcessed;
+
+    /// <summary>
+    /// The result that should be displayed.
+    /// </summary>
+    public ViewModelBase ActiveResult
+    {
+      get => _activeResult;
+      private set
+      {
+        if(ActiveResult != value)
+        {
+          _activeResult = value;
+          NotifyOfPropertyChange();
+        }
+      }
+    }
+    private ViewModelBase _activeResult;
 
     /// <summary>
     /// String to search.
@@ -122,17 +140,9 @@ namespace Scrubbler.Scrobbling.Scrobbler
     private int _maxResults;
 
     /// <summary>
-    /// The currently displayed item.
+    /// Command for executing the search.
     /// </summary>
-    public object ActiveItem
-    {
-      get => _conductor.ActiveItem;
-      set
-      {
-        _conductor.ActiveItem = (IScreen)value;
-        NotifyOfPropertyChange();
-      }
-    }
+    public ICommand SearchCommand { get; }
 
     #endregion Properties
 
@@ -149,11 +159,6 @@ namespace Scrubbler.Scrobbling.Scrobbler
     private readonly IAlbumApi _lastfmAlbumAPI;
 
     private readonly IDiscogsDataBaseClient _discogsClient;
-
-    /// <summary>
-    /// Conductor used for view switching.
-    /// </summary>
-    private readonly Conductor<IScreen> _conductor;
 
     /// <summary>
     /// The last <see cref="ArtistResultViewModel"/>.
@@ -182,12 +187,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
       _lastfmArtistAPI = lastfmArtistAPI;
       _lastfmAlbumAPI = lastfmAlbumAPI;
       _discogsClient = discogsClient ?? throw new ArgumentNullException(nameof(discogsClient));
-      _conductor = new Conductor<IScreen>();
-      _conductor.ActivationProcessed += Conductor_ActivationProcessed;
       DatabaseToSearch = Database.LastFm;
       SearchType = SearchType.Artist;
       MaxResults = 25;
       Scrobbles = new ObservableCollection<FetchedTrackViewModel>();
+
+      SearchCommand = new DelegateCommand((o) => Search());
     }
 
     #endregion Construction
@@ -231,18 +236,19 @@ namespace Scrubbler.Scrobbling.Scrobbler
         else if (DatabaseToSearch == Database.MusicBrainz)
           fetchedArtists = await SearchArtistMusicBrainz();
 
-        if (fetchedArtists.Count() != 0)
+        if (fetchedArtists.Any())
         {
           // clean up old vm
           if (_artistResultVM != null)
           {
             _artistResultVM.ArtistClicked -= Artist_Clicked;
-            DeactivateItem(_artistResultVM, true);
+            _artistResultVM.Dispose();
           }
 
           _artistResultVM = new ArtistResultViewModel(fetchedArtists);
           _artistResultVM.ArtistClicked += Artist_Clicked;
-          ActivateItem(_artistResultVM);
+          ActiveResult = _artistResultVM;
+          //ActivateItem(_artistResultVM);
           OnStatusUpdated($"Found {fetchedArtists.Count()} artists");
         }
         else
@@ -435,13 +441,13 @@ namespace Scrubbler.Scrobbling.Scrobbler
       {
         _releaseResultVM.ReleaseClicked -= Release_Clicked;
         _releaseResultVM.BackToArtistRequested -= Release_BackToArtistRequested;
-        DeactivateItem(_releaseResultVM, true);
+        _releaseResultVM.Dispose();
       }
 
       _releaseResultVM = new ReleaseResultViewModel(releases, fetchedThroughArtist);
       _releaseResultVM.ReleaseClicked += Release_Clicked;
       _releaseResultVM.BackToArtistRequested += Release_BackToArtistRequested;
-      ActivateItem(_releaseResultVM);
+      ActiveResult = _releaseResultVM;
     }
 
     /// <summary>
@@ -637,64 +643,21 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
 
     /// <summary>
-    /// Switches the <see cref="ActiveItem"/> to the artist view.
+    /// Switches the <see cref="ActiveResult"/> to the artist view.
     /// </summary>
     public void BackToArtist()
     {
-      DeactivateItem(ActiveItem, true);
-      ActivateItem(_artistResultVM);
+      if (ActiveResult is IDisposable d)
+        d.Dispose();
+      ActiveResult = _artistResultVM;
     }
 
     /// <summary>
-    /// Switches the <see cref="ActiveItem"/> to the release view.
+    /// Switches the <see cref="ActiveResult"/> to the release view.
     /// </summary>
     public void BackFromTrackResult()
     {
       Scrobbles.Clear();
     }
-
-    #region IConductor Implementation
-
-    /// <summary>
-    /// Activates the given <paramref name="item"/>.
-    /// </summary>
-    /// <param name="item">Item to activate.</param>
-    public void ActivateItem(object item)
-    {
-      _conductor.ActivateItem((Screen)item);
-      NotifyOfPropertyChange(() => ActiveItem);
-    }
-
-    /// <summary>
-    /// Deactivates the given <paramref name="item"/>.
-    /// </summary>
-    /// <param name="item">Item to deactivate.</param>
-    /// <param name="close">If true, the screen is closed.</param>
-    public void DeactivateItem(object item, bool close)
-    {
-      _conductor.DeactivateItem((Screen)item, close);
-      NotifyOfPropertyChange(() => ActiveItem);
-    }
-
-    /// <summary>
-    /// Gets the children.
-    /// </summary>
-    /// <returns>Children.</returns>
-    public IEnumerable GetChildren()
-    {
-      return _conductor.GetChildren();
-    }
-
-    /// <summary>
-    /// Fires the <see cref="ActivationProcessed"/> event.
-    /// </summary>
-    /// <param name="sender">Ignored.</param>
-    /// <param name="e">Ignored.</param>
-    private void Conductor_ActivationProcessed(object sender, ActivationProcessedEventArgs e)
-    {
-      ActivationProcessed?.Invoke(sender, e);
-    }
-
-    #endregion IConductor Implementation
   }
 }

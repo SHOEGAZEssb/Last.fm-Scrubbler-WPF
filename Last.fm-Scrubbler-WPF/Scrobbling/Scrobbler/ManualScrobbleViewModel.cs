@@ -171,8 +171,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     private void NotifyCanProperties()
     {
-      NotifyOfPropertyChange(() => CanScrobble);
-      NotifyOfPropertyChange(() => CanPreview);
+      NotifyOfPropertyChange(nameof(CanScrobble));
+      NotifyOfPropertyChange(nameof(CanPreview));
     }
   }
 }

@@ -9,6 +9,7 @@
              xmlns:scrobbling="clr-namespace:Scrubbler.Scrobbling"
              xmlns:data="clr-namespace:Scrubbler.Scrobbling.Data"
              xmlns:converters="clr-namespace:Scrubbler.Converters"
+             xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="400" Style="{StaticResource EnableControlsStyle}">
 
@@ -58,14 +59,14 @@
     <Label Grid.Row="0" Grid.Column="8" Content="Artist Result Page:"/>
     <xctk:IntegerUpDown Grid.Row="0" Grid.Column="10" HorizontalAlignment="Left" Value="{Binding ArtistResultPage}" Minimum="1"/>
 
-    <Button x:Name="Search" Grid.Row="0" Grid.Column="12" Content="Search"/>
+    <Button Grid.Row="0" Grid.Column="12" Command="{Binding SearchCommand}" Content="Search"/>
 
     <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="13">
       <Grid.Style>
         <Style TargetType="Grid">
           <Setter Property="Visibility" Value="Collapsed"/>
           <Style.Triggers>
-            <DataTrigger Binding="{Binding ActiveItem, Converter={StaticResource DataTypeConv}}" Value="{x:Type data:SetlistResultViewModel}">
+            <DataTrigger Binding="{Binding ActiveResult, Converter={StaticResource DataTypeConv}}" Value="{x:Type data:SetlistResultViewModel}">
               <Setter Property="Visibility" Value="Visible"/>
             </DataTrigger>
           </Style.Triggers>
@@ -80,12 +81,18 @@
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
 
-      <Button x:Name="BackToArtists" Grid.Column="0" Content="Back To Artists"/>
+      <Button Grid.Column="0" Content="Back To Artists">
+        <beh:Interaction.Triggers>
+          <beh:EventTrigger EventName="Click">
+            <beh:CallMethodAction TargetObject="{Binding}" MethodName="BackToArtists"/>
+          </beh:EventTrigger>
+        </beh:Interaction.Triggers>
+      </Button>
       <Label Grid.Column="2" Content="Setlist Result Page:"/>
       <xctk:IntegerUpDown Grid.Column="4" HorizontalAlignment="Left" Value="{Binding SetlistResultPage}" Minimum="1"/>
     </Grid>
 
-    <ContentControl x:Name="ActiveItem" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="13">
+    <ContentControl Content="{Binding ActiveResult}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="13">
       <ContentControl.Style>
         <Style TargetType="ContentControl">
           <Setter Property="Visibility" Value="Collapsed"/>
@@ -96,6 +103,14 @@
           </Style.Triggers>
         </Style>
       </ContentControl.Style>
+      <ContentControl.Resources>
+        <DataTemplate DataType="{x:Type data:ArtistResultViewModel}">
+          <data:ArtistResultView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type data:SetlistResultViewModel}">
+          <data:SetlistResultView/>
+        </DataTemplate>
+      </ContentControl.Resources>
     </ContentControl>
     <data:TrackResultView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="13">
       <data:TrackResultView.Style>

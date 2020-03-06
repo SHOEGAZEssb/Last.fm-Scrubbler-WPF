@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              Width="300" Height="160" Title="General Settings" Style="{StaticResource EnableControlsStyle}">
 
@@ -24,7 +24,7 @@
     <CheckBox Grid.Row="2" Content="Start Minimized" IsChecked="{Binding StartMinimized}"/>
 
     <CheckBox Content="Check For Updates At Startup" Grid.Row="4" VerticalAlignment="Center" IsChecked="{Binding StartupUpdateCheck}"/>
-    <Button cal:Message.Attach="[Event Click] = [Action CheckForUpdates('true')]" Grid.Row="6" Content="Check For Updates" Grid.Column="2" HorizontalAlignment="Left"/>
+    <Button Grid.Row="6" Command="{Binding CheckForUpdatesCommand}" Content="Check For Updates" Grid.Column="2" HorizontalAlignment="Left"/>
 
     <Grid Grid.Row="8" HorizontalAlignment="Right">
       <Grid.ColumnDefinitions>
@@ -35,9 +35,27 @@
         <ColumnDefinition Width="Auto"/>
       </Grid.ColumnDefinitions>
 
-      <Button x:Name="OK" Grid.Column="0" Content="Confirm"/>
-      <Button x:Name="Cancel" Grid.Column="2" Content="Cancel"/>
-      <Button x:Name="LoadDefaults" Grid.Column="4" Content="Restore Defaults"/>
+      <Button Grid.Column="0" Content="Confirm">
+        <beh:Interaction.Triggers>
+          <beh:EventTrigger EventName="Click">
+            <beh:CallMethodAction TargetObject="{Binding}" MethodName="OK"/>
+          </beh:EventTrigger>
+        </beh:Interaction.Triggers>
+      </Button>
+      <Button Grid.Column="2" Content="Cancel">
+        <beh:Interaction.Triggers>
+          <beh:EventTrigger EventName="Click">
+            <beh:CallMethodAction TargetObject="{Binding}" MethodName="Cancel"/>
+          </beh:EventTrigger>
+        </beh:Interaction.Triggers>
+      </Button>
+      <Button Grid.Column="4" Content="Restore Defaults">
+        <beh:Interaction.Triggers>
+          <beh:EventTrigger EventName="Click">
+            <beh:CallMethodAction TargetObject="{Binding}" MethodName="LoadDefaults"/>
+          </beh:EventTrigger>
+        </beh:Interaction.Triggers>
+      </Button>
     </Grid>
   </Grid>
 </Window>

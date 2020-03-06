@@ -13,7 +13,7 @@ namespace Scrubbler.ExtraFunctions
   /// <summary>
   /// ViewModel for the <see cref="CSVDownloaderView"/>
   /// </summary>
-  public class CSVDownloaderViewModel : ExtraFunctionViewModelBase
+  public class CSVDownloaderViewModel : TabViewModel
   {
     #region Properties
 

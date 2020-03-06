@@ -4,6 +4,7 @@ using Scrubbler.Properties;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Scrubbler.Configuration
 {
@@ -60,6 +61,11 @@ namespace Scrubbler.Configuration
     }
     private bool _startupUpdateCheck;
 
+    /// <summary>
+    /// Command that checks for updates manually.
+    /// </summary>
+    public ICommand CheckForUpdatesCommand { get; }
+
     #endregion Properties
 
     #region Member
@@ -97,6 +103,7 @@ namespace Scrubbler.Configuration
       MinimizeToTray = Settings.Default.MinimizeToTray;
       StartMinimized = Settings.Default.StartMinimized;
       StartupUpdateCheck = Settings.Default.StartupUpdateCheck;
+      CheckForUpdatesCommand = new DelegateCommand((o) => CheckForUpdates(true).Forget());
 
       if(Settings.Default.StartupUpdateCheck)
         CheckForUpdates(false).Forget();

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -11,8 +11,14 @@
     <BitmapImage x:Key="noartistimage" UriSource="/Resources/noartistimage.png"/>
   </UserControl.Resources>
 
+  <beh:Interaction.Triggers>
+    <beh:EventTrigger EventName="MouseLeftButtonDown">
+      <beh:CallMethodAction TargetObject="{Binding}" MethodName="Clicked"/>
+    </beh:EventTrigger>
+  </beh:Interaction.Triggers>
+
   <Border BorderThickness="1" BorderBrush="Black">
-    <Grid cal:Message.Attach="[Event MouseLeftButtonDown] = [Action Clicked]">
+    <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="5"/>

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
@@ -55,6 +56,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
       }
     }
 
+    /// <summary>
+    /// Command for getting the cached scrobbles.
+    /// </summary>
+    public ICommand GetCachedScrobblesCommand { get; }
+
     #endregion Properties
 
     /// <summary>
@@ -65,6 +71,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       : base(windowManager, "Cache Scrobbler")
     {
       Scrobbles = new ObservableCollection<Scrobble>();
+      GetCachedScrobblesCommand = new DelegateCommand((o) => GetCachedScrobbles().Forget());
       StartupHandling();
     }
 

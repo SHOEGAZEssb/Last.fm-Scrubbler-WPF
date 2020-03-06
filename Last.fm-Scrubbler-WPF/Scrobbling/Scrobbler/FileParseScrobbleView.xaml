@@ -9,6 +9,7 @@
              xmlns:scrub="clr-namespace:Scrubbler"
              xmlns:scrobbling="clr-namespace:Scrubbler.Scrobbling"
              xmlns:data="clr-namespace:Scrubbler.Scrobbling.Data"
+             xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="500" Style="{StaticResource EnableControlsStyle}">
 
@@ -58,9 +59,21 @@
 
     <TextBlock Grid.Row="2" Grid.Column="0" Text="File:" VerticalAlignment="Center"/>
     <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}"/>
-    <Button x:Name="LoadFileDialog" Grid.Row="2" Grid.Column="4" Content=" ... "/>
-    <Button x:Name="ParseFile" Grid.Row="2" Grid.Column="6" Content="Parse" IsEnabled="{Binding CanParse}"/>
-    <Button x:Name="OpenParserSettings" Grid.Row="0" Grid.Column="8" Content="Settings" IsEnabled="{Binding CanShowSettings}"/>
+    <Button Grid.Row="2" Grid.Column="4" Content=" ... ">
+      <beh:Interaction.Triggers>
+        <beh:EventTrigger EventName="Click">
+          <beh:CallMethodAction TargetObject="{Binding}" MethodName="LoadFileDialog"/>
+        </beh:EventTrigger>
+      </beh:Interaction.Triggers>
+    </Button>
+    <Button Grid.Row="2" Grid.Column="6" Command="{Binding ParseCommand}" Content="Parse" IsEnabled="{Binding CanParse}"/>
+    <Button x:Name="OpenParserSettings" Grid.Row="0" Grid.Column="8" Content="Settings" IsEnabled="{Binding CanShowSettings}">
+      <beh:Interaction.Triggers>
+        <beh:EventTrigger EventName="Click">
+          <beh:CallMethodAction TargetObject="{Binding}" MethodName="OpenParserSettings"/>
+        </beh:EventTrigger>
+      </beh:Interaction.Triggers>
+    </Button>
 
     <scrobbling:SelectScrobblesControl Grid.Row="4" Grid.ColumnSpan="9"/>
 
