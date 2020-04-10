@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
         Title="Login" Height="180" Width="180" Icon="..\Resources\scrubbler_64.ico" ResizeMode="NoResize" Style="{StaticResource EnableControlsStyle}">
 
@@ -28,20 +29,28 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Content="Username"/>
-    <TextBox Grid.Row="3" Grid.Column="1" x:Name="usernameTextBox"/>
+    <TextBox Grid.Row="3" Grid.Column="1" x:Name="usernameTextBox" Text="{Binding Username}"/>
 
     <Label Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" Content="Password"/>
     <PasswordBox Grid.Row="7" Grid.Column="1" x:Name="passwordBox"/>
 
     <Button Grid.Row="9" Grid.Column="1" HorizontalAlignment="Center" Content="Login">
-      <beh:Interaction.Triggers>
-        <beh:EventTrigger EventName="Click">
-          <beh:InvokeCommandAction Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=passwordBox}"/>
-        </beh:EventTrigger>
-        <beh:EventTrigger EventName="KeyDown">
-          <beh:InvokeCommandAction Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=passwordBox}"/>
-        </beh:EventTrigger>
-      </beh:Interaction.Triggers>
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Click">
+          <cal:ActionMessage MethodName="Login">
+            <cal:Parameter Value="{Binding ElementName=passwordBox}"/>
+          </cal:ActionMessage>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
     </Button>
+
+    <i:Interaction.Triggers>
+      <i:EventTrigger EventName="KeyDown">
+        <cal:ActionMessage MethodName="ButtonPressed">
+          <cal:Parameter Value="$eventArgs"/>
+          <cal:Parameter Value="{Binding ElementName=passwordBox}"/>
+        </cal:ActionMessage>
+      </i:EventTrigger>
+    </i:Interaction.Triggers>
   </Grid>
 </Window>

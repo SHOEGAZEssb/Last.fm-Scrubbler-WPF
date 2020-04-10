@@ -31,11 +31,6 @@ namespace Scrubbler.Login
     }
     private string _username;
 
-    /// <summary>
-    /// Command to login.
-    /// </summary>
-    public ICommand LoginCommand { get; }
-
     #endregion Properties
 
     #region Member
@@ -61,7 +56,6 @@ namespace Scrubbler.Login
     {
       _lastAuth = lastAuth ?? throw new ArgumentNullException(nameof(lastAuth));
       _messageBoxService = messageBoxService ?? throw new ArgumentNullException(nameof(messageBoxService));
-      LoginCommand = new DelegateCommand((o) => Login(o as PasswordBox).Forget());
     }
 
     /// <summary>
@@ -91,6 +85,20 @@ namespace Scrubbler.Login
       {
         EnableControls = true;
       }
+    }
+
+    /// <summary>
+    /// Logs the user in if the enter key is pressed.
+    /// </summary>
+    /// <param name="e">EventArgs containing the pressed key.</param>
+    /// <param name="password">The <see cref="PasswordBox"/> containing the password.</param>
+    public async Task ButtonPressed(KeyEventArgs e, PasswordBox password)
+    {
+      if (e == null)
+        throw new ArgumentNullException(nameof(e));
+
+      if (e.Key == Key.Enter)
+        await Login(password);
     }
   }
 }
