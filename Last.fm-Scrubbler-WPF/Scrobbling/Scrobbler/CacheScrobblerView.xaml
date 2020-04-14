@@ -23,7 +23,7 @@
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
-    <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Content="Reload Cache">
+    <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Content="Reload Cache" Command="{Binding GetCachedScrobblesCommand}">
       <Button.Style>
         <Style TargetType="Button">
           <Style.Triggers>
@@ -33,11 +33,6 @@
           </Style.Triggers>
         </Style>
       </Button.Style>
-      <beh:Interaction.Triggers>
-        <beh:EventTrigger EventName="Click">
-          <beh:CallMethodAction TargetObject="{Binding}" MethodName="GetCachedScrobbles"/>
-        </beh:EventTrigger>
-      </beh:Interaction.Triggers>
     </Button>
 
     <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding Scrobbles}" scrub:GridViewSort.AutoSort="True">
