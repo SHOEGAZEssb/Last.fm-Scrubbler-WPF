@@ -62,11 +62,6 @@ namespace Scrubbler.Scrobbling.Scrobbler
     #region Properties
 
     /// <summary>
-    /// Event that triggers when the activation of a new item has been processed.
-    /// </summary>
-    public event EventHandler<ActivationProcessedEventArgs> ActivationProcessed;
-
-    /// <summary>
     /// The result that should be displayed.
     /// </summary>
     public ViewModelBase ActiveResult
@@ -241,12 +236,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
           // clean up old vm
           if (_artistResultVM != null)
           {
-            _artistResultVM.ArtistClicked -= Artist_Clicked;
+            _artistResultVM.ArtistClicked -= ArtistClicked;
             _artistResultVM.Dispose();
           }
 
           _artistResultVM = new ArtistResultViewModel(fetchedArtists);
-          _artistResultVM.ArtistClicked += Artist_Clicked;
+          _artistResultVM.ArtistClicked += ArtistClicked;
           ActiveResult = _artistResultVM;
           //ActivateItem(_artistResultVM);
           OnStatusUpdated($"Found {fetchedArtists.Count()} artists");
@@ -320,7 +315,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         else if (DatabaseToSearch == Database.MusicBrainz)
           releases = await SearchReleaseMusicBrainz();
 
-        if (releases.Count() != 0)
+        if (releases.Any())
         {
           ActivateNewReleaseResultViewModel(releases, false);
           OnStatusUpdated($"Found {releases.Count()} releases");
@@ -390,7 +385,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="sender">Clicked artist as <see cref="LastArtist"/>.</param>
     /// <param name="e">Ignored.</param>
-    public async void Artist_Clicked(object sender, EventArgs e)
+    private async void ArtistClicked(object sender, EventArgs e)
     {
       if (EnableControls)
       {
@@ -409,7 +404,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
           else if (DatabaseToSearch == Database.MusicBrainz)
             releases = await ArtistClickedMusicBrainz(artist);
 
-          if (releases.Count() != 0)
+          if (releases.Any())
           {
             ActivateNewReleaseResultViewModel(releases, true);
             OnStatusUpdated($"Successfully fetched releases from artist '{artist.Name}'");
@@ -439,13 +434,13 @@ namespace Scrubbler.Scrobbling.Scrobbler
       // clean up old vm
       if (_releaseResultVM != null)
       {
-        _releaseResultVM.ReleaseClicked -= Release_Clicked;
+        _releaseResultVM.ReleaseClicked -= ReleaseClicked;
         _releaseResultVM.BackToArtistRequested -= Release_BackToArtistRequested;
         _releaseResultVM.Dispose();
       }
 
       _releaseResultVM = new ReleaseResultViewModel(releases, fetchedThroughArtist);
-      _releaseResultVM.ReleaseClicked += Release_Clicked;
+      _releaseResultVM.ReleaseClicked += ReleaseClicked;
       _releaseResultVM.BackToArtistRequested += Release_BackToArtistRequested;
       ActiveResult = _releaseResultVM;
     }
@@ -508,7 +503,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="sender">Clicked release as <see cref="LastAlbum"/>.</param>
     /// <param name="e">Ignored.</param>
-    public async void Release_Clicked(object sender, EventArgs e)
+    private async void ReleaseClicked(object sender, EventArgs e)
     {
       if (EnableControls)
       {
@@ -584,7 +579,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="release">Release to get tracks for.</param>
     /// <returns>Enumerable tracks of the given <paramref name="release"/>.</returns>
-    private async Task<IEnumerable<Track>> FetchTracksMusicBrainz(Release release)
+    private static async Task<IEnumerable<Track>> FetchTracksMusicBrainz(Release release)
     {
       var t = await Hqub.MusicBrainz.API.Entities.ReleaseGroup.GetAsync(release.Mbid, "releases");
       var r = await Hqub.MusicBrainz.API.Entities.Release.GetAsync(t.Releases.First().Id, "media", "recordings");

@@ -16,7 +16,7 @@ namespace Scrubbler.Converters
     /// </summary>
     /// <param name="enumObj">Enum to get the description of.</param>
     /// <returns>Description as string.</returns>
-    private string GetEnumDescription(Enum enumObj)
+    private static string GetEnumDescription(Enum enumObj)
     {
       FieldInfo fieldInfo = enumObj.GetType().GetField(enumObj.ToString());
       object[] attribArray = fieldInfo.GetCustomAttributes(false);

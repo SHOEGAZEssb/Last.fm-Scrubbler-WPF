@@ -12,12 +12,12 @@ namespace Scrubbler.Helper.FileParser
     /// <summary>
     /// The parsed scrobbles.
     /// </summary>
-    public readonly IEnumerable<DatedScrobble> Scrobbles;
+    public IEnumerable<DatedScrobble> Scrobbles { get; }
 
     /// <summary>
     /// Errors encountered during parsing.
     /// </summary>
-    public readonly IEnumerable<string> Errors;
+    public IEnumerable<string> Errors { get; }
 
     /// <summary>
     /// Constructor.

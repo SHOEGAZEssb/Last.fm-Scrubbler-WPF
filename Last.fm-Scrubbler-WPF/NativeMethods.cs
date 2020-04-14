@@ -21,9 +21,9 @@ namespace Scrubbler
     /// Removes the 'X' from a window.
     /// </summary>
     /// <param name="hwnd">Handle of the window.</param>
-    public static void RemoveXFromWindow(IntPtr hwnd)
+    public static int RemoveXFromWindow(IntPtr hwnd)
     {
-      SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
+      return SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
     }
 
     #endregion Remove 'X'

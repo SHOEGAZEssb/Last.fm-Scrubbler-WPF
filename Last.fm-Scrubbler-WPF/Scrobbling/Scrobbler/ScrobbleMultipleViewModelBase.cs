@@ -107,7 +107,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="displayName">Display name.</param>
-    public ScrobbleMultipleViewModelBase(IExtendedWindowManager windowManager, string displayName)
+    protected ScrobbleMultipleViewModelBase(IExtendedWindowManager windowManager, string displayName)
       : base(windowManager, displayName)
     { }
 

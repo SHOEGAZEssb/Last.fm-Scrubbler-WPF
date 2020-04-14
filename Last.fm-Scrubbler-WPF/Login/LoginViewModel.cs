@@ -67,6 +67,10 @@ namespace Scrubbler.Login
       try
       {
         EnableControls = false;
+
+        if (password == null)
+          throw new ArgumentNullException(nameof(password), "No password given");
+
         var response = await _lastAuth.GetSessionTokenAsync(Username, password.Password);
 
         if (response.Success && _lastAuth.Authenticated)

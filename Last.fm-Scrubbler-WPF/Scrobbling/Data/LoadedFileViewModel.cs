@@ -19,7 +19,7 @@
     /// <summary>
     /// The file.
     /// </summary>
-    private ILocalFile _file;
+    private readonly ILocalFile _file;
 
     #endregion Member
 

@@ -15,12 +15,12 @@ namespace Scrubbler
     /// <summary>
     /// WindowManager used to show the <see cref="_screenToShow"/>.
     /// </summary>
-    private IWindowManager _windowManager;
+    private readonly IWindowManager _windowManager;
 
     /// <summary>
     /// The actual "main" screen that will be shown.
     /// </summary>
-    private IScreen _screenToShow;
+    private readonly IScreen _screenToShow;
 
     #endregion Member
 

@@ -104,7 +104,7 @@ namespace Scrubbler.Scrobbling.Data
 
             entries.Add(new MediaDBScrobble(playCount, lastPlayed, trackName, artistName, albumName, albumArtist, duration));
           }
-          catch (Exception ex)
+          catch (Exception)
           {
             // probably missing necessary info...
           }

@@ -65,7 +65,7 @@ namespace Scrubbler.Helper
     /// </summary>
     /// <param name="result">Result of the <see cref="MessageBox"/>.</param>
     /// <returns>Equivalent <see cref="IMessageBoxServiceResult"/>.</returns>
-    private IMessageBoxServiceResult ParseMessageBoxResult(MessageBoxResult result)
+    private static IMessageBoxServiceResult ParseMessageBoxResult(MessageBoxResult result)
     {
       switch(result)
       {
@@ -82,7 +82,7 @@ namespace Scrubbler.Helper
       }
     }
 
-    private MessageBoxButton ParseIDialogServiceButtons(IMessageBoxServiceButtons buttons)
+    private static MessageBoxButton ParseIDialogServiceButtons(IMessageBoxServiceButtons buttons)
     {
       switch(buttons)
       {
@@ -97,7 +97,7 @@ namespace Scrubbler.Helper
       }
     }
 
-    private MessageBoxImage ParseIDialogServiceIcon(IMessageBoxServiceIcon icon)
+    private static MessageBoxImage ParseIDialogServiceIcon(IMessageBoxServiceIcon icon)
     {
       switch(icon)
       {

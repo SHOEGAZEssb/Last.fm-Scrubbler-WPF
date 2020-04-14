@@ -224,7 +224,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <param name="trackAPI">Last.fm API object for getting track information.</param>
     /// <param name="albumAPI">Last.fm API object for getting album information.</param>
     /// <param name="artistAPI">Last.fm API object for getting artist information.</param>
-    public MediaPlayerScrobbleViewModelBase(IExtendedWindowManager windowManager, string displayName, ITrackApi trackAPI, IAlbumApi albumAPI, IArtistApi artistAPI)
+    protected MediaPlayerScrobbleViewModelBase(IExtendedWindowManager windowManager, string displayName, ITrackApi trackAPI, IAlbumApi albumAPI, IArtistApi artistAPI)
       : base(windowManager, displayName)
     {
       _trackAPI = trackAPI;

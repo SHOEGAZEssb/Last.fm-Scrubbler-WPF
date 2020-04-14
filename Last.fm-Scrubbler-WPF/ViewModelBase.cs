@@ -13,11 +13,6 @@ namespace Scrubbler
     #region Properties
 
     /// <summary>
-    /// Event that is fired when a property changed.
-    /// </summary>
-    //public event PropertyChangedEventHandler PropertyChanged;
-
-    /// <summary>
     /// Event that triggers when the status should be changed.
     /// </summary>
     public event EventHandler<UpdateStatusEventArgs> StatusUpdated;
@@ -48,21 +43,12 @@ namespace Scrubbler
     /// <summary>
     /// Constructor.
     /// </summary>
-    public ViewModelBase()
+    protected ViewModelBase()
     {
       EnableControls = true;
     }
 
     #endregion Construction
-
-    /// <summary>
-    /// Fires the <see cref="PropertyChanged"/> event.
-    /// </summary>
-    /// <param name="propertyName">Name of the property that changed.</param>
-    //protected void NotifyOfPropertyChange([CallerMemberName] string propertyName = "")
-    //{
-    //  PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    //}
 
     /// <summary>
     /// Updates the status.

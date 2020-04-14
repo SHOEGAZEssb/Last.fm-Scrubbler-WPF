@@ -56,7 +56,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// WindowManager used to display dialogs.
     /// </summary>
-    protected IExtendedWindowManager _windowManager;
+    protected IExtendedWindowManager WindowManager;
 
     #endregion Member
 
@@ -68,7 +68,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     protected ScrobbleViewModelBase(IExtendedWindowManager windowManager, string displayName)
       : base(displayName)
     {
-      _windowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));
+      WindowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));
       ScrobbleCommand = new DelegateCommand((o) => Scrobble().Forget());
       PreviewCommand = new DelegateCommand((o) => Preview());
     }
@@ -101,7 +101,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public virtual void Preview()
     {
-      _windowManager.ShowDialog(new ScrobblePreviewViewModel(CreateScrobbles()));
+      WindowManager.ShowDialog(new ScrobblePreviewViewModel(CreateScrobbles()));
     }
   }
 }

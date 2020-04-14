@@ -87,7 +87,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
         if (Scrobbles.Count > 0)
         {
-          if (_windowManager.MessageBoxService.ShowDialog("Do you want to switch the Scrobble Mode? The CSV file will be parsed again!",
+          if (WindowManager.MessageBoxService.ShowDialog("Do you want to switch the Scrobble Mode? The CSV file will be parsed again!",
                                                           "Change Scrobble Mode", IMessageBoxServiceButtons.YesNo) == IMessageBoxServiceResult.Yes)
             ParseFile().Forget();
         }
@@ -152,7 +152,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       _fileOperator = fileOperator ?? throw new ArgumentNullException(nameof(fileOperator));
       AvailableParser = new List<IFileParserViewModel>()
       {
-        new CSVFileParserViewModel(parserFactory.CreateCSVFileParser(), _windowManager),
+        new CSVFileParserViewModel(parserFactory.CreateCSVFileParser(), WindowManager),
         new JSONParserViewModel(parserFactory.CreateJSONFileParser())
       };
       SelectedParser = AvailableParser.FirstOrDefault();
@@ -168,7 +168,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public void LoadFileDialog()
     {
-      IOpenFileDialog ofd = _windowManager.CreateOpenFileDialog();
+      IOpenFileDialog ofd = WindowManager.CreateOpenFileDialog();
       ofd.Filter = SelectedParser.FileFilter;
       if (ofd.ShowDialog())
         FilePath = ofd.FileName;
@@ -198,15 +198,15 @@ namespace Scrubbler.Scrobbling.Scrobbler
           parsedScrobbles = new ObservableCollection<ParsedCSVScrobbleViewModel>(res.Scrobbles.Select(i => new ParsedCSVScrobbleViewModel(i, ScrobbleMode)));
         });
 
-        if (errors.Count() == 0)
+        if (!errors.Any())
           OnStatusUpdated($"Successfully parsed file. Parsed {parsedScrobbles.Count} scrobbles");
         else
         {
           OnStatusUpdated($"Partially parsed file. Scrobbles: {parsedScrobbles.Count} | Errors: {errors.Count()}");
-          if (_windowManager.MessageBoxService.ShowDialog("Some scrobbles could not be parsed. Do you want to save a text file with the rows that could not be parsed?",
+          if (WindowManager.MessageBoxService.ShowDialog("Some scrobbles could not be parsed. Do you want to save a text file with the rows that could not be parsed?",
                                                           "Error parsing scrobbles", IMessageBoxServiceButtons.YesNo) == IMessageBoxServiceResult.Yes)
           {
-            IFileDialog sfd = _windowManager.CreateSaveFileDialog();
+            IFileDialog sfd = WindowManager.CreateSaveFileDialog();
             sfd.Filter = "Text Files|*.txt";
             if (sfd.ShowDialog())
               _fileOperator.WriteAllLines(sfd.FileName, errors.ToArray());

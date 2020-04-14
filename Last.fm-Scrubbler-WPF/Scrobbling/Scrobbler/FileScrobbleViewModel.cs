@@ -80,7 +80,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
       try
       {
-        IOpenFileDialog ofd = _windowManager.CreateOpenFileDialog();
+        IOpenFileDialog ofd = WindowManager.CreateOpenFileDialog();
         ofd.Multiselect = true;
         ofd.Filter = "Music Files|*.flac;*.mp3;*.m4a;*.wma";
 
@@ -140,10 +140,10 @@ namespace Scrubbler.Scrobbling.Scrobbler
       if (errors.Count > 0)
       {
         OnStatusUpdated($"Finished parsing selected files. {errors.Count} files could not be parsed");
-        if (_windowManager.MessageBoxService.ShowDialog("Some files could not be parsed. Do you want to save a text file with the files that could not be parsed?",
+        if (WindowManager.MessageBoxService.ShowDialog("Some files could not be parsed. Do you want to save a text file with the files that could not be parsed?",
                                                         "Error parsing files", IMessageBoxServiceButtons.YesNo) == IMessageBoxServiceResult.Yes)
         {
-          IFileDialog sfd = _windowManager.CreateSaveFileDialog();
+          IFileDialog sfd = WindowManager.CreateSaveFileDialog();
           sfd.Filter = "Text Files|*.txt";
           if (sfd.ShowDialog())
             _fileOperator.WriteAllLines(sfd.FileName, errors.ToArray());
@@ -164,6 +164,10 @@ namespace Scrubbler.Scrobbling.Scrobbler
       try
       {
         EnableControls = false;
+
+        if (e == null)
+          throw new ArgumentNullException(nameof(e), "No drop data");
+
         if (e.Data.GetDataPresent(DataFormats.FileDrop))
         {
           string[] files = ReadDroppedFiles((string[])e.Data.GetData(DataFormats.FileDrop));

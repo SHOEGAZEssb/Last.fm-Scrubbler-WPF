@@ -22,7 +22,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// Scrobble from iTunes or Winamp database (.xml).
     /// </summary>
     [Description("iTunes / Winamp")]
-    iTunes_Or_Winamp,
+    iTunesOrWinamp,
 
     /// <summary>
     /// Scrobble from Windows Media Player.
@@ -122,8 +122,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public void SelectFile()
     {
-      IOpenFileDialog ofd = _windowManager.CreateOpenFileDialog();
-      if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.iTunes_Or_Winamp)
+      IOpenFileDialog ofd = WindowManager.CreateOpenFileDialog();
+      if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.iTunesOrWinamp)
         ofd.Filter = "iTunes/Winamp Database XML (*.xml) | *.xml";
 
       if (ofd.ShowDialog())
@@ -135,7 +135,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public async Task ParseFile()
     {
-      if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.iTunes_Or_Winamp)
+      if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.iTunesOrWinamp)
         await ParseItunesConformXML();
       else if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.WMP)
         await ParseWMPDatabase();
