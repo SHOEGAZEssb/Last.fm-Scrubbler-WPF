@@ -134,7 +134,7 @@ With this you can create a "Paste Your Taste" text. You can select the time peri
 ![Paste Your Taste](https://i.imgur.com/rYwwFcR.png)
 
 ### CSV Downloader
-This allows you to download the data of any Last.fm user as a csv file. The format of the csv file will be "Artist, Album, Track, Timestamp, Album Artist, Timestamp".
+This allows you to download the data of any Last.fm user as a csv file. The format of the csv file will be "Artist, Album, Track, Timestamp, Album Artist, Duration".
 
 ![CSV Downloader](https://i.imgur.com/itgokSP.png)
 
