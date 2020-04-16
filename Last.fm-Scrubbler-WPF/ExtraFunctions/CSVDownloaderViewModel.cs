@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Scrubbler.ExtraFunctions
 {
@@ -56,6 +57,11 @@ namespace Scrubbler.ExtraFunctions
       get { return !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(FilePath) && FilePath.EndsWith(".csv"); }
     }
 
+    /// <summary>
+    /// Command for downloading the csv file.
+    /// </summary>
+    public ICommand DownloadCommand { get; }
+
     #endregion Properties
 
     #region Member
@@ -91,9 +97,10 @@ namespace Scrubbler.ExtraFunctions
     public CSVDownloaderViewModel(IExtendedWindowManager windowManager, IUserApi userAPI, IFileOperator fileOperator)
       : base("CSV Downloader")
     {
-      _windowManager = windowManager;
-      _userAPI = userAPI;
-      _fileOperator = fileOperator;
+      _windowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));
+      _userAPI = userAPI ?? throw new ArgumentNullException(nameof(userAPI));
+      _fileOperator = fileOperator ?? throw new ArgumentNullException(nameof(fileOperator));
+      DownloadCommand = new DelegateCommand((o) => Download().Forget());
     }
 
     /// <summary>

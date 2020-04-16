@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300" Style="{StaticResource EnableControlsStyle}">
 
@@ -27,8 +28,15 @@
 
     <Label Grid.Row="2" Grid.Column="0" Content="File Path:"/>
     <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}"/>
-    <Button x:Name="SelectFilePath" Grid.Row="2" Grid.Column="4" Content="..." Width="25"/>
+    <Button Grid.Row="2" Grid.Column="4" Content="..." Width="25">
+      <beh:Interaction.Triggers>
+        <beh:EventTrigger EventName="Click">
+          <beh:CallMethodAction TargetObject="{Binding}" MethodName="SelectFilePath"/>
+        </beh:EventTrigger>
+      </beh:Interaction.Triggers>
+    </Button>
 
-    <Button x:Name="Download" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" HorizontalAlignment="Right" Content="Download Scrobbles" IsEnabled="{Binding CanDownload}"/>
+    <Button Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" HorizontalAlignment="Right" Command="{Binding DownloadCommand}"
+            Content="Download Scrobbles" IsEnabled="{Binding CanDownload}"/>
   </Grid>
 </UserControl>
