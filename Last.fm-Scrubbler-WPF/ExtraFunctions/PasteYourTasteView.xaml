@@ -6,6 +6,7 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:lastEnums="clr-namespace:IF.Lastfm.Core.Api.Enums;assembly=IF.Lastfm.Core"
+             xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="400">
 
@@ -54,7 +55,7 @@
 
     <CheckBox Grid.Row="0" Grid.Column="12" Content="Add Profile Link" VerticalAlignment="Center" IsChecked="{Binding AddProfileLink}"/>
 
-    <Button x:Name="GetTopArtists" Grid.Row="0" Grid.Column="14" Content="Fetch">
+    <Button Grid.Row="0" Grid.Column="14" Content="Fetch" Command="{Binding GetTopArtistsCommand}">
       <Button.Style>
         <Style TargetType="Button">
           <Style.Triggers>
@@ -78,7 +79,7 @@
       </Grid.ColumnDefinitions>
 
       <TextBox Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" IsReadOnly="True" Text="{Binding TasteText, Mode=OneWay}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
-      <Button x:Name="CopyTasteText" Grid.Row="0" Grid.Column="2">
+      <Button Grid.Row="0" Grid.Column="2">
         <Button.Style>
           <Style TargetType="Button">
             <Style.Triggers>
@@ -92,6 +93,11 @@
         <Button.ToolTip>
           <ToolTip>Copies the text to the clipboard.</ToolTip>
         </Button.ToolTip>
+        <beh:Interaction.Triggers>
+          <beh:EventTrigger EventName="Click">
+            <beh:CallMethodAction TargetObject="{Binding}" MethodName="CopyTasteText"/>
+          </beh:EventTrigger>
+        </beh:Interaction.Triggers>
       </Button>
     </Grid>
   </Grid>

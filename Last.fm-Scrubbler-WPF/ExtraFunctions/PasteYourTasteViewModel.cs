@@ -3,6 +3,7 @@ using IF.Lastfm.Core.Api.Enums;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Scrubbler.ExtraFunctions
 {
@@ -84,6 +85,11 @@ namespace Scrubbler.ExtraFunctions
     }
     private string _tasteText;
 
+    /// <summary>
+    /// Command for getting the top artists.
+    /// </summary>
+    public ICommand GetTopArtistsCommand { get; }
+
     #endregion Properties
 
     #region Member
@@ -109,9 +115,10 @@ namespace Scrubbler.ExtraFunctions
     public PasteYourTasteViewModel(IUserApi userAPI)
       : base("Paste Your Taste")
     {
-      _userAPI = userAPI;
+      _userAPI = userAPI ?? throw new ArgumentNullException(nameof(userAPI));
       Amount = 20;
       TimeSpan = LastStatsTimeSpan.Overall;
+      GetTopArtistsCommand = new DelegateCommand((o) => GetTopArtists().Forget());
     }
 
     #endregion Construction

@@ -13,6 +13,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
@@ -210,6 +211,11 @@ namespace Scrubbler.ExtraFunctions
     }
     private BitmapSource _collage;
 
+    /// <summary>
+    /// Command for creating the collage.
+    /// </summary>
+    public ICommand CreateCollageCommand { get; }
+
     #endregion Properties
 
     #region Member
@@ -234,20 +240,21 @@ namespace Scrubbler.ExtraFunctions
     public CollageCreatorViewModel(IExtendedWindowManager windowManager, IUserApi userAPI)
       : base("Collage Creator")
     {
-      _windowManager = windowManager;
-      _userAPI = userAPI;
+      _windowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));
+      _userAPI = userAPI ?? throw new ArgumentNullException(nameof(userAPI));
       TimeSpan = LastStatsTimeSpan.Overall;
       SelectedCollageSize = CollageSize.ThreeByThree;
       CustomCollageSize = 10;
       ShowNames = true;
       ShowPlaycounts = true;
       UploadToWeb = true;
+      CreateCollageCommand = new DelegateCommand((o) => CreateCollage().Forget());
     }
 
     /// <summary>
     /// Creates and uploads a collage of the top <see cref="SelectedCollageType"/>.
     /// </summary>
-    public async void CreateCollage()
+    public async Task CreateCollage()
     {
       try
       {

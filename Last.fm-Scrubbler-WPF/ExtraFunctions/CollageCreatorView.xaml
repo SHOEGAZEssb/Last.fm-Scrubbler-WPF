@@ -8,6 +8,7 @@
              xmlns:local="clr-namespace:Scrubbler.ExtraFunctions"
              xmlns:conv="clr-namespace:Scrubbler.Converters"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DesignHeight="100" d:DesignWidth="500">
 
@@ -92,7 +93,7 @@
         </ComboBox.ItemTemplate>
       </ComboBox>
 
-      <Button x:Name="CreateCollage" Grid.Row="0" Grid.Column="16" Content="Create">
+      <Button Grid.Row="0" Grid.Column="16" Content="Create" Command="{Binding CreateCollageCommand}">
         <Button.Style>
           <Style TargetType="Button" BasedOn="{StaticResource EnableControlsStyle}">
             <Style.Triggers>
@@ -167,6 +168,11 @@
           </Style.Triggers>
         </Style>
       </Button.Style>
+      <beh:Interaction.Triggers>
+        <beh:EventTrigger EventName="Click">
+          <beh:CallMethodAction TargetObject="{Binding}" MethodName="SaveImage"/>
+        </beh:EventTrigger>
+      </beh:Interaction.Triggers>
     </Button>
   </Grid>
 </UserControl>

@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Scrubbler.ExtraFunctions
 {
@@ -120,6 +121,11 @@ namespace Scrubbler.ExtraFunctions
     }
     private ObservableCollection<MilestoneViewModel> _milestones;
 
+    /// <summary>
+    /// Command for creating the scrobble data.
+    /// </summary>
+    public ICommand CreateScrobbleDataCommand { get; }
+
     #endregion Properties
 
     #region Member
@@ -138,7 +144,8 @@ namespace Scrubbler.ExtraFunctions
     public MilestoneCheckerViewModel(IUserApi userAPI)
       : base("Milestone Checker")
     {
-      _userAPI = userAPI;
+      _userAPI = userAPI ?? throw new ArgumentNullException(nameof(userAPI));
+      CreateScrobbleDataCommand = new DelegateCommand((o) => CreateScrobbleData().Forget());
     }
 
     /// <summary>

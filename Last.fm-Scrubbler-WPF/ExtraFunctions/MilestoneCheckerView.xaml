@@ -8,8 +8,10 @@
              xmlns:scrub="clr-namespace:Scrubbler"
              xmlns:conv="clr-namespace:Scrubbler.Converters"
              xmlns:xceed="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:beh="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800" Style="{StaticResource EnableControlsStyle}">
+  
   <UserControl.Resources>
     <ObjectDataProvider MethodName="GetValues"
                     ObjectType="{x:Type sys:Enum}"
@@ -44,7 +46,7 @@
       <TextBlock Grid.Row="0" Grid.Column="0" Text="Username:"/>
       <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Username}"/>
 
-      <Button Grid.Row="0" Grid.Column="4" x:Name="CreateScrobbleData" Content="Get Scrobble Data"/>
+      <Button Grid.Row="0" Grid.Column="4" Command="{Binding CreateScrobbleDataCommand}" Content="Get Scrobble Data"/>
     </Grid>
 
     <Grid Grid.Row="2">
@@ -87,7 +89,13 @@
 
       <CheckBox Grid.Row="0" Grid.Column="8" Content="Ignore Broken Timestamps" IsChecked="{Binding IgnoreBrokenTimestamps}" VerticalAlignment="Center"/>
 
-      <Button Grid.Row="0" Grid.Column="10" x:Name="CreateMilestones" Content="Get Milestones"/>
+      <Button Grid.Row="0" Grid.Column="10" Content="Get Milestones">
+        <beh:Interaction.Triggers>
+          <beh:EventTrigger EventName="Click">
+            <beh:CallMethodAction TargetObject="{Binding}" MethodName="CreateMilestones"/>
+          </beh:EventTrigger>
+        </beh:Interaction.Triggers>
+      </Button>
     </Grid>
 
     <ListView Grid.Row="4" VerticalAlignment="Stretch" ItemsSource="{Binding Milestones}" scrub:GridViewSort.AutoSort="True">
