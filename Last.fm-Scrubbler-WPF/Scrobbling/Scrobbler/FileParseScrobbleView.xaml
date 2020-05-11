@@ -148,7 +148,7 @@
       </Grid.ColumnDefinitions>
 
       <Label Grid.Column="0" Grid.Row="0" Content="Scrobble Mode:"/>
-      <ComboBox Grid.Column="2" Grid.Row="0" SelectedValue="{Binding ScrobbleMode}" ItemsSource="{Binding Source={StaticResource ScrobbleModeKeyDataProvider}}"/>
+      <ComboBox Grid.Column="2" Grid.Row="0" SelectedValue="{Binding ScrobbleMode, Delay=10}" ItemsSource="{Binding Source={StaticResource ScrobbleModeKeyDataProvider}}"/>
 
       <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3">
         <Grid.Style>

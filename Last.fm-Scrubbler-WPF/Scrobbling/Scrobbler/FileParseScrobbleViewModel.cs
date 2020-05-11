@@ -83,15 +83,18 @@ namespace Scrubbler.Scrobbling.Scrobbler
       get { return _scrobbleMode; }
       set
       {
-        _scrobbleMode = value;
-
         if (Scrobbles.Count > 0)
         {
           if (WindowManager.MessageBoxService.ShowDialog("Do you want to switch the Scrobble Mode? The CSV file will be parsed again!",
                                                           "Change Scrobble Mode", IMessageBoxServiceButtons.YesNo) == IMessageBoxServiceResult.Yes)
+          {
             ParseFile().Forget();
+          }
+          else
+            return;
         }
 
+        _scrobbleMode = value;
         NotifyOfPropertyChange();
       }
     }
