@@ -2,6 +2,8 @@
 # Last.fm-Scrubbler-WPF
 Manual Last.fm scrobbling for when a service (or you!) failed to scrobble.
 
+Download the current version [here](https://github.com/coczero/Last.fm-Scrubbler-WPF/releases).
+
 [![Build status](https://ci.appveyor.com/api/projects/status/6dm7kutqw56irq97?svg=true)](https://ci.appveyor.com/project/coczero/last-fm-scrubbler-wpf)
 [![codecov](https://codecov.io/gh/coczero/Last.fm-Scrubbler-WPF/branch/master/graph/badge.svg)](https://codecov.io/gh/coczero/Last.fm-Scrubbler-WPF)
 ### IMPORTANT
