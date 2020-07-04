@@ -37,7 +37,8 @@ namespace Scrubbler.Test.ScrobblingTests
 
 
       Mock<IUserApi> userApiMock = new Mock<IUserApi>();
-      userApiMock.Setup(i => i.GetRecentScrobbles(It.IsAny<string>(), It.IsAny<DateTimeOffset?>(), It.IsAny<int>(), It.IsAny<int>())).Returns(()
+      userApiMock.Setup(i => i.GetRecentScrobbles(It.IsAny<string>(), It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(), It.IsAny<bool>(),
+                                                  It.IsAny<int>(), It.IsAny<int>())).Returns(()
                                                   => Task.Run(() => PageResponse<LastTrack>.CreateSuccessResponse(expected.ToLastTracks())));
 
       Mock<IExtendedWindowManager> windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);

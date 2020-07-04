@@ -134,7 +134,7 @@ namespace Scrubbler.ExtraFunctions
           for (int i = 1; i <= pages; i++)
           {
             OnStatusUpdated($"Fetching page {i} / {pages}");
-            var pageResponse = await _userAPI.GetRecentScrobbles(Username, null, i, TRACKSPERPAGE);
+            var pageResponse = await _userAPI.GetRecentScrobbles(Username, null, null, false, i, TRACKSPERPAGE);
             if (pageResponse.Success && pageResponse.Status == LastResponseStatus.Successful)
               scrobbles[i - 1] = pageResponse.Content.Where(s => !s.IsNowPlaying.HasValue || !s.IsNowPlaying.Value).ToArray();
             else

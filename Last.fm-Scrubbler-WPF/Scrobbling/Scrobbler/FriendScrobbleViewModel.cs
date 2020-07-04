@@ -87,7 +87,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         EnableControls = false;
         OnStatusUpdated($"Trying to fetch scrobbles of '{Username}'...");
         Scrobbles.Clear();
-        var response = await _userApi.GetRecentScrobbles(Username, null, 1, Amount);
+        var response = await _userApi.GetRecentScrobbles(Username, null, null, false, 1, Amount);
         if (response.Success)
         {
           foreach (var s in response)

@@ -207,7 +207,7 @@ namespace Scrubbler.ExtraFunctions
           for (int i = 1; i <= pagesToFetch; i++)
           {
             OnStatusUpdated($"Getting scrobble data of '{Username}'... ({i} / {pagesToFetch}) pages");
-            var pageResponse = await _userAPI.GetRecentScrobbles(Username, null, i, 1000);
+            var pageResponse = await _userAPI.GetRecentScrobbles(Username, null, null, false, i, 1000);
             if (pageResponse.Success && pageResponse.Status == LastResponseStatus.Successful)
               tracks.AddRange(pageResponse.Content.Where(c => !c.IsNowPlaying.HasValue || !c.IsNowPlaying.Value).Reverse().ToList());
             else

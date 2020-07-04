@@ -28,7 +28,7 @@ namespace Scrubbler.Scrobbling
     /// <summary>
     /// The actual scrobbler.
     /// </summary>
-    private MemoryScrobbler _scrobbler;
+    private readonly MemoryScrobbler _scrobbler;
 
     #endregion Member
 
