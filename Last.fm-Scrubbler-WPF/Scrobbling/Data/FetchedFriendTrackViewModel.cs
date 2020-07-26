@@ -33,7 +33,7 @@ namespace Scrubbler.Scrobbling.Data
     /// <summary>
     /// The fetched scrobble.
     /// </summary>
-    private LastTrack _track;
+    private readonly LastTrack _track;
 
     #endregion Member
 
