@@ -35,11 +35,6 @@ namespace Scrubbler.Scrobbling.Scrobbler
     #region Properties
 
     /// <summary>
-    /// Event that triggers when the activation of a new item has been processed.
-    /// </summary>
-    public event EventHandler<ActivationProcessedEventArgs> ActivationProcessed;
-
-    /// <summary>
     /// The result that should be displayed.
     /// </summary>
     public ViewModelBase ActiveResult
