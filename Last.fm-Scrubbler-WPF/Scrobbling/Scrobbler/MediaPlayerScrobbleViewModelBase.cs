@@ -11,7 +11,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
@@ -205,6 +207,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
     protected const string LASTFMUSERURL = "https://www.last.fm/user/";
 
     /// <summary>
+    /// Base URL to a last.fm tag.
+    /// </summary>
+    private const string LASTFMTAGURL = "https://www.last.fm/tag/";
+
+    /// <summary>
     /// Last.fm API object for getting track information.
     /// </summary>
     protected ITrackApi _trackAPI;
@@ -392,20 +399,26 @@ namespace Scrubbler.Scrobbling.Scrobbler
     {
       try
       {
+        // remove old tags
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+          foreach (var t in CurrentTrackTags.ToList())
+            CurrentTrackTags.Remove(t);
+        });
+
         // get track playcount
         var trackResponse = await _trackAPI.GetInfoAsync(CurrentTrackName, CurrentArtistName, Scrobbler.User.Username);
         if (trackResponse.Success && trackResponse.Status == LastResponseStatus.Successful)
         {
           CurrentTrackPlayCount = trackResponse.Content.UserPlayCount ?? -1;
 
-          // remove old tags
-          foreach (var t in CurrentTrackTags.ToList())
-            CurrentTrackTags.Remove(t);
-
-          // get and add new
+          // get and add new tags
           var tags = trackResponse.Content.TopTags.Take(3);
-          foreach (var t in tags)
-            CurrentTrackTags.Add(new TagViewModel(t.Name));
+          Application.Current.Dispatcher.Invoke(() =>
+          {
+            foreach (var t in tags)
+              CurrentTrackTags.Add(new TagViewModel(t.Name));
+          });
         }
       }
       catch
@@ -469,7 +482,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     private void Tag_RequestOpen(object sender, EventArgs e)
     {
       if(sender is TagViewModel tagVM)
-        Process.Start($"{LASTFMURL}{GetUrlEncodedString(tagVM.Name)}");
+        Process.Start($"{LASTFMTAGURL}{GetUrlEncodedString(tagVM.Name)}");
     }
   }
 }
