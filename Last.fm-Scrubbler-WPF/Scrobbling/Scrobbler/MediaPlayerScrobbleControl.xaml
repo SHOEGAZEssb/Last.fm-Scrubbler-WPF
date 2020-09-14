@@ -117,6 +117,8 @@
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="5"/>
           <RowDefinition Height="Auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto"/>
@@ -225,9 +227,33 @@
           </Hyperlink>
         </TextBlock>
 
-        <Separator Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5"/>
+        <Label Grid.Row="6" Grid.Column="0" Content="Tags:" FontWeight="Bold"/>
+        <ItemsControl Grid.Row="6" Grid.Column="2" ItemsSource="{Binding CurrentTrackTags}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Margin="0,5,5,0">
+                <Hyperlink>
+                  <TextBlock Text="{Binding Name, Mode=OneWay}">
+                    <beh:Interaction.Triggers>
+                      <beh:EventTrigger EventName="MouseDown">
+                        <beh:CallMethodAction TargetObject="{Binding}" MethodName="Clicked"/>
+                      </beh:EventTrigger>
+                    </beh:Interaction.Triggers>
+                  </TextBlock>
+                </Hyperlink>
+              </TextBlock>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
-        <Button Grid.Row="6" Grid.Column="0" Command="{Binding SwitchLoveStateCommand}">
+        <Separator Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="5"/>
+
+        <Button Grid.Row="8" Grid.Column="0" Command="{Binding SwitchLoveStateCommand}">
           <Button.Style>
             <Style TargetType="Button">
               <Setter Property="Content" Value="Love"/>

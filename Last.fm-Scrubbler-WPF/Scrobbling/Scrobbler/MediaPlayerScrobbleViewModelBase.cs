@@ -2,8 +2,11 @@
 using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Helper;
+using Scrubbler.Scrobbling.Data;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -132,6 +135,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
     private int _currentAlbumPlayCount;
 
+    public ObservableCollection<TagViewModel> CurrentTrackTags { get; }
+
     /// <summary>
     /// Currently amount of played seconds.
     /// </summary>
@@ -216,6 +221,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
     #endregion Member
 
+    #region Construction
+
     /// <summary>
     /// Constructor.
     /// </summary>
@@ -234,7 +241,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
       CurrentAlbumPlayCount = -1;
       CurrentArtistPlayCount = -1;
       SwitchLoveStateCommand = new DelegateCommand((o) => SwitchLoveState().Forget());
+      CurrentTrackTags = new ObservableCollection<TagViewModel>();
+      CurrentTrackTags.CollectionChanged += CurrentTrackTags_CollectionChanged;
     }
+
+    #endregion Construction
 
     /// <summary>
     /// Connects to the client.
@@ -336,7 +347,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       NotifyOfPropertyChange(() => CurrentTrackLengthToScrobble);
       UpdateLovedInfo().Forget();
       UpdateNowPlaying().Forget();
-      UpdatePlayCounts().Forget();
+      UpdatePlayCountsAndTags().Forget();
       FetchAlbumArtwork().Forget();
     }
 
@@ -377,14 +388,25 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// Updates the play count of the current playing track.
     /// </summary>
     /// <returns>Task.</returns>
-    private async Task UpdatePlayCounts()
+    private async Task UpdatePlayCountsAndTags()
     {
       try
       {
         // get track playcount
         var trackResponse = await _trackAPI.GetInfoAsync(CurrentTrackName, CurrentArtistName, Scrobbler.User.Username);
         if (trackResponse.Success && trackResponse.Status == LastResponseStatus.Successful)
+        {
           CurrentTrackPlayCount = trackResponse.Content.UserPlayCount ?? -1;
+
+          // remove old tags
+          foreach (var t in CurrentTrackTags.ToList())
+            CurrentTrackTags.Remove(t);
+
+          // get and add new
+          var tags = trackResponse.Content.TopTags.Take(3);
+          foreach (var t in tags)
+            CurrentTrackTags.Add(new TagViewModel(t.Name));
+        }
       }
       catch
       {
@@ -428,6 +450,26 @@ namespace Scrubbler.Scrobbling.Scrobbler
     private static string GetUrlEncodedString(string originalString)
     {
       return HttpUtility.UrlEncode(originalString);
+    }
+
+    private void CurrentTrackTags_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+      if(e.Action == NotifyCollectionChangedAction.Add)
+      {
+        foreach(var tag in e.NewItems.OfType<TagViewModel>())
+          tag.RequestOpen += Tag_RequestOpen;
+      }
+      else if(e.Action == NotifyCollectionChangedAction.Remove)
+      {
+        foreach (var tag in e.OldItems.OfType<TagViewModel>())
+          tag.RequestOpen -= Tag_RequestOpen;
+      }
+    }
+
+    private void Tag_RequestOpen(object sender, EventArgs e)
+    {
+      if(sender is TagViewModel tagVM)
+        Process.Start($"{LASTFMURL}{GetUrlEncodedString(tagVM.Name)}");
     }
   }
 }
