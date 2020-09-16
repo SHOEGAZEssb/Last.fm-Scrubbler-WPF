@@ -137,6 +137,9 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
     private int _currentAlbumPlayCount;
 
+    /// <summary>
+    /// The tags of the currently playing track.
+    /// </summary>
     public ObservableCollection<TagViewModel> CurrentTrackTags { get; }
 
     /// <summary>
@@ -211,12 +214,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Base URL to Last.fm music objects.
     /// </summary>
-    protected const string LASTFMURL = "https://www.last.fm/music/";
+    private const string LASTFMURL = "https://www.last.fm/music/";
 
     /// <summary>
     /// Base URL to a last.fm user.
     /// </summary>
-    protected const string LASTFMUSERURL = "https://www.last.fm/user/";
+    private const string LASTFMUSERURL = "https://www.last.fm/user/";
 
     /// <summary>
     /// Base URL to a last.fm tag.

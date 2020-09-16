@@ -87,7 +87,7 @@ namespace Scrubbler.Helper
     /// <summary>
     /// Used to detect redundant <see cref="Dispose(bool)"/> calls.
     /// </summary>
-    private bool disposedValue = false;
+    private bool disposedValue;
 
     /// <summary>
     /// Disposes resources.
