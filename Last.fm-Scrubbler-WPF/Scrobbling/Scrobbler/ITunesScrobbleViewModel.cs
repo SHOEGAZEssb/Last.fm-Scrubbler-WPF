@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using IF.Lastfm.Core.Api;
 using Scrubbler.Helper;
+using DiscordRPC;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
@@ -119,6 +120,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     private readonly object _lockAnchor = new object();
 
+    private DiscordRpcClient _discordClient;
+
     #endregion Member
 
     /// <summary>
@@ -160,6 +163,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
         NotifyOfPropertyChange(() => CanDisconnect);
 
+        _discordClient = new DiscordRpcClient("755746057601810453");
+        _discordClient.Initialize();
         UpdateCurrentTrackInfo();
 
         _refreshTimer = new Timer(100);
@@ -191,6 +196,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
       CountedSeconds = 0;
       IsConnected = false;
       UpdateCurrentTrackInfo();
+      _discordClient.ClearPresence();
+      _discordClient.Dispose();
     }
 
     /// <summary>
@@ -200,6 +207,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
     {
       base.UpdateCurrentTrackInfo();
       _currentTrackID = (ITunesApp?.CurrentTrack?.trackID).HasValue ? ITunesApp.CurrentTrack.trackID : 0;
+      _discordClient.SetPresence(new RichPresence()
+      {
+        Details = CurrentArtistName,
+        State = CurrentTrackName
+      });
     }
 
     /// <summary>
@@ -217,10 +229,10 @@ namespace Scrubbler.Scrobbling.Scrobbler
           _currentTrackPlayCount = ITunesApp.CurrentTrack.PlayedCount;
           CountedSeconds = 0;
 
-          if(ITunesApp?.PlayerState == ITPlayerState.ITPlayerStatePlaying)
+          if (ITunesApp?.PlayerState == ITPlayerState.ITPlayerStatePlaying)
             _countTimer.Start();
 
-          UpdateCurrentTrackInfo();
+          UpdateCurrentTrackInfo();;
         }
       }
     }
