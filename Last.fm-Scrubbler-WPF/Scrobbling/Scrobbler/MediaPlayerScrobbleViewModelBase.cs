@@ -175,10 +175,17 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
     /// <summary>
     /// Seconds needed to listen to the current song to scrobble it.
+    /// (Max <see cref="MAXSECONDSTOSCROBBLE"/>)
     /// </summary>
     public int CurrentTrackLengthToScrobble
     {
-      get { return (int)Math.Ceiling(CurrentTrackLength * PercentageToScrobble); }
+      get
+      {
+        int sec = (int)Math.Ceiling(CurrentTrackLength * PercentageToScrobble);
+        if (sec < MAXSECONDSTOSCROBBLE)
+          return sec;
+        return MAXSECONDSTOSCROBBLE;
+      }
     }
 
     /// <summary>
@@ -195,6 +202,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
     #endregion Properties
 
     #region Member
+
+    /// <summary>
+    /// Maximum seconds it should take to scrobble a track.
+    /// </summary>
+    private const int MAXSECONDSTOSCROBBLE = 240;
 
     /// <summary>
     /// Base URL to Last.fm music objects.
@@ -467,12 +479,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
     private void CurrentTrackTags_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-      if(e.Action == NotifyCollectionChangedAction.Add)
+      if (e.Action == NotifyCollectionChangedAction.Add)
       {
-        foreach(var tag in e.NewItems.OfType<TagViewModel>())
+        foreach (var tag in e.NewItems.OfType<TagViewModel>())
           tag.RequestOpen += Tag_RequestOpen;
       }
-      else if(e.Action == NotifyCollectionChangedAction.Remove)
+      else if (e.Action == NotifyCollectionChangedAction.Remove)
       {
         foreach (var tag in e.OldItems.OfType<TagViewModel>())
           tag.RequestOpen -= Tag_RequestOpen;
@@ -481,7 +493,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
     private void Tag_RequestOpen(object sender, EventArgs e)
     {
-      if(sender is TagViewModel tagVM)
+      if (sender is TagViewModel tagVM)
         Process.Start($"{LASTFMTAGURL}{GetUrlEncodedString(tagVM.Name)}");
     }
   }
