@@ -239,7 +239,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         {
           // stop count timer to not trigger scrobble multiple times
           _countTimer.Stop();
-          Scrobble().Forget(); ;
+          Scrobble().Forget();
         }
       }
     }
