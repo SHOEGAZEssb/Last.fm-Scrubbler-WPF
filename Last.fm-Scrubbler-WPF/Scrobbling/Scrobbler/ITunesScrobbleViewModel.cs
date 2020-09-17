@@ -257,18 +257,18 @@ namespace Scrubbler.Scrobbling.Scrobbler
         {
           Details = CurrentArtistName,
           State = CurrentTrackName,
-          Assets = new Assets()
+          Assets = new Assets
           {
             LargeImageKey = "icon",
             LargeImageText = "Last.fm-Scrubbler-WPF",
             SmallImageKey = "itunes",
             SmallImageText = "iTunes"
           },
-          Timestamps = new Timestamps()
+          Timestamps = new Timestamps
           {
             End = DateTimeOffset.UtcNow.AddSeconds(CurrentTrackLength - CountedSeconds).DateTime,
           }
-        }); ;
+        });
       }
       else
         _discordClient.ClearPresence();
