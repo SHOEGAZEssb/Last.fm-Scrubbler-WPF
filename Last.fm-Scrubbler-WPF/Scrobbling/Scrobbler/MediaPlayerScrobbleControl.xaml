@@ -285,7 +285,18 @@
       <Label Grid.Row="2" Grid.Column="0" Content="Scrobble-Meter:" HorizontalAlignment="Right" FontWeight="Bold"/>
       <ProgressBar Grid.Row="2" Grid.Column="2" Value="{Binding CountedSeconds, Mode=OneWay}" Maximum="{Binding CurrentTrackLengthToScrobble}"/>
       <StackPanel Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" Orientation="Horizontal">
-        <Label Content="{Binding CountedSeconds}"/>
+        <Label>
+          <Label.Style>
+            <Style TargetType="Label">
+              <Setter Property="Content" Value="{Binding CountedSeconds}"/>
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding CurrentTrackScrobbled}" Value="True">
+                  <Setter Property="Content" Value="{Binding CurrentTrackLengthToScrobble}"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </Label.Style>
+        </Label>
         <Label Content="/"/>
         <Label Content="{Binding CurrentTrackLengthToScrobble}"/>
       </StackPanel>

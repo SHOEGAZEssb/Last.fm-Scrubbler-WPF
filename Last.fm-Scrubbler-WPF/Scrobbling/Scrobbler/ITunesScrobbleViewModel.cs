@@ -157,6 +157,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         IsConnected = true;
 
         CountedSeconds = 0;
+        CurrentTrackScrobbled = false;
         _countTimer = new Timer(1000);
         _countTimer.Elapsed += CountTimer_Elapsed;
         _countTimer.Start();
@@ -194,6 +195,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       NotifyOfPropertyChange(() => CanDisconnect);
       CurrentAlbumArtwork = null;
       CountedSeconds = 0;
+      CurrentTrackScrobbled = false;
       IsConnected = false;
       UpdateCurrentTrackInfo();
       _discordClient.ClearPresence();
@@ -207,18 +209,6 @@ namespace Scrubbler.Scrobbling.Scrobbler
     {
       base.UpdateCurrentTrackInfo();
       _currentTrackID = (ITunesApp?.CurrentTrack?.trackID).HasValue ? ITunesApp.CurrentTrack.trackID : 0;
-      _discordClient.SetPresence(new RichPresence()
-      {
-        Details = CurrentArtistName,
-        State = CurrentTrackName,
-        Assets = new Assets()
-        {
-          LargeImageKey = "icon",
-          LargeImageText = "Last.fm-Scrubbler-WPF",
-          SmallImageKey = "itunes",
-          SmallImageText = "iTunes"
-        }
-      });
     }
 
     /// <summary>
@@ -233,6 +223,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       {
         if (ITunesApp?.CurrentTrack != null && ITunesApp?.CurrentTrack?.trackID != _currentTrackID || ITunesApp?.CurrentTrack?.PlayedCount > _currentTrackPlayCount)
         {
+          CurrentTrackScrobbled = false;
           _currentTrackPlayCount = ITunesApp.CurrentTrack.PlayedCount;
           CountedSeconds = 0;
 
@@ -257,10 +248,30 @@ namespace Scrubbler.Scrobbling.Scrobbler
         if (++CountedSeconds == CurrentTrackLengthToScrobble)
         {
           // stop count timer to not trigger scrobble multiple times
-          _countTimer.Stop();
+          //_countTimer.Stop();
           Scrobble().Forget();
+          CurrentTrackScrobbled = true;
         }
+
+        _discordClient.SetPresence(new RichPresence()
+        {
+          Details = CurrentArtistName,
+          State = CurrentTrackName,
+          Assets = new Assets()
+          {
+            LargeImageKey = "icon",
+            LargeImageText = "Last.fm-Scrubbler-WPF",
+            SmallImageKey = "itunes",
+            SmallImageText = "iTunes"
+          },
+          Timestamps = new Timestamps()
+          {
+            End = DateTimeOffset.UtcNow.AddSeconds(CurrentTrackLength - CountedSeconds).DateTime,
+          }
+        }); ;
       }
+      else
+        _discordClient.ClearPresence();
     }
 
     /// <summary>

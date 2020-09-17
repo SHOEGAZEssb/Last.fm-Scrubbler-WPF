@@ -192,6 +192,23 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
 
     /// <summary>
+    /// If the currently playing track has already been scrobbled.
+    /// </summary>
+    public bool CurrentTrackScrobbled
+    {
+      get => _currentTrackScrobbled;
+      protected set
+      {
+        if(CurrentTrackScrobbled != value)
+        {
+          _currentTrackScrobbled = value;
+          NotifyOfPropertyChange();
+        }
+      }
+    }
+    private bool _currentTrackScrobbled;
+
+    /// <summary>
     /// Gets if the preview button is enabled.
     /// Not needed here.
     /// </summary>
