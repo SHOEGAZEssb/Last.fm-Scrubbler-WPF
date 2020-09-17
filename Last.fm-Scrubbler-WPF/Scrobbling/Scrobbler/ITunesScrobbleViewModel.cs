@@ -210,7 +210,14 @@ namespace Scrubbler.Scrobbling.Scrobbler
       _discordClient.SetPresence(new RichPresence()
       {
         Details = CurrentArtistName,
-        State = CurrentTrackName
+        State = CurrentTrackName,
+        Assets = new Assets()
+        {
+          LargeImageKey = "icon",
+          LargeImageText = "Last.fm-Scrubbler-WPF",
+          SmallImageKey = "itunes",
+          SmallImageText = "iTunes"
+        }
       });
     }
 
