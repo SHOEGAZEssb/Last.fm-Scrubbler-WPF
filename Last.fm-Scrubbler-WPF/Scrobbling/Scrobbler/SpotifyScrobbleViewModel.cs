@@ -51,6 +51,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public override int CurrentTrackLength => _currentResponse?.Track == null ? 0 : _currentResponse.Track.Length;
 
+    /// <summary>
+    /// When true, updates discord rich presence with the
+    /// currently playing track and artist.
+    /// </summary>
+    public override bool UseRichPresence { get => false; set => throw new NotImplementedException(); }
+
     #endregion Properties
 
     #region Member

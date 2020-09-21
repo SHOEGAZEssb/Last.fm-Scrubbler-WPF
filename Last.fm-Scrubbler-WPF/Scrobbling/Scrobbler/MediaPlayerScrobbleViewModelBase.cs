@@ -1,4 +1,5 @@
-﻿using IF.Lastfm.Core.Api;
+﻿using DiscordRPC;
+using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Helper;
@@ -43,6 +44,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// When true, tries to connect to the media player on startup.
     /// </summary>
     public abstract bool AutoConnect { get; set; }
+
+    /// <summary>
+    /// When true, updates discord rich presence with the
+    /// currently playing track and artist.
+    /// </summary>
+    public abstract bool UseRichPresence { get; set; }
 
     /// <summary>
     /// If the current track is loved on Last.fm.
@@ -257,6 +264,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// Last.fm API object for getting artist information.
     /// </summary>
     protected IArtistApi _artistAPI;
+
+    /// <summary>
+    /// Discord client used to update rich presence.
+    /// </summary>
+    protected DiscordRpcClient _discordClient;
 
     #endregion Member
 

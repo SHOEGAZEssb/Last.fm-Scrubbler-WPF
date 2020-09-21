@@ -80,6 +80,26 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
 
     /// <summary>
+    /// When true, updates discord rich presence with the
+    /// currently playing track and artist.
+    /// </summary>
+    public override bool UseRichPresence
+    {
+      get => Settings.Default.UseRichPresenceITunes;
+      set
+      {
+        if(UseRichPresence != value)
+        {
+          Settings.Default.UseRichPresenceITunes = value;
+          NotifyOfPropertyChange();
+
+          if (!UseRichPresence)
+            _discordClient.ClearPresence();
+        }
+      }
+    }
+
+    /// <summary>
     /// Gets if the "Disconnect" button should be enabled.
     /// </summary>
     public bool CanDisconnect
@@ -119,8 +139,6 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// Lock object to lock the data update.
     /// </summary>
     private readonly object _lockAnchor = new object();
-
-    private DiscordRpcClient _discordClient;
 
     #endregion Member
 
@@ -248,27 +266,29 @@ namespace Scrubbler.Scrobbling.Scrobbler
         if (++CountedSeconds == CurrentTrackLengthToScrobble)
         {
           // stop count timer to not trigger scrobble multiple times
-          //_countTimer.Stop();
           Scrobble().Forget();
           CurrentTrackScrobbled = true;
         }
 
-        _discordClient.SetPresence(new RichPresence()
+        if (UseRichPresence)
         {
-          Details = CurrentArtistName,
-          State = CurrentTrackName,
-          Assets = new Assets
+          _discordClient.SetPresence(new RichPresence()
           {
-            LargeImageKey = "icon",
-            LargeImageText = "Last.fm-Scrubbler-WPF",
-            SmallImageKey = "itunes",
-            SmallImageText = "iTunes"
-          },
-          Timestamps = new Timestamps
-          {
-            End = DateTimeOffset.UtcNow.AddSeconds(CurrentTrackLength - CountedSeconds).DateTime,
-          }
-        });
+            Details = CurrentArtistName,
+            State = CurrentTrackName,
+            Assets = new Assets
+            {
+              LargeImageKey = "icon",
+              LargeImageText = "Last.fm-Scrubbler-WPF",
+              SmallImageKey = "itunes",
+              SmallImageText = "iTunes"
+            },
+            Timestamps = new Timestamps
+            {
+              End = DateTimeOffset.UtcNow.AddSeconds(CurrentTrackLength - CountedSeconds).DateTime,
+            }
+          });
+        }
       }
       else
         _discordClient.ClearPresence();

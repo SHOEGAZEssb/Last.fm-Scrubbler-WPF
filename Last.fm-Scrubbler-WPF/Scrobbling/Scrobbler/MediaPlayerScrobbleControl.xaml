@@ -27,6 +27,8 @@
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="Status:" FontWeight="Bold"/>
@@ -84,9 +86,15 @@
       </CheckBox.ToolTip>
     </CheckBox>
 
-    <Separator Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9"/>
+    <CheckBox Grid.Row="0" Grid.Column="10" VerticalAlignment="Center" Content="Discord Rich Presence" IsChecked="{Binding UseRichPresence}">
+      <CheckBox.ToolTip>
+        <ToolTip>When checked, will update discord rich presence with currently playing track and artist.</ToolTip>
+      </CheckBox.ToolTip>
+    </CheckBox>
 
-    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9">
+    <Separator Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="11"/>
+
+    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="11">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="5"/>
