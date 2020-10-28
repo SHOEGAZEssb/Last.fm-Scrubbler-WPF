@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Scrubbler.Login
 {
@@ -36,7 +37,7 @@ namespace Scrubbler.Login
     /// </summary>
     public int RecentScrobbleCount
     {
-      get { return ActiveUser?.RecentScrobblesCache.Count() ?? 0; }
+      get { return ActiveUser?.RecentScrobblesCache?.Count() ?? 0; }
     }
 
     /// <summary>
@@ -53,11 +54,11 @@ namespace Scrubbler.Login
         NotifyOfPropertyChange(() => RecentScrobbleCount);
 
         if (ActiveUser != null)
-          ActiveUser.RecentScrobblesChanged -= User_RecentScrobblesChanged;
+          ActiveUser.RecentScrobblesCacheUpdated -= User_RecentScrobblesChanged;
         if (value != null)
         {
           Settings.Default.Username = value.Username;
-          value.RecentScrobblesChanged += User_RecentScrobblesChanged;
+          value.RecentScrobblesCacheUpdated += User_RecentScrobblesChanged;
         }
         else
           Settings.Default.Username = string.Empty;
@@ -200,9 +201,9 @@ namespace Scrubbler.Login
     /// <summary>
     /// Logs the selected user in.
     /// </summary>
-    public void LoginUser()
+    public async void LoginUser()
     {
-      LoginUser(SelectedUser);
+      await LoginUser(SelectedUser);
       if (_lastAuth.Authenticated)
         _windowManager.MessageBoxService.ShowDialog("Successfully switched user.");
       else
@@ -213,7 +214,7 @@ namespace Scrubbler.Login
     /// Logs the given <paramref name="usr"/> in.
     /// </summary>
     /// <param name="usr">User to log in.</param>
-    private void LoginUser(User usr)
+    private async Task LoginUser(User usr)
     {
       var session = new LastUserSession()
       {
@@ -223,7 +224,10 @@ namespace Scrubbler.Login
       };
 
       if (_lastAuth.LoadSession(session))
+      {
+        await usr.UpdateRecentScrobbles();
         ActiveUser = usr;
+      }
     }
 
     /// <summary>
@@ -239,9 +243,8 @@ namespace Scrubbler.Login
           {
             User usr = _userSerializer.Deserialize<User>(file);
             // connect and disconnect to serialize if recent scrobbles are different
-            usr.RecentScrobblesChanged += User_RecentScrobblesChanged;
-            usr.UpdateRecentScrobbles();
-            usr.RecentScrobblesChanged -= User_RecentScrobblesChanged;
+            usr.RecentScrobblesCacheUpdated += User_RecentScrobblesChanged;
+            usr.RecentScrobblesCacheUpdated -= User_RecentScrobblesChanged;
             usr._userAPI = _userAPI;
             AvailableUsers.Add(usr);
           }
@@ -306,14 +309,6 @@ namespace Scrubbler.Login
     private void User_RecentScrobblesChanged(object sender, EventArgs e)
     {
       NotifyOfPropertyChange(() => RecentScrobbleCount);
-      try
-      {
-        SerializeUser(sender as User);
-      }
-      catch(Exception ex)
-      {
-        Debug.WriteLine("Error serializing User {0}: {1}", (sender as User).Username, ex.Message);
-      }
     }
   }
 }

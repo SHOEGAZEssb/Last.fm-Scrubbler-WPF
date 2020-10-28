@@ -82,14 +82,18 @@ namespace Scrubbler.Scrobbling
     /// <returns>Response.</returns>
     public async Task<ScrobbleResponse> ScrobbleAsync(IEnumerable<Scrobble> scrobbles, bool needCaching = false)
     {
-      User.UpdateRecentScrobbles();
-      if (User.RecentScrobbles.Count + scrobbles.Count() > User.MAXSCROBBLESPERDAY)
+      await User.UpdateRecentScrobbles();
+      int recentScrobblesCount = User.RecentScrobblesCache.Count();
+      if (recentScrobblesCount + scrobbles.Count() > User.MAXSCROBBLESPERDAY)
         throw new InvalidOperationException($"Scrobbling these tracks would break the daily scrobble cap! " +
-                                            $"({User.MAXSCROBBLESPERDAY})\r\nYou have scrobbled {User.RecentScrobbles.Count} tracks in the past 24 hours.");
+                                            $"({User.MAXSCROBBLESPERDAY})\r\nYou have scrobbled {recentScrobblesCount} tracks in the past 24 hours.");
 
       ScrobbleResponse response = needCaching ? await _cachingScrobbler.ScrobbleAsync(scrobbles) : await _scrobbler.ScrobbleAsync(scrobbles);
       if (response.Success && response.Status == LastResponseStatus.Successful)
-        User.AddScrobbles(scrobbles, DateTime.Now);
+      {
+        //User.AddScrobbles(scrobbles, DateTime.Now);
+        await User.UpdateRecentScrobbles();
+      }
       return response;
     }
 

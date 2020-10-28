@@ -17,10 +17,10 @@ namespace Scrubbler.Login
     #region Properties
 
     /// <summary>
-    /// Event that fires when the <see cref="RecentScrobbles"/>
+    /// Event that fires when the <see cref="RecentScrobblesCache"/>
     /// change.
     /// </summary>
-    public event EventHandler RecentScrobblesChanged;
+    public event EventHandler RecentScrobblesCacheUpdated;
 
     /// <summary>
     /// Allowed scrobbles per day.
@@ -82,6 +82,7 @@ namespace Scrubbler.Login
       var page3 = await _userAPI.GetRecentScrobbles(Username, DateTimeOffset.UtcNow.Subtract(TimeSpan.FromHours(24)), null, false, 3, 1000);
 
       RecentScrobblesCache = page1.Content.Concat(page2.Content).Concat(page3.Content).ToArray();
+      RecentScrobblesCacheUpdated?.Invoke(this, EventArgs.Empty);
     }
   }
 }

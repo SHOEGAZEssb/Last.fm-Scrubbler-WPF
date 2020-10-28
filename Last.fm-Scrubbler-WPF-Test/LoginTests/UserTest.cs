@@ -69,7 +69,7 @@ namespace Scrubbler.Test.LoginTests
     }
 
     /// <summary>
-    /// Tests if the <see cref="User.RecentScrobblesChanged"/>
+    /// Tests if the <see cref="User.RecentScrobblesCacheUpdated"/>
     /// event fires correctly.
     /// </summary>
     [Test]
@@ -78,7 +78,7 @@ namespace Scrubbler.Test.LoginTests
       // given: User
       User user = new User("", "", false);
       bool eventFired = false;
-      user.RecentScrobblesChanged += (o, e) => eventFired = true;
+      user.RecentScrobblesCacheUpdated += (o, e) => eventFired = true;
 
       // when: adding a scrobble
       user.AddScrobbles(new[] { new Scrobble() });
