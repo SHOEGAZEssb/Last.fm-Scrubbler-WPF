@@ -36,7 +36,7 @@ namespace Scrubbler.Login
     /// </summary>
     public int RecentScrobbleCount
     {
-      get { return ActiveUser?.RecentScrobbles.Count ?? 0; }
+      get { return ActiveUser?.RecentScrobblesCache.Count() ?? 0; }
     }
 
     /// <summary>
@@ -129,6 +129,11 @@ namespace Scrubbler.Login
     /// </summary>
     private readonly ISerializer _userSerializer;
 
+    /// <summary>
+    /// The user api given to deserialized users.
+    /// </summary>
+    private readonly IUserApi _userAPI;
+
     #endregion Member
 
     /// <summary>
@@ -140,10 +145,11 @@ namespace Scrubbler.Login
     /// <param name="fileOperator">FileOperator used to write to disk.</param>
     /// <param name="directoryOperator">DirectoryOperator used to check and create directories.</param>
     /// <param name="userSerializer">Serializer used to serialize <see cref="User"/>.</param>
-    public UserViewModel(IExtendedWindowManager windowManager, ILastAuth lastAuth, IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer userSerializer)
+    public UserViewModel(IExtendedWindowManager windowManager, ILastAuth lastAuth, IUserApi userAPI, IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer userSerializer)
     {
       _windowManager = windowManager;
       _lastAuth = lastAuth;
+      _userAPI = userAPI ?? throw new ArgumentNullException(nameof(userAPI));
       _fileOperator = fileOperator;
       _directoryOperator = directoryOperator;
       _userSerializer = userSerializer;
@@ -163,7 +169,7 @@ namespace Scrubbler.Login
     {
       if (_windowManager.ShowDialog(new LoginViewModel(_lastAuth, _windowManager.MessageBoxService)).Value)
       {
-        User usr = new User(_lastAuth.UserSession.Username, _lastAuth.UserSession.Token, _lastAuth.UserSession.IsSubscriber);
+        User usr = new User(_lastAuth.UserSession.Username, _lastAuth.UserSession.Token, _lastAuth.UserSession.IsSubscriber, _userAPI);
         AvailableUsers.Add(usr);
         ActiveUser = usr;
         SerializeUsers();
@@ -236,6 +242,7 @@ namespace Scrubbler.Login
             usr.RecentScrobblesChanged += User_RecentScrobblesChanged;
             usr.UpdateRecentScrobbles();
             usr.RecentScrobblesChanged -= User_RecentScrobblesChanged;
+            usr._userAPI = _userAPI;
             AvailableUsers.Add(usr);
           }
           catch (Exception ex)
