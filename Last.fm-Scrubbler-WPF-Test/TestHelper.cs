@@ -1,7 +1,13 @@
-﻿using IF.Lastfm.Core.Objects;
+﻿using IF.Lastfm.Core.Api;
+using IF.Lastfm.Core.Api.Helpers;
+using IF.Lastfm.Core.Objects;
+using Moq;
+using Octokit;
+using Scrubbler.Login;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Scrubbler.Test
 {
@@ -126,6 +132,37 @@ namespace Scrubbler.Test
       }
 
       return albums;
+    }
+
+    /// <summary>
+    /// Creates a generic user that has the given <paramref name="tracks"/>
+    /// after <see cref="Login.User.UpdateRecentScrobbles"/> is called.
+    /// </summary>
+    /// <param name="tracks">Tracks of the user.</param>
+    /// <returns>User.</returns>
+    public static Login.User CreateUserWithRecentTracks(IEnumerable<LastTrack> tracks)
+    {
+      return CreateUserWithRecentTracks("TestUser", "TestToken", true, tracks);
+    }
+
+    public static Login.User CreateUserWithRecentTracks(string username, string token, bool isSubscriber, IEnumerable<LastTrack> tracks)
+    {
+      if (tracks == null || tracks.Count() > 1000)
+        throw new ArgumentException(nameof(tracks), "tracks is null or has more than 1000 tracks");
+
+      var userApiMock = new Mock<IUserApi>(MockBehavior.Strict);
+      // setup so first page returs the scrobbles
+      userApiMock.Setup(u => u.GetRecentScrobbles(username, It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(),
+                                                  It.IsAny<bool>(), 1, It.IsAny<int>()))
+                                                  .Returns(() => Task.Run(() => PageResponse<LastTrack>.CreateSuccessResponse(tracks)));
+      userApiMock.Setup(u => u.GetRecentScrobbles(username, It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(),
+                                                  It.IsAny<bool>(), 2, It.IsAny<int>()))
+                                                  .Returns(() => Task.Run(() => PageResponse<LastTrack>.CreateSuccessResponse()));
+      userApiMock.Setup(u => u.GetRecentScrobbles(username, It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(),
+                                            It.IsAny<bool>(), 3, It.IsAny<int>()))
+                                            .Returns(() => Task.Run(() => PageResponse<LastTrack>.CreateSuccessResponse()));
+
+      return new Login.User(username, token, isSubscriber, userApiMock.Object);
     }
   }
 }

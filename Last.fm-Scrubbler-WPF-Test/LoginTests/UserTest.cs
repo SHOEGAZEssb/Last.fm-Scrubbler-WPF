@@ -42,26 +42,12 @@ namespace Scrubbler.Test.LoginTests
     [Test]
     public async Task GetRecentScrobblesTest()
     {
-      // given: example data
-      string username = "TestUser";
-      string token = "TestToken";
-      bool subscriber = true;
-
+      // given: user
       var tracks = TestHelper.CreateGenericScrobbles(50);
       var expected = tracks.ToLastTracks();
-      var userApiMock = new Mock<IUserApi>(MockBehavior.Strict);
-      // setup so first page returs the scrobbles
-      userApiMock.Setup(u => u.GetRecentScrobbles(username, It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(),
-                                                  It.IsAny<bool>(), 1, It.IsAny<int>()))
-                                                  .Returns(() => Task.Run(() => PageResponse<LastTrack>.CreateSuccessResponse(expected)));
-      userApiMock.Setup(u => u.GetRecentScrobbles(username, It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(),
-                                                  It.IsAny<bool>(), 2, It.IsAny<int>()))
-                                                  .Returns(() => Task.Run(() => PageResponse<LastTrack>.CreateSuccessResponse()));
-      userApiMock.Setup(u => u.GetRecentScrobbles(username, It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(),
-                                            It.IsAny<bool>(), 3, It.IsAny<int>()))
-                                            .Returns(() => Task.Run(() => PageResponse<LastTrack>.CreateSuccessResponse()));
 
-      var user = new User(username, token, subscriber, userApiMock.Object);
+      var user = TestHelper.CreateUserWithRecentTracks(expected);
+
       bool eventFired = false;
       user.RecentScrobblesCacheUpdated += (o, e) => eventFired = true;
 
