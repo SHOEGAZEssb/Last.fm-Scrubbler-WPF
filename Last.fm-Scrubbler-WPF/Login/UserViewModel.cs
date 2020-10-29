@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Scrubbler.Login
 {
@@ -36,7 +37,7 @@ namespace Scrubbler.Login
     /// </summary>
     public int RecentScrobbleCount
     {
-      get { return ActiveUser?.RecentScrobbles.Count ?? 0; }
+      get { return ActiveUser?.RecentScrobblesCache?.Count() ?? 0; }
     }
 
     /// <summary>
@@ -53,11 +54,11 @@ namespace Scrubbler.Login
         NotifyOfPropertyChange(() => RecentScrobbleCount);
 
         if (ActiveUser != null)
-          ActiveUser.RecentScrobblesChanged -= User_RecentScrobblesChanged;
+          ActiveUser.RecentScrobblesCacheUpdated -= User_RecentScrobblesChanged;
         if (value != null)
         {
           Settings.Default.Username = value.Username;
-          value.RecentScrobblesChanged += User_RecentScrobblesChanged;
+          value.RecentScrobblesCacheUpdated += User_RecentScrobblesChanged;
         }
         else
           Settings.Default.Username = string.Empty;
@@ -129,6 +130,11 @@ namespace Scrubbler.Login
     /// </summary>
     private readonly ISerializer _userSerializer;
 
+    /// <summary>
+    /// The user api given to deserialized users.
+    /// </summary>
+    private readonly IUserApi _userApi;
+
     #endregion Member
 
     /// <summary>
@@ -137,13 +143,15 @@ namespace Scrubbler.Login
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="lastAuth">Last.fm authentication object.</param>
+    /// <param name="userApi">Api to get recent scrobbles with.</param>
     /// <param name="fileOperator">FileOperator used to write to disk.</param>
     /// <param name="directoryOperator">DirectoryOperator used to check and create directories.</param>
     /// <param name="userSerializer">Serializer used to serialize <see cref="User"/>.</param>
-    public UserViewModel(IExtendedWindowManager windowManager, ILastAuth lastAuth, IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer userSerializer)
+    public UserViewModel(IExtendedWindowManager windowManager, ILastAuth lastAuth, IUserApi userApi, IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer userSerializer)
     {
       _windowManager = windowManager;
       _lastAuth = lastAuth;
+      _userApi = userApi ?? throw new ArgumentNullException(nameof(userApi));
       _fileOperator = fileOperator;
       _directoryOperator = directoryOperator;
       _userSerializer = userSerializer;
@@ -163,7 +171,7 @@ namespace Scrubbler.Login
     {
       if (_windowManager.ShowDialog(new LoginViewModel(_lastAuth, _windowManager.MessageBoxService)).Value)
       {
-        User usr = new User(_lastAuth.UserSession.Username, _lastAuth.UserSession.Token, _lastAuth.UserSession.IsSubscriber);
+        User usr = new User(_lastAuth.UserSession.Username, _lastAuth.UserSession.Token, _lastAuth.UserSession.IsSubscriber, _userApi);
         AvailableUsers.Add(usr);
         ActiveUser = usr;
         SerializeUsers();
@@ -217,7 +225,10 @@ namespace Scrubbler.Login
       };
 
       if (_lastAuth.LoadSession(session))
+      {
         ActiveUser = usr;
+        usr.UpdateRecentScrobbles().Forget();
+      }
     }
 
     /// <summary>
@@ -233,9 +244,9 @@ namespace Scrubbler.Login
           {
             User usr = _userSerializer.Deserialize<User>(file);
             // connect and disconnect to serialize if recent scrobbles are different
-            usr.RecentScrobblesChanged += User_RecentScrobblesChanged;
-            usr.UpdateRecentScrobbles();
-            usr.RecentScrobblesChanged -= User_RecentScrobblesChanged;
+            usr.RecentScrobblesCacheUpdated += User_RecentScrobblesChanged;
+            usr.RecentScrobblesCacheUpdated -= User_RecentScrobblesChanged;
+            usr._userAPI = _userApi;
             AvailableUsers.Add(usr);
           }
           catch (Exception ex)
@@ -299,14 +310,6 @@ namespace Scrubbler.Login
     private void User_RecentScrobblesChanged(object sender, EventArgs e)
     {
       NotifyOfPropertyChange(() => RecentScrobbleCount);
-      try
-      {
-        SerializeUser(sender as User);
-      }
-      catch(Exception ex)
-      {
-        Debug.WriteLine("Error serializing User {0}: {1}", (sender as User).Username, ex.Message);
-      }
     }
   }
 }

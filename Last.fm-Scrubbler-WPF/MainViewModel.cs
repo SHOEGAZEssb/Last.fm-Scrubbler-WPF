@@ -185,7 +185,7 @@ namespace Scrubbler
     private TabViewModel[] SetupViewModels(ILocalFileFactory localFileFactory, IDirectoryOperator directoryOperator, ISerializer serializer, IGitHubClient gitHubClient,
                                  IProcessManager processManager, IDiscogsDataBaseClient discogsClient, IFileParserFactory fileParserFactory)
     {
-      UserViewModel = new UserViewModel(_windowManager, _client.Auth, _fileOperator, directoryOperator, serializer);
+      UserViewModel = new UserViewModel(_windowManager, _client.Auth, _client.User, _fileOperator, directoryOperator, serializer);
 
       _generalSettingsVM = new GeneralSettingsViewModel(_windowManager, gitHubClient, processManager);
 

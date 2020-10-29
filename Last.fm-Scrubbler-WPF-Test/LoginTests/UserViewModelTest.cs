@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Api;
+using IF.Lastfm.Core.Api.Helpers;
 using IF.Lastfm.Core.Objects;
 using Moq;
 using NUnit.Framework;
@@ -7,6 +8,7 @@ using Scrubbler.Login;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Scrubbler.Test.LoginTests
 {
@@ -23,27 +25,29 @@ namespace Scrubbler.Test.LoginTests
     public void AddUserTest()
     {
       // given: mocks
-      Mock<ILastAuth> lastAuthMock = new Mock<ILastAuth>();
+      var lastAuthMock = new Mock<ILastAuth>();
       lastAuthMock.Setup(l => l.Authenticated).Returns(true);
       bool isSubscriber = true;
       string username = "TestUsername";
       string token = "TestToken";
       lastAuthMock.Setup(l => l.UserSession).Returns(new LastUserSession() { IsSubscriber = isSubscriber, Token = token, Username = username });
 
-      Mock<IMessageBoxService> messageBoxServiceMock = new Mock<IMessageBoxService>(MockBehavior.Strict);
+      var userApiMock = new Mock<IUserApi>(MockBehavior.Strict);
 
-      Mock<IExtendedWindowManager> windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);
+      var messageBoxServiceMock = new Mock<IMessageBoxService>(MockBehavior.Strict);
+
+      var windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);
       windowManagerMock.Setup(w => w.ShowDialog(It.IsAny<LoginViewModel>(), It.IsAny<object>(), It.IsAny<IDictionary<string, object>>())).Returns(true);
       windowManagerMock.SetupGet(w => w.MessageBoxService).Returns(messageBoxServiceMock.Object);
 
-      Mock<IDirectoryOperator> directoryOperatorMock = new Mock<IDirectoryOperator>(MockBehavior.Strict);
+      var directoryOperatorMock = new Mock<IDirectoryOperator>(MockBehavior.Strict);
       directoryOperatorMock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true);
       directoryOperatorMock.Setup(d => d.GetFiles(It.IsAny<string>())).Returns(new string[0]);
 
-      Mock<ISerializer> userSerializerMock = new Mock<ISerializer>(MockBehavior.Strict);
+      var userSerializerMock = new Mock<ISerializer>(MockBehavior.Strict);
       userSerializerMock.Setup(u => u.Serialize(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<IEnumerable<Type>>()));
 
-      UserViewModel vm = new UserViewModel(windowManagerMock.Object, lastAuthMock.Object, null, directoryOperatorMock.Object, userSerializerMock.Object);
+      var vm = new UserViewModel(windowManagerMock.Object, lastAuthMock.Object, userApiMock.Object, null, directoryOperatorMock.Object, userSerializerMock.Object);
 
       // when: adding the user
       vm.AddUser();
@@ -68,30 +72,32 @@ namespace Scrubbler.Test.LoginTests
     public void RemoveUserTest()
     {
       // given: mocks
-      Mock<ILastAuth> lastAuthMock = new Mock<ILastAuth>();
+      var lastAuthMock = new Mock<ILastAuth>();
       lastAuthMock.Setup(l => l.Authenticated).Returns(true);
       bool isSubscriber = true;
       string username = "TestUsername";
       string token = "TestToken";
       lastAuthMock.Setup(l => l.UserSession).Returns(new LastUserSession() { IsSubscriber = isSubscriber, Token = token, Username = username });
 
-      Mock<IMessageBoxService> messageBoxServiceMock = new Mock<IMessageBoxService>(MockBehavior.Strict);
+      var userApiMock = new Mock<IUserApi>(MockBehavior.Strict);
 
-      Mock<IExtendedWindowManager> windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);
+      var messageBoxServiceMock = new Mock<IMessageBoxService>(MockBehavior.Strict);
+
+      var windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);
       windowManagerMock.Setup(w => w.ShowDialog(It.IsAny<LoginViewModel>(), It.IsAny<object>(), It.IsAny<IDictionary<string, object>>())).Returns(true);
       windowManagerMock.SetupGet(w => w.MessageBoxService).Returns(messageBoxServiceMock.Object);
 
-      Mock<IFileOperator> fileOperatorMock = new Mock<IFileOperator>(MockBehavior.Strict);
+      var fileOperatorMock = new Mock<IFileOperator>(MockBehavior.Strict);
       fileOperatorMock.Setup(f => f.Delete(It.IsAny<string>()));
 
-      Mock<IDirectoryOperator> directoryOperatorMock = new Mock<IDirectoryOperator>(MockBehavior.Strict);
+      var directoryOperatorMock = new Mock<IDirectoryOperator>(MockBehavior.Strict);
       directoryOperatorMock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true);
       directoryOperatorMock.Setup(d => d.GetFiles(It.IsAny<string>())).Returns(new string[0]);
 
-      Mock<ISerializer> userSerializerMock = new Mock<ISerializer>(MockBehavior.Strict);
+      var userSerializerMock = new Mock<ISerializer>(MockBehavior.Strict);
       userSerializerMock.Setup(u => u.Serialize(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<IEnumerable<Type>>()));
 
-      UserViewModel vm = new UserViewModel(windowManagerMock.Object, lastAuthMock.Object, fileOperatorMock.Object, directoryOperatorMock.Object, userSerializerMock.Object);
+      var vm = new UserViewModel(windowManagerMock.Object, lastAuthMock.Object, userApiMock.Object, fileOperatorMock.Object, directoryOperatorMock.Object, userSerializerMock.Object);
 
       vm.AddUser();
       vm.SelectedUser = vm.AvailableUsers.First();
@@ -112,7 +118,7 @@ namespace Scrubbler.Test.LoginTests
     public void DeserializeUsersTest()
     {
       // given: needed mocks
-      string[] files = new string[]
+      var files = new string[]
       {
         "TestUser1.xml",
         "TestUser2.xml",
@@ -120,25 +126,27 @@ namespace Scrubbler.Test.LoginTests
         "FileToBeIgnored.txt"
       };
 
-      Mock<IDirectoryOperator> directoryOperatorMock = new Mock<IDirectoryOperator>(MockBehavior.Strict);
+      var directoryOperatorMock = new Mock<IDirectoryOperator>(MockBehavior.Strict);
       directoryOperatorMock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true);
       directoryOperatorMock.Setup(d => d.GetFiles(It.IsAny<string>())).Returns(files);
 
-      User[] users = new User[]
+      var userApiMock = new Mock<IUserApi>(MockBehavior.Strict);
+
+      var users = new User[]
       {
-        new User("TestUser1", "TestToken1", true),
-        new User("TestUser2", "TestToken2", true),
-        new User("TestUser3", "TestToken3", true)
+        new User("TestUser1", "TestToken1", true, userApiMock.Object),
+        new User("TestUser2", "TestToken2", true, userApiMock.Object),
+        new User("TestUser3", "TestToken3", true, userApiMock.Object)
       };
 
-      Mock<ISerializer> userSerializerMock = new Mock<ISerializer>(MockBehavior.Strict);
+      var userSerializerMock = new Mock<ISerializer>(MockBehavior.Strict);
       for(int i = 0; i < users.Length; i++)
       {
         userSerializerMock.Setup(u => u.Deserialize<User>(files[i])).Returns(users[i]);
       }
 
       // when: creating the vm
-      UserViewModel vm = new UserViewModel(null, null, null, directoryOperatorMock.Object, userSerializerMock.Object);
+      var vm = new UserViewModel(null, null, userApiMock.Object, null, directoryOperatorMock.Object, userSerializerMock.Object);
 
       // then: users have been deserialized
       Assert.That(vm.AvailableUsers.Count, Is.EqualTo(users.Length));
@@ -152,7 +160,7 @@ namespace Scrubbler.Test.LoginTests
     public void LoginTest()
     {
       // given: mocks
-      Mock<ILastAuth> lastAuthMock = new Mock<ILastAuth>(MockBehavior.Strict);
+      var lastAuthMock = new Mock<ILastAuth>(MockBehavior.Strict);
       bool isSubscriber = true;
       string username = "TestUsername";
       string token = "TestToken";
@@ -160,23 +168,34 @@ namespace Scrubbler.Test.LoginTests
       lastAuthMock.Setup(l => l.LoadSession(It.IsAny<LastUserSession>())).Returns(true);
       lastAuthMock.Setup(l => l.Authenticated).Returns(true);
 
-      Mock<IMessageBoxService> messageBoxServiceMock = new Mock<IMessageBoxService>(MockBehavior.Strict);
+      var userApiMock = new Mock<IUserApi>(MockBehavior.Strict);
+      userApiMock.Setup(u => u.GetRecentScrobbles(It.IsAny<string>(), It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(),
+                                                  It.IsAny<bool>(), 1, It.IsAny<int>()))
+                                                  .Returns(() => Task.Run(() => PageResponse<LastTrack>.CreateSuccessResponse()));
+      userApiMock.Setup(u => u.GetRecentScrobbles(It.IsAny<string>(), It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(),
+                                                  It.IsAny<bool>(), 2, It.IsAny<int>()))
+                                                  .Returns(() => Task.Run(() => PageResponse<LastTrack>.CreateSuccessResponse()));
+      userApiMock.Setup(u => u.GetRecentScrobbles(It.IsAny<string>(), It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(),
+                                            It.IsAny<bool>(), 3, It.IsAny<int>()))
+                                            .Returns(() => Task.Run(() => PageResponse<LastTrack>.CreateSuccessResponse()));
+
+      var messageBoxServiceMock = new Mock<IMessageBoxService>(MockBehavior.Strict);
       messageBoxServiceMock.Setup(m => m.ShowDialog(It.IsAny<string>())).Returns(IMessageBoxServiceResult.OK);
 
-      Mock<IExtendedWindowManager> windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);
+      var windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);
       windowManagerMock.Setup(w => w.ShowDialog(It.IsAny<LoginViewModel>(), It.IsAny<object>(), It.IsAny<IDictionary<string, object>>())).Returns(true);
       windowManagerMock.SetupGet(w => w.MessageBoxService).Returns(messageBoxServiceMock.Object);
 
-      Mock<IFileOperator> fileOperatorMock = new Mock<IFileOperator>(MockBehavior.Strict);
+      var fileOperatorMock = new Mock<IFileOperator>(MockBehavior.Strict);
 
-      Mock<IDirectoryOperator> directoryOperatorMock = new Mock<IDirectoryOperator>(MockBehavior.Strict);
+      var directoryOperatorMock = new Mock<IDirectoryOperator>(MockBehavior.Strict);
       directoryOperatorMock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true);
-      directoryOperatorMock.Setup(d => d.GetFiles(It.IsAny<string>())).Returns(new string[0]);
+      directoryOperatorMock.Setup(d => d.GetFiles(It.IsAny<string>())).Returns(Array.Empty<string>());
 
-      Mock<ISerializer> userSerializerMock = new Mock<ISerializer>(MockBehavior.Strict);
+      var userSerializerMock = new Mock<ISerializer>(MockBehavior.Strict);
       userSerializerMock.Setup(u => u.Serialize(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<IEnumerable<Type>>()));
 
-      UserViewModel vm = new UserViewModel(windowManagerMock.Object, lastAuthMock.Object, fileOperatorMock.Object, directoryOperatorMock.Object, userSerializerMock.Object);
+      UserViewModel vm = new UserViewModel(windowManagerMock.Object, lastAuthMock.Object, userApiMock.Object, fileOperatorMock.Object, directoryOperatorMock.Object, userSerializerMock.Object);
       vm.AddUser();
       vm.SelectedUser = vm.AvailableUsers.First();
 

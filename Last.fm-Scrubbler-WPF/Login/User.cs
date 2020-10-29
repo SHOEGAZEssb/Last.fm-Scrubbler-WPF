@@ -1,8 +1,10 @@
-﻿using IF.Lastfm.Core.Objects;
+﻿using IF.Lastfm.Core.Api;
+using IF.Lastfm.Core.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Threading.Tasks;
 
 namespace Scrubbler.Login
 {
@@ -15,15 +17,15 @@ namespace Scrubbler.Login
     #region Properties
 
     /// <summary>
-    /// Event that fires when the <see cref="RecentScrobbles"/>
+    /// Event that fires when the <see cref="RecentScrobblesCache"/>
     /// change.
     /// </summary>
-    public event EventHandler RecentScrobblesChanged;
+    public event EventHandler RecentScrobblesCacheUpdated;
 
     /// <summary>
     /// Allowed scrobbles per day.
     /// </summary>
-    public const int MAXSCROBBLESPERDAY = 2800;
+    public const int MAXSCROBBLESPERDAY = 3000;
 
     /// <summary>
     /// Username of this user.
@@ -44,15 +46,18 @@ namespace Scrubbler.Login
     public bool IsSubscriber { get; private set; }
 
     /// <summary>
-    /// List of recent scrobbles.
-    /// Scrobbles older than a day should be removed from this.
-    /// No more than 2.8k scrobbles should be in here.
+    /// Cached recent scrobbles.
+    /// Call <see cref="UpdateRecentScrobbles"/> to update.
     /// </summary>
-    public IReadOnlyList<Tuple<Scrobble, DateTime>> RecentScrobbles => _recentScrobbles.AsReadOnly();
-    [DataMember]
-    private List<Tuple<Scrobble, DateTime>> _recentScrobbles;
+    public IEnumerable<LastTrack> RecentScrobblesCache { get; private set; }
 
     #endregion Properties
+
+    #region Member
+
+    internal IUserApi _userAPI;
+
+    #endregion Member
 
     /// <summary>
     /// Constructor.
@@ -60,42 +65,35 @@ namespace Scrubbler.Login
     /// <param name="username">Username of the user.</param>
     /// <param name="token">Login token.</param>
     /// <param name="isSubscriber">If this user is a subscriber.</param>
-    public User(string username, string token, bool isSubscriber)
+    /// <param name="userApi">Api to get recent scrobbles with.</param>
+    public User(string username, string token, bool isSubscriber, IUserApi userApi)
     {
       Username = username;
       Token = token;
       IsSubscriber = isSubscriber;
-      _recentScrobbles = new List<Tuple<Scrobble, DateTime>>(MAXSCROBBLESPERDAY);
+      _userAPI = userApi ?? throw new ArgumentNullException(nameof(userApi));
     }
 
     /// <summary>
-    /// Updates the <see cref="RecentScrobbles"/>,
-    /// removing scrobbles older than 1 day.
+    /// Gets the last 24 hours of scrobbles.
     /// </summary>
-    public void UpdateRecentScrobbles()
+    /// <returns>Task.</returns>
+    public async Task UpdateRecentScrobbles()
     {
-      int oldCount = RecentScrobbles.Count;
-      _recentScrobbles = RecentScrobbles.Where(i => (DateTime.Now - i.Item2) <= TimeSpan.FromDays(1)).ToList();
+      try
+      {
+        // get the last 3000 tracks
+        var page1 = await _userAPI.GetRecentScrobbles(Username, DateTimeOffset.UtcNow.Subtract(TimeSpan.FromHours(24)), null, false, 1, 1000);
+        var page2 = await _userAPI.GetRecentScrobbles(Username, DateTimeOffset.UtcNow.Subtract(TimeSpan.FromHours(24)), null, false, 2, 1000);
+        var page3 = await _userAPI.GetRecentScrobbles(Username, DateTimeOffset.UtcNow.Subtract(TimeSpan.FromHours(24)), null, false, 3, 1000);
 
-      if(oldCount != RecentScrobbles.Count)
-        RecentScrobblesChanged?.Invoke(this, EventArgs.Empty);
-    }
-
-    /// <summary>
-    /// Adds the given <paramref name="scrobbles"/> to
-    /// the <see cref="RecentScrobbles"/>.
-    /// </summary>
-    /// <param name="scrobbles">Scrobbles to add.</param>
-    /// <param name="timeScrobbled">The time this scrobble was scrobbled.
-    /// Leave null if you want to use the TimePlayed of the scrobble.</param>
-    public void AddScrobbles(IEnumerable<Scrobble> scrobbles, DateTime? timeScrobbled = null)
-    {
-      if (scrobbles == null)
-        throw new ArgumentNullException(nameof(scrobbles));
-
-      foreach (var scrobble in scrobbles)
-        _recentScrobbles.Add(new Tuple<Scrobble, DateTime>(scrobble, timeScrobbled ?? scrobble.TimePlayed.DateTime));
-      RecentScrobblesChanged?.Invoke(this, EventArgs.Empty);
+        RecentScrobblesCache = page1.Content.Concat(page2.Content).Concat(page3.Content).ToArray();
+        RecentScrobblesCacheUpdated?.Invoke(this, EventArgs.Empty);
+      }
+      catch (Exception ex)
+      {
+        RecentScrobblesCache = Enumerable.Empty<LastTrack>();
+      }
     }
   }
 }
