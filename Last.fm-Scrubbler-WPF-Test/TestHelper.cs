@@ -164,5 +164,30 @@ namespace Scrubbler.Test
 
       return new Login.User(username, token, isSubscriber, userApiMock.Object);
     }
+
+    /// <summary>
+    /// Creates a user that has hit the daily scrobble limit.
+    /// </summary>
+    /// <returns>User with reached limit.</returns>
+    public static Login.User CreateCappedUser()
+    {
+      var tracks1 = CreateGenericScrobbles(1000).ToLastTracks();
+      var tracks2 = CreateGenericScrobbles(1000).ToLastTracks();
+      var tracks3 = CreateGenericScrobbles(1000).ToLastTracks();
+
+      var userApiMock = new Mock<IUserApi>(MockBehavior.Strict);
+      // setup so first page returs the scrobbles
+      userApiMock.Setup(u => u.GetRecentScrobbles(It.IsAny<string>(), It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(),
+                                                  It.IsAny<bool>(), 1, It.IsAny<int>()))
+                                                  .Returns(() => Task.Run(() => PageResponse<LastTrack>.CreateSuccessResponse(tracks1)));
+      userApiMock.Setup(u => u.GetRecentScrobbles(It.IsAny<string>(), It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(),
+                                                  It.IsAny<bool>(), 2, It.IsAny<int>()))
+                                                  .Returns(() => Task.Run(() => PageResponse<LastTrack>.CreateSuccessResponse(tracks2)));
+      userApiMock.Setup(u => u.GetRecentScrobbles(It.IsAny<string>(), It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(),
+                                            It.IsAny<bool>(), 3, It.IsAny<int>()))
+                                            .Returns(() => Task.Run(() => PageResponse<LastTrack>.CreateSuccessResponse(tracks3)));
+
+      return new Login.User("TestUser", "TestToken", true, userApiMock.Object);
+    }
   }
 }

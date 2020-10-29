@@ -1,11 +1,7 @@
 ﻿using IF.Lastfm.Core.Api;
-using IF.Lastfm.Core.Api.Helpers;
-using IF.Lastfm.Core.Objects;
 using Moq;
 using NUnit.Framework;
 using Scrubbler.Login;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Scrubbler.Test.LoginTests
