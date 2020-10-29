@@ -133,7 +133,7 @@ namespace Scrubbler.Login
     /// <summary>
     /// The user api given to deserialized users.
     /// </summary>
-    private readonly IUserApi _userAPI;
+    private readonly IUserApi _userApi;
 
     #endregion Member
 
@@ -143,14 +143,15 @@ namespace Scrubbler.Login
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="lastAuth">Last.fm authentication object.</param>
+    /// <param name="userApi">Api to get recent scrobbles with.</param>
     /// <param name="fileOperator">FileOperator used to write to disk.</param>
     /// <param name="directoryOperator">DirectoryOperator used to check and create directories.</param>
     /// <param name="userSerializer">Serializer used to serialize <see cref="User"/>.</param>
-    public UserViewModel(IExtendedWindowManager windowManager, ILastAuth lastAuth, IUserApi userAPI, IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer userSerializer)
+    public UserViewModel(IExtendedWindowManager windowManager, ILastAuth lastAuth, IUserApi userApi, IFileOperator fileOperator, IDirectoryOperator directoryOperator, ISerializer userSerializer)
     {
       _windowManager = windowManager;
       _lastAuth = lastAuth;
-      _userAPI = userAPI ?? throw new ArgumentNullException(nameof(userAPI));
+      _userApi = userApi ?? throw new ArgumentNullException(nameof(userApi));
       _fileOperator = fileOperator;
       _directoryOperator = directoryOperator;
       _userSerializer = userSerializer;
@@ -170,7 +171,7 @@ namespace Scrubbler.Login
     {
       if (_windowManager.ShowDialog(new LoginViewModel(_lastAuth, _windowManager.MessageBoxService)).Value)
       {
-        User usr = new User(_lastAuth.UserSession.Username, _lastAuth.UserSession.Token, _lastAuth.UserSession.IsSubscriber, _userAPI);
+        User usr = new User(_lastAuth.UserSession.Username, _lastAuth.UserSession.Token, _lastAuth.UserSession.IsSubscriber, _userApi);
         AvailableUsers.Add(usr);
         ActiveUser = usr;
         SerializeUsers();
@@ -201,9 +202,9 @@ namespace Scrubbler.Login
     /// <summary>
     /// Logs the selected user in.
     /// </summary>
-    public async void LoginUser()
+    public void LoginUser()
     {
-      await LoginUser(SelectedUser);
+      LoginUser(SelectedUser);
       if (_lastAuth.Authenticated)
         _windowManager.MessageBoxService.ShowDialog("Successfully switched user.");
       else
@@ -214,7 +215,7 @@ namespace Scrubbler.Login
     /// Logs the given <paramref name="usr"/> in.
     /// </summary>
     /// <param name="usr">User to log in.</param>
-    private async Task LoginUser(User usr)
+    private void LoginUser(User usr)
     {
       var session = new LastUserSession()
       {
@@ -225,8 +226,8 @@ namespace Scrubbler.Login
 
       if (_lastAuth.LoadSession(session))
       {
-        await usr.UpdateRecentScrobbles();
         ActiveUser = usr;
+        usr.UpdateRecentScrobbles().Forget();
       }
     }
 
@@ -245,7 +246,7 @@ namespace Scrubbler.Login
             // connect and disconnect to serialize if recent scrobbles are different
             usr.RecentScrobblesCacheUpdated += User_RecentScrobblesChanged;
             usr.RecentScrobblesCacheUpdated -= User_RecentScrobblesChanged;
-            usr._userAPI = _userAPI;
+            usr._userAPI = _userApi;
             AvailableUsers.Add(usr);
           }
           catch (Exception ex)

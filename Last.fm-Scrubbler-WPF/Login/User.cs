@@ -65,6 +65,7 @@ namespace Scrubbler.Login
     /// <param name="username">Username of the user.</param>
     /// <param name="token">Login token.</param>
     /// <param name="isSubscriber">If this user is a subscriber.</param>
+    /// <param name="userApi">Api to get recent scrobbles with.</param>
     public User(string username, string token, bool isSubscriber, IUserApi userApi)
     {
       Username = username;
@@ -73,16 +74,26 @@ namespace Scrubbler.Login
       _userAPI = userApi ?? throw new ArgumentNullException(nameof(userApi));
     }
 
+    /// <summary>
+    /// Gets the last 24 hours of scrobbles.
+    /// </summary>
+    /// <returns>Task.</returns>
     public async Task UpdateRecentScrobbles()
     {
-      var scrobbles = new List<Scrobble>(3000);
-      // get the last 3000 tracks
-      var page1 = await _userAPI.GetRecentScrobbles(Username, DateTimeOffset.UtcNow.Subtract(TimeSpan.FromHours(24)), null, false, 1, 1000);
-      var page2 = await _userAPI.GetRecentScrobbles(Username, DateTimeOffset.UtcNow.Subtract(TimeSpan.FromHours(24)), null, false, 2, 1000);
-      var page3 = await _userAPI.GetRecentScrobbles(Username, DateTimeOffset.UtcNow.Subtract(TimeSpan.FromHours(24)), null, false, 3, 1000);
+      try
+      {
+        // get the last 3000 tracks
+        var page1 = await _userAPI.GetRecentScrobbles(Username, DateTimeOffset.UtcNow.Subtract(TimeSpan.FromHours(24)), null, false, 1, 1000);
+        var page2 = await _userAPI.GetRecentScrobbles(Username, DateTimeOffset.UtcNow.Subtract(TimeSpan.FromHours(24)), null, false, 2, 1000);
+        var page3 = await _userAPI.GetRecentScrobbles(Username, DateTimeOffset.UtcNow.Subtract(TimeSpan.FromHours(24)), null, false, 3, 1000);
 
-      RecentScrobblesCache = page1.Content.Concat(page2.Content).Concat(page3.Content).ToArray();
-      RecentScrobblesCacheUpdated?.Invoke(this, EventArgs.Empty);
+        RecentScrobblesCache = page1.Content.Concat(page2.Content).Concat(page3.Content).ToArray();
+        RecentScrobblesCacheUpdated?.Invoke(this, EventArgs.Empty);
+      }
+      catch
+      {
+        RecentScrobblesCache = Enumerable.Empty<LastTrack>();
+      }
     }
   }
 }
