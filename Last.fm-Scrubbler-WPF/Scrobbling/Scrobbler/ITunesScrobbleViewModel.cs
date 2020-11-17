@@ -326,7 +326,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <returns>Task.</returns>
     public override async Task Scrobble()
     {
-      if (EnableControls && CanScrobble)
+      if (CanScrobble)
       {
         EnableControls = false;
         Scrobble s = null;
