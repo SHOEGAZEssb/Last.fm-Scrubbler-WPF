@@ -90,9 +90,8 @@ namespace Scrubbler.Scrobbling
 
       ScrobbleResponse response = needCaching ? await _cachingScrobbler.ScrobbleAsync(scrobbles) : await _scrobbler.ScrobbleAsync(scrobbles);
       if (response.Success && response.Status == LastResponseStatus.Successful)
-      {
         await User.UpdateRecentScrobbles();
-      }
+
       return response;
     }
 
