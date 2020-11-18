@@ -39,7 +39,7 @@
       <Button x:Name="DownloadRelease" Grid.Column="2" Content="Download Release">
         <beh:Interaction.Triggers>
           <beh:EventTrigger EventName="Click">
-            <beh:CallMethodAction TargetObject="{Binding}" MethodName="UncheckAll"/>
+            <beh:CallMethodAction TargetObject="{Binding}" MethodName="DownloadRelease"/>
           </beh:EventTrigger>
         </beh:Interaction.Triggers>
       </Button>
