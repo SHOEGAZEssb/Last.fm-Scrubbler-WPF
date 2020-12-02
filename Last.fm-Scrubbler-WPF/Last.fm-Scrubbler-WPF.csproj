@@ -266,9 +266,13 @@
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Helper\FileParser\ConfigureJSONParserView.xaml.cs">
+      <DependentUpon>ConfigureJSONParserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\FileParser\ConfigureJSONParserViewModel.cs" />
     <Compile Include="Helper\FileParser\CSVFileParser.cs" />
     <Compile Include="Helper\FileParser\CSVFileParserViewModel.cs" />
-    <Compile Include="Helper\FileParser\CustomContractResolver.cs" />
+    <Compile Include="Helper\FileParser\CustomJSONContractResolver.cs" />
     <Compile Include="Helper\FileParser\FileParserBase.cs" />
     <Compile Include="Helper\FileParser\FileParseResult.cs" />
     <Compile Include="Helper\FileParser\FileParserFactory.cs" />
@@ -495,6 +499,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Configuration\NewVersionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Helper\FileParser\ConfigureJSONParserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

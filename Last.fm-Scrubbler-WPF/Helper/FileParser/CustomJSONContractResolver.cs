@@ -7,7 +7,7 @@ namespace Scrubbler.Helper.FileParser
   /// <summary>
   /// Custom json property resolver.
   /// </summary>
-  class CustomContractResolver : DefaultContractResolver
+  class CustomJSONContractResolver : DefaultContractResolver
   {
     /// <summary>
     /// Dictionary containing the mapped properties.
@@ -17,11 +17,16 @@ namespace Scrubbler.Helper.FileParser
     /// <summary>
     /// Constructor.
     /// </summary>
-    public CustomContractResolver()
+    public CustomJSONContractResolver()
     {
       _propertyMappings = new Dictionary<string, string>()
       {
-        { nameof(DatedScrobble.Played), "time" }
+        { nameof(DatedScrobble.TrackName), Properties.Settings.Default.JSONTrackNameProperty },
+        { nameof(DatedScrobble.ArtistName), Properties.Settings.Default.JSONArtistNameProperty },
+        { nameof(DatedScrobble.AlbumName), Properties.Settings.Default.JSONAlbumNameProperty },
+        { nameof(DatedScrobble.AlbumArtist), Properties.Settings.Default.JSONAlbumArtistNameProperty },
+        { nameof(DatedScrobble.Played), Properties.Settings.Default.JSONTimestampProperty },
+        { nameof(DatedScrobble.Duration), Properties.Settings.Default.JSONDurationProperty },
       };
     }
 

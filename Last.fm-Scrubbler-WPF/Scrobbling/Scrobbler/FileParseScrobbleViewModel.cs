@@ -156,7 +156,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       AvailableParser = new List<IFileParserViewModel>()
       {
         new CSVFileParserViewModel(parserFactory.CreateCSVFileParser(), WindowManager),
-        new JSONParserViewModel(parserFactory.CreateJSONFileParser())
+        new JSONParserViewModel(parserFactory.CreateJSONFileParser(), windowManager)
       };
       SelectedParser = AvailableParser.FirstOrDefault();
 

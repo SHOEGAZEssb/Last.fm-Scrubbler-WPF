@@ -17,7 +17,7 @@ namespace Scrubbler.Helper.FileParser
       var errors = new List<string>();
       var settings = new JsonSerializerSettings()
       {
-        ContractResolver = new CustomContractResolver(),
+        ContractResolver = new CustomJSONContractResolver(),
         Error = delegate (object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
         {
           errors.Add($"Object Number: {args.ErrorContext.Member} | Error: {args.ErrorContext.Error.Message}");

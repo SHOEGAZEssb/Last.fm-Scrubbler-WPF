@@ -1,0 +1,58 @@
+﻿<Window x:Class="Scrubbler.Helper.FileParser.ConfigureJSONParserView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             Height="230" Width="300" ResizeMode="NoResize" Loaded="Window_Loaded">
+
+  <Grid Margin="5">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <TextBlock Grid.Row="0" Text="Track Name Property:"/>
+    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding TrackNameProperty}"/>
+
+    <TextBlock Grid.Row="2" Text="Artist Name Property:"/>
+    <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding ArtistNameProperty}"/>
+
+    <TextBlock Grid.Row="4" Text="Album Name Property:"/>
+    <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding AlbumNameProperty}"/>
+
+    <TextBlock Grid.Row="6" Text="Album Artist Name Property:"/>
+    <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding AlbumArtistNameProperty}"/>
+
+    <TextBlock Grid.Row="8" Text="Timestamp Property:"/>
+    <TextBox Grid.Row="8" Grid.Column="2" Text="{Binding TimestampProperty}"/>
+
+    <TextBlock Grid.Row="10" Text="Duration Property:"/>
+    <TextBox Grid.Row="10" Grid.Column="2" Text="{Binding DurationProperty}"/>
+
+    <Button x:Name="LoadDefaults" Grid.Row="12" Grid.Column="2" Content="Load Defaults" HorizontalAlignment="Right"/>
+
+    <StackPanel Grid.Row="14" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
+      <Button x:Name="SaveAndClose" Content="Save &amp; Close" HorizontalAlignment="Right" Margin="0,0,5,0"/>
+      <Button x:Name="Cancel" Content="Cancel" HorizontalAlignment="Right"/>
+    </StackPanel>
+  </Grid>
+</Window>

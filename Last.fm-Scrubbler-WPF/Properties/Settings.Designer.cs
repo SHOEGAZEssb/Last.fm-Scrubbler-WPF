@@ -12,7 +12,7 @@ namespace Scrubbler.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.7.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -224,6 +224,78 @@ namespace Scrubbler.Properties {
             }
             set {
                 this["UseRichPresenceITunes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("trackName")]
+        public string JSONTrackNameProperty {
+            get {
+                return ((string)(this["JSONTrackNameProperty"]));
+            }
+            set {
+                this["JSONTrackNameProperty"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("artistName")]
+        public string JSONArtistNameProperty {
+            get {
+                return ((string)(this["JSONArtistNameProperty"]));
+            }
+            set {
+                this["JSONArtistNameProperty"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("albumName")]
+        public string JSONAlbumNameProperty {
+            get {
+                return ((string)(this["JSONAlbumNameProperty"]));
+            }
+            set {
+                this["JSONAlbumNameProperty"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("albumArtist")]
+        public string JSONAlbumArtistNameProperty {
+            get {
+                return ((string)(this["JSONAlbumArtistNameProperty"]));
+            }
+            set {
+                this["JSONAlbumArtistNameProperty"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("time")]
+        public string JSONTimestampProperty {
+            get {
+                return ((string)(this["JSONTimestampProperty"]));
+            }
+            set {
+                this["JSONTimestampProperty"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("duration")]
+        public string JSONDurationProperty {
+            get {
+                return ((string)(this["JSONDurationProperty"]));
+            }
+            set {
+                this["JSONDurationProperty"] = value;
             }
         }
     }
