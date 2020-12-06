@@ -86,6 +86,9 @@
             <DataTrigger Binding="{Binding DBFilePath}" Value="">
               <Setter Property="IsEnabled" Value="False"/>
             </DataTrigger>
+            <DataTrigger Binding="{Binding MediaPlayerDatabaseType}" Value="{x:Static local:MediaPlayerDatabaseType.WMP}">
+              <Setter Property="IsEnabled" Value="True"/>
+            </DataTrigger>
           </Style.Triggers>
         </Style>
       </Button.Style>
