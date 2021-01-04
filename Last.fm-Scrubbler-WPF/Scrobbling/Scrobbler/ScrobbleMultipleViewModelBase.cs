@@ -65,7 +65,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Gets if all scrobbles can currently be selected.
     /// </summary>
-    public bool CanCheckAll => Scrobbles?.Any(s => !s.ToScrobble) ?? false;
+    public bool CanCheckAll => Scrobbles?.Any(s => s.CanScrobble && !s.ToScrobble) ?? false;
 
     /// <summary>
     /// Gets if all scrobbles can currently be unchecked.

@@ -19,6 +19,11 @@ namespace Scrubbler.Scrobbling.Data
     bool IsSelected { get; set; }
 
     /// <summary>
+    /// Gets if this track can be scrobbled with the current configuration.
+    /// </summary>
+    bool CanScrobble { get; }
+
+    /// <summary>
     /// Event that triggers when <see cref="ToScrobble"/>
     /// changes.
     /// </summary>

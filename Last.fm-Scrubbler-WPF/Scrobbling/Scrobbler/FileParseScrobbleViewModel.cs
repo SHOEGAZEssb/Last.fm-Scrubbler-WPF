@@ -304,7 +304,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public override void CheckAll()
     {
-      SetToScrobbleState(Scrobbles.Where(i => i.IsEnabled), true);
+      SetToScrobbleState(Scrobbles.Where(i => i.CanScrobble), true);
     }
 
     /// <summary>
@@ -312,7 +312,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public override void UncheckAll()
     {
-      SetToScrobbleState(Scrobbles.Where(i => i.IsEnabled), false);
+      SetToScrobbleState(Scrobbles.Where(i => i.CanScrobble), false);
     }
 
     /// <summary>
@@ -320,7 +320,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public override void CheckSelected()
     {
-      SetToScrobbleState(Scrobbles.Where(i => i.IsSelected && i.IsEnabled), true);
+      SetToScrobbleState(Scrobbles.Where(i => i.IsSelected && i.CanScrobble), true);
     }
 
     /// <summary>
@@ -328,7 +328,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public override void UncheckSelected()
     {
-      SetToScrobbleState(Scrobbles.Where(i => i.IsSelected && i.IsEnabled), false);
+      SetToScrobbleState(Scrobbles.Where(i => i.IsSelected && i.CanScrobble), false);
     }
   }
 }

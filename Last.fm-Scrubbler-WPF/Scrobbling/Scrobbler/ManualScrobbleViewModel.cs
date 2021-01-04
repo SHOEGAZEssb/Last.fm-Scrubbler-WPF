@@ -3,7 +3,6 @@ using IF.Lastfm.Core.Objects;
 using Scrubbler.Helper;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Scrubbler.Scrobbling.Scrobbler

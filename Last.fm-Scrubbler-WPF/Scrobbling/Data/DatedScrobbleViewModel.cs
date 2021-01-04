@@ -16,12 +16,9 @@ namespace Scrubbler.Scrobbling.Data
     public DateTime Played => _scrobble.Played;
 
     /// <summary>
-    /// Gets if the "Scrobble?" CheckBox is enabled.
+    /// Gets if this track can be scrobbled with the current configuration.
     /// </summary>
-    public bool IsEnabled
-    {
-      get { return _scrobble.Played > DateTime.Now.Subtract(TimeSpan.FromDays(14)); }
-    }
+    public override bool CanScrobble => base.CanScrobble && _scrobble.Played > DateTime.Now.Subtract(TimeSpan.FromDays(14));
 
     #endregion Properties
 

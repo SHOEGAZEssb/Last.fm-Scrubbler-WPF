@@ -2,8 +2,6 @@
 using IF.Lastfm.Core.Api.Helpers;
 using IF.Lastfm.Core.Objects;
 using Moq;
-using Octokit;
-using Scrubbler.Login;
 using System;
 using System.Collections.Generic;
 using System.Linq;

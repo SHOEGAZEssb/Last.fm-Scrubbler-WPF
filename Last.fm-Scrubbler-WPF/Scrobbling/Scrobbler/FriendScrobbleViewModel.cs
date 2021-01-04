@@ -174,7 +174,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public override void CheckAll()
     {
-      foreach (var vm in Scrobbles.Where(i => i.IsEnabled))
+      foreach (var vm in Scrobbles.Where(i => i.CanScrobble))
       {
         vm.ToScrobble = true;
       }
@@ -185,7 +185,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public override void UncheckAll()
     {
-      foreach (var vm in Scrobbles.Where(i => i.IsEnabled))
+      foreach (var vm in Scrobbles.Where(i => i.CanScrobble))
       {
         vm.ToScrobble = false;
       }

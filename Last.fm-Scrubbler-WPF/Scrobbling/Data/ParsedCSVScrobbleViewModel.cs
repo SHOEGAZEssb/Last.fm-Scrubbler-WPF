@@ -1,5 +1,4 @@
 ﻿using Scrubbler.Scrobbling.Scrobbler;
-using System;
 
 namespace Scrubbler.Scrobbling.Data
 {
@@ -13,10 +12,7 @@ namespace Scrubbler.Scrobbling.Data
     /// <summary>
     /// Gets if the "Scrobble?" CheckBox is enabled.
     /// </summary>
-    public new bool IsEnabled
-    {
-      get => _scrobbleMode == ScrobbleMode.ImportMode || Played > DateTime.Now.Subtract(TimeSpan.FromDays(14));
-    }
+    public override bool CanScrobble => _scrobbleMode == ScrobbleMode.ImportMode || base.CanScrobble;
 
     #endregion Properties
 

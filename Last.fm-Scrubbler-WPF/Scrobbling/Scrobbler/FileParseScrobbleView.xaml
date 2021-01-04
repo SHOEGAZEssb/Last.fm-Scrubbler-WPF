@@ -83,7 +83,7 @@
           <GridViewColumn Header="Scrobble?" scrub:GridViewSort.PropertyName="ToScrobble">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <CheckBox IsChecked="{Binding ToScrobble}" IsEnabled="{Binding IsEnabled}" HorizontalAlignment="Center"/>
+                <CheckBox IsChecked="{Binding ToScrobble}" IsEnabled="{Binding CanScrobble}" HorizontalAlignment="Center"/>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>

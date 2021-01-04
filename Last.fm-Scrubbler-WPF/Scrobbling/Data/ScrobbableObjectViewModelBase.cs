@@ -56,6 +56,11 @@ namespace Scrubbler.Scrobbling.Data
     }
     private bool _isSelected;
 
+    /// <summary>
+    /// Gets if this track can be scrobbled with the current configuration.
+    /// </summary>
+    public virtual bool CanScrobble => !string.IsNullOrEmpty(TrackName) && !string.IsNullOrEmpty(ArtistName);
+
     #endregion Properties
 
     #region Construction
@@ -66,7 +71,9 @@ namespace Scrubbler.Scrobbling.Data
     /// <param name="scrobble"></param>
     public ScrobbableObjectViewModelBase(ScrobbleBase scrobble)
       : base(scrobble)
-    { }
+    {
+      PropertyChanged += ScrobbableObjectViewModelBase_PropertyChanged;
+    }
 
     #endregion Construction
 
@@ -88,6 +95,12 @@ namespace Scrubbler.Scrobbling.Data
     public void UpdateIsSelectedSilent(bool isSelected)
     {
       _isSelected = isSelected;
+    }
+
+    private void ScrobbableObjectViewModelBase_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+      if (e.PropertyName == nameof(TrackName) || e.PropertyName == nameof(ArtistName))
+        NotifyOfPropertyChange(nameof(CanScrobble));
     }
   }
 }

@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
