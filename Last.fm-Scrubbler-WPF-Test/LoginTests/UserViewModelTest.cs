@@ -42,7 +42,7 @@ namespace Scrubbler.Test.LoginTests
 
       var directoryOperatorMock = new Mock<IDirectoryOperator>(MockBehavior.Strict);
       directoryOperatorMock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true);
-      directoryOperatorMock.Setup(d => d.GetFiles(It.IsAny<string>())).Returns(new string[0]);
+      directoryOperatorMock.Setup(d => d.GetFiles(It.IsAny<string>())).Returns(Array.Empty<string>());
 
       var userSerializerMock = new Mock<ISerializer>(MockBehavior.Strict);
       userSerializerMock.Setup(u => u.Serialize(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<IEnumerable<Type>>()));
@@ -92,7 +92,7 @@ namespace Scrubbler.Test.LoginTests
 
       var directoryOperatorMock = new Mock<IDirectoryOperator>(MockBehavior.Strict);
       directoryOperatorMock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true);
-      directoryOperatorMock.Setup(d => d.GetFiles(It.IsAny<string>())).Returns(new string[0]);
+      directoryOperatorMock.Setup(d => d.GetFiles(It.IsAny<string>())).Returns(Array.Empty<string>());
 
       var userSerializerMock = new Mock<ISerializer>(MockBehavior.Strict);
       userSerializerMock.Setup(u => u.Serialize(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<IEnumerable<Type>>()));
