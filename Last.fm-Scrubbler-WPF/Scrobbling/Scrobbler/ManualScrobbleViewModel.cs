@@ -88,6 +88,23 @@ namespace Scrubbler.Scrobbling.Scrobbler
     private TimeSpan _duration;
 
     /// <summary>
+    /// Number of times listened to the track.
+    /// </summary>
+    public int Amount
+    {
+      get => _amount;
+      set
+      {
+        if(Amount != value)
+        {
+          _amount = value;
+          NotifyOfPropertyChange();
+        }
+      }
+    }
+    private int _amount;
+
+    /// <summary>
     /// ViewModel for selecting the time to scrobble.
     /// </summary>
     public ScrobbleTimeViewModel ScrobbleTimeVM
@@ -127,6 +144,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
       : base(windowManager, "Manual Scrobbler")
     {
       ScrobbleTimeVM = new ScrobbleTimeViewModel();
+      Duration = TimeSpan.FromSeconds(1);
+      Amount = 1;
     }
 
     /// <summary>
@@ -139,12 +158,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
         EnableControls = false;
         OnStatusUpdated($"Trying to scrobble '{Track}'...");
 
-        var scrobble = CreateScrobbles().First();
-        var response = await Scrobbler.ScrobbleAsync(scrobble);
+        var scrobbles = CreateScrobbles();
+        var response = await Scrobbler.ScrobbleAsync(scrobbles);
         if (response.Success && response.Status == LastResponseStatus.Successful)
-          OnStatusUpdated($"Successfully scrobbled '{scrobble.Track}'");
+          OnStatusUpdated($"Successfully scrobbled '{Track}'");
         else
-          OnStatusUpdated($"Error while scrobbling '{scrobble.Track}': {response.Status}");
+          OnStatusUpdated($"Error while scrobbling '{Track}': {response.Status}");
       }
       catch (Exception ex)
       {
@@ -163,7 +182,16 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <returns>List with scrobbles.</returns>
     protected override IEnumerable<Scrobble> CreateScrobbles()
     {
-      return new[] { new Scrobble(Artist, Album, Track, ScrobbleTimeVM.Time) { AlbumArtist = AlbumArtist, Duration = Duration } };
+      DateTime time = ScrobbleTimeVM.Time;
+
+      var scrobbles = new Scrobble[Amount];
+      for (int i = 0; i < Amount; i++)
+      {
+        scrobbles[i] = new Scrobble(Artist, Album, Track, time) { AlbumArtist = AlbumArtist, Duration = Duration };
+        time = time.Subtract(Duration);
+      }
+
+      return scrobbles;
     }
 
     /// <summary>
