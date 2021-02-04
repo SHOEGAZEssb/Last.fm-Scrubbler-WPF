@@ -8,6 +8,7 @@ using Scrubbler.Scrobbling.Scrobbler;
 using Scrubbler.Scrobbling;
 using Scrubbler.Helper;
 using IF.Lastfm.Core.Api.Enums;
+using System.Collections.Generic;
 
 namespace Scrubbler.Test.ScrobblingTests
 {
@@ -27,8 +28,8 @@ namespace Scrubbler.Test.ScrobblingTests
       Scrobble expected = new Scrobble("TestArtist", "TestAlbum", "TestTrack", DateTime.Now) { AlbumArtist = "TestAlbumArtist", Duration = TimeSpan.FromSeconds(30) };
 
       Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>();
-      Scrobble actual = null;
-      scrobblerMock.Setup(i => i.ScrobbleAsync(It.IsAny<Scrobble>(), false)).Callback<Scrobble, bool>((s, c) => actual = s)
+      IEnumerable<Scrobble> actual = null;
+      scrobblerMock.Setup(i => i.ScrobbleAsync(It.IsAny<IEnumerable<Scrobble>>(), false)).Callback<IEnumerable<Scrobble>, bool>((s, c) => actual = s)
                                                                             .Returns(Task.Run(() => new ScrobbleResponse(LastResponseStatus.Successful)));
 
       Mock<IExtendedWindowManager> windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);
@@ -47,7 +48,7 @@ namespace Scrubbler.Test.ScrobblingTests
 
       await vm.Scrobble();
 
-      Assert.That(actual.IsEqualScrobble(expected), Is.True);
+      Assert.That(TestHelper.IsEqualScrobble(actual, new[] { expected }), Is.True);
     }
 
     /// <summary>
