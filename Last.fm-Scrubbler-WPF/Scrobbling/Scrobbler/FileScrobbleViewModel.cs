@@ -40,7 +40,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Supported file formats.
     /// </summary>
-    private static readonly string[] SUPPORTEDFILES = new string[] { ".flac", ".mp3", ".m4a", ".wma" };
+    private static readonly string[] SUPPORTEDFILES = new string[] { ".flac", ".mp3", ".m4a", ".wav", ".wma" };
 
     /// <summary>
     /// Factory used to create <see cref="ILocalFile"/>s.
@@ -82,7 +82,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       {
         IOpenFileDialog ofd = WindowManager.CreateOpenFileDialog();
         ofd.Multiselect = true;
-        ofd.Filter = "Music Files|*.flac;*.mp3;*.m4a;*.wma";
+        ofd.Filter = "Music Files|*.flac;*.mp3;*.m4a;*.wav;*.wma";
 
         if (ofd.ShowDialog())
           await ParseFiles(ofd.FileNames);
