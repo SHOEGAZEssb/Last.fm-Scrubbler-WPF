@@ -40,7 +40,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// Supported file formats.
     /// </summary>
-    private static readonly string[] SUPPORTEDFILES = new string[] { ".flac", ".mp3", ".m4a", ".wav", ".wma" };
+    private static readonly string[] SUPPORTEDFILES = new string[] { ".flac", ".mp3", ".m4a", ".ogg", ".wav", ".wma" };
 
     /// <summary>
     /// Factory used to create <see cref="ILocalFile"/>s.
@@ -82,7 +82,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       {
         IOpenFileDialog ofd = WindowManager.CreateOpenFileDialog();
         ofd.Multiselect = true;
-        ofd.Filter = "Music Files|*.flac;*.mp3;*.m4a;*.wav;*.wma";
+        ofd.Filter = "Music Files|*.flac;*.mp3;*.m4a;*.ogg;*.wav;*.wma";
 
         if (ofd.ShowDialog())
           await ParseFiles(ofd.FileNames);
@@ -141,7 +141,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       {
         OnStatusUpdated($"Finished parsing selected files. {errors.Count} files could not be parsed");
         if (WindowManager.MessageBoxService.ShowDialog("Some files could not be parsed. Do you want to save a text file with the files that could not be parsed?",
-                                                        "Error parsing files", IMessageBoxServiceButtons.YesNo) == IMessageBoxServiceResult.Yes)
+                                                       "Error parsing files", IMessageBoxServiceButtons.YesNo) == IMessageBoxServiceResult.Yes)
         {
           IFileDialog sfd = WindowManager.CreateSaveFileDialog();
           sfd.Filter = "Text Files|*.txt";
