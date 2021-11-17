@@ -5,6 +5,7 @@ using Scrubbler.ExtraFunctions;
 using Scrubbler.Helper;
 using Scrubbler.Helper.FileParser;
 using Scrubbler.Login;
+using Scrubbler.Properties;
 using Scrubbler.Scrobbling;
 using System;
 using System.Collections.Generic;
@@ -143,6 +144,13 @@ namespace Scrubbler
                          IProcessManager processManager, IDiscogsDataBaseClient discogsClient, IFileParserFactory fileParserFactory)
     {
       _windowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));
+
+      if (Settings.Default.FirstStart)
+      {
+        _windowManager.MessageBoxService.ShowDialog("This tool is still in beta. Bugs can and will happen. Use the preview button before scrobbling anything and please be careful with your account.", "Warning", IMessageBoxServiceButtons.OK, IMessageBoxServiceIcon.Warning);
+        Settings.Default.FirstStart = false;
+      }
+
       _client = client ?? throw new ArgumentNullException(nameof(client));
       _scrobblerFactory = scrobblerFactory ?? throw new ArgumentNullException(nameof(scrobblerFactory));
       _fileOperator = fileOperator ?? throw new ArgumentNullException(nameof(fileOperator));
@@ -198,7 +206,7 @@ namespace Scrubbler
       // we do this later to stop a NullReferenceException (we create scrobblers here anyways!)
       UserViewModel.ActiveUserChanged += UserViewModel_ActiveUserChanged;
 
-      if(UserViewModel.ActiveUser != null)
+      if (UserViewModel.ActiveUser != null)
         CreateScrobblers();
 
       return new TabViewModel[] { _scrobblerVM, _extraFunctionsVM };
