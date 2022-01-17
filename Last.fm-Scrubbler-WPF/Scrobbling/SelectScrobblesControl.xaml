@@ -18,6 +18,10 @@
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
 
     <Button Grid.Column="0" Content="Check All" IsEnabled="{Binding CanCheckAll}">
@@ -49,7 +53,23 @@
       </beh:Interaction.Triggers>
     </Button>
 
-    <TextBlock Grid.Column="9" VerticalAlignment="Center">
+    <Button Grid.Column="8" Content="Check 3000" IsEnabled="{Binding CanCheckFirst3000}">
+      <beh:Interaction.Triggers>
+        <beh:EventTrigger EventName="Click">
+          <beh:CallMethodAction TargetObject="{Binding}" MethodName="CheckFirst3000"/>
+        </beh:EventTrigger>
+      </beh:Interaction.Triggers>
+    </Button>
+
+    <Button Grid.Column="10" Content="Uncheck 3000" IsEnabled="{Binding CanUncheckFirst3000}">
+      <beh:Interaction.Triggers>
+        <beh:EventTrigger EventName="Click">
+          <beh:CallMethodAction TargetObject="{Binding}" MethodName="UncheckFirst3000"/>
+        </beh:EventTrigger>
+      </beh:Interaction.Triggers>
+    </Button>
+
+    <TextBlock Grid.Column="12" VerticalAlignment="Center">
       <TextBlock.Text>
         <MultiBinding StringFormat="{}Num to scrobble: {0} / {1} | Selected: {2}">
           <Binding Path="ToScrobbleCount"/>

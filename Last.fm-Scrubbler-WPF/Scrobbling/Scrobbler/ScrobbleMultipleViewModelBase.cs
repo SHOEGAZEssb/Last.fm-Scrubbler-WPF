@@ -83,6 +83,16 @@ namespace Scrubbler.Scrobbling.Scrobbler
     public bool CanUncheckSelected => Scrobbles?.Any(s => s.IsSelected && s.ToScrobble) ?? false;
 
     /// <summary>
+    /// Gets if the first 3000 scrobbles can be checked.
+    /// </summary>
+    public bool CanCheckFirst3000 => Scrobbles?.Take(3000).Any(s => s.CanScrobble && !s.ToScrobble) ?? false;
+
+    /// <summary>
+    /// Gets if the first 3000 scrobbles can be unchecked.
+    /// </summary>
+    public bool CanUncheckFirst3000 => Scrobbles?.Take(3000).Any(s => s.ToScrobble) ?? false;
+
+    /// <summary>
     /// Gets the amount of scrobbles that are
     /// marked as "ToScrobble".
     /// </summary>
@@ -146,6 +156,22 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
 
     /// <summary>
+    /// Marks the first 3000 scrobbles as "ToScrobble".
+    /// </summary>
+    public virtual void CheckFirst3000()
+    {
+      SetToScrobbleState(Scrobbles.Take(3000), true);
+    }
+
+    /// <summary>
+    /// Marks the first 3000 scrobbles as not "ToScrobble".
+    /// </summary>
+    public virtual void UncheckFirst3000()
+    {
+      SetToScrobbleState(Scrobbles.Take(3000), false);
+    }
+
+    /// <summary>
     /// Sets the "ToScrobble" state of the given <paramref name="toSet"/>.
     /// </summary>
     /// <param name="toSet">Items whose "ToScrobble" state to set.</param>
@@ -190,6 +216,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
       NotifyOfPropertyChange(() => CanUncheckAll);
       NotifyOfPropertyChange(() => CanCheckSelected);
       NotifyOfPropertyChange(() => CanUncheckSelected);
+      NotifyOfPropertyChange(() => CanCheckFirst3000);
+      NotifyOfPropertyChange(() => CanUncheckFirst3000);
       NotifyOfPropertyChange(() => ToScrobbleCount);
       NotifyOfPropertyChange(() => MaxToScrobbleCount);
       NotifyOfPropertyChange(() => SelectedCount);
