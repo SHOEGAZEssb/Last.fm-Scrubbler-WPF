@@ -20,6 +20,9 @@
             <DataTemplate DataType="{x:Type local:PasteYourTasteViewModel}">
               <local:PasteYourTasteView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type local:CSVSplitterViewModel}">
+              <local:CSVSplitterView/>
+            </DataTemplate>
             <DataTemplate DataType="{x:Type local:CSVDownloaderViewModel}">
               <local:CSVDownloaderView/>
             </DataTemplate>

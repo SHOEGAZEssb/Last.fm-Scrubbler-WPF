@@ -278,6 +278,10 @@
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="ExtraFunctions\CSVSplitterView.xaml.cs">
+      <DependentUpon>CSVSplitterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ExtraFunctions\CSVSplitterViewModel.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helper\FileParser\ConfigureJSONParserView.xaml.cs">
       <DependentUpon>ConfigureJSONParserView.xaml</DependentUpon>
@@ -492,6 +496,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ExtraFunctions\CSVDownloaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ExtraFunctions\CSVSplitterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

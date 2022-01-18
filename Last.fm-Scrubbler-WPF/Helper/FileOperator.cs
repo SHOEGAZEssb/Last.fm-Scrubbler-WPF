@@ -38,5 +38,38 @@ namespace Scrubbler.Helper
     {
       File.WriteAllText(path, contents);
     }
+
+    /// <summary>
+    /// Opens a text file, reads all lines of the file,
+    /// and then closes the file.
+    /// </summary>
+    /// <param name="path">The file to read.</param>
+    /// <returns>The read lines.</returns>
+    public string[] ReadAllLines(string path)
+    {
+      return File.ReadAllLines(path);
+    }
+
+    /// <summary>
+    /// Opens a System.IO.FileStream on the specified path
+    /// with read/write access with no sharing.
+    /// </summary>
+    /// <param name="path">The file to open.</param>
+    /// <param name="mode">Mode to open the file in.</param>
+    /// <returns>Stream of the opened file.</returns>
+    public FileStream Open(string path, FileMode mode)
+    {
+      return File.Open(path, mode);
+    }
+
+    /// <summary>
+    /// Determines whether the specified file exists.
+    /// </summary>
+    /// <param name="path">The file to check.</param>
+    /// <returns>True if the file already exists, otherwise false.</returns>
+    public bool Exists(string path)
+    {
+      return File.Exists(path);
+    }
   }
 }

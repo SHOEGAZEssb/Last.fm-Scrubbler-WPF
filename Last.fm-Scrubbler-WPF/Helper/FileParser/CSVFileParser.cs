@@ -30,6 +30,18 @@ namespace Scrubbler.Helper.FileParser
       var errors = new List<string>();
       string[] fields = null;
 
+      //var lines = System.IO.File.ReadAllLines(file);
+      //using(var s = System.IO.File.OpenWrite("test.csv"))
+      //{
+      //  using (var sw = new System.IO.StreamWriter(s))
+      //  {
+      //    for (int i = 0; i < 200; i++)
+      //    {
+      //      sw.WriteLine(lines[i]);
+      //    }
+      //  }
+      //}
+
       using (var parser = new TextFieldParser(file, Encoding.GetEncoding(Settings.Default.CSVEncoding)))
       {
         parser.SetDelimiters(Settings.Default.CSVDelimiters.Select(x => new string(x, 1)).ToArray());

@@ -39,7 +39,9 @@ namespace Scrubbler.ExtraFunctions
     private TabViewModel[] CreateViewModels(IExtendedWindowManager windowManager, IUserApi userAPI, IFileOperator fileOperator)
     {
       var pasteYourTasteVM = new PasteYourTasteViewModel(userAPI);
-      pasteYourTasteVM.StatusUpdated += VM_StatusUpdated; ;
+      pasteYourTasteVM.StatusUpdated += VM_StatusUpdated;
+      var csvSplitterVM = new CSVSplitterViewModel(windowManager, fileOperator);
+      csvSplitterVM.StatusUpdated += VM_StatusUpdated;
       var csvDownloaderVM = new CSVDownloaderViewModel(windowManager, userAPI, fileOperator);
       csvDownloaderVM.StatusUpdated += VM_StatusUpdated;
       var collageCreatorVM = new CollageCreatorViewModel(windowManager, userAPI);
@@ -47,7 +49,7 @@ namespace Scrubbler.ExtraFunctions
       var milestoneCheckerVM = new MilestoneCheckerViewModel(userAPI);
       milestoneCheckerVM.StatusUpdated += VM_StatusUpdated;
 
-      return new TabViewModel[] { pasteYourTasteVM, csvDownloaderVM, collageCreatorVM, milestoneCheckerVM };
+      return new TabViewModel[] { pasteYourTasteVM, csvSplitterVM, csvDownloaderVM, collageCreatorVM, milestoneCheckerVM };
     }
 
     /// <summary>
