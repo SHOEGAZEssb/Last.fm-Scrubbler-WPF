@@ -3,11 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d"
-             Height="230" Width="300" ResizeMode="NoResize" Loaded="Window_Loaded">
+             Height="320" Width="310" ResizeMode="NoResize" Loaded="Window_Loaded">
 
   <Grid Margin="5">
     <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
@@ -30,27 +39,47 @@
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
-    <TextBlock Grid.Row="0" Text="Track Name Property:"/>
-    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding TrackNameProperty}"/>
+    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="Mandatory Fields:" FontWeight="Bold"/>
 
-    <TextBlock Grid.Row="2" Text="Artist Name Property:"/>
-    <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding ArtistNameProperty}"/>
+    <TextBlock Grid.Row="2" Text="Track Name Property:"/>
+    <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding TrackNameProperty}"/>
 
-    <TextBlock Grid.Row="4" Text="Album Name Property:"/>
-    <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding AlbumNameProperty}"/>
+    <TextBlock Grid.Row="4" Text="Artist Name Property:"/>
+    <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding ArtistNameProperty}"/>
 
-    <TextBlock Grid.Row="6" Text="Album Artist Name Property:"/>
-    <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding AlbumArtistNameProperty}"/>
+    <GridSplitter Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="1"/>
 
-    <TextBlock Grid.Row="8" Text="Timestamp Property:"/>
-    <TextBox Grid.Row="8" Grid.Column="2" Text="{Binding TimestampProperty}"/>
+    <TextBlock Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Text="Optional Fields:" FontWeight="Bold"/>
 
-    <TextBlock Grid.Row="10" Text="Duration Property:"/>
-    <TextBox Grid.Row="10" Grid.Column="2" Text="{Binding DurationProperty}"/>
+    <TextBlock Grid.Row="8" Text="Album Name Property:"/>
+    <TextBox Grid.Row="8" Grid.Column="2" Text="{Binding AlbumNameProperty}"/>
 
-    <Button x:Name="LoadDefaults" Grid.Row="12" Grid.Column="2" Content="Load Defaults" HorizontalAlignment="Right"/>
+    <TextBlock Grid.Row="10" Text="Album Artist Name Property:"/>
+    <TextBox Grid.Row="10" Grid.Column="2" Text="{Binding AlbumArtistNameProperty}"/>
 
-    <StackPanel Grid.Row="14" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
+    <TextBlock Grid.Row="12" Text="Timestamp Property:"/>
+    <TextBox Grid.Row="12" Grid.Column="2" Text="{Binding TimestampProperty}"/>
+
+    <TextBlock Grid.Row="14" Text="Duration Property:"/>
+    <TextBox Grid.Row="14" Grid.Column="2" Text="{Binding DurationProperty}"/>
+
+    <TextBlock Grid.Row="16" Text="Milliseconds Played Property:"/>
+    <TextBox Grid.Row="16" Grid.Column="2" Text="{Binding MillisecondsPlayedProperty}"/>
+    <CheckBox Grid.Row="18" Content="Filter under:" VerticalAlignment="Center" IsChecked="{Binding FilterShortPlayedSongs}"/>
+    <Grid Grid.Row="18" Grid.Column="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="3"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+
+      <xctk:IntegerUpDown Grid.Column="0" Minimum="1" Value="{Binding PlayedMillisecondsThreshold}"/>
+      <TextBlock Grid.Column="2" Text="played ms"/>
+    </Grid>
+
+    <Button x:Name="LoadDefaults" Grid.Row="20" Grid.Column="2" Content="Load Defaults" HorizontalAlignment="Right"/>
+
+    <StackPanel Grid.Row="22" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
       <Button x:Name="SaveAndClose" Content="Save &amp; Close" HorizontalAlignment="Right" Margin="0,0,5,0"/>
       <Button x:Name="Cancel" Content="Cancel" HorizontalAlignment="Right"/>
     </StackPanel>

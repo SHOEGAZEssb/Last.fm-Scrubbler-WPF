@@ -118,10 +118,67 @@ namespace Scrubbler.Helper.FileParser
     }
     private string _durationProperty;
 
+    /// <summary>
+    /// Name of the "milliseconds played" property
+    /// in the JSON file.
+    /// </summary>
+    public string MillisecondsPlayedProperty
+    {
+      get => _millisecondsPlayedProperty;
+      set
+      {
+        if (MillisecondsPlayedProperty != value)
+        {
+          _millisecondsPlayedProperty = value;
+          NotifyOfPropertyChange();
+        }
+      }
+    }
+    private string _millisecondsPlayedProperty;
+
+    /// <summary>
+    /// If tracks with less playtime than <see cref="PlayedMillisecondsThreshold"/>
+    /// should be ignored.
+    /// </summary>
+    public bool FilterShortPlayedSongs
+    {
+      get => _filterShortPlayedSongs;
+      set
+      {
+        if (FilterShortPlayedSongs != value)
+        {
+          _filterShortPlayedSongs = value;
+          NotifyOfPropertyChange();
+        }
+      }
+    }
+    private bool _filterShortPlayedSongs;
+
+    /// <summary>
+    /// Tracks with playtime shorter than this threshold
+    /// are ignored if <see cref="FilterShortPlayedSongs"/> is true.
+    /// </summary>
+    public int PlayedMillisecondsThreshold
+    {
+      get => _playedMillisecondsThreshold;
+      set
+      {
+        if (PlayedMillisecondsThreshold != value)
+        {
+          _playedMillisecondsThreshold = value;
+          NotifyOfPropertyChange();
+        }
+      }
+    }
+    private int _playedMillisecondsThreshold;
+
     #endregion Properties
 
     #region Construction
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public ConfigureJSONParserViewModel()
     {
       ReadSettings();
@@ -129,6 +186,9 @@ namespace Scrubbler.Helper.FileParser
 
     #endregion Construction
 
+    /// <summary>
+    /// Saves the settings and closes the window.
+    /// </summary>
     public void SaveAndClose()
     {
       Settings.Default.JSONTrackNameProperty = TrackNameProperty;
@@ -137,14 +197,23 @@ namespace Scrubbler.Helper.FileParser
       Settings.Default.JSONAlbumArtistNameProperty = AlbumArtistNameProperty;
       Settings.Default.JSONTimestampProperty = TimestampProperty;
       Settings.Default.JSONDurationProperty = DurationProperty;
+      Settings.Default.JSONMillisecondsPlayedProperty = MillisecondsPlayedProperty;
+      Settings.Default.JSONFilterShortPlayedSongs = FilterShortPlayedSongs;
+      Settings.Default.JSONPlayedMillisecondsThreshold = PlayedMillisecondsThreshold;
       TryClose(true);
     }
 
+    /// <summary>
+    /// Closes the window without saving any settings.
+    /// </summary>
     public void Cancel()
     {
       TryClose(false);
     }
 
+    /// <summary>
+    /// Loads the default value of all settings.
+    /// </summary>
     public void LoadDefaults()
     {
       TrackNameProperty = Settings.Default.Properties[nameof(Settings.Default.JSONTrackNameProperty)].DefaultValue.ToString();
@@ -153,8 +222,14 @@ namespace Scrubbler.Helper.FileParser
       AlbumArtistNameProperty = Settings.Default.Properties[nameof(Settings.Default.JSONAlbumArtistNameProperty)].DefaultValue.ToString();
       TimestampProperty = Settings.Default.Properties[nameof(Settings.Default.JSONTimestampProperty)].DefaultValue.ToString();
       DurationProperty = Settings.Default.Properties[nameof(Settings.Default.JSONDurationProperty)].DefaultValue.ToString();
+      MillisecondsPlayedProperty = Settings.Default.Properties[nameof(Settings.Default.JSONMillisecondsPlayedProperty)].DefaultValue.ToString();
+      FilterShortPlayedSongs = bool.Parse(Settings.Default.Properties[nameof(Settings.Default.JSONFilterShortPlayedSongs)].DefaultValue.ToString());
+      PlayedMillisecondsThreshold = int.Parse(Settings.Default.Properties[nameof(Settings.Default.JSONPlayedMillisecondsThreshold)].DefaultValue.ToString());
     }
 
+    /// <summary>
+    /// Reads the saved settings.
+    /// </summary>
     private void ReadSettings()
     {
       TrackNameProperty = Settings.Default.JSONTrackNameProperty;
@@ -163,6 +238,9 @@ namespace Scrubbler.Helper.FileParser
       AlbumArtistNameProperty = Settings.Default.JSONAlbumArtistNameProperty;
       TimestampProperty = Settings.Default.JSONTimestampProperty;
       DurationProperty = Settings.Default.JSONDurationProperty;
+      MillisecondsPlayedProperty = Settings.Default.JSONMillisecondsPlayedProperty;
+      FilterShortPlayedSongs = Settings.Default.JSONFilterShortPlayedSongs;
+      PlayedMillisecondsThreshold = Settings.Default.JSONPlayedMillisecondsThreshold;
     }
   }
 }

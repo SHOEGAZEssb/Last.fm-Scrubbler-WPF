@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
+using Scrubbler.Properties;
 using Scrubbler.Scrobbling.Data;
 using Scrubbler.Scrobbling.Scrobbler;
 
@@ -25,7 +27,10 @@ namespace Scrubbler.Helper.FileParser
         }
       };
 
-      var parsedscrobbles = JsonConvert.DeserializeObject<DatedScrobble[]>(File.ReadAllText(file), settings);
+      var parsedscrobbles = JsonConvert.DeserializeObject<PlayLengthDatedScrobble[]>(File.ReadAllText(file), settings);
+      if (Settings.Default.JSONFilterShortPlayedSongs)
+        parsedscrobbles = parsedscrobbles.Where(s => s.MillisecondsPlayed >= Settings.Default.JSONPlayedMillisecondsThreshold)
+                                         .ToArray();
       return new FileParseResult(parsedscrobbles, errors);
     }
   }

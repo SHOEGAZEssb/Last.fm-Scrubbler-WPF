@@ -27,6 +27,7 @@ namespace Scrubbler.Helper.FileParser
         { nameof(DatedScrobble.AlbumArtist), Properties.Settings.Default.JSONAlbumArtistNameProperty },
         { nameof(DatedScrobble.Played), Properties.Settings.Default.JSONTimestampProperty },
         { nameof(DatedScrobble.Duration), Properties.Settings.Default.JSONDurationProperty },
+        { nameof(PlayLengthDatedScrobble.MillisecondsPlayed), Properties.Settings.Default.JSONMillisecondsPlayedProperty }
       };
     }
 
