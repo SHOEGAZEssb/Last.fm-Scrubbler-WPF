@@ -5,10 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Configure CSV Parser" Height="325" Width="300" ResizeMode="NoResize" Loaded="Window_Loaded" >
+        Title="Configure CSV Parser" Height="350" Width="300" ResizeMode="NoResize" Loaded="Window_Loaded" >
 
-  <Grid>
+  <Grid Margin="5">
     <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="5"/>
@@ -31,45 +34,48 @@
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
       <RowDefinition Height="Auto"/>
-      <RowDefinition Height="5"/>
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="5"/>
     </Grid.ColumnDefinitions>
 
-    <TextBlock Grid.Row="1" Grid.Column="1" Text="Artist Field Index:"/>
-    <xctk:IntegerUpDown Grid.Row="1" Grid.Column="3" Value="{Binding ArtistFieldIndex}" Minimum="0"/>
+    <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="Mandatory Fields:" FontWeight="Bold"/>
 
-    <TextBlock Grid.Row="3" Grid.Column="1" Text="Album Field Index:"/>
-    <xctk:IntegerUpDown Grid.Row="3" Grid.Column="3" Value="{Binding AlbumFieldIndex}" Minimum="0"/>
+    <TextBlock Grid.Row="2" Grid.Column="0" Text="Artist Field Index:"/>
+    <xctk:IntegerUpDown Grid.Row="2" Grid.Column="2" Value="{Binding ArtistFieldIndex}" Minimum="0"/>
 
-    <TextBlock Grid.Row="5" Grid.Column="1" Text="Track Field Index:"/>
-    <xctk:IntegerUpDown Grid.Row="5" Grid.Column="3" Value="{Binding TrackFieldIndex}" Minimum="0"/>
+    <TextBlock Grid.Row="4" Grid.Column="0" Text="Track Field Index:"/>
+    <xctk:IntegerUpDown Grid.Row="4" Grid.Column="2" Value="{Binding TrackFieldIndex}" Minimum="0"/>
 
-    <TextBlock Grid.Row="7" Grid.Column="1" Text="Timestamp Field Index:"/>
-    <xctk:IntegerUpDown Grid.Row="7" Grid.Column="3" Value="{Binding TimestampFieldIndex}" Minimum="0"/>
+    <GridSplitter Grid.Row="5" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="1"/>
 
-    <TextBlock Grid.Row="9" Grid.Column="1" Text="Album Artist Field Index:"/>
-    <xctk:IntegerUpDown Grid.Row="9" Grid.Column="3" Value="{Binding AlbumArtistFieldIndex}" Minimum="0"/>
+    <TextBlock Grid.Row="6" Grid.ColumnSpan="3" Text="Optional Fields:" FontWeight="Bold"/>
 
-    <TextBlock Grid.Row="11" Grid.Column="1" Text="Duration Field Index:"/>
-    <xctk:IntegerUpDown Grid.Row="11" Grid.Column="3" Value="{Binding DurationFieldIndex}" Minimum="0"/>
+    <TextBlock Grid.Row="8" Grid.Column="0" Text="Album Field Index:"/>
+    <xctk:IntegerUpDown Grid.Row="8" Grid.Column="2" Value="{Binding AlbumFieldIndex}" Minimum="0"/>
 
-    <TextBlock Grid.Row="13" Grid.Column="1" Text="Delimiters:"/>
-    <TextBox Grid.Row="13" Grid.Column="3" Text="{Binding Delimiters}"/>
+    <TextBlock Grid.Row="10" Grid.Column="0" Text="Timestamp Field Index:"/>
+    <xctk:IntegerUpDown Grid.Row="10" Grid.Column="2" Value="{Binding TimestampFieldIndex}" Minimum="0"/>
 
-    <CheckBox Grid.Row="15" Grid.Column="1" Grid.ColumnSpan="3" IsChecked="{Binding HasFieldsEnclosedInQuotes}" Content="Has Fields Enclosed In Quotes"/>
+    <TextBlock Grid.Row="12" Grid.Column="0" Text="Album Artist Field Index:"/>
+    <xctk:IntegerUpDown Grid.Row="12" Grid.Column="2" Value="{Binding AlbumArtistFieldIndex}" Minimum="0"/>
 
-    <TextBlock Grid.Row="17" Grid.Column="1" Text="Encoding:"/>
-    <ComboBox Grid.Row="17" Grid.Column="3" ItemsSource="{Binding AvailableEncodings}" SelectedItem="{Binding SelectedEncoding}" DisplayMemberPath="EncodingName"/>
+    <TextBlock Grid.Row="14" Grid.Column="0" Text="Duration Field Index:"/>
+    <xctk:IntegerUpDown Grid.Row="14" Grid.Column="2" Value="{Binding DurationFieldIndex}" Minimum="0"/>
 
-    <Button x:Name="LoadDefaults" Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="4" Content="Load Defaults" HorizontalAlignment="Right"/>
+    <TextBlock Grid.Row="16" Grid.Column="0" Text="Delimiters:"/>
+    <TextBox Grid.Row="16" Grid.Column="2" Text="{Binding Delimiters}"/>
 
-    <StackPanel Grid.Row="21" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
+    <CheckBox Grid.Row="18" Grid.Column="0" Grid.ColumnSpan="3" IsChecked="{Binding HasFieldsEnclosedInQuotes}" Content="Has Fields Enclosed In Quotes"/>
+
+    <TextBlock Grid.Row="20" Grid.Column="0" Text="Encoding:"/>
+    <ComboBox Grid.Row="20" Grid.Column="2" ItemsSource="{Binding AvailableEncodings}" SelectedItem="{Binding SelectedEncoding}" DisplayMemberPath="EncodingName"/>
+
+    <Button x:Name="LoadDefaults" Grid.Row="22" Grid.Column="0" Grid.ColumnSpan="4" Content="Load Defaults" HorizontalAlignment="Right"/>
+
+    <StackPanel Grid.Row="24" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
       <Button x:Name="SaveAndClose" Content="Save &amp; Close" HorizontalAlignment="Right" Margin="0,0,5,0"/>
       <Button x:Name="Cancel" Content="Cancel" HorizontalAlignment="Right"/>
     </StackPanel>
