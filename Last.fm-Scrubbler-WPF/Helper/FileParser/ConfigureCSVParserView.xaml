@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Configure CSV Parser" Height="350" Width="300" ResizeMode="NoResize" Loaded="Window_Loaded" >
+        Title="Configure CSV Parser" Height="375" Width="300" ResizeMode="NoResize" Loaded="Window_Loaded" >
 
   <Grid Margin="5">
     <Grid.RowDefinitions>
