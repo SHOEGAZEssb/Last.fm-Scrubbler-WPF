@@ -185,7 +185,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       MaxResults = 25;
       Scrobbles = new ObservableCollection<FetchedTrackViewModel>();
 
-      SearchCommand = new DelegateCommand((o) => Search());
+      SearchCommand = new DelegateCommand((o) => Search().Forget());
     }
 
     #endregion Construction
