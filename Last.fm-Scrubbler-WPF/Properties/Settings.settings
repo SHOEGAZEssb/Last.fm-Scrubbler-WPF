@@ -54,19 +54,19 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="JSONTrackNameProperty" Type="System.String" Scope="User">
-      <Value Profile="(Default)">trackName</Value>
+      <Value Profile="(Default)">master_metadata_track_name</Value>
     </Setting>
     <Setting Name="JSONArtistNameProperty" Type="System.String" Scope="User">
-      <Value Profile="(Default)">artistName</Value>
+      <Value Profile="(Default)">master_metadata_album_artist_name</Value>
     </Setting>
     <Setting Name="JSONAlbumNameProperty" Type="System.String" Scope="User">
-      <Value Profile="(Default)">albumName</Value>
+      <Value Profile="(Default)">master_metadata_album_album_name</Value>
     </Setting>
     <Setting Name="JSONAlbumArtistNameProperty" Type="System.String" Scope="User">
       <Value Profile="(Default)">albumArtist</Value>
     </Setting>
     <Setting Name="JSONTimestampProperty" Type="System.String" Scope="User">
-      <Value Profile="(Default)">time</Value>
+      <Value Profile="(Default)">ts</Value>
     </Setting>
     <Setting Name="JSONDurationProperty" Type="System.String" Scope="User">
       <Value Profile="(Default)">duration</Value>

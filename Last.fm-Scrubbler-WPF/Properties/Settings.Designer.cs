@@ -229,7 +229,7 @@ namespace Scrubbler.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("trackName")]
+        [global::System.Configuration.DefaultSettingValueAttribute("master_metadata_track_name")]
         public string JSONTrackNameProperty {
             get {
                 return ((string)(this["JSONTrackNameProperty"]));
@@ -241,7 +241,7 @@ namespace Scrubbler.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("artistName")]
+        [global::System.Configuration.DefaultSettingValueAttribute("master_metadata_album_artist_name")]
         public string JSONArtistNameProperty {
             get {
                 return ((string)(this["JSONArtistNameProperty"]));
@@ -253,7 +253,7 @@ namespace Scrubbler.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("albumName")]
+        [global::System.Configuration.DefaultSettingValueAttribute("master_metadata_album_album_name")]
         public string JSONAlbumNameProperty {
             get {
                 return ((string)(this["JSONAlbumNameProperty"]));
@@ -277,7 +277,7 @@ namespace Scrubbler.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("time")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ts")]
         public string JSONTimestampProperty {
             get {
                 return ((string)(this["JSONTimestampProperty"]));
