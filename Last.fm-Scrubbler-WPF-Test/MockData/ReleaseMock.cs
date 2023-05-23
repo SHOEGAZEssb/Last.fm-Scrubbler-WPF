@@ -1,4 +1,5 @@
 ﻿using Octokit;
+using System;
 using System.Collections.Generic;
 
 namespace Scrubbler.Test.MockData
@@ -19,13 +20,8 @@ namespace Scrubbler.Test.MockData
     /// <param name="asset">A fake asset.</param>
     /// <param name="tagName">A fake tag name.</param>
     public ReleaseMock(string name, string body, string htmlUrl, ReleaseAssetMock asset, string tagName)
-    {
-      Name = name;
-      Body = body;
-      HtmlUrl = htmlUrl;
-      Assets = new List<ReleaseAsset>(new[] { asset });
-      TagName = tagName;
-    }
+      : base("", htmlUrl, "", "", 0, "", tagName, "", name, body, false, false, DateTimeOffset.Now, null, null, "", "", new List<ReleaseAsset>(new[] { asset }))
+    { }
 
     #endregion Construction
   }

@@ -1,4 +1,5 @@
 ﻿using Octokit;
+using System;
 
 namespace Scrubbler.Test.MockData
 {
@@ -14,9 +15,8 @@ namespace Scrubbler.Test.MockData
     /// </summary>
     /// <param name="browserDownloadUrl">A fake url.</param>
     public ReleaseAssetMock(string browserDownloadUrl)
-    {
-      BrowserDownloadUrl = browserDownloadUrl;
-    }
+      : base("", 0, "", "", "", "", "", 0, 0, DateTimeOffset.Now, DateTimeOffset.Now, browserDownloadUrl, null)
+    { }
 
     #endregion Construction
   }

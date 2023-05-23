@@ -150,7 +150,7 @@ namespace Scrubbler.Configuration
       try
       {
         EnableControls = false;
-        var releases = await _gitHubClient.Repository.Release.GetAll("coczero", "Last.fm-Scrubbler-WPF");
+        var releases = await _gitHubClient.Repository.Release.GetAll("SHOEGAZEssb", "Last.fm-Scrubbler-WPF");
         var newestRelease = releases[0];
 
         Version newestVersion;
