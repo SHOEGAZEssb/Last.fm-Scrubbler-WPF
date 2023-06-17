@@ -7,7 +7,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
   /// Base class for ViewModels that scrobble multiple scrobbles
   /// with selectable time.
   /// </summary>
-  /// <typeparam name="T"></typeparam>
+  /// <typeparam name="T">Type of the scrobble.</typeparam>
   public abstract class ScrobbleMultipleTimeViewModelBase<T> : ScrobbleMultipleViewModelBase<T> where T : IScrobbableObjectViewModel
   {
     #region Properties
@@ -26,6 +26,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
     private ScrobbleTimeViewModel _scrobbleTimeVM;
 
+    /// <summary>
+    /// Gets if the scrobble button on the ui is enabled.
+    /// </summary>
+    public override bool CanScrobble => base.CanScrobble && ScrobbleTimeVM.IsTimeValid();
+
     #endregion Properties
 
     #region Construction
@@ -39,8 +44,14 @@ namespace Scrubbler.Scrobbling.Scrobbler
       : base(windowManager, displayName)
     {
       ScrobbleTimeVM = new ScrobbleTimeViewModel();
+      ScrobbleTimeVM.TimeChanged += ScrobbleTimeVM_TimeChanged;
     }
 
     #endregion Construction
+
+    private void ScrobbleTimeVM_TimeChanged(object sender, System.EventArgs e)
+    {
+      NotifyOfPropertyChange(() => CanScrobble);
+    }
   }
 }

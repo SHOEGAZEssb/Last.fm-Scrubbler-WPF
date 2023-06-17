@@ -25,7 +25,7 @@ namespace Scrubbler
     /// <summary>
     /// The minimum DateTime for all DateTimePickers.
     /// </summary>
-    public static DateTime MinimumDateTime = DateTime.Now.Subtract(TimeSpan.FromDays(14));
+    public static DateTime MinimumDateTime => DateTime.Now.Subtract(TimeSpan.FromDays(14));
 
     /// <summary>
     /// String containing application name and version.

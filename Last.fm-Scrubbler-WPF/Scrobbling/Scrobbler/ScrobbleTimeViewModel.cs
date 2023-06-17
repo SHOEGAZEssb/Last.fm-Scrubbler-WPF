@@ -11,6 +11,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
     #region Properties
 
     /// <summary>
+    /// Event that is fired when the <see cref="Time"/> changed.
+    /// </summary>
+    public event EventHandler TimeChanged;
+
+    /// <summary>
     /// The selected time.
     /// </summary>
     public DateTime Time
@@ -20,6 +25,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       {
         _time = value;
         NotifyOfPropertyChange();
+        TimeChanged?.Invoke(this, EventArgs.Empty);
       }
     }
     private DateTime _time;
@@ -39,11 +45,14 @@ namespace Scrubbler.Scrobbling.Scrobbler
         _useCurrentTime = value;
         NotifyOfPropertyChange();
         NotifyOfPropertyChange(() => Time);
+        TimeChanged?.Invoke(this, EventArgs.Empty);
       }
     }
     private bool _useCurrentTime;
 
     #endregion Properties
+
+    #region Construction
 
     /// <summary>
     /// Constructor.
@@ -52,6 +61,19 @@ namespace Scrubbler.Scrobbling.Scrobbler
     {
       UseCurrentTime = true;
       UpdateCurrentTimeAsync().Forget();
+    }
+
+    #endregion Construction
+
+    /// <summary>
+    /// Gets if the selected <see cref="Time"/>
+    /// is valid for a last.fm scrobble.
+    /// </summary>
+    /// <returns>True if time is "newer" than <see cref="MainViewModel.MinimumDateTime"/>,
+    /// otherwise false.</returns>
+    public bool IsTimeValid()
+    {
+      return Time >= MainViewModel.MinimumDateTime;
     }
 
     /// <summary>
