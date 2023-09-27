@@ -32,7 +32,7 @@ namespace Scrubbler.Test.ConfigurationTest
       Mock<IReleasesClient> releasesClientMock = new Mock<IReleasesClient>(MockBehavior.Strict);
       ReleaseAssetMock releaseAssetMock = new ReleaseAssetMock("TestDownloadUrl");
       ReleaseMock releaseMock = new ReleaseMock("TestName", "TestBody", "TestHtmlUrl", releaseAssetMock, "2.0");
-      releasesClientMock.Setup(r => r.GetAll("coczero", "Last.fm-Scrubbler-WPF")).Returns(Task.FromResult((IReadOnlyList<Release>)new List<Release>(new[] { releaseMock })));
+      releasesClientMock.Setup(r => r.GetAll("SHOEGAZEssb", "Last.fm-Scrubbler-WPF")).Returns(Task.FromResult((IReadOnlyList<Release>)new List<Release>(new[] { releaseMock })));
       repositoriesClientMock.Setup(r => r.Release).Returns(releasesClientMock.Object);
       gitHubClientMock.Setup(g => g.Repository).Returns(repositoriesClientMock.Object);
 
@@ -42,7 +42,7 @@ namespace Scrubbler.Test.ConfigurationTest
       var vm = new GeneralSettingsViewModel(windowManagerMock.Object, gitHubClientMock.Object, processManagerMock.Object);
 
       // then: got repo version and NewVersionViewModel was shown
-      Assert.That(() => releasesClientMock.Verify(r => r.GetAll("coczero", "Last.fm-Scrubbler-WPF"), Times.Once), Throws.Nothing);
+      Assert.That(() => releasesClientMock.Verify(r => r.GetAll("SHOEGAZEssb", "Last.fm-Scrubbler-WPF"), Times.Once), Throws.Nothing);
       Assert.That(() => windowManagerMock.Verify(w => w.ShowDialog(It.IsAny<NewVersionViewModel>(), It.IsAny<object>(), It.IsAny<IDictionary<string, object>>()), Times.Once),
                                                  Throws.Nothing);
     }
@@ -63,7 +63,7 @@ namespace Scrubbler.Test.ConfigurationTest
       Mock<IReleasesClient> releasesClientMock = new Mock<IReleasesClient>(MockBehavior.Strict);
       ReleaseAssetMock releaseAssetMock = new ReleaseAssetMock("TestDownloadUrl");
       ReleaseMock releaseMock = new ReleaseMock("TestName", "TestBody", "TestHtmlUrl", releaseAssetMock, "B1.0");
-      releasesClientMock.Setup(r => r.GetAll("coczero", "Last.fm-Scrubbler-WPF")).Returns(Task.FromResult((IReadOnlyList<Release>)new List<Release>(new[] { releaseMock })));
+      releasesClientMock.Setup(r => r.GetAll("SHOEGAZEssb", "Last.fm-Scrubbler-WPF")).Returns(Task.FromResult((IReadOnlyList<Release>)new List<Release>(new[] { releaseMock })));
       repositoriesClientMock.Setup(r => r.Release).Returns(releasesClientMock.Object);
       gitHubClientMock.Setup(g => g.Repository).Returns(repositoriesClientMock.Object);
 
@@ -73,7 +73,7 @@ namespace Scrubbler.Test.ConfigurationTest
       var vm = new GeneralSettingsViewModel(windowManagerMock.Object, gitHubClientMock.Object, processManagerMock.Object);
 
       // then: got repo version and NewVersionViewModel was shown
-      Assert.That(() => releasesClientMock.Verify(r => r.GetAll("coczero", "Last.fm-Scrubbler-WPF"), Times.Once), Throws.Nothing);
+      Assert.That(() => releasesClientMock.Verify(r => r.GetAll("SHOEGAZEssb", "Last.fm-Scrubbler-WPF"), Times.Once), Throws.Nothing);
       Assert.That(() => windowManagerMock.Verify(w => w.ShowDialog(It.IsAny<NewVersionViewModel>(), It.IsAny<object>(), It.IsAny<IDictionary<string, object>>()), Times.Never),
                                                  Throws.Nothing);
     }
