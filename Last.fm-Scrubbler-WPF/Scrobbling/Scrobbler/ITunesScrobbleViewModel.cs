@@ -171,7 +171,6 @@ namespace Scrubbler.Scrobbling.Scrobbler
           Dispose();
 
         ITunesApp = new iTunesApp();
-        //ITunesApp.OnAboutToPromptUserToQuitEvent += _app_AboutToQuitEvent;
         IsConnected = true;
 
         CountedSeconds = 0;
@@ -248,7 +247,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
           if (ITunesApp?.PlayerState == ITPlayerState.ITPlayerStatePlaying)
             _countTimer.Start();
 
-          UpdateCurrentTrackInfo();;
+          UpdateCurrentTrackInfo();
         }
       }
     }
@@ -263,6 +262,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
       // we check the playerstate manually because the events don't work.
       if (ITunesApp?.PlayerState == ITPlayerState.ITPlayerStatePlaying)
       {
+        UpdateNowPlaying().Forget();
+
         if (++CountedSeconds == CurrentTrackLengthToScrobble)
         {
           // stop count timer to not trigger scrobble multiple times
@@ -295,14 +296,6 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
 
     /// <summary>
-    /// Disconnect when iTunes is about to close.
-    /// </summary>
-    private void App_AboutToQuitEvent()
-    {
-      Disconnect();
-    }
-
-    /// <summary>
     /// Cleans up.
     /// </summary>
     public void Dispose()
@@ -310,7 +303,6 @@ namespace Scrubbler.Scrobbling.Scrobbler
       if (ITunesApp != null)
       {
         // unlink events
-        ITunesApp.OnAboutToPromptUserToQuitEvent -= App_AboutToQuitEvent;
         _countTimer.Elapsed -= CountTimer_Elapsed;
         _refreshTimer.Elapsed -= RefreshTimer_Elapsed;
 
@@ -357,7 +349,9 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
           var response = await Scrobbler.ScrobbleAsync(s, true);
           if (response.Success && response.Status == LastResponseStatus.Successful)
+          {
             OnStatusUpdated($"Successfully scrobbled '{s.Track}'");
+          }
           else if (response.Status == LastResponseStatus.Cached)
             OnStatusUpdated($"Scrobbling '{s.Track}' failed. Scrobble has been cached");
           else

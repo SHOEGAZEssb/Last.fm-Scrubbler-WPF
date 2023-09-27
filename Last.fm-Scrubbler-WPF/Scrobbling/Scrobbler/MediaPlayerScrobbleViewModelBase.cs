@@ -428,7 +428,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// Updates the "now playing" info.
     /// </summary>
     /// <returns>Task.</returns>
-    private async Task UpdateNowPlaying()
+    protected async Task UpdateNowPlaying()
     {
       if (CurrentTrackName != null && CurrentArtistName != null)
         await _trackAPI.UpdateNowPlayingAsync(new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now));
