@@ -155,6 +155,9 @@
                 <DataTrigger Binding="{Binding CurrentTrackPlayCount}" Value="-1">
                   <Setter Property="Visibility" Value="Collapsed"/>
                 </DataTrigger>
+                <DataTrigger Binding="{Binding CurrentTrackName}" Value="{x:Null}">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
               </Style.Triggers>
             </Style>
           </TextBlock.Style>
@@ -188,6 +191,9 @@
                 <DataTrigger Binding="{Binding CurrentArtistPlayCount}" Value="-1">
                   <Setter Property="Visibility" Value="Collapsed"/>
                 </DataTrigger>
+                <DataTrigger Binding="{Binding CurrentArtistName}" Value="{x:Null}">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
               </Style.Triggers>
             </Style>
           </TextBlock.Style>
@@ -219,6 +225,9 @@
             <Style TargetType="TextBlock">
               <Style.Triggers>
                 <DataTrigger Binding="{Binding CurrentAlbumPlayCount}" Value="-1">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding CurrentAlbumName}" Value="{x:Null}">
                   <Setter Property="Visibility" Value="Collapsed"/>
                 </DataTrigger>
               </Style.Triggers>

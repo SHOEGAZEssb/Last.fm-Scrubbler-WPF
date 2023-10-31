@@ -171,6 +171,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
           Dispose();
 
         ITunesApp = new iTunesApp();
+        ITunesApp.OnPlayerStopEvent += ITunesApp_OnPlayerStopEvent;
         IsConnected = true;
 
         CountedSeconds = 0;
@@ -199,6 +200,15 @@ namespace Scrubbler.Scrobbling.Scrobbler
       {
         EnableControls = true;
       }
+    }
+
+    /// <summary>
+    /// Updates current track info if itunes stops playing.
+    /// </summary>
+    /// <param name="iTrack">Current itunes track id. Ignored.</param>
+    private void ITunesApp_OnPlayerStopEvent(object iTrack)
+    {
+      UpdateCurrentTrackInfo();
     }
 
     /// <summary>
@@ -303,6 +313,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       if (ITunesApp != null)
       {
         // unlink events
+        ITunesApp.OnPlayerStopEvent -= ITunesApp_OnPlayerStopEvent;
         _countTimer.Elapsed -= CountTimer_Elapsed;
         _refreshTimer.Elapsed -= RefreshTimer_Elapsed;
 
