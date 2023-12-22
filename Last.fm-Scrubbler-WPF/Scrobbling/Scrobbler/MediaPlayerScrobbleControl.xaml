@@ -245,7 +245,7 @@
         </TextBlock>
 
         <Label Grid.Row="6" Grid.Column="0" Content="Tags:" FontWeight="Bold"/>
-        <ItemsControl Grid.Row="6" Grid.Column="2" ItemsSource="{Binding CurrentTrackTags}">
+        <ItemsControl Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="3" ItemsSource="{Binding CurrentTrackTags}">
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
               <StackPanel Orientation="Horizontal"/>
