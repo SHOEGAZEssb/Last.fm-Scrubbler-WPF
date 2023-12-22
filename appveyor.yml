@@ -1,10 +1,10 @@
-image: Visual Studio 2019
+image: Visual Studio 2022
 before_build:
  - nuget restore
 build_script:
  - msbuild /verbosity:quiet "Last.fm-Scrubbler-WPF.sln"
 test_script:
- - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:"Last.fm-Scrubbler-WPF-Test\bin\Debug\Last.fm-Scrubbler-WPF-Test.exe" -output:".\coverage.xml" -excludebyfile:"*.xaml.cs;*.xaml;*.g.cs" -filter:"+[Last.fm-Scrubbler-WPF]Scrubbler*"
+ - .\packages\OpenCover.4.7.1221\tools\OpenCover.Console.exe -register:user -target:"Last.fm-Scrubbler-WPF-Test\bin\Debug\Last.fm-Scrubbler-WPF-Test.exe" -output:".\coverage.xml" -excludebyfile:"*.xaml.cs;*.xaml;*.g.cs" -filter:"+[Last.fm-Scrubbler-WPF]Scrubbler*"
 after_test:
   - ps: |
       $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
