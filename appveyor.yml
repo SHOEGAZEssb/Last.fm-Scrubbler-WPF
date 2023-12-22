@@ -1,6 +1,24 @@
 image: Visual Studio 2022
 init:
-  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+ - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+install:
+ - ps: |
+    function install-devpack ($version, $location) {
+        Write-Host ".NET Framework $($version) Developer Pack..." -ForegroundColor Cyan
+        Write-Host "Downloading..."
+        $exePath = "$env:TEMP\$($version)-devpack.exe"
+        (New-Object Net.WebClient).DownloadFile($location, $exePath)
+        Write-Host "Installing..."
+        cmd /c start /wait "$exePath" /quiet /norestart
+        del $exePath
+        Write-Host "Installed" -ForegroundColor Green
+    }
+    install-devpack -version "4.8.1" -location "https://download.microsoft.com/download/4/b/2/cd00d4ed-ebdd-49ee-8a33-eabc3d1030e3/NDP481-DevPack-ENU.exe"
+    Write-Host "Restarting build VM..."
+    sleep 5
+    Restart-Computer -Force
+    sleep 5
+    Write-Host "Restarted" -ForegroundColor Green
 before_build:
  - nuget restore
 build_script:
