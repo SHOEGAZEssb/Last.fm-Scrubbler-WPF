@@ -27,19 +27,15 @@ namespace Scrubbler.Scrobbling
     /// Scrobbles the given <paramref name="scrobble"/>.
     /// </summary>
     /// <param name="scrobble">Scrobble object to scrobble.</param>
-    /// <param name="needCaching">If true, scrobbles should be cached
-    /// if they can't be scrobbled.</param>
     /// <returns>Response.</returns>
-    Task<ScrobbleResponse> ScrobbleAsync(Scrobble scrobble, bool needCaching = false);
+    Task<ScrobbleResponse> ScrobbleAsync(Scrobble scrobble);
 
     /// <summary>
     /// Scrobbles the given <paramref name="scrobbles"/>.
     /// </summary>
     /// <param name="scrobbles">Collection of scrobble objects to scrobble.</param>
-    /// <param name="needCaching">If true, scrobbles should be cached
-    /// if they can't be scrobbled.</param>
     /// <returns>Response.</returns>
-    Task<ScrobbleResponse> ScrobbleAsync(IEnumerable<Scrobble> scrobbles, bool needCaching = false);
+    Task<ScrobbleResponse> ScrobbleAsync(IEnumerable<Scrobble> scrobbles);
 
     /// <summary>
     /// Sends the cached scrobbles.

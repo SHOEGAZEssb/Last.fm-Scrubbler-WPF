@@ -28,9 +28,8 @@ namespace Scrubbler.Test.ScrobblingTests
       User user = TestHelper.CreateCappedUser();
 
       var scrobblerMock = new Mock<IAuthScrobbler>(MockBehavior.Strict);
-      var cachingScrobblerMock = new Mock<IAuthScrobbler>(MockBehavior.Strict);
 
-      UserScrobbler userScrobbler = new UserScrobbler(user, scrobblerMock.Object, cachingScrobblerMock.Object);
+      UserScrobbler userScrobbler = new UserScrobbler(user, scrobblerMock.Object);
 
       // when: trying to scrobble
       // then: exception
@@ -52,14 +51,12 @@ namespace Scrubbler.Test.ScrobblingTests
       scrobblerMock.Setup(u => u.ScrobbleAsync(It.IsAny<IEnumerable<Scrobble>>())).Callback<IEnumerable<Scrobble>>((s) => actual = s)
                                                                             .Returns(Task.Run(() => new ScrobbleResponse(LastResponseStatus.Successful)));
 
-      var cachingScrobblerMock = new Mock<IAuthScrobbler>(MockBehavior.Strict);
-
-      var userScrobbler = new UserScrobbler(user, scrobblerMock.Object, cachingScrobblerMock.Object);
+      var userScrobbler = new UserScrobbler(user, scrobblerMock.Object);
 
       var expected = TestHelper.CreateGenericScrobbles(1);
 
       // when: scrobbling
-      await userScrobbler.ScrobbleAsync(expected.First(), false);
+      await userScrobbler.ScrobbleAsync(expected.First());
 
       // then: correctly scrobbled
       Assert.That(TestHelper.IsEqualScrobble(actual, expected));
@@ -80,72 +77,12 @@ namespace Scrubbler.Test.ScrobblingTests
       scrobblerMock.Setup(u => u.ScrobbleAsync(It.IsAny<IEnumerable<Scrobble>>())).Callback<IEnumerable<Scrobble>>((s) => actual = s)
                                                                             .Returns(Task.Run(() => new ScrobbleResponse(LastResponseStatus.Successful)));
 
-      var cachingScrobblerMock = new Mock<IAuthScrobbler>(MockBehavior.Strict);
-
-      UserScrobbler userScrobbler = new UserScrobbler(user, scrobblerMock.Object, cachingScrobblerMock.Object);
+      UserScrobbler userScrobbler = new UserScrobbler(user, scrobblerMock.Object);
 
       var expected = TestHelper.CreateGenericScrobbles(10);
 
       // when: scrobbling
-      await userScrobbler.ScrobbleAsync(expected, false);
-
-      // then: correctly scrobbled
-      Assert.That(TestHelper.IsEqualScrobble(actual, expected));
-    }
-
-    /// <summary>
-    /// Tests if scrobbling a single track with the
-    /// caching scrobbler works.
-    /// </summary>
-    /// <returns>Task.</returns>
-    [Test]
-    public async Task ScrobbleCachedTest()
-    {
-      // given: mocks
-      User user = TestHelper.CreateUserWithRecentTracks(Enumerable.Empty<LastTrack>());
-
-      var scrobblerMock = new Mock<IAuthScrobbler>(MockBehavior.Strict);
-
-      var cachingScrobblerMock = new Mock<IAuthScrobbler>(MockBehavior.Strict);
-      IEnumerable<Scrobble> actual = null;
-      cachingScrobblerMock.Setup(u => u.ScrobbleAsync(It.IsAny<IEnumerable<Scrobble>>())).Callback<IEnumerable<Scrobble>>((s) => actual = s)
-                                                                            .Returns(Task.Run(() => new ScrobbleResponse(LastResponseStatus.Successful)));
-
-      var userScrobbler = new UserScrobbler(user, scrobblerMock.Object, cachingScrobblerMock.Object);
-
-      var expected = TestHelper.CreateGenericScrobbles(1);
-
-      // when: scrobbling
-      await userScrobbler.ScrobbleAsync(expected.First(), true);
-
-      // then: correctly scrobbled
-      Assert.That(TestHelper.IsEqualScrobble(actual, expected));
-    }
-
-    /// <summary>
-    /// Tests if scrobbling multiple tracks with the
-    /// caching scrobbler works.
-    /// </summary>
-    /// <returns>Task.</returns>
-    [Test]
-    public async Task ScrobbleMultipleCachedTest()
-    {
-      // given: mocks
-      User user = TestHelper.CreateUserWithRecentTracks(Enumerable.Empty<LastTrack>());
-
-      var scrobblerMock = new Mock<IAuthScrobbler>(MockBehavior.Strict);
-
-      var cachingScrobblerMock = new Mock<IAuthScrobbler>(MockBehavior.Strict);
-      IEnumerable<Scrobble> actual = null;
-      cachingScrobblerMock.Setup(u => u.ScrobbleAsync(It.IsAny<IEnumerable<Scrobble>>())).Callback<IEnumerable<Scrobble>>((s) => actual = s)
-                                                                            .Returns(Task.Run(() => new ScrobbleResponse(LastResponseStatus.Successful)));
-
-      UserScrobbler userScrobbler = new UserScrobbler(user, scrobblerMock.Object, cachingScrobblerMock.Object);
-
-      var expected = TestHelper.CreateGenericScrobbles(10);
-
-      // when: scrobbling
-      await userScrobbler.ScrobbleAsync(expected, true);
+      await userScrobbler.ScrobbleAsync(expected);
 
       // then: correctly scrobbled
       Assert.That(TestHelper.IsEqualScrobble(actual, expected));
@@ -168,10 +105,7 @@ namespace Scrubbler.Test.ScrobblingTests
       authMock.Setup(a => a.Authenticated).Returns(true);
       scrobblerMock.Setup(s => s.Auth).Returns(authMock.Object);
 
-      Mock<IAuthScrobbler> cachingScrobblerMock = new Mock<IAuthScrobbler>(MockBehavior.Strict);
-      cachingScrobblerMock.Setup(s => s.Auth).Returns(authMock.Object);
-
-      UserScrobbler userScrobbler = new UserScrobbler(user, scrobblerMock.Object, cachingScrobblerMock.Object);
+      UserScrobbler userScrobbler = new UserScrobbler(user, scrobblerMock.Object);
 
       // when: checking the auth status
       // then: should be true
@@ -195,10 +129,7 @@ namespace Scrubbler.Test.ScrobblingTests
       authMock.Setup(a => a.Authenticated).Returns(false);
       scrobblerMock.Setup(s => s.Auth).Returns(authMock.Object);
 
-      Mock<IAuthScrobbler> cachingScrobblerMock = new Mock<IAuthScrobbler>(MockBehavior.Strict);
-      cachingScrobblerMock.Setup(s => s.Auth).Returns(authMock.Object);
-
-      UserScrobbler userScrobbler = new UserScrobbler(user, scrobblerMock.Object, cachingScrobblerMock.Object);
+      UserScrobbler userScrobbler = new UserScrobbler(user, scrobblerMock.Object);
 
       // when: checking the auth status
       // then: should be false

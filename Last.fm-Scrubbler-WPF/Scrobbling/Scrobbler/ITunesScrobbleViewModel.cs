@@ -358,7 +358,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
             };
           }
 
-          var response = await Scrobbler.ScrobbleAsync(s, true);
+          var response = await Scrobbler.ScrobbleAsync(s);
           if (response.Success && response.Status == LastResponseStatus.Successful)
           {
             OnStatusUpdated($"Successfully scrobbled '{s.Track}'");

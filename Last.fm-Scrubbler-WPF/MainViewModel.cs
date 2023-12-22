@@ -232,32 +232,12 @@ namespace Scrubbler
     /// </summary>
     private void CreateScrobblers()
     {
-      IAuthScrobbler scrobbler;
-      IAuthScrobbler cachingScrobbler;
+      IAuthScrobbler scrobbler = null;
+
       if (_client.Auth.UserSession != null)
-      {
-        var dbFile = $"{_client.Auth.UserSession.Username}.db";
-
-        try
-        {
-          if (!File.Exists(dbFile))
-            File.Create(dbFile).Close();
-        }
-        catch (Exception ex)
-        {
-          CurrentStatus = $"Error creating cache database. Error: {ex.Message}";
-        }
-
         scrobbler = _scrobblerFactory.CreateScrobbler(_client.Auth);
-        cachingScrobbler = _scrobblerFactory.CreateSQLiteScrobbler(_client.Auth, dbFile);
-      }
-      else
-      {
-        scrobbler = null;
-        cachingScrobbler = null;
-      }
 
-      _scrobblerVM.UpdateScrobblers(_scrobblerFactory.CreateUserScrobbler(UserViewModel.ActiveUser, scrobbler, cachingScrobbler));
+      _scrobblerVM.UpdateScrobblers(_scrobblerFactory.CreateUserScrobbler(UserViewModel.ActiveUser, scrobbler));
     }
 
     /// <summary>

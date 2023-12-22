@@ -81,11 +81,11 @@ namespace Scrubbler.Scrobbling
       //spotifyScrobbleVM.StatusUpdated += Scrobbler_StatusUpdated;
       var setlistFMScrobbleVM = new SetlistFMScrobbleViewModel(windowManager, lastFMClient.Artist);
       setlistFMScrobbleVM.StatusUpdated += Scrobbler_StatusUpdated;
-      var cacheScrobblerVM = new CacheScrobblerViewModel(windowManager);
-      cacheScrobblerVM.StatusUpdated += Scrobbler_StatusUpdated;
+      //var cacheScrobblerVM = new CacheScrobblerViewModel(windowManager);
+      //cacheScrobblerVM.StatusUpdated += Scrobbler_StatusUpdated;
 
       return new ScrobbleViewModelBase[] { manualScrobbleViewModel, friendScrobbleViewModel, databaseScrobbleViewModel, csvScrobbleViewModel,
-                                           fileScrobbleViewModel, mediaPlayerDatabaseScrobbleViewModel, iTunesScrobbleVM, setlistFMScrobbleVM, cacheScrobblerVM };
+                                           fileScrobbleViewModel, mediaPlayerDatabaseScrobbleViewModel, iTunesScrobbleVM, setlistFMScrobbleVM };
     }
 
     /// <summary>

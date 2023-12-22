@@ -29,7 +29,7 @@ namespace Scrubbler.Test.ScrobblingTests
 
       Mock<IUserScrobbler> scrobblerMock = new Mock<IUserScrobbler>();
       IEnumerable<Scrobble> actual = null;
-      scrobblerMock.Setup(i => i.ScrobbleAsync(It.IsAny<IEnumerable<Scrobble>>(), false)).Callback<IEnumerable<Scrobble>, bool>((s, c) => actual = s)
+      scrobblerMock.Setup(i => i.ScrobbleAsync(It.IsAny<IEnumerable<Scrobble>>())).Callback<IEnumerable<Scrobble>>((s) => actual = s)
                                                                             .Returns(Task.Run(() => new ScrobbleResponse(LastResponseStatus.Successful)));
 
       Mock<IExtendedWindowManager> windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);
