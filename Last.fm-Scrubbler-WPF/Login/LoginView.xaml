@@ -6,7 +6,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Title="Login" Height="180" Width="180" Icon="..\Resources\scrubbler_64.ico" ResizeMode="NoResize" Style="{StaticResource EnableControlsStyle}">
+        Title="Login" Height="200" Width="180" Icon="..\Resources\scrubbler_64.ico" ResizeMode="NoResize" Style="{StaticResource EnableControlsStyle}">
 
   <Grid FocusManager.FocusedElement="{Binding ElementName=usernameTextBox}">
     <Grid.RowDefinitions>
@@ -15,6 +15,8 @@
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
@@ -40,6 +42,14 @@
           <cal:ActionMessage MethodName="Login">
             <cal:Parameter Value="{Binding ElementName=passwordBox}"/>
           </cal:ActionMessage>
+        </i:EventTrigger>
+      </i:Interaction.Triggers>
+    </Button>
+
+    <Button Grid.Row="11" Grid.Column="1" HorizontalAlignment="Center" Content="Login via Web">
+      <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Click">
+          <cal:ActionMessage MethodName="LoginViaWebsite"/>
         </i:EventTrigger>
       </i:Interaction.Triggers>
     </Button>
