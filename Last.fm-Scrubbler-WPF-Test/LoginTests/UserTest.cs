@@ -1,6 +1,7 @@
 ﻿using IF.Lastfm.Core.Api;
 using Moq;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using Scrubbler.Login;
 using System.Threading.Tasks;
 
