@@ -69,6 +69,7 @@ namespace Scrubbler.Login
     /// Tries to log the user in with the given credentials.
     /// </summary>
     /// <param name="password">The <see cref="PasswordBox"/> containing the password.</param>
+    /// <returns>Task.</returns>
     public async Task Login(PasswordBox password)
     {
       try
@@ -98,6 +99,10 @@ namespace Scrubbler.Login
       }
     }
 
+    /// <summary>
+    /// Tries to log the user in via oauth.
+    /// </summary>
+    /// <returns>Task.</returns>
     public async Task LoginViaWebsite()
     {
       try
@@ -143,7 +148,7 @@ namespace Scrubbler.Login
             var sessionInfoDict = sessionDict["session"];
             if (sessionInfoDict.ContainsKey("name") && sessionInfoDict.ContainsKey("key"))
             {
-              var subscriber = sessionInfoDict.ContainsKey("subscriber") ? sessionInfoDict["subscriber"] == "1" : false;
+              var subscriber = sessionInfoDict.ContainsKey("subscriber") && sessionInfoDict["subscriber"] == "1";
               _lastAuth.LoadSession(new IF.Lastfm.Core.Objects.LastUserSession() { Token = sessionInfoDict["key"], Username = sessionInfoDict["name"], IsSubscriber = subscriber });
               _messageBoxService.ShowDialog("Successfully logged in and authenticated!");
               TryClose(true);
@@ -155,7 +160,7 @@ namespace Scrubbler.Login
             throw new Exception("Session response does not contain a session");
         }
       }
-      catch (Exception ex) 
+      catch (Exception ex)
       {
         _messageBoxService.ShowDialog("Fatal error while trying to log in via last.fm: " + ex.Message);
       }
@@ -165,7 +170,7 @@ namespace Scrubbler.Login
       }
     }
 
-    public static string GetSignedURI(Dictionary<string, string> args, bool get)
+    private static string GetSignedURI(Dictionary<string, string> args, bool get)
     {
       var stringBuilder = new StringBuilder();
       if (get)
@@ -177,7 +182,7 @@ namespace Scrubbler.Login
       return stringBuilder.ToString();
     }
 
-    public static string MD5(string toHash)
+    private static string MD5(string toHash)
     {
       byte[] textBytes = Encoding.UTF8.GetBytes(toHash);
       var cryptHandler = new System.Security.Cryptography.MD5CryptoServiceProvider();
@@ -185,7 +190,7 @@ namespace Scrubbler.Login
       return hash.Aggregate("", (current, a) => current + a.ToString("x2"));
     }
 
-    public static string SignCall(Dictionary<string, string> args)
+    private static string SignCall(Dictionary<string, string> args)
     {
       IOrderedEnumerable<KeyValuePair<string, string>> sortedArgs = args.OrderBy(arg => arg.Key);
       string signature =

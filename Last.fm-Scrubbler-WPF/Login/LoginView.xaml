@@ -6,7 +6,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Title="Login" Height="200" Width="180" Icon="..\Resources\scrubbler_64.ico" ResizeMode="NoResize" Style="{StaticResource EnableControlsStyle}">
+        Title="Login" Height="220" Width="180" Icon="..\Resources\scrubbler_64.ico" ResizeMode="NoResize" Style="{StaticResource EnableControlsStyle}">
 
   <Grid FocusManager.FocusedElement="{Binding ElementName=usernameTextBox}">
     <Grid.RowDefinitions>
@@ -23,6 +23,8 @@
       <RowDefinition Height="5"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="5"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="5"/>
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="5"/>
@@ -31,7 +33,7 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Content="Username"/>
-    <TextBox Grid.Row="3" Grid.Column="1" x:Name="usernameTextBox" Text="{Binding Username}"/>
+    <TextBox Grid.Row="3" Grid.Column="1" x:Name="usernameTextBox" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
 
     <Label Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" Content="Password"/>
     <PasswordBox Grid.Row="7" Grid.Column="1" x:Name="passwordBox"/>
@@ -44,9 +46,23 @@
           </cal:ActionMessage>
         </i:EventTrigger>
       </i:Interaction.Triggers>
+      <Button.Style>
+        <Style TargetType="Button">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding Username}" Value="">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Username}" Value="{x:Null}">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Button.Style>
     </Button>
 
-    <Button Grid.Row="11" Grid.Column="1" HorizontalAlignment="Center" Content="Login via Web">
+    <TextBlock Grid.Row="11" Grid.Column="1" HorizontalAlignment="Center" Text="or"/>
+
+    <Button Grid.Row="13" Grid.Column="1" HorizontalAlignment="Center" Content="Login via Web">
       <i:Interaction.Triggers>
         <i:EventTrigger EventName="Click">
           <cal:ActionMessage MethodName="LoginViaWebsite"/>
