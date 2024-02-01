@@ -57,7 +57,7 @@ namespace Scrubbler.ExtraFunctions
     /// <summary>
     /// The scrobble.
     /// </summary>
-    private LastTrack _track;
+    private readonly LastTrack _track;
 
     #endregion Member
 

@@ -44,7 +44,7 @@ namespace Scrubbler.Scrobbling.Data
     /// <summary>
     /// The actual file.
     /// </summary>
-    private File _file;
+    private readonly File _file;
 
     #endregion Member
 

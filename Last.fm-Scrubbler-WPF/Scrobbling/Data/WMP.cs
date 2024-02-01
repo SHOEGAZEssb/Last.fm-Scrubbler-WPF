@@ -113,8 +113,7 @@ namespace Scrubbler.Scrobbling.Data
       finally
       {
         // make sure we clean up as this is COM
-        if (mediaList != null)
-          mediaList.clear();
+        mediaList?.clear();
       }
 
       return entries;
@@ -186,8 +185,7 @@ namespace Scrubbler.Scrobbling.Data
     /// </summary>
     public void Dispose()
     {
-      if (_mediaPlayer != null)
-        _mediaPlayer.close();
+      _mediaPlayer?.close();
     }
 
     #endregion IDisposable Members

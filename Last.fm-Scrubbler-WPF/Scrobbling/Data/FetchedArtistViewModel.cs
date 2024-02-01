@@ -32,7 +32,7 @@ namespace Scrubbler.Scrobbling.Data
     /// <summary>
     /// The fetched artist.
     /// </summary>
-    private Artist _fetchedArtist;
+    private readonly Artist _fetchedArtist;
 
     #endregion Member
 

@@ -103,7 +103,7 @@ namespace Scrubbler.Scrobbling
     /// </summary>
     public void Dispose()
     {
-      foreach (IDisposable disposableVM in Scrobblers.Where(i => i is IDisposable))
+      foreach (IDisposable disposableVM in Scrobblers.Where(i => i is IDisposable).Cast<IDisposable>())
       {
         disposableVM.Dispose();
       }

@@ -362,9 +362,7 @@ namespace Scrubbler
 
         if (_direction == ListSortDirection.Ascending)
         {
-          double tmp = y1;
-          y1 = y2;
-          y2 = tmp;
+          (y2, y1) = (y1, y2);
         }
 
         PathSegmentCollection pathSegmentCollection = new PathSegmentCollection

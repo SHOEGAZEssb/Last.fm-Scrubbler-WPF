@@ -26,7 +26,7 @@ namespace Scrubbler.Helper
     /// <summary>
     /// The actual <see cref="SaveFileDialog"/>.
     /// </summary>
-    private SaveFileDialog _saveFileDialog;
+    private readonly SaveFileDialog _saveFileDialog;
 
     #endregion Member
 

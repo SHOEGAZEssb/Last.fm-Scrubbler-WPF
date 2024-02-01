@@ -90,7 +90,7 @@ namespace Scrubbler.Login
         RecentScrobblesCache = page1.Content.Concat(page2.Content).Concat(page3.Content).ToArray();
         RecentScrobblesCacheUpdated?.Invoke(this, EventArgs.Empty);
       }
-      catch (Exception ex)
+      catch
       {
         RecentScrobblesCache = Enumerable.Empty<LastTrack>();
       }

@@ -15,7 +15,9 @@ namespace Scrubbler
     /// do anything with the result of a task.
     /// </summary>
     /// <param name="t">Task whose result to forget.</param>
+#pragma warning disable IDE0060 // Remove unused parameter
     public static void Forget(this Task t)
+#pragma warning restore IDE0060 // Remove unused parameter
     { }
   }
 

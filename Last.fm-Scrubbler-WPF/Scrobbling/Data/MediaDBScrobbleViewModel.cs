@@ -19,7 +19,7 @@
     /// <summary>
     /// The actual scrobble.
     /// </summary>
-    private MediaDBScrobble _scrobble;
+    private readonly MediaDBScrobble _scrobble;
 
     #endregion Member
 
