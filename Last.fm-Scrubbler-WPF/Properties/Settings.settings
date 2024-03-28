@@ -78,9 +78,18 @@
       <Value Profile="(Default)">ms_played</Value>
     </Setting>
     <Setting Name="JSONFilterShortPlayedSongs" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="JSONPlayedMillisecondsThreshold" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+    <Setting Name="CSVMillisecondsPlayedFieldIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">6</Value>
+    </Setting>
+    <Setting Name="CSVFilterShortPlayedSongs" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="CSVPlayedMillisecondsThreshold" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
     </Setting>
   </Settings>

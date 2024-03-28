@@ -12,7 +12,7 @@ namespace Scrubbler.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -325,7 +325,7 @@ namespace Scrubbler.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool JSONFilterShortPlayedSongs {
             get {
                 return ((bool)(this["JSONFilterShortPlayedSongs"]));
@@ -344,6 +344,42 @@ namespace Scrubbler.Properties {
             }
             set {
                 this["JSONPlayedMillisecondsThreshold"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        public int CSVMillisecondsPlayedFieldIndex {
+            get {
+                return ((int)(this["CSVMillisecondsPlayedFieldIndex"]));
+            }
+            set {
+                this["CSVMillisecondsPlayedFieldIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CSVFilterShortPlayedSongs {
+            get {
+                return ((bool)(this["CSVFilterShortPlayedSongs"]));
+            }
+            set {
+                this["CSVFilterShortPlayedSongs"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public int CSVPlayedMillisecondsThreshold {
+            get {
+                return ((int)(this["CSVPlayedMillisecondsThreshold"]));
+            }
+            set {
+                this["CSVPlayedMillisecondsThreshold"] = value;
             }
         }
     }

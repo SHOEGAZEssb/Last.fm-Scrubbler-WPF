@@ -30,18 +30,6 @@ namespace Scrubbler.Helper.FileParser
       var errors = new List<string>();
       string[] fields = null;
 
-      //var lines = System.IO.File.ReadAllLines(file);
-      //using(var s = System.IO.File.OpenWrite("test.csv"))
-      //{
-      //  using (var sw = new System.IO.StreamWriter(s))
-      //  {
-      //    for (int i = 0; i < 200; i++)
-      //    {
-      //      sw.WriteLine(lines[i]);
-      //    }
-      //  }
-      //}
-
       using (var parser = new TextFieldParser(file, Encoding.GetEncoding(Settings.Default.CSVEncoding)))
       {
         parser.SetDelimiters(Settings.Default.CSVDelimiters.Select(x => new string(x, 1)).ToArray());
@@ -66,13 +54,20 @@ namespace Scrubbler.Helper.FileParser
             string album = fields.ElementAtOrDefault(Settings.Default.AlbumFieldIndex);
             string albumArtist = fields.ElementAtOrDefault(Settings.Default.AlbumArtistFieldIndex);
             string duration = fields.ElementAtOrDefault(Settings.Default.DurationFieldIndex);
+            string timePlayedMS = fields.ElementAtOrDefault(Settings.Default.CSVMillisecondsPlayedFieldIndex);
 
             if (!TimeSpan.TryParse(duration, out TimeSpan time))
               time = TimeSpan.FromSeconds(3); // todo: use user provided duration
 
-            scrobbles.Add(new DatedScrobble(date.AddSeconds(1), fields[Settings.Default.TrackFieldIndex],
-                                                            fields[Settings.Default.ArtistFieldIndex], album,
-                                                            albumArtist, time));
+            // filter short played songs
+            if (Settings.Default.CSVFilterShortPlayedSongs &&
+                TimeSpan.TryParse(timePlayedMS, out TimeSpan msPlayed) &&
+                msPlayed.TotalMilliseconds <= Settings.Default.CSVPlayedMillisecondsThreshold)
+              continue;
+            else
+              scrobbles.Add(new DatedScrobble(date.AddSeconds(1), fields[Settings.Default.TrackFieldIndex],
+                                                              fields[Settings.Default.ArtistFieldIndex], album,
+                                                              albumArtist, time));
           }
           catch (Exception ex)
           {

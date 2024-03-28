@@ -99,6 +99,50 @@ namespace Scrubbler.Helper.FileParser
     private int _durationFieldIndex;
 
     /// <summary>
+    /// Index of the time played ms field in the csv file.
+    /// </summary>
+    public int MillisecondsPlayedFieldIndex
+    {
+      get => _millisecondsPlayedFieldIndex;
+      set
+      {
+        _millisecondsPlayedFieldIndex = value;
+        NotifyOfPropertyChange();
+      }
+    }
+    private int _millisecondsPlayedFieldIndex;
+
+    /// <summary>
+    /// Threshold for filtering out songs when
+    /// <see cref="FilterShortPlayedSongs"/> is true.
+    /// </summary>
+    public int MillisecondsPlayedThreshold
+    {
+      get => _millisecondsPlayedThreshold;
+      set
+      {
+        _millisecondsPlayedThreshold = value;
+        NotifyOfPropertyChange();
+      }
+    }
+    private int _millisecondsPlayedThreshold;
+
+    /// <summary>
+    /// If songs played for under <see cref="_millisecondsPlayedFieldIndex"/>
+    /// should be filtered out.
+    /// </summary>
+    public bool FilterShortPlayedSongs
+    {
+      get => _filterShortPlayedSongs;
+      set
+      {
+        _filterShortPlayedSongs = value;
+        NotifyOfPropertyChange();
+      }
+    }
+    private bool _filterShortPlayedSongs;
+
+    /// <summary>
     /// Delimiters to use when parsing csv file.
     /// </summary>
     public string Delimiters
@@ -112,6 +156,9 @@ namespace Scrubbler.Helper.FileParser
     }
     private string _delimiters;
 
+    /// <summary>
+    /// If the parsed csv file has fields that are enclosed in quotes.
+    /// </summary>
     public bool HasFieldsEnclosedInQuotes
     {
       get => _hasFieldsEnclosedInQuotes;
@@ -175,6 +222,9 @@ namespace Scrubbler.Helper.FileParser
       TimestampFieldIndex = Settings.Default.TimestampFieldIndex;
       AlbumArtistFieldIndex = Settings.Default.AlbumArtistFieldIndex;
       DurationFieldIndex = Settings.Default.DurationFieldIndex;
+      MillisecondsPlayedFieldIndex = Settings.Default.CSVMillisecondsPlayedFieldIndex;
+      MillisecondsPlayedThreshold = Settings.Default.CSVPlayedMillisecondsThreshold;
+      FilterShortPlayedSongs = Settings.Default.CSVFilterShortPlayedSongs;
       Delimiters = Settings.Default.CSVDelimiters;
       HasFieldsEnclosedInQuotes = Settings.Default.CSVHasFieldsInQuotes;
       _encodingID = Settings.Default.CSVEncoding;
@@ -194,6 +244,9 @@ namespace Scrubbler.Helper.FileParser
         Settings.Default.TimestampFieldIndex = TimestampFieldIndex;
         Settings.Default.AlbumArtistFieldIndex = AlbumArtistFieldIndex;
         Settings.Default.DurationFieldIndex = DurationFieldIndex;
+        Settings.Default.CSVMillisecondsPlayedFieldIndex = MillisecondsPlayedFieldIndex;
+        Settings.Default.CSVPlayedMillisecondsThreshold = MillisecondsPlayedThreshold;
+        Settings.Default.CSVFilterShortPlayedSongs = FilterShortPlayedSongs;
         Settings.Default.CSVDelimiters = Delimiters;
         Settings.Default.CSVHasFieldsInQuotes = HasFieldsEnclosedInQuotes;
         Settings.Default.CSVEncoding = _encodingID;
@@ -211,10 +264,10 @@ namespace Scrubbler.Helper.FileParser
 
       int[] vals = new int[] { ArtistFieldIndex, AlbumFieldIndex, TrackFieldIndex, TimestampFieldIndex };
       if (vals.Distinct().Count() != vals.Length)
-        errors += "Some of the indexes are equal!";
+        errors += "Some of the indexes are equal!\r";
 
       if (string.IsNullOrEmpty(Delimiters))
-        errors += "\rThere are no delimiters defined!";
+        errors += "There are no delimiters defined!";
 
       if (!string.IsNullOrEmpty(errors))
       {
