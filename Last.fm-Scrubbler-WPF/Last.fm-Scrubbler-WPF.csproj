@@ -124,6 +124,7 @@
     </Compile>
     <Compile Include="Scrobbling\Data\PlayLengthDatedScrobble.cs" />
     <Compile Include="Scrobbling\Data\ReleaseResultViewModel.cs" />
+    <Compile Include="Scrobbling\Data\RhythmDBParser.cs" />
     <Compile Include="Scrobbling\Data\ScrobbableObjectListView.cs" />
     <Compile Include="Scrobbling\Data\SetlistResultViewModel.cs" />
     <Compile Include="Scrobbling\Data\TagViewModel.cs" />

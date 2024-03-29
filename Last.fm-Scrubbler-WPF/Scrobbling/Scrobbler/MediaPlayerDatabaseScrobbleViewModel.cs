@@ -25,6 +25,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
     iTunesOrWinamp,
 
     /// <summary>
+    /// Scrobble from a RhythmDB database (.xml).
+    /// </summary>
+    [Description("RhythmDB")]
+    RhythmDB,
+
+    /// <summary>
     /// Scrobble from Windows Media Player.
     /// </summary>
     [Description("Windows Media Player")]
@@ -125,6 +131,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
       IOpenFileDialog ofd = WindowManager.CreateOpenFileDialog();
       if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.iTunesOrWinamp)
         ofd.Filter = "iTunes/Winamp Database XML (*.xml) | *.xml";
+      else if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.RhythmDB)
+        ofd.Filter = "RhythmDB XML (*.xml) | *.xml";
 
       if (ofd.ShowDialog())
         DBFilePath = ofd.FileName;
@@ -137,6 +145,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
     {
       if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.iTunesOrWinamp)
         await ParseItunesConformXML();
+      else if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.RhythmDB)
+        await ParseRhythmDBDatabase();
       else if (MediaPlayerDatabaseType == MediaPlayerDatabaseType.WMP)
         await ParseWMPDatabase();
     }
@@ -216,6 +226,42 @@ namespace Scrubbler.Scrobbling.Scrobbler
       catch (Exception ex)
       {
         OnStatusUpdated(ex.Message);
+      }
+      finally
+      {
+        EnableControls = true;
+      }
+    }
+
+    /// <summary>
+    /// Parses the <see cref="DBFilePath"/> as
+    /// a RhythmDB xml.
+    /// </summary>
+    /// <returns>Task.</returns>
+    private async Task ParseRhythmDBDatabase()
+    {
+      try
+      {
+        EnableControls = false;
+        await Task.Run(() =>
+        {
+          OnStatusUpdated("Parsing RhythmDB library...");
+          var scrobbles = RhythmDBParser.Parse(DBFilePath);
+          var scrobbleVMs = new List<MediaDBScrobbleViewModel>();
+          foreach (var scrobble in scrobbles)
+          {
+            var vm = new MediaDBScrobbleViewModel(scrobble);
+            vm.ToScrobbleChanged += ToScrobbleChanged;
+            scrobbleVMs.Add(vm);
+          }
+
+          Scrobbles = new ObservableCollection<MediaDBScrobbleViewModel>(scrobbleVMs);
+          OnStatusUpdated("Successfully parsed RhythmDB xml");
+        });
+      }
+      catch (Exception ex)
+      {
+        OnStatusUpdated($"Fatal error while parsing RhythmDB library: {ex.Message}");
       }
       finally
       {
