@@ -30,27 +30,16 @@ namespace Scrubbler.Helper
     }
 
     /// <summary>
-    /// Creates a new file, writes the specified string to the file, and then closes
-    /// the file. If the target file already exists, it is overwritten.
-    /// </summary>
-    /// <param name="path">The file to write to.</param>
-    /// <param name="contents">The string to write to the file.</param>
-    public void WriteAllText(string path, string contents)
-    {
-      File.WriteAllText(path, contents);
-    }
-
-    /// <summary>
     /// Creates a new file, writes the specified <paramref name="contents"/> to the file
     /// with the given <paramref name="encoding"/>, and then closes
     /// the file. If the target file already exists, it is overwritten.
     /// </summary>
     /// <param name="path">The file to write to.</param>
     /// <param name="contents">The string to write to the file.</param>
-    /// <param name="encoding">Encoding to use.</param>
-    public void WriteAllText(string path, string contents, Encoding encoding)
+    /// <param name="encoding">Encoding to use. Use null for <see cref="Encoding.Default"/>.</param>
+    public void WriteAllText(string path, string contents, Encoding encoding = null)
     {
-      File.WriteAllText(path, contents, encoding);
+      File.WriteAllText(path, contents, encoding ?? Encoding.Default);
     }
 
     /// <summary>
