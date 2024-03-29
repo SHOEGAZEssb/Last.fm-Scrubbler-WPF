@@ -3,6 +3,9 @@ using TagLib;
 
 namespace Scrubbler.Scrobbling.Data
 {
+  /// <summary>
+  /// Metadata of a local file on disk.
+  /// </summary>
   class LocalFile : ILocalFile
   {
     #region Properties

@@ -352,7 +352,7 @@ namespace Scrubbler
         _sortGlyph = sortGlyph;
       }
 
-      private Geometry GetDefaultGlyph()
+      private PathGeometry GetDefaultGlyph()
       {
         double x1 = _columnHeader.ActualWidth - 13;
         double x2 = x1 + 10;

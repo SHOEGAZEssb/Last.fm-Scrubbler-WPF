@@ -118,9 +118,7 @@ namespace Scrubbler.Login
             throw new Exception($"Could not fetch token: {response.StatusCode}");
 
           var tokenDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(await response.Content.ReadAsStringAsync());
-          if (tokenDict.ContainsKey("token"))
-            token = tokenDict["token"];
-          else
+          if (!tokenDict.TryGetValue("token", out token))
             throw new Exception("Token response does not contain a token");
         }
 
@@ -143,13 +141,12 @@ namespace Scrubbler.Login
 
           var content = await response.Content.ReadAsStringAsync();
           var sessionDict = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(await response.Content.ReadAsStringAsync());
-          if (sessionDict.ContainsKey("session"))
+          if (sessionDict.TryGetValue("session", out Dictionary<string, string> sessionInfoDict))
           {
-            var sessionInfoDict = sessionDict["session"];
-            if (sessionInfoDict.ContainsKey("name") && sessionInfoDict.ContainsKey("key"))
+            if (sessionInfoDict.TryGetValue("name", out string username) && sessionInfoDict.TryGetValue("key", out string key))
             {
               var subscriber = sessionInfoDict.ContainsKey("subscriber") && sessionInfoDict["subscriber"] == "1";
-              _lastAuth.LoadSession(new IF.Lastfm.Core.Objects.LastUserSession() { Token = sessionInfoDict["key"], Username = sessionInfoDict["name"], IsSubscriber = subscriber });
+              _lastAuth.LoadSession(new IF.Lastfm.Core.Objects.LastUserSession() { Token = key, Username = username, IsSubscriber = subscriber });
               _messageBoxService.ShowDialog("Successfully logged in and authenticated!");
               TryClose(true);
             }

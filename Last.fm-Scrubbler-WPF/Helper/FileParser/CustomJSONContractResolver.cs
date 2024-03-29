@@ -12,7 +12,7 @@ namespace Scrubbler.Helper.FileParser
     /// <summary>
     /// Dictionary containing the mapped properties.
     /// </summary>
-    private readonly IDictionary<string, string> _propertyMappings;
+    private readonly Dictionary<string, string> _propertyMappings;
 
     /// <summary>
     /// Constructor.

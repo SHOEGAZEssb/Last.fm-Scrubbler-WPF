@@ -321,6 +321,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
         Marshal.ReleaseComObject(ITunesApp);
         ITunesApp = null;
       }
+
+      GC.SuppressFinalize(this);
     }
 
     /// <summary>

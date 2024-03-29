@@ -42,18 +42,18 @@ namespace Scrubbler
     /// <param name="e">Ignored.</param>
     protected override void OnStartup(object sender, System.Windows.StartupEventArgs e)
     {
-      IExtendedWindowManager windowManager = new ExtendedWindowManager();
-      ILastFMClient client = new LastFMClient(APIKEY, APISECRET);
-      IScrobblerFactory scrobblerFactory = new ScrobblerFactory();
-      ILocalFileFactory localFileFactory = new LocalFileFactory();
-      IFileOperator fileOperator = new FileOperator();
-      IDirectoryOperator directoryOperator = new DirectoryOperator();
-      ISerializer userSerializer = new DCSerializer();
-      ILogger logger = new Logger("log.txt");
-      IGitHubClient gitHubClient = new GitHubClient(new ProductHeaderValue("Last.fm-Scrubbler-WPF"));
-      IProcessManager processManager = new ProcessManager();
-      IDiscogsDataBaseClient discogsClient = new DiscogsClient.DiscogsClient(new TokenAuthenticationInformation("vcrTuxlCPCANcLDUDcbGSYBxbODkeyywIUtYAMxg"));
-      IFileParserFactory fileParserFactory = new FileParserFactory();
+      var windowManager = new ExtendedWindowManager();
+      var client = new LastFMClient(APIKEY, APISECRET);
+      var scrobblerFactory = new ScrobblerFactory();
+      var localFileFactory = new LocalFileFactory();
+      var fileOperator = new FileOperator();
+      var directoryOperator = new DirectoryOperator();
+      var userSerializer = new DCSerializer();
+      var logger = new Logger("log.txt");
+      var gitHubClient = new GitHubClient(new ProductHeaderValue("Last.fm-Scrubbler-WPF"));
+      var processManager = new ProcessManager();
+      var discogsClient = new DiscogsClient.DiscogsClient(new TokenAuthenticationInformation("vcrTuxlCPCANcLDUDcbGSYBxbODkeyywIUtYAMxg"));
+      var fileParserFactory = new FileParserFactory();
 
       MainViewModel mainVM = new MainViewModel(windowManager, client, scrobblerFactory, localFileFactory, fileOperator,
                                                directoryOperator, userSerializer, logger, gitHubClient, processManager, discogsClient, fileParserFactory);
