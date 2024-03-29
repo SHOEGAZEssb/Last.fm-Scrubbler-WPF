@@ -167,7 +167,7 @@ namespace Scrubbler.ExtraFunctions
                 }
               }
 
-              _fileOperator.WriteAllText(FilePath, csv.ToString());
+              _fileOperator.WriteAllText(FilePath, csv.ToString(), Encoding.UTF8);
               OnStatusUpdated("Successfully wrote .csv file.");
             }
             catch (Exception ex)

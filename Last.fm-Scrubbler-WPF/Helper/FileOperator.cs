@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 
 namespace Scrubbler.Helper
 {
@@ -37,6 +38,19 @@ namespace Scrubbler.Helper
     public void WriteAllText(string path, string contents)
     {
       File.WriteAllText(path, contents);
+    }
+
+    /// <summary>
+    /// Creates a new file, writes the specified <paramref name="contents"/> to the file
+    /// with the given <paramref name="encoding"/>, and then closes
+    /// the file. If the target file already exists, it is overwritten.
+    /// </summary>
+    /// <param name="path">The file to write to.</param>
+    /// <param name="contents">The string to write to the file.</param>
+    /// <param name="encoding">Encoding to use.</param>
+    public void WriteAllText(string path, string contents, Encoding encoding)
+    {
+      File.WriteAllText(path, contents, encoding);
     }
 
     /// <summary>
