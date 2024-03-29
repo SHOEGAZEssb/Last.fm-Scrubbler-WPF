@@ -427,7 +427,7 @@ namespace Scrubbler.ExtraFunctions
             if (!string.IsNullOrEmpty(infos[cnt].Item2))
             {
               // create text
-              FormattedText extraText = new FormattedText(infos[cnt].Item2, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface("Verdana"), 14, Brushes.Black)
+              FormattedText extraText = new FormattedText(infos[cnt].Item2, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface("Verdana"), 14, Brushes.Black, 96)
               {
                 MaxTextWidth = imageWidth,
                 MaxTextHeight = imageHeight
