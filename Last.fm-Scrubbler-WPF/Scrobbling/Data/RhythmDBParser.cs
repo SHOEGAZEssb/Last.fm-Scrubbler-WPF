@@ -54,8 +54,10 @@ namespace Scrubbler.Scrobbling.Data
           // try to get playcount
           int playCount = 1;
           var playCountNode = childNodes.FirstOrDefault(i => i.Name == "play-count");
-          if (playCountNode != null)
-            int.TryParse(playCountNode.InnerText, out playCount);
+          if (playCountNode == null)
+            continue; // no playcount node means track has not been played
+          else
+            playCount = int.Parse(playCountNode.InnerText);
 
           // mandatory fields
           var trackName = childNodes.First(i => i.Name == "title").InnerText;
