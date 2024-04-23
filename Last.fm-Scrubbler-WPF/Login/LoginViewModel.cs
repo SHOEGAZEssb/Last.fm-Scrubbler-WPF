@@ -29,7 +29,7 @@ namespace Scrubbler.Login
       get => _username;
       set
       {
-        if(Username != value)
+        if (Username != value)
         {
           _username = value;
           NotifyOfPropertyChange();
@@ -127,11 +127,11 @@ namespace Scrubbler.Login
 
         // fetch session
         var paramDict = new Dictionary<string, string>()
-      {
-        { "api_key", _lastAuth.ApiKey },
-        { "method", "auth.getSession" },
-        { "token", token }
-      };
+        {
+          { "api_key", _lastAuth.ApiKey },
+          { "method", "auth.getSession" },
+          { "token", token }
+        };
 
         var signedUrl = GetSignedURI(paramDict, true);
         using (var response = await client.GetAsync(signedUrl))
