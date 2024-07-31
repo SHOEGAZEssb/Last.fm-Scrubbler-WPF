@@ -320,7 +320,7 @@ namespace Scrubbler.ExtraFunctions
         {
           using (var fileStream = new FileStream(sfd.FileName, FileMode.Create))
           {
-            BitmapEncoder encoder = new PngBitmapEncoder();
+            var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(Collage));
             encoder.Save(fileStream);
           }
