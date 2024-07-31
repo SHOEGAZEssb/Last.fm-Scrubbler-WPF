@@ -24,12 +24,13 @@ namespace Scrubbler.Helper.FileParser
         {
           errors.Add($"Object Number: {args.ErrorContext.Member} | Error: {args.ErrorContext.Error.Message}");
           args.ErrorContext.Handled = true;
-        }
+        },
+        NullValueHandling = NullValueHandling.Ignore
       };
 
-      var parsedscrobbles = JsonConvert.DeserializeObject<PlayLengthDatedScrobble[]>(File.ReadAllText(file), settings);
+      var parsedscrobbles = JsonConvert.DeserializeObject<PlayLengthDatedScrobble[]>(File.ReadAllText(file), settings) ?? throw new Exception("Unknown error parsing json file (corrupted?)");
       if (Settings.Default.JSONFilterShortPlayedSongs)
-        parsedscrobbles = parsedscrobbles.Where(s => s.MillisecondsPlayed >= Settings.Default.JSONPlayedMillisecondsThreshold)
+        parsedscrobbles = parsedscrobbles.Where(s => s.MillisecondsPlayed == null || s.MillisecondsPlayed >= Settings.Default.JSONPlayedMillisecondsThreshold)
                                          .ToArray();
       return new FileParseResult(parsedscrobbles, errors);
     }

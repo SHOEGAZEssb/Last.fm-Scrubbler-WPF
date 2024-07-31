@@ -13,7 +13,7 @@ namespace Scrubbler.Scrobbling.Data
     /// <summary>
     /// Number of milliseconds this track was played.
     /// </summary>
-    public int MillisecondsPlayed { get; }
+    public int? MillisecondsPlayed { get; }
 
     #endregion Properties
 
@@ -30,7 +30,7 @@ namespace Scrubbler.Scrobbling.Data
     /// <param name="duration">Length of this track.</param>
     /// <param name="millisecondsPlayed">Number of milliseconds this track was played.</param>
     [JsonConstructor]
-    public PlayLengthDatedScrobble(DateTime played, string trackName, string artistName, string albumName = "", string albumArtist = "", TimeSpan? duration = null, int millisecondsPlayed = int.MaxValue)
+    public PlayLengthDatedScrobble(DateTime played, string trackName, string artistName, string albumName = "", string albumArtist = "", TimeSpan? duration = null, int? millisecondsPlayed = int.MaxValue)
       : base(played, trackName, artistName, albumName, albumArtist, duration)
     {
       MillisecondsPlayed = millisecondsPlayed;
