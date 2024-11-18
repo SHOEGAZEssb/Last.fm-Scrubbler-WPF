@@ -28,7 +28,8 @@ namespace Scrubbler.Helper.FileParser
         NullValueHandling = NullValueHandling.Ignore
       };
 
-      var parsedscrobbles = JsonConvert.DeserializeObject<PlayLengthDatedScrobble[]>(File.ReadAllText(file), settings) ?? throw new Exception("Unknown error parsing json file (corrupted?)");
+      var f = File.ReadAllText(file);
+      var parsedscrobbles = JsonConvert.DeserializeObject<PlayLengthDatedScrobble[]>(f, settings) ?? throw new Exception("Unknown error parsing json file (corrupted?)");
       if (Settings.Default.JSONFilterShortPlayedSongs)
         parsedscrobbles = parsedscrobbles.Where(s => s.MillisecondsPlayed == null || s.MillisecondsPlayed >= Settings.Default.JSONPlayedMillisecondsThreshold)
                                          .ToArray();

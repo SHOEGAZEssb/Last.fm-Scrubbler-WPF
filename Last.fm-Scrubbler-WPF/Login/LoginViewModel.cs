@@ -1,5 +1,4 @@
-﻿using IF.Lastfm.Core;
-using IF.Lastfm.Core.Api;
+﻿using IF.Lastfm.Core.Api;
 using Newtonsoft.Json;
 using Scrubbler.Helper;
 using System;

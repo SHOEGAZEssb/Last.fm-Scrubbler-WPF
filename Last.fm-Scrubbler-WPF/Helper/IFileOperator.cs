@@ -36,6 +36,14 @@ namespace Scrubbler.Helper
     string[] ReadAllLines(string path);
 
     /// <summary>
+    /// Opens a text file, reads all the text in the file,
+    /// and then closes the file.
+    /// </summary>
+    /// <param name="path">The file to read.</param>
+    /// <returns>The read text.</returns>
+    string ReadAllText(string path);
+
+    /// <summary>
     /// Opens a System.IO.FileStream on the specified path
     /// with read/write access with no sharing.
     /// </summary>

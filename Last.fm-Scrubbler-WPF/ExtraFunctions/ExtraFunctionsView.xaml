@@ -23,6 +23,9 @@
             <DataTemplate DataType="{x:Type local:CSVSplitterViewModel}">
               <local:CSVSplitterView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type local:JSONSplitterViewModel}">
+              <local:JSONSplitterView/>
+            </DataTemplate>
             <DataTemplate DataType="{x:Type local:CSVDownloaderViewModel}">
               <local:CSVDownloaderView/>
             </DataTemplate>

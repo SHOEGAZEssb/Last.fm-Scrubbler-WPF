@@ -42,6 +42,8 @@ namespace Scrubbler.ExtraFunctions
       pasteYourTasteVM.StatusUpdated += VM_StatusUpdated;
       var csvSplitterVM = new CSVSplitterViewModel(windowManager, fileOperator);
       csvSplitterVM.StatusUpdated += VM_StatusUpdated;
+      var jsonSplitterVM = new JSONSplitterViewModel(windowManager, fileOperator);
+      jsonSplitterVM.StatusUpdated += VM_StatusUpdated;
       var csvDownloaderVM = new CSVDownloaderViewModel(windowManager, userAPI, fileOperator);
       csvDownloaderVM.StatusUpdated += VM_StatusUpdated;
       var collageCreatorVM = new CollageCreatorViewModel(windowManager, userAPI);
@@ -49,7 +51,7 @@ namespace Scrubbler.ExtraFunctions
       var milestoneCheckerVM = new MilestoneCheckerViewModel(userAPI);
       milestoneCheckerVM.StatusUpdated += VM_StatusUpdated;
 
-      return new TabViewModel[] { pasteYourTasteVM, csvSplitterVM, csvDownloaderVM, collageCreatorVM, milestoneCheckerVM };
+      return new TabViewModel[] { pasteYourTasteVM, csvSplitterVM, jsonSplitterVM, csvDownloaderVM, collageCreatorVM, milestoneCheckerVM };
     }
 
     /// <summary>

@@ -9,7 +9,6 @@ using Scrubbler.Properties;
 using Scrubbler.Scrobbling;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 

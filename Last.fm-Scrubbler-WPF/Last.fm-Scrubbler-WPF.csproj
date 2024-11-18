@@ -96,6 +96,11 @@
       <DependentUpon>CSVSplitterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ExtraFunctions\CSVSplitterViewModel.cs" />
+    <Compile Include="ExtraFunctions\FileSplitterViewModel.cs" />
+    <Compile Include="ExtraFunctions\JSONSplitterView.xaml.cs">
+      <DependentUpon>JSONSplitterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ExtraFunctions\JSONSplitterViewModel.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helper\FileParser\ConfigureJSONParserView.xaml.cs">
       <DependentUpon>ConfigureJSONParserView.xaml</DependentUpon>
@@ -319,6 +324,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ExtraFunctions\ExtraFunctionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ExtraFunctions\JSONSplitterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

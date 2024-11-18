@@ -1,39 +1,20 @@
 ﻿using Scrubbler.Helper;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Input;
 
 namespace Scrubbler.ExtraFunctions
 {
   /// <summary>
   /// ViewModel for splitting a csv file.
   /// </summary>
-  public class CSVSplitterViewModel : TabViewModel
+  public class CSVSplitterViewModel : FileSplitterViewModel
   {
     #region Properties
 
     /// <summary>
-    /// The csv file to split.
-    /// </summary>
-    public string FileToSplit
-    {
-      get => _fileToSplit;
-      set
-      {
-        if (FileToSplit != value)
-        {
-          _fileToSplit = value;
-          NotifyOfPropertyChange();
-          NotifyOfPropertyChange(nameof(NumLines));
-          (SplitCommand as DelegateCommand).RaiseCanExecuteChanged();
-        }
-      }
-    }
-    private string _fileToSplit;
-
-    /// <summary>
-    /// Amount of lines in the <see cref="FileToSplit"/>.
+    /// Amount of lines in the <see cref="FileSplitterViewModel.FileToSplit"/>.
     /// </summary>
     public int NumLines
     {
@@ -45,47 +26,16 @@ namespace Scrubbler.ExtraFunctions
     }
 
     /// <summary>
-    /// Amount of lines in each split file.
+    /// <inheritdoc/>
     /// </summary>
-    public int LinesPerFile
-    {
-      get => _linesPerFile;
-      set
-      {
-        if (LinesPerFile != value)
-        {
-          _linesPerFile = value;
-          NotifyOfPropertyChange();
-        }
-      }
-    }
-    private int _linesPerFile;
+    protected override string FileOpenFilter => "CSV Files|*.csv";
 
     /// <summary>
-    /// Command for opening the file to split.
+    /// <inheritdoc/>
     /// </summary>
-    public ICommand OpenFileCommand { get; }
-
-    /// <summary>
-    /// Command for the split process.
-    /// </summary>
-    public ICommand SplitCommand { get; }
+    protected override IEnumerable<string> AllowedFileExtensions => new string[] { ".csv" };
 
     #endregion Properties
-
-    #region Member
-
-    /// <summary>
-    /// WindowManager used to display dialogs.
-    /// </summary>
-    private readonly IExtendedWindowManager _windowManager;
-
-    /// <summary>
-    /// FileOperator used to write to disk.
-    /// </summary>
-    private readonly IFileOperator _fileOperator;
-
-    #endregion Member
 
     #region Construction
 
@@ -96,35 +46,23 @@ namespace Scrubbler.ExtraFunctions
     /// <param name="fileOperator">FileOperator used to write to disk.</param>
     /// <exception cref="ArgumentNullException">When <paramref name="fileOperator"/> is null.</exception>
     public CSVSplitterViewModel(IExtendedWindowManager windowManager, IFileOperator fileOperator)
-      : base("CSV Splitter")
+      : base(windowManager, fileOperator, "CSV Splitter")
     {
-      _windowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));
-      _fileOperator = fileOperator ?? throw new ArgumentNullException(nameof(fileOperator));
-      LinesPerFile = 3000;
-      OpenFileCommand = new DelegateCommand((o) => OpenFile());
-      SplitCommand = new DelegateCommand((o) => Split(), (o) => !string.IsNullOrEmpty(FileToSplit) && FileToSplit.EndsWith(".csv"));
+      PropertyChanged += FileSplitterViewModel_PropertyChanged;
     }
 
     #endregion Construction
 
-    private void OpenFile()
-    {
-      var ofd = _windowManager.CreateOpenFileDialog();
-      ofd.Filter = "CSV Files|*.csv";
-      ofd.Multiselect = false;
-      if (ofd.ShowDialog())
-      {
-        FileToSplit = ofd.FileName;
-      }
-    }
-
-    private void Split()
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    protected override void Split()
     {
       try
       {
         EnableControls = false;
         var lines = _fileOperator.ReadAllLines(FileToSplit);
-        int numFiles = (int)Math.Ceiling(lines.Length / (double)LinesPerFile);
+        int numFiles = (int)Math.Ceiling(lines.Length / (double)EntriesPerFile);
         for(int i = 0; i < numFiles; i++)
         {
           OnStatusUpdated($"Creating split file {i + 1} / {numFiles}");
@@ -132,7 +70,7 @@ namespace Scrubbler.ExtraFunctions
           {
             using (var sw = new StreamWriter(fs))
             {
-              foreach(var line in lines.Skip(i * LinesPerFile).Take(LinesPerFile))
+              foreach(var line in lines.Skip(i * EntriesPerFile).Take(EntriesPerFile))
               {
                 sw.WriteLine(line);
               }
@@ -163,6 +101,12 @@ namespace Scrubbler.ExtraFunctions
       }
 
       return newFileName;
+    }
+
+    private void FileSplitterViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+      if (e.PropertyName == nameof(FileToSplit))
+        NotifyOfPropertyChange(() => NumLines);
     }
   }
 }
