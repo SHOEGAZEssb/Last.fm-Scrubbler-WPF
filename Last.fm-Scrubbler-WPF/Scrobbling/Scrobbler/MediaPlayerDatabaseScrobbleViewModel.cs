@@ -122,6 +122,30 @@ namespace Scrubbler.Scrobbling.Scrobbler
     }
 
     /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public override void CheckFirst3000()
+    {
+      if (ScrobblePlaycounts)
+      {
+        var scrobbles = new List<MediaDBScrobbleViewModel>();
+        int totalPlayCounts = 0;
+        foreach (var item in Scrobbles)
+        {
+          if (scrobbles.Count >= 3000 || totalPlayCounts + item.PlayCount > 3000)
+            break;
+
+          totalPlayCounts += item.PlayCount;
+          scrobbles.Add(item);
+        }
+
+        SetToScrobbleState(scrobbles, true);
+      }
+      else
+        base.CheckFirst3000();
+    }
+
+    /// <summary>
     /// Shows a file dialog and lets the user
     /// select a database file.
     /// Filter will be applied depending on selected <see cref="MediaPlayerDatabaseType"/>.
