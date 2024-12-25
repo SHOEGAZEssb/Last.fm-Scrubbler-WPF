@@ -180,7 +180,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
         NotifyOfPropertyChange();
       }
     }
-    private double _percentageToScrobble;
+    private double _percentageToScrobble = 0.5;
 
     /// <summary>
     /// Seconds needed to listen to the current song to scrobble it.
@@ -205,7 +205,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       get => _currentTrackScrobbled;
       protected set
       {
-        if(CurrentTrackScrobbled != value)
+        if (CurrentTrackScrobbled != value)
         {
           _currentTrackScrobbled = value;
           NotifyOfPropertyChange();
@@ -293,6 +293,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
       SwitchLoveStateCommand = new DelegateCommand((o) => SwitchLoveState().Forget());
       CurrentTrackTags = new ObservableCollection<TagViewModel>();
       CurrentTrackTags.CollectionChanged += CurrentTrackTags_CollectionChanged;
+      _discordClient = new DiscordRpcClient("755746057601810453");
+      _discordClient.Initialize();
     }
 
     #endregion Construction
@@ -339,7 +341,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public void TrackClicked()
     {
-      Process.Start($"{LASTFMURL}{GetUrlEncodedString(CurrentArtistName)}/{ GetUrlEncodedString(CurrentAlbumName)}/{GetUrlEncodedString(CurrentTrackName)}");
+      Process.Start($"{LASTFMURL}{GetUrlEncodedString(CurrentArtistName)}/{GetUrlEncodedString(CurrentAlbumName)}/{GetUrlEncodedString(CurrentTrackName)}");
     }
 
     /// <summary>
@@ -432,6 +434,36 @@ namespace Scrubbler.Scrobbling.Scrobbler
     {
       if (CurrentTrackName != null && CurrentArtistName != null)
         await _trackAPI.UpdateNowPlayingAsync(new Scrobble(CurrentArtistName, CurrentAlbumName, CurrentTrackName, DateTime.Now));
+    }
+
+    /// <summary>
+    /// Updates the discord rich presence if enabled.
+    /// Otherwise clears it.
+    /// Does not clear if media player is paused etc.
+    /// </summary>
+    protected virtual void UpdateRichPresence(string smallImageKey, string smallImageText)
+    {
+      if (UseRichPresence)
+      {
+        _discordClient.SetPresence(new RichPresence()
+        {
+          Details = CurrentArtistName,
+          State = CurrentTrackName,
+          Assets = new Assets
+          {
+            LargeImageKey = "icon",
+            LargeImageText = "Last.fm-Scrubbler-WPF",
+            SmallImageKey = "smallImageKey",
+            SmallImageText = "smallImageText"
+          },
+          Timestamps = new Timestamps
+          {
+            End = DateTimeOffset.UtcNow.AddSeconds(CurrentTrackLength - CountedSeconds).DateTime,
+          }
+        });
+      }
+      else
+        _discordClient.ClearPresence();
     }
 
     /// <summary>

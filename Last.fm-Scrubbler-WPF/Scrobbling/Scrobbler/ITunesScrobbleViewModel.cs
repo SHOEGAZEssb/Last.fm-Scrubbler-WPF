@@ -88,7 +88,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       get => Settings.Default.UseRichPresenceITunes;
       set
       {
-        if(UseRichPresence != value)
+        if (UseRichPresence != value)
         {
           Settings.Default.UseRichPresenceITunes = value;
           NotifyOfPropertyChange();
@@ -182,8 +182,6 @@ namespace Scrubbler.Scrobbling.Scrobbler
 
         NotifyOfPropertyChange(() => CanDisconnect);
 
-        _discordClient = new DiscordRpcClient("755746057601810453");
-        _discordClient.Initialize();
         UpdateCurrentTrackInfo();
 
         _refreshTimer = new Timer(100);
@@ -273,32 +271,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
       if (ITunesApp?.PlayerState == ITPlayerState.ITPlayerStatePlaying)
       {
         UpdateNowPlaying().Forget();
+        UpdateRichPresence("itunes", "iTunes");
 
-        if (++CountedSeconds == CurrentTrackLengthToScrobble)
+        if (++CountedSeconds == CurrentTrackLengthToScrobble && CurrentTrackScrobbled == false)
         {
-          // stop count timer to not trigger scrobble multiple times
           Scrobble().Forget();
           CurrentTrackScrobbled = true;
-        }
-
-        if (UseRichPresence)
-        {
-          _discordClient.SetPresence(new RichPresence()
-          {
-            Details = CurrentArtistName,
-            State = CurrentTrackName,
-            Assets = new Assets
-            {
-              LargeImageKey = "icon",
-              LargeImageText = "Last.fm-Scrubbler-WPF",
-              SmallImageKey = "itunes",
-              SmallImageText = "iTunes"
-            },
-            Timestamps = new Timestamps
-            {
-              End = DateTimeOffset.UtcNow.AddSeconds(CurrentTrackLength - CountedSeconds).DateTime,
-            }
-          });
         }
       }
       else
@@ -365,8 +343,6 @@ namespace Scrubbler.Scrobbling.Scrobbler
           {
             OnStatusUpdated($"Successfully scrobbled '{s.Track}'");
           }
-          else if (response.Status == LastResponseStatus.Cached)
-            OnStatusUpdated($"Scrobbling '{s.Track}' failed. Scrobble has been cached");
           else
             OnStatusUpdated($"Error while scrobbling '{s.Track}': {response.Status}");
         }

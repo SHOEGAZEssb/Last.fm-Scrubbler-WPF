@@ -38,6 +38,9 @@
             <DataTemplate DataType="{x:Type scrobbler:ITunesScrobbleViewModel}">
               <scrobbler:ITunesScrobbleView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type scrobbler:AppleMusicScrobbleViewModel}">
+              <scrobbler:AppleMusicScrobbleView/>
+            </DataTemplate>
             <DataTemplate DataType="{x:Type scrobbler:SetlistFMScrobbleViewModel}">
               <scrobbler:SetlistFMScrobbleView/>
             </DataTemplate>

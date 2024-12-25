@@ -76,6 +76,8 @@ namespace Scrubbler.Scrobbling
       mediaPlayerDatabaseScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
       var iTunesScrobbleVM = new ITunesScrobbleViewModel(windowManager, lastFMClient.Track, lastFMClient.Album, lastFMClient.Artist);
       iTunesScrobbleVM.StatusUpdated += Scrobbler_StatusUpdated;
+      var appleMusicScrobbleVM = new AppleMusicScrobbleViewModel(windowManager, lastFMClient.Track, lastFMClient.Album, lastFMClient.Artist);
+      appleMusicScrobbleVM.StatusUpdated += Scrobbler_StatusUpdated;
       // todo: put back in once local api is working again
       //var spotifyScrobbleVM = new SpotifyScrobbleViewModel(windowManager, lastFMClient.Track, lastFMClient.Album, lastFMClient.Auth);
       //spotifyScrobbleVM.StatusUpdated += Scrobbler_StatusUpdated;
@@ -85,7 +87,7 @@ namespace Scrubbler.Scrobbling
       //cacheScrobblerVM.StatusUpdated += Scrobbler_StatusUpdated;
 
       return new ScrobbleViewModelBase[] { manualScrobbleViewModel, friendScrobbleViewModel, databaseScrobbleViewModel, csvScrobbleViewModel,
-                                           fileScrobbleViewModel, mediaPlayerDatabaseScrobbleViewModel, iTunesScrobbleVM, setlistFMScrobbleVM };
+                                           fileScrobbleViewModel, mediaPlayerDatabaseScrobbleViewModel, iTunesScrobbleVM, appleMusicScrobbleVM, setlistFMScrobbleVM };
     }
 
     /// <summary>
