@@ -222,9 +222,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
       CountedSeconds = 0;
       CurrentTrackScrobbled = false;
       IsConnected = false;
-      UpdateCurrentTrackInfo();
       _discordClient.ClearPresence();
-      _discordClient.Dispose();
+      UpdateCurrentTrackInfo();
     }
 
     /// <summary>

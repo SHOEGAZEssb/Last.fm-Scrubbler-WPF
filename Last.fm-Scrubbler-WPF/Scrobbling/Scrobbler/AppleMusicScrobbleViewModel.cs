@@ -166,7 +166,11 @@ namespace Scrubbler.Scrobbling.Scrobbler
       _automation?.Dispose();
       _automation = null;
       _currentSong = null;
+      CountedSeconds = 0;
+      CurrentTrackScrobbled = false;
       IsConnected = false;
+      _discordClient.ClearPresence();
+      UpdateCurrentTrackInfo();
     }
 
     /// <summary>
