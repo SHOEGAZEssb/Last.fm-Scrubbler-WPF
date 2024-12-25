@@ -3,6 +3,7 @@ using Scrubbler.Helper;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace Scrubbler.ExtraFunctions
 {
@@ -80,7 +81,7 @@ namespace Scrubbler.ExtraFunctions
           string chunkJson = JsonConvert.SerializeObject(chunk, Formatting.Indented);
 
           // Write to a new file
-          _fileOperator.WriteAllText(Path.Combine(inputDirectory, $"{inputFileName}_{fileNumber++}.json"), chunkJson);
+          _fileOperator.WriteAllText(Path.Combine(inputDirectory, $"{inputFileName}_{fileNumber++}.json"), chunkJson, Encoding.UTF8);
         }
 
         OnStatusUpdated($"Successfully split json file into {fileNumber} files.");
