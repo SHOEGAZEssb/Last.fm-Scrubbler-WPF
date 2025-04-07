@@ -7,7 +7,7 @@
         xmlns:scrobbling="clr-namespace:Scrubbler.Scrobbling"
         xmlns:ef="clr-namespace:Scrubbler.ExtraFunctions"
         mc:Ignorable="d"
-        Title="{Binding TitleString}" Height="400" Width="900" Icon="Resources\scrubbler_64.ico">
+        Title="{Binding TitleString}" Height="400" Width="900" Icon="Resources\scrubbler_256.ico">
 
   <Grid>
     <Grid.RowDefinitions>

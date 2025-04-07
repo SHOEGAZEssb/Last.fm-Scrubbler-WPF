@@ -39,7 +39,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\scrubbler_64.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\scrubbler_256.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Hqub.MusicBrainz.API, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -507,7 +507,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\scrubbler_64.ico" />
+    <Resource Include="Resources\scrubbler_256.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\noartistimage.png" />

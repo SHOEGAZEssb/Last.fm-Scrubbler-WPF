@@ -6,7 +6,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Title="Login" Height="220" Width="180" Icon="..\Resources\scrubbler_64.ico" ResizeMode="NoResize" Style="{StaticResource EnableControlsStyle}">
+        Title="Login" Height="220" Width="180" Icon="..\Resources\scrubbler_256.ico" ResizeMode="NoResize" Style="{StaticResource EnableControlsStyle}">
 
   <Grid FocusManager.FocusedElement="{Binding ElementName=usernameTextBox}">
     <Grid.RowDefinitions>
