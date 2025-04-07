@@ -13,7 +13,7 @@
              Background="Transparent"
              Visibility="Hidden">
   <Grid>
-    <tb:TaskbarIcon IconSource="Resources\scrubbler_64.ico" ToolTipText="Last.fm Scrubbler WPF">
+    <tb:TaskbarIcon IconSource="Resources\scrubbler_256.ico" ToolTipText="Last.fm Scrubbler WPF">
       <beh:Interaction.Triggers>
         <beh:EventTrigger EventName="TrayMouseDoubleClick">
           <beh:CallMethodAction TargetObject="{Binding}" MethodName="ShowScreen"/>
