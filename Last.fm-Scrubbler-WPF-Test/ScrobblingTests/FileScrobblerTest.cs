@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Scrubbler.Scrobbling.Scrobbler;
 using Scrubbler.Helper;
-using Scrubbler.Scrobbling.Data;
-using Scrubbler.Scrobbling;
 using ScrubblerLib.Data;
 using ScrubblerLib.Helper;
 using ScrubblerLib;

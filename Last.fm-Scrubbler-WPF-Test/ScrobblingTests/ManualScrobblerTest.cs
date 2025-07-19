@@ -5,7 +5,6 @@ using System;
 using System.Threading.Tasks;
 using IF.Lastfm.Core.Scrobblers;
 using Scrubbler.Scrobbling.Scrobbler;
-using Scrubbler.Scrobbling;
 using Scrubbler.Helper;
 using IF.Lastfm.Core.Api.Enums;
 using System.Collections.Generic;

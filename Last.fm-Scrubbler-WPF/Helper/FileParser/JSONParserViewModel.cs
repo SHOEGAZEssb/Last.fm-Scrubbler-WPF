@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Caliburn.Micro;
 using Scrubbler.Properties;
-using Scrubbler.Scrobbling.Scrobbler;
 using ScrubblerLib.Helper.FileParser;
 
 namespace Scrubbler.Helper.FileParser

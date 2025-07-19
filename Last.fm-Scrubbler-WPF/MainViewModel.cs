@@ -3,7 +3,6 @@ using Octokit;
 using Scrubbler.Configuration;
 using Scrubbler.ExtraFunctions;
 using Scrubbler.Helper;
-using Scrubbler.Helper.FileParser;
 using Scrubbler.Login;
 using Scrubbler.Properties;
 using Scrubbler.Scrobbling;

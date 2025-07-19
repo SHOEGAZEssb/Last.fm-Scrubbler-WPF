@@ -4,8 +4,6 @@ using IF.Lastfm.Core.Objects;
 using IF.Lastfm.Core.Scrobblers;
 using Moq;
 using NUnit.Framework;
-using Scrubbler.Login;
-using Scrubbler.Scrobbling;
 using ScrubblerLib;
 using ScrubblerLib.Login;
 using System.Collections.Generic;

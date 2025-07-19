@@ -6,7 +6,6 @@ using IF.Lastfm.Core.Scrobblers;
 using Moq;
 using NUnit.Framework;
 using Scrubbler.Helper;
-using Scrubbler.Scrobbling;
 using Scrubbler.Scrobbling.Data;
 using Scrubbler.Scrobbling.Scrobbler;
 using ScrubblerLib;

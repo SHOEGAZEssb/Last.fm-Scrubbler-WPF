@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
 using Octokit;
-using Scrubbler.Helper;
 using ScrubblerLib.Helper;
 using System;
 

@@ -1,6 +1,5 @@
 ﻿using DiscogsClient;
 using Scrubbler.Helper;
-using Scrubbler.Helper.FileParser;
 using Scrubbler.Scrobbling.Scrobbler;
 using ScrubblerLib;
 using ScrubblerLib.Helper;

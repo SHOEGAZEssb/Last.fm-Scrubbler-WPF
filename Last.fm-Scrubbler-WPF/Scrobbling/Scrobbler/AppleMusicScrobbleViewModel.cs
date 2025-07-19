@@ -7,7 +7,6 @@ using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Helper;
 using Scrubbler.Properties;
-using Scrubbler.Scrobbling.Data;
 using ScrubblerLib.Data;
 using System;
 using System.Collections.Generic;
@@ -21,7 +20,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
   /// <summary>
   /// ViewModel for scrobbling Apple Music.
   /// </summary>
-  public class AppleMusicScrobbleViewModel : MediaPlayerScrobbleViewModelBase, IDisposable
+  public sealed class AppleMusicScrobbleViewModel : MediaPlayerScrobbleViewModelBase, IDisposable
   {
     #region Properties
 
@@ -46,7 +45,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     public override int CurrentTrackLength => _currentSong?.SongDuration ?? 0;
 
     /// <summary>
-    /// When true, tries to connect to iTunes on startup.
+    /// When true, tries to connect to Apple Music on startup.
     /// </summary>
     public override bool AutoConnect
     {
@@ -113,7 +112,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
     public AppleMusicScrobbleViewModel(IExtendedWindowManager windowManager, ITrackApi trackAPI, IAlbumApi albumAPI, IArtistApi artistAPI)
       : base(windowManager, "Apple Music Scrobbler", trackAPI, albumAPI, artistAPI)
     {
-
+      if (AutoConnect)
+        Connect();
     }
 
     #endregion Construction
