@@ -9,6 +9,7 @@ using Scrubbler.Scrobbling;
 using Scrubbler.Helper;
 using IF.Lastfm.Core.Api.Enums;
 using System.Collections.Generic;
+using ScrubblerLib;
 
 namespace Scrubbler.Test.ScrobblingTests
 {

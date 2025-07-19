@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Scrubbler.Login"
+        xmlns:login="clr-namespace:ScrubblerLib.Login;assembly=ScrubblerLib"
         mc:Ignorable="d"
         Title="Select user" Height="300" Width="300" Icon="..\Resources\scrubbler_256.ico">
 
@@ -50,7 +51,7 @@
         <MultiBinding StringFormat="{}{0} ({1} / {2} daily scrobbles)">
           <Binding Path="Username" TargetNullValue='No active user'/>
           <Binding Path="RecentScrobbleCount" FallbackValue="0"/>
-          <Binding Source="{x:Static local:User.MAXSCROBBLESPERDAY}"/>
+          <Binding Source="{x:Static login:User.MAXSCROBBLESPERDAY}"/>
         </MultiBinding>
       </TextBlock.Text>
     </TextBlock>

@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Scrubbler.Configuration;
 using Scrubbler.Helper;
 using Scrubbler.Test.MockData;
+using ScrubblerLib.Helper;
 using System.Diagnostics;
 
 namespace Scrubbler.Test.ConfigurationTest

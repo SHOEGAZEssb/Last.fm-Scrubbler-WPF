@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Caliburn.Micro;
+using Scrubbler.Properties;
 using Scrubbler.Scrobbling.Scrobbler;
+using ScrubblerLib.Helper.FileParser;
 
 namespace Scrubbler.Helper.FileParser
 {
@@ -19,14 +21,14 @@ namespace Scrubbler.Helper.FileParser
 
     #region Member
 
-    private readonly IFileParser _parser;
+    private readonly IFileParser<JSONFileParserConfiguration> _parser;
     private readonly IWindowManager _windowManager;
 
     #endregion Member
 
     #region Construction
 
-    public JSONParserViewModel(IFileParser parser, IWindowManager windowManager)
+    public JSONParserViewModel(IFileParser<JSONFileParserConfiguration> parser, IWindowManager windowManager)
     {
       _parser = parser ?? throw new ArgumentNullException(nameof(parser));
       _windowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));
@@ -36,12 +38,19 @@ namespace Scrubbler.Helper.FileParser
 
     public FileParseResult Parse(string file, TimeSpan defaultDuration, ScrobbleMode scrobbleMode)
     {
-      return _parser.Parse(file, defaultDuration, scrobbleMode);
+      return _parser.Parse(file, defaultDuration, scrobbleMode, MakeConfig());
     }
 
     public void ShowSettings()
     {
       _windowManager.ShowDialog(new ConfigureJSONParserViewModel());
+    }
+
+    private static JSONFileParserConfiguration MakeConfig()
+    {
+      return new JSONFileParserConfiguration(Settings.Default.JSONTrackNameProperty, Settings.Default.JSONArtistNameProperty, Settings.Default.JSONAlbumNameProperty,
+        Settings.Default.JSONAlbumArtistNameProperty, Settings.Default.JSONTimestampProperty, Settings.Default.JSONDurationProperty, Settings.Default.JSONMillisecondsPlayedProperty,
+        Settings.Default.JSONFilterShortPlayedSongs, Settings.Default.JSONPlayedMillisecondsThreshold);
     }
   }
 }

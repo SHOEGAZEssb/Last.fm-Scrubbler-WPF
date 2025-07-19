@@ -3,6 +3,7 @@ using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Scrubbler.Login;
+using ScrubblerLib.Login;
 using System.Threading.Tasks;
 
 namespace Scrubbler.Test.LoginTests

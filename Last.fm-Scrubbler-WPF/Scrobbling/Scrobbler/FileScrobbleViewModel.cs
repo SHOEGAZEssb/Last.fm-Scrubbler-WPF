@@ -10,6 +10,8 @@ using IF.Lastfm.Core.Api.Enums;
 using Scrubbler.Scrobbling.Data;
 using Scrubbler.Helper;
 using System.Windows.Input;
+using ScrubblerLib.Helper;
+using ScrubblerLib.Data;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
@@ -43,7 +45,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     private static readonly string[] SUPPORTEDFILES = new string[] { ".flac", ".mp3", ".m4a", ".ogg", ".wav", ".wma" };
 
     /// <summary>
-    /// Factory used to create <see cref="ILocalFile"/>s.
+    /// Factory used to create <see cref="ScrubblerLib.Data.ILocalFile"/>s.
     /// </summary>
     private readonly ILocalFileFactory _localFileFactory;
 

@@ -3,6 +3,7 @@ using IF.Lastfm.Core.Objects;
 using Scrubbler.Helper;
 using Scrubbler.Helper.FileParser;
 using Scrubbler.Scrobbling.Data;
+using ScrubblerLib.Helper.FileParser;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,22 +14,6 @@ using System.Windows.Input;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
-  /// <summary>
-  /// Scrobble mode.
-  /// </summary>
-  public enum ScrobbleMode
-  {
-    /// <summary>
-    /// Scrobble the tracks based on the parsed timestamp.
-    /// </summary>
-    Normal,
-
-    /// <summary>
-    /// Set the timestamp by setting <see cref="ScrobbleTimeViewModel.Time"/>.
-    /// </summary>
-    ImportMode
-  }
-
   /// <summary>
   /// ViewModel for the <see cref="FileParseScrobbleView"/>.
   /// </summary>

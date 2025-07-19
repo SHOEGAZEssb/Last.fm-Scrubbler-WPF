@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using ScrubblerLib.Data;
 using System;
 
 namespace Scrubbler.Scrobbling.Data

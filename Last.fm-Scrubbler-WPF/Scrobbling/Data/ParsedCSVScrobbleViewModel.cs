@@ -1,4 +1,6 @@
 ﻿using Scrubbler.Scrobbling.Scrobbler;
+using ScrubblerLib.Data;
+using ScrubblerLib.Helper.FileParser;
 
 namespace Scrubbler.Scrobbling.Data
 {

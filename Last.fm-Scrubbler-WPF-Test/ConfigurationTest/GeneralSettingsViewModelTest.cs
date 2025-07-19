@@ -4,6 +4,7 @@ using Octokit;
 using Scrubbler.Configuration;
 using Scrubbler.Helper;
 using Scrubbler.Test.MockData;
+using ScrubblerLib.Helper;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

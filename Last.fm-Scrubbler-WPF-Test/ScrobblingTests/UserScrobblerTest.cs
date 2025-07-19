@@ -6,6 +6,8 @@ using Moq;
 using NUnit.Framework;
 using Scrubbler.Login;
 using Scrubbler.Scrobbling;
+using ScrubblerLib;
+using ScrubblerLib.Login;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

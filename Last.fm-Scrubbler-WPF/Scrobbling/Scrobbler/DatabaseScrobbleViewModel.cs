@@ -6,6 +6,7 @@ using IF.Lastfm.Core.Api.Helpers;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Helper;
 using Scrubbler.Scrobbling.Data;
+using ScrubblerLib.Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

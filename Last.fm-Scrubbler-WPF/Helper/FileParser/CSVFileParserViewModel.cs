@@ -1,5 +1,7 @@
 ﻿using Caliburn.Micro;
+using Scrubbler.Properties;
 using Scrubbler.Scrobbling.Scrobbler;
+using ScrubblerLib.Helper.FileParser;
 using System;
 using System.Collections.Generic;
 
@@ -39,7 +41,7 @@ namespace Scrubbler.Helper.FileParser
     /// <summary>
     /// Parser used to parse .csv files.
     /// </summary>
-    private readonly IFileParser _parser;
+    private readonly IFileParser<CSVFileParserConfiguration> _parser;
 
     #endregion Member
 
@@ -50,7 +52,7 @@ namespace Scrubbler.Helper.FileParser
     /// </summary>
     /// <param name="parser">Parser to manage.</param>
     /// <param name="windowManager"></param>
-    public CSVFileParserViewModel(IFileParser parser, IWindowManager windowManager)
+    public CSVFileParserViewModel(IFileParser<CSVFileParserConfiguration> parser, IWindowManager windowManager)
     {
       _parser = parser ?? throw new ArgumentNullException(nameof(parser));
       _windowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));
@@ -67,7 +69,7 @@ namespace Scrubbler.Helper.FileParser
     /// <returns>Parse result.</returns>
     public FileParseResult Parse(string file, TimeSpan defaultDuration, ScrobbleMode scrobbleMode)
     {
-      return _parser.Parse(file, defaultDuration, scrobbleMode);
+      return _parser.Parse(file, defaultDuration, scrobbleMode, MakeConfig());
     }
 
     /// <summary>
@@ -76,6 +78,14 @@ namespace Scrubbler.Helper.FileParser
     public void ShowSettings()
     {
       _windowManager.ShowDialog(new ConfigureCSVParserViewModel());
+    }
+
+    private CSVFileParserConfiguration MakeConfig()
+    {
+      return new CSVFileParserConfiguration(Settings.Default.CSVEncoding, Settings.Default.CSVDelimiters, Settings.Default.CSVHasFieldsInQuotes,
+        Settings.Default.TimestampFieldIndex, Settings.Default.TrackFieldIndex, Settings.Default.ArtistFieldIndex, Settings.Default.AlbumFieldIndex,
+        Settings.Default.AlbumArtistFieldIndex, Settings.Default.DurationFieldIndex, Settings.Default.CSVMillisecondsPlayedFieldIndex,
+        Settings.Default.CSVFilterShortPlayedSongs, Settings.Default.CSVPlayedMillisecondsThreshold);
     }
   }
 }

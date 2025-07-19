@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Scrubbler.Helper;
 using Scrubbler.Scrobbling;
 using Scrubbler.Scrobbling.Scrobbler;
+using ScrubblerLib;
 using System.Linq;
 using System.Threading.Tasks;
 

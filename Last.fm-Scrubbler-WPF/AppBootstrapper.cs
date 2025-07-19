@@ -4,6 +4,9 @@ using Octokit;
 using Scrubbler.Helper;
 using Scrubbler.Helper.FileParser;
 using Scrubbler.Scrobbling;
+using ScrubblerLib;
+using ScrubblerLib.Helper;
+using ScrubblerLib.Helper.FileParser;
 
 namespace Scrubbler
 {

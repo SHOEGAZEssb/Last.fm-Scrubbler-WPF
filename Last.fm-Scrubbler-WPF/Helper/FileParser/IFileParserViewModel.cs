@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Scrubbler.Scrobbling.Scrobbler;
+using ScrubblerLib.Helper.FileParser;
 using System;
 using System.Collections.Generic;
 

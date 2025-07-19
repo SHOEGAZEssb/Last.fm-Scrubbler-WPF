@@ -1,4 +1,6 @@
-﻿namespace Scrubbler.Scrobbling.Data
+﻿using ScrubblerLib.Data;
+
+namespace Scrubbler.Scrobbling.Data
 {
   /// <summary>
   /// ViewModel for a <see cref="ILocalFile"/>.

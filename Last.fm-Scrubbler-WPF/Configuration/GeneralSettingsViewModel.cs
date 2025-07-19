@@ -1,6 +1,7 @@
 ﻿using Octokit;
 using Scrubbler.Helper;
 using Scrubbler.Properties;
+using ScrubblerLib.Helper;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
