@@ -1,6 +1,7 @@
 ﻿using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Helper;
+using ScrubblerLib.Scrobbler;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -19,58 +20,54 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public string Artist
     {
-      get { return _artist; }
+      get { return _scrobbleFeature.Artist; }
       set
       {
-        _artist = value;
+        _scrobbleFeature.Artist = value;
         NotifyOfPropertyChange();
         NotifyCanProperties();
       }
     }
-    private string _artist;
 
     /// <summary>
     /// Name of the track to be scrobbled.
     /// </summary>
     public string Track
     {
-      get { return _track; }
+      get { return _scrobbleFeature.Track; }
       set
       {
-        _track = value;
+        _scrobbleFeature.Track = value;
         NotifyOfPropertyChange();
         NotifyCanProperties();
       }
     }
-    private string _track;
 
     /// <summary>
     /// Name of the album to be scrobbled.
     /// </summary>
     public string Album
     {
-      get { return _album; }
+      get { return _scrobbleFeature.Album; }
       set
       {
-        _album = value;
+        _scrobbleFeature.Album = value;
         NotifyOfPropertyChange();
       }
     }
-    private string _album;
 
     /// <summary>
     /// Name of the artist this album is sorted under.
     /// </summary>
     public string AlbumArtist
     {
-      get { return _albumArtist; }
+      get { return _scrobbleFeature.AlbumArtist; }
       set
       {
-        _albumArtist = value;
+        _scrobbleFeature.AlbumArtist = value;
         NotifyOfPropertyChange();
       }
     }
-    private string _albumArtist;
 
     /// <summary>
     /// Length of the track.
@@ -91,17 +88,16 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public int Amount
     {
-      get => _amount;
+      get => _scrobbleFeature.Amount;
       set
       {
         if(Amount != value)
         {
-          _amount = value;
+          _scrobbleFeature.Amount = value;
           NotifyOfPropertyChange();
         }
       }
     }
-    private int _amount;
 
     /// <summary>
     /// ViewModel for selecting the time to scrobble.
@@ -132,6 +128,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
     {
       get { return !string.IsNullOrEmpty(Artist) && !string.IsNullOrEmpty(Track); }
     }
+
+    private readonly ManualScrobbleFeature _scrobbleFeature = new ManualScrobbleFeature();
 
     #endregion Properties
 
@@ -181,16 +179,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <returns>List with scrobbles.</returns>
     protected override IEnumerable<Scrobble> CreateScrobbles()
     {
-      DateTime time = ScrobbleTimeVM.Time;
-
-      var scrobbles = new Scrobble[Amount];
-      for (int i = 0; i < Amount; i++)
-      {
-        scrobbles[i] = new Scrobble(Artist, Album, Track, time) { AlbumArtist = AlbumArtist, Duration = Duration };
-        time = time.Subtract(Duration);
-      }
-
-      return scrobbles;
+      _scrobbleFeature.Timestamp = ScrobbleTimeVM.Time;
+      return _scrobbleFeature.CreateScrobbles();
     }
 
     /// <summary>
