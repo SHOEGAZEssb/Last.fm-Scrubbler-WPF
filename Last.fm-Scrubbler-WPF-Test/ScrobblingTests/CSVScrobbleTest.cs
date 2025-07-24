@@ -44,7 +44,7 @@ namespace Scrubbler.Test.ScrobblingTests
       var parserFactoryMock = new Mock<IFileParserFactory>(MockBehavior.Strict);
 
       var csvParserMock = new Mock<IFileParser<CSVFileParserConfiguration>>(MockBehavior.Strict);
-      csvParserMock.Setup(p => p.Parse(It.IsAny<string>(), It.IsAny<TimeSpan>(), It.IsAny<ScrobbleMode>(), It.IsAny<CSVFileParserConfiguration>())).Returns(
+      csvParserMock.Setup(p => p.Parse(It.IsAny<string>(), It.IsAny<CSVFileParserConfiguration>())).Returns(
                                                                  new FileParseResult(expected.Select(i => new DatedScrobble(i)), Enumerable.Empty<string>()));
 
       parserFactoryMock.Setup(p => p.CreateCSVFileParser()).Returns(csvParserMock.Object);

@@ -36,7 +36,7 @@ namespace ScrubblerLib.Helper.FileParser
     /// <param name="defaultDuration">Default duration for tracks.</param>
     /// <param name="scrobbleMode">Scrobble mode to use.</param>
     /// <returns>Parse result.</returns>
-    public abstract FileParseResult Parse(string file, TimeSpan defaultDuration, ScrobbleMode scrobbleMode, T config);
+    public abstract FileParseResult Parse(string file, T config);
 
     /// <summary>
     /// Tries to parse a string to a DateTime.

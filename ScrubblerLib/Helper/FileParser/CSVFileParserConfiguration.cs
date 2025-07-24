@@ -1,8 +1,14 @@
-﻿namespace ScrubblerLib.Helper.FileParser
+﻿using System;
+
+namespace ScrubblerLib.Helper.FileParser
 {
   public struct CSVFileParserConfiguration : IFileParserConfiguration
   {
     #region Properties
+
+    public ScrobbleMode ScrobbleMode { get; set; }
+
+    public TimeSpan DefaultDuration { get; set; }
 
     public int EncodingID { get; set; }
 
@@ -32,10 +38,12 @@
 
     #region Construction
 
-    public CSVFileParserConfiguration(int encodingID, string delimiters, bool hasFieldsInQuotes, int timestampFieldIndex,
+    public CSVFileParserConfiguration(ScrobbleMode scrobbleMode, TimeSpan defaultDuration, int encodingID, string delimiters, bool hasFieldsInQuotes, int timestampFieldIndex,
                                       int trackFieldIndex, int artistFieldIndex, int albumFieldIndex, int albumArtistFieldIndex, int durationFieldIndex, int millisecondsPlayedFieldIndex,
                                       bool filterShortPlayedSongs, int millisecondsPlayedThreshold)
     {
+      ScrobbleMode = scrobbleMode;
+      DefaultDuration = defaultDuration;
       EncodingID = encodingID;
       Delimiters = delimiters;
       HasFieldsInQuotes = hasFieldsInQuotes;

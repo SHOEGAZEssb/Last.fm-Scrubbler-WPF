@@ -9,7 +9,7 @@ namespace ScrubblerLib.Helper.FileParser
 {
   class JSONFileParser : IFileParser<JSONFileParserConfiguration>
   {
-    public FileParseResult Parse(string file, TimeSpan defaultDuration, ScrobbleMode scrobbleMode, JSONFileParserConfiguration config)
+    public FileParseResult Parse(string file, JSONFileParserConfiguration config)
     {
       if (string.IsNullOrEmpty(file))
         throw new ArgumentNullException(nameof(file));

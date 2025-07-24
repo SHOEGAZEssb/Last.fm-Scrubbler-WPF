@@ -37,7 +37,7 @@ namespace Scrubbler.Helper.FileParser
 
     public FileParseResult Parse(string file, TimeSpan defaultDuration, ScrobbleMode scrobbleMode)
     {
-      return _parser.Parse(file, defaultDuration, scrobbleMode, MakeConfig());
+      return _parser.Parse(file, MakeConfig(scrobbleMode, defaultDuration));
     }
 
     public void ShowSettings()
@@ -45,9 +45,9 @@ namespace Scrubbler.Helper.FileParser
       _windowManager.ShowDialog(new ConfigureJSONParserViewModel());
     }
 
-    private static JSONFileParserConfiguration MakeConfig()
+    private static JSONFileParserConfiguration MakeConfig(ScrobbleMode scrobbleMode, TimeSpan defaultDuration)
     {
-      return new JSONFileParserConfiguration(Settings.Default.JSONTrackNameProperty, Settings.Default.JSONArtistNameProperty, Settings.Default.JSONAlbumNameProperty,
+      return new JSONFileParserConfiguration(scrobbleMode, defaultDuration, Settings.Default.JSONTrackNameProperty, Settings.Default.JSONArtistNameProperty, Settings.Default.JSONAlbumNameProperty,
         Settings.Default.JSONAlbumArtistNameProperty, Settings.Default.JSONTimestampProperty, Settings.Default.JSONDurationProperty, Settings.Default.JSONMillisecondsPlayedProperty,
         Settings.Default.JSONFilterShortPlayedSongs, Settings.Default.JSONPlayedMillisecondsThreshold);
     }

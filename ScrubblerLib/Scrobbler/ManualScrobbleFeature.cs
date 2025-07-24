@@ -20,6 +20,8 @@ namespace ScrubblerLib.Scrobbler
 
     public DateTime Timestamp { get; set; } = DateTime.Now;
 
+    public TimeSpan Duration { get; set; }
+
     #endregion Properties
 
     public IEnumerable<Scrobble> CreateScrobbles()
@@ -28,7 +30,7 @@ namespace ScrubblerLib.Scrobbler
       var time = Timestamp;
       for (int i = 0; i < Amount; i++)
       {
-        scrobbles.Add(new Scrobble(Artist, Album, Track, time) { AlbumArtist = AlbumArtist });
+        scrobbles.Add(new Scrobble(Artist, Album, Track, time) { AlbumArtist = AlbumArtist, Duration = Duration });
         time = time.Subtract(TimeSpan.FromSeconds(1));
       }
 

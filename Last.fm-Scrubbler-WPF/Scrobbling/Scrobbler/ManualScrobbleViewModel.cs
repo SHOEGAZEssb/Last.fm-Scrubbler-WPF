@@ -74,14 +74,13 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public TimeSpan Duration
     {
-      get { return _duration; }
+      get { return _scrobbleFeature.Duration; }
       set
       {
-        _duration = value;
+        _scrobbleFeature.Duration = value;
         NotifyOfPropertyChange();
       }
     }
-    private TimeSpan _duration;
 
     /// <summary>
     /// Number of times listened to the track.

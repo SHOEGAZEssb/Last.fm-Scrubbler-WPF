@@ -19,7 +19,7 @@ namespace ScrubblerLib.Helper.FileParser
     /// <param name="defaultDuration">Default duration for tracks.</param>
     /// <param name="scrobbleMode"></param>
     /// <returns>Parse result.</returns>
-    public FileParseResult Parse(string file, TimeSpan defaultDuration, ScrobbleMode scrobbleMode, CSVFileParserConfiguration config)
+    public FileParseResult Parse(string file, CSVFileParserConfiguration config)
     {
       if (string.IsNullOrEmpty(file))
         throw new ArgumentNullException(nameof(file));
@@ -41,11 +41,11 @@ namespace ScrubblerLib.Helper.FileParser
             string dateString = fields.ElementAtOrDefault(config.TimestampFieldIndex);
 
             // check for 'now playing'
-            if (string.IsNullOrEmpty(dateString) && scrobbleMode == ScrobbleMode.Normal)
+            if (string.IsNullOrEmpty(dateString) && config.ScrobbleMode == ScrobbleMode.Normal)
               continue;
 
             DateTime date = DateTime.Now;
-            if (!FileParserBase<CSVFileParserConfiguration>.TryParseDateString(dateString, out date) && scrobbleMode == ScrobbleMode.Normal)
+            if (!FileParserBase<CSVFileParserConfiguration>.TryParseDateString(dateString, out date) && config.ScrobbleMode == ScrobbleMode.Normal)
               throw new Exception("Timestamp could not be parsed!");
 
             // try to get optional parameters first

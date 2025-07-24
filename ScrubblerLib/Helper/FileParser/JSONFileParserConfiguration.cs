@@ -1,8 +1,14 @@
-﻿namespace ScrubblerLib.Helper.FileParser
+﻿using System;
+
+namespace ScrubblerLib.Helper.FileParser
 {
   public struct JSONFileParserConfiguration : IFileParserConfiguration
   {
     #region Properties
+
+    public ScrobbleMode ScrobbleMode { get; set; }
+
+    public TimeSpan DefaultDuration { get; set; }
 
     public string TrackFieldName { get; set; }
     public string ArtistFieldName { get; set; }
@@ -18,9 +24,11 @@
 
     #region Construction
 
-    public JSONFileParserConfiguration(string trackFieldName, string artistFieldName, string albumFieldName, string albumArtistFieldName, string timestampFieldName,
+    public JSONFileParserConfiguration(ScrobbleMode scrobbleMode, TimeSpan defaultDuration, string trackFieldName, string artistFieldName, string albumFieldName, string albumArtistFieldName, string timestampFieldName,
                                    string durationFieldName, string millisecondsPlayedFieldName, bool filterShortPlayedSongs, int millsecondsPlayedThreshold)
     {
+      ScrobbleMode = scrobbleMode;
+      DefaultDuration = defaultDuration;
       TrackFieldName = trackFieldName;
       ArtistFieldName = artistFieldName;
       AlbumFieldName = albumFieldName;

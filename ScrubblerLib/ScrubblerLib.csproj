@@ -225,6 +225,7 @@
     <Compile Include="Login\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScrobblerFactory.cs" />
+    <Compile Include="Scrobbler\FileParseScrobbleFeature.cs" />
     <Compile Include="Scrobbler\IScrobbleFeature.cs" />
     <Compile Include="Scrobbler\ManualScrobbleFeature.cs" />
     <Compile Include="UserScrobbler.cs" />

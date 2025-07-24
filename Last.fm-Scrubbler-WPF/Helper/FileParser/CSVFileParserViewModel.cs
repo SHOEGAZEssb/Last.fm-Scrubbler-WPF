@@ -68,7 +68,7 @@ namespace Scrubbler.Helper.FileParser
     /// <returns>Parse result.</returns>
     public FileParseResult Parse(string file, TimeSpan defaultDuration, ScrobbleMode scrobbleMode)
     {
-      return _parser.Parse(file, defaultDuration, scrobbleMode, MakeConfig());
+      return _parser.Parse(file, MakeConfig(scrobbleMode, defaultDuration));
     }
 
     /// <summary>
@@ -79,9 +79,9 @@ namespace Scrubbler.Helper.FileParser
       _windowManager.ShowDialog(new ConfigureCSVParserViewModel());
     }
 
-    private CSVFileParserConfiguration MakeConfig()
+    private static CSVFileParserConfiguration MakeConfig(ScrobbleMode scrobbleMode, TimeSpan defaultDuration)
     {
-      return new CSVFileParserConfiguration(Settings.Default.CSVEncoding, Settings.Default.CSVDelimiters, Settings.Default.CSVHasFieldsInQuotes,
+      return new CSVFileParserConfiguration(scrobbleMode, defaultDuration, Settings.Default.CSVEncoding, Settings.Default.CSVDelimiters, Settings.Default.CSVHasFieldsInQuotes,
         Settings.Default.TimestampFieldIndex, Settings.Default.TrackFieldIndex, Settings.Default.ArtistFieldIndex, Settings.Default.AlbumFieldIndex,
         Settings.Default.AlbumArtistFieldIndex, Settings.Default.DurationFieldIndex, Settings.Default.CSVMillisecondsPlayedFieldIndex,
         Settings.Default.CSVFilterShortPlayedSongs, Settings.Default.CSVPlayedMillisecondsThreshold);
