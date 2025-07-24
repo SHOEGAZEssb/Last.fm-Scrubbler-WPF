@@ -1,5 +1,6 @@
 ﻿using IF.Lastfm.Core.Objects;
 using Scrubbler.Helper;
+using ScrubblerLib;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

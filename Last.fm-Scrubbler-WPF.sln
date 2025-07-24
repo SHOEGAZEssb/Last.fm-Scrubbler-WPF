@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36202.13 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Last.fm-Scrubbler-WPF", "Last.fm-Scrubbler-WPF\Last.fm-Scrubbler-WPF.csproj", "{EB0520BC-2EC0-4EB9-8F12-22B9BE6EA934}"
 EndProject
@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrubblerLib", "ScrubblerLib\ScrubblerLib.csproj", "{75795D76-4AB6-4BC6-90EA-7F9F009E9618}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +28,10 @@ Global
 		{8528C039-46C3-43FF-A6B1-69423B7C0F8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8528C039-46C3-43FF-A6B1-69423B7C0F8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8528C039-46C3-43FF-A6B1-69423B7C0F8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75795D76-4AB6-4BC6-90EA-7F9F009E9618}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75795D76-4AB6-4BC6-90EA-7F9F009E9618}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75795D76-4AB6-4BC6-90EA-7F9F009E9618}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75795D76-4AB6-4BC6-90EA-7F9F009E9618}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

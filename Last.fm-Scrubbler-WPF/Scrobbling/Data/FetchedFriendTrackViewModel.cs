@@ -1,4 +1,5 @@
 ﻿using IF.Lastfm.Core.Objects;
+using ScrubblerLib.Data;
 using System;
 
 namespace Scrubbler.Scrobbling.Data

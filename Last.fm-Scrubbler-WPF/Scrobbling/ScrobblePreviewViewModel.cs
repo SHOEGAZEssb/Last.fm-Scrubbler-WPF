@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Scrobbling.Data;
+using ScrubblerLib.Data;
 using System.Collections.Generic;
 using System.Linq;
 

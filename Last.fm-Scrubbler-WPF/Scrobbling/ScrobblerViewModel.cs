@@ -1,7 +1,9 @@
 ﻿using DiscogsClient;
 using Scrubbler.Helper;
-using Scrubbler.Helper.FileParser;
 using Scrubbler.Scrobbling.Scrobbler;
+using ScrubblerLib;
+using ScrubblerLib.Helper;
+using ScrubblerLib.Helper.FileParser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +28,7 @@ namespace Scrubbler.Scrobbling
     /// Constructor.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    /// <param name="localFileFactory">Factory used to create <see cref="Data.ILocalFile"/>s.</param>
+    /// <param name="localFileFactory">Factory used to create <see cref="ScrubblerLib.Data.ILocalFile"/>s.</param>
     /// <param name="fileOperator">FileOperator used to interface with files.</param>
     /// <param name="lastFMClient">Last.fm client.</param>
     /// <param name="discogsClient">Client used to interact with Discogs.com</param>
@@ -54,7 +56,7 @@ namespace Scrubbler.Scrobbling
     /// Creates the ViewModels.
     /// </summary>
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
-    /// <param name="localFileFactory">Factory used to create <see cref="Data.ILocalFile"/>s.</param>
+    /// <param name="localFileFactory">Factory used to create <see cref="ScrubblerLib.Data.ILocalFile"/>s.</param>
     /// <param name="fileOperator">FileOperator used to interface with files.</param>
     /// <param name="lastFMClient">Last.fm client.</param>
     /// <param name="discogsClient">Client used to interact with Discogs.com</param>

@@ -82,6 +82,10 @@
       <Project>{eb0520bc-2ec0-4eb9-8f12-22b9be6ea934}</Project>
       <Name>Last.fm-Scrubbler-WPF</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ScrubblerLib\ScrubblerLib.csproj">
+      <Project>{75795D76-4AB6-4BC6-90EA-7F9F009E9618}</Project>
+      <Name>ScrubblerLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

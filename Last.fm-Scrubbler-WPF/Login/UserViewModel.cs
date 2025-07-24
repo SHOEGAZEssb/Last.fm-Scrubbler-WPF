@@ -3,6 +3,7 @@ using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Helper;
 using Scrubbler.Properties;
+using ScrubblerLib.Login;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -245,7 +246,7 @@ namespace Scrubbler.Login
             // connect and disconnect to serialize if recent scrobbles are different
             usr.RecentScrobblesCacheUpdated += User_RecentScrobblesChanged;
             usr.RecentScrobblesCacheUpdated -= User_RecentScrobblesChanged;
-            usr._userAPI = _userApi;
+            usr.UserAPI = _userApi;
             AvailableUsers.Add(usr);
           }
           catch (Exception ex)

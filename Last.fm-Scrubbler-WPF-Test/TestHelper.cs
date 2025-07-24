@@ -2,6 +2,7 @@
 using IF.Lastfm.Core.Api.Helpers;
 using IF.Lastfm.Core.Objects;
 using Moq;
+using ScrubblerLib.Login;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -134,16 +135,16 @@ namespace Scrubbler.Test
 
     /// <summary>
     /// Creates a generic user that has the given <paramref name="tracks"/>
-    /// after <see cref="Login.User.UpdateRecentScrobbles"/> is called.
+    /// after <see cref="User.UpdateRecentScrobbles"/> is called.
     /// </summary>
     /// <param name="tracks">Tracks of the user.</param>
     /// <returns>User.</returns>
-    public static Login.User CreateUserWithRecentTracks(IEnumerable<LastTrack> tracks)
+    public static User CreateUserWithRecentTracks(IEnumerable<LastTrack> tracks)
     {
       return CreateUserWithRecentTracks("TestUser", "TestToken", true, tracks);
     }
 
-    public static Login.User CreateUserWithRecentTracks(string username, string token, bool isSubscriber, IEnumerable<LastTrack> tracks)
+    public static User CreateUserWithRecentTracks(string username, string token, bool isSubscriber, IEnumerable<LastTrack> tracks)
     {
       if (tracks == null || tracks.Count() > 1000)
         throw new ArgumentException(nameof(tracks), "tracks is null or has more than 1000 tracks");
@@ -160,14 +161,14 @@ namespace Scrubbler.Test
                                             It.IsAny<bool>(), 3, It.IsAny<int>()))
                                             .Returns(() => Task.Run(() => PageResponse<LastTrack>.CreateSuccessResponse()));
 
-      return new Login.User(username, token, isSubscriber, userApiMock.Object);
+      return new User(username, token, isSubscriber, userApiMock.Object);
     }
 
     /// <summary>
     /// Creates a user that has hit the daily scrobble limit.
     /// </summary>
     /// <returns>User with reached limit.</returns>
-    public static Login.User CreateCappedUser()
+    public static User CreateCappedUser()
     {
       var tracks1 = CreateGenericScrobbles(1000).ToLastTracks();
       var tracks2 = CreateGenericScrobbles(1000).ToLastTracks();
@@ -185,7 +186,7 @@ namespace Scrubbler.Test
                                             It.IsAny<bool>(), 3, It.IsAny<int>()))
                                             .Returns(() => Task.Run(() => PageResponse<LastTrack>.CreateSuccessResponse(tracks3)));
 
-      return new Login.User("TestUser", "TestToken", true, userApiMock.Object);
+      return new User("TestUser", "TestToken", true, userApiMock.Object);
     }
   }
 }

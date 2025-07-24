@@ -42,7 +42,7 @@
     <ApplicationIcon>Resources\scrubbler_256.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Hqub.MusicBrainz.API, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Hqub.MusicBrainz.API, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\Hqub.MusicBrainz.API.dll</HintPath>
     </Reference>
@@ -106,21 +106,10 @@
       <DependentUpon>ConfigureJSONParserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helper\FileParser\ConfigureJSONParserViewModel.cs" />
-    <Compile Include="Helper\FileParser\CSVFileParser.cs" />
     <Compile Include="Helper\FileParser\CSVFileParserViewModel.cs" />
-    <Compile Include="Helper\FileParser\CustomJSONContractResolver.cs" />
-    <Compile Include="Helper\FileParser\FileParserBase.cs" />
-    <Compile Include="Helper\FileParser\FileParseResult.cs" />
-    <Compile Include="Helper\FileParser\FileParserFactory.cs" />
     <Compile Include="Helper\FileParser\IFileParserViewModel.cs" />
-    <Compile Include="Helper\FileParser\IFileParser.cs" />
-    <Compile Include="Helper\FileParser\JSONFileParser.cs" />
     <Compile Include="Helper\FileParser\JSONParserViewModel.cs" />
     <Compile Include="Helper\IHaveSettings.cs" />
-    <Compile Include="Helper\FileParser\IFileParserFactory.cs" />
-    <Compile Include="Helper\IProcessManager.cs" />
-    <Compile Include="Helper\ProcessManager.cs" />
-    <Compile Include="Scrobbling\Data\AppleMusicInfo.cs" />
     <Compile Include="Scrobbling\Data\ArtistResultViewModel.cs" />
     <Compile Include="Scrobbling\Data\FetchedArtistView.xaml.cs">
       <DependentUpon>FetchedArtistView.xaml</DependentUpon>
@@ -128,14 +117,10 @@
     <Compile Include="Scrobbling\Data\FetchedReleaseView.xaml.cs">
       <DependentUpon>FetchedReleaseView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Scrobbling\Data\PlayLengthDatedScrobble.cs" />
     <Compile Include="Scrobbling\Data\ReleaseResultViewModel.cs" />
-    <Compile Include="Scrobbling\Data\RhythmDBParser.cs" />
     <Compile Include="Scrobbling\Data\ScrobbableObjectListView.cs" />
     <Compile Include="Scrobbling\Data\SetlistResultViewModel.cs" />
     <Compile Include="Scrobbling\Data\TagViewModel.cs" />
-    <Compile Include="Scrobbling\Data\Track.cs" />
-    <Compile Include="Scrobbling\IAuthScrobbler.cs" />
     <Compile Include="Scrobbling\Scrobbler\AppleMusicScrobbleView.xaml.cs">
       <DependentUpon>AppleMusicScrobbleView.xaml</DependentUpon>
     </Compile>
@@ -147,33 +132,17 @@
     <Compile Include="Helper\IMessageBoxService.cs" />
     <Compile Include="Helper\IExtendedWindowManager.cs" />
     <Compile Include="Helper\IFileDialog.cs" />
-    <Compile Include="ILastFMApiBase.cs" />
-    <Compile Include="ILastFMClient.cs" />
-    <Compile Include="Helper\ILocalFileFactory.cs" />
     <Compile Include="Helper\IOpenFileDialog.cs" />
     <Compile Include="Scrobbling\Data\IScrobbableObjectViewModel.cs" />
-    <Compile Include="Scrobbling\IScrobblerFactory.cs" />
     <Compile Include="Helper\ISerializer.cs" />
-    <Compile Include="Scrobbling\IUserScrobbler.cs" />
     <Compile Include="Helper\DCSerializer.cs" />
     <Compile Include="Helper\DirectoryOperator.cs" />
     <Compile Include="Helper\FileOperator.cs" />
     <Compile Include="Helper\Logger.cs" />
     <Compile Include="Helper\OpenFileDialogService.cs" />
     <Compile Include="Helper\SaveFileDialogService.cs" />
-    <Compile Include="Scrobbling\Data\Artist.cs" />
-    <Compile Include="Scrobbling\AuthScrobbler.cs" />
-    <Compile Include="Scrobbling\Data\ILocalFile.cs" />
     <Compile Include="Helper\ExtendedWindowManager.cs" />
-    <Compile Include="LastFMClient.cs" />
-    <Compile Include="Scrobbling\Data\LocalFile.cs" />
-    <Compile Include="Helper\LocalFileFactory.cs" />
     <Compile Include="Helper\MessageBoxService.cs" />
-    <Compile Include="Scrobbling\Data\Release.cs" />
-    <Compile Include="Scrobbling\Data\ScrobbleBase.cs" />
-    <Compile Include="Scrobbling\ScrobblerFactory.cs" />
-    <Compile Include="Login\User.cs" />
-    <Compile Include="Scrobbling\UserScrobbler.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="ExtraFunctions\CollageCreatorViewModel.cs" />
     <Compile Include="ExtraFunctions\CSVDownloaderViewModel.cs" />
@@ -218,9 +187,6 @@
       <DependentUpon>GeneralSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="GridViewSort.cs" />
-    <Compile Include="Scrobbling\Data\DatedScrobble.cs" />
-    <Compile Include="Scrobbling\Data\MediaDBScrobble.cs" />
-    <Compile Include="Scrobbling\Data\WMP.cs" />
     <Compile Include="Scrobbling\Scrobbler\FileParseScrobbleViewModel.cs" />
     <Compile Include="Scrobbling\Scrobbler\DatabaseScrobbleViewModel.cs" />
     <Compile Include="Scrobbling\Data\FetchedArtistViewModel.cs" />
@@ -719,6 +685,12 @@
     <PackageReference Include="taglib">
       <Version>2.1.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ScrubblerLib\ScrubblerLib.csproj">
+      <Project>{75795d76-4ab6-4bc6-90ea-7f9f009e9618}</Project>
+      <Name>ScrubblerLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

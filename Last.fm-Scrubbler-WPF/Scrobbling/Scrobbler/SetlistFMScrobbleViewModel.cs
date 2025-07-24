@@ -3,6 +3,7 @@ using IF.Lastfm.Core.Api.Enums;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Helper;
 using Scrubbler.Scrobbling.Data;
+using ScrubblerLib.Data;
 using SetlistFmApi.Model.Music;
 using SetlistFmApi.SearchOptions.Music;
 using SetlistFmApi.SearchResults.Music;
@@ -161,7 +162,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <summary>
     /// The last clicked <see cref="Artist"/>.
     /// </summary>
-    private Data.Artist _lastClickedArtist;
+    private ScrubblerLib.Data.Artist _lastClickedArtist;
 
     /// <summary>
     /// Last.fm API object for getting artist information.
@@ -217,7 +218,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       {
         EnableControls = false;
         OnStatusUpdated($"Searching for artist '{SearchText}'");
-        IEnumerable<Data.Artist> artists = await GetArtists();
+        IEnumerable<ScrubblerLib.Data.Artist> artists = await GetArtists();
 
         if (artists.Any())
         {
@@ -249,7 +250,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// Gets the artists by searching for them.
     /// </summary>
     /// <returns>Found artists.</returns>
-    private async Task<IEnumerable<Data.Artist>> GetArtists()
+    private async Task<IEnumerable<ScrubblerLib.Data.Artist>> GetArtists()
     {
       ArtistSearchResult asr = null;
       await Task.Run(() => asr = _setlistFMClient.FindArtists(new ArtistSearchOptions() { Name = SearchText, Page = ArtistResultPage }));
@@ -257,17 +258,17 @@ namespace Scrubbler.Scrobbling.Scrobbler
       if (asr != null)
       {
         // todo: can we do a cool select query on asr.Artists to create the artist IEnumerable?
-        List<Data.Artist> artists = new List<Data.Artist>();
+        var artists = new List<ScrubblerLib.Data.Artist>();
         foreach (var artist in asr.Artists)
         {
           Uri imageUri = await GetImageForArtist(artist.Name);
-          artists.Add(new Data.Artist(artist.Name, artist.MbId, imageUri));
+          artists.Add(new ScrubblerLib.Data.Artist(artist.Name, artist.MbId, imageUri));
         }
 
         return artists;
       }
       else
-        return Enumerable.Empty<Data.Artist>();
+        return Enumerable.Empty<ScrubblerLib.Data.Artist>();
     }
 
     /// <summary>
@@ -293,7 +294,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
       try
       {
         EnableControls = false;
-        var clickedArtist = sender as Data.Artist;
+        var clickedArtist = sender as ScrubblerLib.Data.Artist;
         _lastClickedArtist = clickedArtist;
         OnStatusUpdated($"Fetching setlists from artist '{clickedArtist.Name}'...");
         IEnumerable<Setlist> setlists = await GetSetlists(clickedArtist);
@@ -329,7 +330,7 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     /// <param name="artist">Artist to get setlists for.</param>
     /// <returns>Setlists of the given <paramref name="artist"/>.</returns>
-    private async Task<IEnumerable<Setlist>> GetSetlists(Data.Artist artist)
+    private async Task<IEnumerable<Setlist>> GetSetlists(ScrubblerLib.Data.Artist artist)
     {
       SetlistSearchResult ssr = null;
       await Task.Run(() => ssr = _setlistFMClient.FindSetlistsByArtist(new SetlistByArtistSearchOptions() { MbId = artist.Mbid, Page = SetlistResultPage }));

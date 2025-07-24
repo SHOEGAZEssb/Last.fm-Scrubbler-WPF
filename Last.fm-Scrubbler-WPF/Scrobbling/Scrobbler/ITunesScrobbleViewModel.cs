@@ -9,14 +9,13 @@ using System.Threading.Tasks;
 using System.Timers;
 using IF.Lastfm.Core.Api;
 using Scrubbler.Helper;
-using DiscordRPC;
 
 namespace Scrubbler.Scrobbling.Scrobbler
 {
   /// <summary>
   /// ViewModel for the <see cref="MediaPlayerScrobbleControl"/>.
   /// </summary>
-  public class ITunesScrobbleViewModel : MediaPlayerScrobbleViewModelBase, IDisposable
+  public sealed class ITunesScrobbleViewModel : MediaPlayerScrobbleViewModelBase, IDisposable
   {
     #region Properties
 

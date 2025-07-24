@@ -8,8 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Scrubbler.Scrobbling.Scrobbler;
-using Scrubbler.Scrobbling;
 using Scrubbler.Helper;
+using ScrubblerLib;
 
 namespace Scrubbler.Test.ScrobblingTests
 {
