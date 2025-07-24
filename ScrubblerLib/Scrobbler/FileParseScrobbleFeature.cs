@@ -2,6 +2,7 @@
 using ScrubblerLib.Helper.FileParser;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ScrubblerLib.Scrobbler
 {
@@ -35,7 +36,7 @@ namespace ScrubblerLib.Scrobbler
         throw new ArgumentException("Unsupported parser configuration");
 
       LastParseErrors = result.Errors;
-      return (IEnumerable<Scrobble>)result.Scrobbles;
+      return result.Scrobbles.Select(s => new Scrobble(s.ArtistName, s.AlbumName, s.TrackName, s.Played) { AlbumArtist = s.AlbumArtist, Duration = s.Duration });
     }
   }
 }
