@@ -3,6 +3,7 @@ using IF.Lastfm.Core.Objects;
 using Scrubbler.Helper;
 using Scrubbler.Helper.FileParser;
 using Scrubbler.Scrobbling.Data;
+using ScrubblerLib.Helper;
 using ScrubblerLib.Helper.FileParser;
 using System;
 using System.Collections.Generic;

@@ -6,6 +6,7 @@ using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Scrubbler.Helper;
 using Scrubbler.Login;
+using ScrubblerLib.Helper;
 using ScrubblerLib.Login;
 using System;
 using System.Collections.Generic;

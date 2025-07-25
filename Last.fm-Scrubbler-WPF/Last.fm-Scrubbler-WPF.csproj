@@ -134,8 +134,6 @@
     <Compile Include="Helper\IFileDialog.cs" />
     <Compile Include="Helper\IOpenFileDialog.cs" />
     <Compile Include="Scrobbling\Data\IScrobbableObjectViewModel.cs" />
-    <Compile Include="Helper\ISerializer.cs" />
-    <Compile Include="Helper\DCSerializer.cs" />
     <Compile Include="Helper\DirectoryOperator.cs" />
     <Compile Include="Helper\FileOperator.cs" />
     <Compile Include="Helper\Logger.cs" />

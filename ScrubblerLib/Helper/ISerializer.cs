@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Scrubbler.Helper
+namespace ScrubblerLib.Helper
 {
   /// <summary>
   /// Interface for a serializer.

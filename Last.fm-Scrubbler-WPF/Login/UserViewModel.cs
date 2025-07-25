@@ -3,6 +3,7 @@ using IF.Lastfm.Core.Api;
 using IF.Lastfm.Core.Objects;
 using Scrubbler.Helper;
 using Scrubbler.Properties;
+using ScrubblerLib.Helper;
 using ScrubblerLib.Login;
 using System;
 using System.Collections.ObjectModel;

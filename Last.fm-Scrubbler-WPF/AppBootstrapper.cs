@@ -18,7 +18,7 @@ namespace Scrubbler
     /// <summary>
     /// The api key of this application.
     /// </summary>
-    private const string APIKEY = "69fbfa5fdc2cc1a158ec3bffab4be7a7";
+    private const string APIKEY = "c";
 
     /// <summary>
     /// The api secret of this application.

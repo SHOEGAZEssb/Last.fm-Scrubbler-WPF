@@ -20,6 +20,8 @@ namespace ScrubblerLib.Scrobbler
 
     public IEnumerable<Scrobble> CreateScrobbles()
     {
+      LastParseErrors = null;
+
       FileParseResult result;
       if (ParserConfiguration is CSVFileParserConfiguration csvFileParserConfiguration)
       {

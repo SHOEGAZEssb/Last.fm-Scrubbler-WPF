@@ -6,12 +6,12 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
 
-namespace Scrubbler.Helper
+namespace ScrubblerLib.Helper
 {
   /// <summary>
   /// Serializer using a <see cref="DataContractSerializer"/>.
   /// </summary>
-  class DCSerializer : ISerializer
+  public class DCSerializer : ISerializer
   {
     #region ISerializer Implementation
 

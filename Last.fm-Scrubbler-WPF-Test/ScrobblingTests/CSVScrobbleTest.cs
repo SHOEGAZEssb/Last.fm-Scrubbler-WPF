@@ -11,6 +11,7 @@ using System.Linq;
 using ScrubblerLib.Helper.FileParser;
 using ScrubblerLib.Data;
 using ScrubblerLib;
+using ScrubblerLib.Helper;
 
 namespace Scrubbler.Test.ScrobblingTests
 {

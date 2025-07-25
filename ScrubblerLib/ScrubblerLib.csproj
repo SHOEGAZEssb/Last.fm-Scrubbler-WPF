@@ -193,6 +193,7 @@
     <Compile Include="Data\Artist.cs" />
     <Compile Include="Data\DatedScrobble.cs" />
     <Compile Include="Data\ILocalFile.cs" />
+    <Compile Include="Helper\DCSerializer.cs" />
     <Compile Include="Helper\FileParser\CSVFileParserConfiguration.cs" />
     <Compile Include="Helper\FileParser\JSONFileParserConfiguration.cs" />
     <Compile Include="Data\LocalFile.cs" />
@@ -214,6 +215,7 @@
     <Compile Include="Helper\FileParser\JSONFileParser.cs" />
     <Compile Include="Helper\ILocalFileFactory.cs" />
     <Compile Include="Helper\IProcessManager.cs" />
+    <Compile Include="Helper\ISerializer.cs" />
     <Compile Include="Helper\LocalFileFactory.cs" />
     <Compile Include="Helper\ProcessManager.cs" />
     <Compile Include="IAuthScrobbler.cs" />
