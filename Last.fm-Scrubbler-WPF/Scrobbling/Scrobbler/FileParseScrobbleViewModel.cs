@@ -123,6 +123,8 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     private readonly IFileOperator _fileOperator;
 
+    private readonly ISerializer _serializer;
+
     #endregion Member
 
     /// <summary>
@@ -131,13 +133,14 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// <param name="windowManager">WindowManager used to display dialogs.</param>
     /// <param name="parserFactory">The factory used to create <see cref="IFileParser"/>.</param>
     /// <param name="fileOperator">FileOperator used to write to disk.</param>
-    public FileParseScrobbleViewModel(IExtendedWindowManager windowManager, IFileParserFactory parserFactory, IFileOperator fileOperator)
+    public FileParseScrobbleViewModel(IExtendedWindowManager windowManager, IFileParserFactory parserFactory, IFileOperator fileOperator, ISerializer serializer)
       : base(windowManager, "File Parse Scrobbler")
     {
       if (parserFactory == null)
         throw new ArgumentNullException(nameof(parserFactory));
 
       _fileOperator = fileOperator ?? throw new ArgumentNullException(nameof(fileOperator));
+      _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
       AvailableParser = new List<IFileParserViewModel>()
       {
         new CSVFileParserViewModel(parserFactory.CreateCSVFileParser(), WindowManager),
@@ -280,8 +283,20 @@ namespace Scrubbler.Scrobbling.Scrobbler
     /// </summary>
     public void OpenParserSettings()
     {
-      if(CanShowSettings)
-        (SelectedParser as IHaveSettings).ShowSettings();
+      if (CanShowSettings)
+      {
+        if ((SelectedParser as IHaveSettings).ShowSettings() ?? false)
+        {
+          try
+          {
+            SaveParserConfig();
+          }
+          catch
+          {
+            // ignore
+          }
+        }
+      }
     }
 
     /// <summary>
@@ -314,6 +329,12 @@ namespace Scrubbler.Scrobbling.Scrobbler
     public override void UncheckSelected()
     {
       SetToScrobbleState(Scrobbles.Where(i => i.IsSelected && i.CanScrobble), false);
+    }
+
+    private void SaveParserConfig()
+    {
+      var config = SelectedParser.MakeConfig(ScrobbleMode, TimeSpan.FromSeconds(Duration));
+      _serializer.Serialize(config, $"{config.GetType().Name}.xml", new[] { typeof(CSVFileParserConfiguration), typeof(JSONFileParserConfiguration) });
     }
   }
 }

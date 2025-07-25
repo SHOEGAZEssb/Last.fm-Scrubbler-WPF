@@ -68,18 +68,18 @@ namespace Scrubbler.Helper.FileParser
     /// <returns>Parse result.</returns>
     public FileParseResult Parse(string file, TimeSpan defaultDuration, ScrobbleMode scrobbleMode)
     {
-      return _parser.Parse(file, MakeConfig(scrobbleMode, defaultDuration));
+      return _parser.Parse(file, (CSVFileParserConfiguration)MakeConfig(scrobbleMode, defaultDuration));
     }
 
     /// <summary>
     /// Shows the settings of the parser.
     /// </summary>
-    public void ShowSettings()
+    public bool? ShowSettings()
     {
-      _windowManager.ShowDialog(new ConfigureCSVParserViewModel());
+      return _windowManager.ShowDialog(new ConfigureCSVParserViewModel());
     }
 
-    private static CSVFileParserConfiguration MakeConfig(ScrobbleMode scrobbleMode, TimeSpan defaultDuration)
+    public IFileParserConfiguration MakeConfig(ScrobbleMode scrobbleMode, TimeSpan defaultDuration)
     {
       return new CSVFileParserConfiguration(scrobbleMode, defaultDuration, Settings.Default.CSVEncoding, Settings.Default.CSVDelimiters, Settings.Default.CSVHasFieldsInQuotes,
         Settings.Default.TimestampFieldIndex, Settings.Default.TrackFieldIndex, Settings.Default.ArtistFieldIndex, Settings.Default.AlbumFieldIndex,

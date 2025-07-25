@@ -34,10 +34,10 @@ namespace Scrubbler.Scrobbling
     /// <param name="discogsClient">Client used to interact with Discogs.com</param>
     /// <param name="fileParserFactory">Factory for creating <see cref="IFileParser"/></param>
     public ScrobblerViewModel(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory, IFileOperator fileOperator, ILastFMClient lastFMClient,
-                              IDiscogsDataBaseClient discogsClient, IFileParserFactory fileParserFactory)
+                              IDiscogsDataBaseClient discogsClient, IFileParserFactory fileParserFactory, ISerializer serializer)
       : base("Scrobbler")
     {
-      Scrobblers = CreateViewModels(windowManager, localFileFactory, fileOperator, lastFMClient, discogsClient, fileParserFactory);
+      Scrobblers = CreateViewModels(windowManager, localFileFactory, fileOperator, lastFMClient, discogsClient, fileParserFactory, serializer);
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ namespace Scrubbler.Scrobbling
     /// <param name="discogsClient">Client used to interact with Discogs.com</param>
     /// <param name="fileParserFactory">Factory for creating <see cref="IFileParser"/></param>
     private ScrobbleViewModelBase[] CreateViewModels(IExtendedWindowManager windowManager, ILocalFileFactory localFileFactory, IFileOperator fileOperator, ILastFMClient lastFMClient,
-                                  IDiscogsDataBaseClient discogsClient, IFileParserFactory fileParserFactory)
+                                  IDiscogsDataBaseClient discogsClient, IFileParserFactory fileParserFactory, ISerializer serializer)
     {
       var manualScrobbleViewModel = new ManualScrobbleViewModel(windowManager);
       manualScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
@@ -70,7 +70,7 @@ namespace Scrubbler.Scrobbling
       friendScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
       var databaseScrobbleViewModel = new DatabaseScrobbleViewModel(windowManager, lastFMClient.Artist, lastFMClient.Album, discogsClient);
       databaseScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
-      var csvScrobbleViewModel = new FileParseScrobbleViewModel(windowManager, fileParserFactory, fileOperator);
+      var csvScrobbleViewModel = new FileParseScrobbleViewModel(windowManager, fileParserFactory, fileOperator, serializer);
       csvScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;
       var fileScrobbleViewModel = new FileScrobbleViewModel(windowManager, localFileFactory, fileOperator);
       fileScrobbleViewModel.StatusUpdated += Scrobbler_StatusUpdated;

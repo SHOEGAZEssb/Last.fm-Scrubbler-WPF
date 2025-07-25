@@ -54,8 +54,9 @@ namespace Scrubbler.Test.ScrobblingTests
 
       Mock<IFileOperator> fileOperatorMock = new Mock<IFileOperator>(MockBehavior.Strict);
       Mock<IExtendedWindowManager> windowManagerMock = new Mock<IExtendedWindowManager>(MockBehavior.Strict);
+      Mock<ISerializer> serializerMock = new Mock<ISerializer>(MockBehavior.Strict);
 
-      FileParseScrobbleViewModel vm = new FileParseScrobbleViewModel(windowManagerMock.Object, parserFactoryMock.Object, fileOperatorMock.Object)
+      FileParseScrobbleViewModel vm = new FileParseScrobbleViewModel(windowManagerMock.Object, parserFactoryMock.Object, fileOperatorMock.Object, serializerMock.Object)
       {
         Scrobbler = scrobblerMock.Object,
         FilePath = "C:\\TestFile.csv",

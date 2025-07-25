@@ -33,5 +33,7 @@ namespace Scrubbler.Helper.FileParser
     /// <param name="scrobbleMode">Scrobble mode to use.</param>
     /// <returns>Parse result.</returns>
     FileParseResult Parse(string file, TimeSpan defaultDuration, ScrobbleMode scrobbleMode);
+
+    IFileParserConfiguration MakeConfig(ScrobbleMode scrobbleMode, TimeSpan defaultDuration);
   }
 }

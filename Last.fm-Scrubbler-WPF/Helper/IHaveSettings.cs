@@ -8,6 +8,6 @@
     /// <summary>
     /// Shows the settings of the object.
     /// </summary>
-    void ShowSettings();
+    bool? ShowSettings();
   }
 }
