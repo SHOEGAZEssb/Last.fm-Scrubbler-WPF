@@ -158,6 +158,7 @@
     <Compile Include="ExtraFunctions\MilestoneViewModel.cs" />
     <Compile Include="Scrobbling\Data\ScrobbableObjectViewModelBase.cs" />
     <Compile Include="Scrobbling\ScrobblePreviewViewModel.cs" />
+    <Compile Include="Scrobbling\Scrobbler\ScrobbleQueueViewModel.cs" />
     <Compile Include="Scrobbling\Scrobbler\ScrobbleTimeViewModel.cs" />
     <Compile Include="Scrobbling\Scrobbler\SetlistFMScrobbleViewModel.cs" />
     <Compile Include="Scrobbling\Scrobbler\SpotifyScrobbleViewModel.cs" />
