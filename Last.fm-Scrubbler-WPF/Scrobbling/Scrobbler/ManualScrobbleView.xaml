@@ -27,15 +27,19 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto"/>
-      <ColumnDefinition Width="5"/>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="5"/>
-      <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Content="Artist:"/>
-    <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Artist, UpdateSourceTrigger=PropertyChanged}"/>
+    <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Artist, UpdateSourceTrigger=PropertyChanged}"/>
+      
+    <CheckBox Grid.Row="0" Grid.Column="4" Content="Split 'Artist - Track'"
+        IsChecked="{Binding SplitArtistTrack, UpdateSourceTrigger=PropertyChanged}"
+        VerticalAlignment="Center"/>
 
     <Label Grid.Row="2" Grid.Column="0" Content="Track:"/>
     <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Track, UpdateSourceTrigger=PropertyChanged}"/>
