@@ -1,3 +1,6 @@
+# Deprecation Notice
+This version of the Scrubbler is now officially deprecated and will not be updated anymore.
+If you want a modern, cross-platform version of the Scrubbler, please download [Scrubbler 2](https://github.com/Scrubbler-Dev/Scrubbler-2)
 
 # Last.fm-Scrubbler-WPF
 Manual Last.fm scrobbling for when a service (or you!) failed to scrobble.
@@ -7,7 +10,9 @@ Download the current version [here](https://github.com/coczero/Last.fm-Scrubbler
 If you need help or have any questions feel free to join the [Scrubbler Discord](https://discord.gg/88Qdg9B)
 
 ### IMPORTANT
-This app is still in beta. It did not get a lot of testing. I recommend trying to scrobble to a test account first and see if the things you want to scrobble do so correctly. Especially if you scrobble a lot of tracks at once. Please be careful with your accounts.
+Always be careful when you scrobble thousands of tracks at the same time.
+I take no responsibility for any damage this tool does.
+
 ### Scrobble Cap ###
 Previously the Last.fm-Scrubbler-WPF did not have a scrobbles per day limit. This has now changed since some people used the Scrubbler to scrobble so much tracks, that it caused problems for the last.fm page. The scrobble limit is currently 2800 scrobbles per day. When you try to scrobble more than that you will get an error message. I know this makes some functions less useful, but it is better to be safe. There are plans to add a "scrobble queue", so if you need to scrobble more than 2800 tracks, they get added to a queue and are automatically scrobbled after some time. You can check how many scrobbles you have left in the user selection view.
 
